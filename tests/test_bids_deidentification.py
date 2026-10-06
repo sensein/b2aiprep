@@ -20,7 +20,6 @@ class TestBIDSDatasetDeidentification:
         """Deidentify refuses an allowlisted participant without a pseudonym; keep IDs as they are."""
         ids = [f"participant00{i}" for i in (1, 2, 3)]
         (setup_publish_config / "id_remapping.json").write_text(json.dumps({p: p for p in ids}))
-        (setup_publish_config / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
 
     @pytest.fixture
     def temp_bids_dir(self):
@@ -522,3 +521,33 @@ class TestBIDSDatasetClean:
         assert len(cleaned_phenotype) <= len(
             original_phenotype
         )  # May be smaller due to column removal
+
+
+
+def _text(values):
+    return [v if isinstance(v, str) else None for v in values]
+
+
+def test_disclosure_transforms_group_rare_answers_and_pass_redcap_age_label():
+    df = pd.DataFrame({
+        "record_id": ["a", "b", "c", "d", "e"],
+        "age": ["89", "89.0", None, "90 and above", "18"],
+        "gender_identity": ["Female gender identity", "Other", "Non-binary or genderqueer gender identity", None, None],
+        "sex_assigned_at_birth": ["Male", "Intersex", "Unknown", "Prefer not to answer", None],
+    })
+    out = BIDSDataset._apply_disclosure_transforms(df)
+    assert _text(out.age) == ["89", "89.0", None, "90 and above", "18"]
+    assert _text(out.gender_identity) == ["Female gender identity", "Prefer not to answer",
+                                       "Non-binary or genderqueer gender identity", None, None]
+    assert _text(out.sex_assigned_at_birth) == ["Male", "Prefer not to answer", "Prefer not to answer",
+                                               "Prefer not to answer", None]
+    assert _text(df.gender_identity)[1] == "Other"  # input untouched
+
+
+@pytest.mark.parametrize("age", ["90", "97.0"])
+def test_disclosure_transforms_flag_numeric_age_of_90_or_more(age, caplog):
+    df = pd.DataFrame({"record_id": ["a", "b"], "age": ["45", age]})
+    with caplog.at_level("WARNING"):
+        out = BIDSDataset._apply_disclosure_transforms(df)
+    assert list(out.age) == ["45", age]
+    assert "QA REVIEW REQUIRED: age: 1 numeric value(s)" in caplog.text and "records b" in caplog.text

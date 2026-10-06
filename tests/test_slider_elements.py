@@ -23,7 +23,8 @@ def test_slider_labels_are_not_choices(tmp_path):
         },
     })["diagnosis_degree_s"]
     assert element["inputType"] == "slider"
-    assert element["valueType"] == ["xsd:integer"] and element["choices"] is None
+    assert element["valueType"] == ["xsd:integer"] and element["datatype"] == ["xsd:integer"]
+    assert element["choices"] is None
     assert element["sliderLabels"] == ["MI", "MO", "SE"]
     assert (element["minValue"], element["maxValue"]) == (0, 100)
 

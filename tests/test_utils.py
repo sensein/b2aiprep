@@ -14,6 +14,7 @@ from b2aiprep.prepare.utils import (
     reformat_resources,
     remove_files_by_pattern,
     get_wav_duration,
+    TaskMatcher,
 )
 
 
@@ -131,3 +132,15 @@ def test_get_commit_sha_returns_empty_when_unrecoverable(tmp_path, monkeypatch, 
 
 if __name__ == "__main__":
     pytest.main()
+
+
+def test_task_matcher_exact_glob_and_regex():
+    m = TaskMatcher(["Noisy-Sounds-1", "identifying-pictures-*", "picture-description",
+                     "Repeating Words *", "re:role-naming-tasks-sounds-(days|months)", "conversation-*"])
+    assert "noisy-sounds-1" in m and "Noisy Sounds 1" in m
+    assert "Identifying-Pictures-35" in m and "identifying-pictures" not in m
+    assert "picture-description" in m and "picture-description-2" not in m and "picture-28" not in m
+    assert "repeating-words-bad" in m
+    assert "Role-Naming-Tasks-Sounds-Days" in m and "role-naming-tasks-sounds-numbers" not in m
+    assert "Conversation-(6-plus)-favorite-food" in m
+    assert not TaskMatcher([]) and TaskMatcher(["re:x"])

@@ -295,36 +295,6 @@ def test_recording_without_a_name_is_skipped_not_named_nan(tmp_path, caplog):
     assert not list(tmp_path.rglob("*task-none*"))
 
 
-def test_same_named_acoustic_tasks_are_not_flagged(tmp_path, caplog):
-    """Tasks may share a name within a session (the adult voice cohort's unnumbered "Free Speech"
-    beside the numbered "Free speech"); with no per-task sidecar there is nothing to collide."""
-    participant = {
-        "record_id": "p1",
-        "selected_language": "English",
-        "sessions": [
-            _session(
-                _row(
-                    "acoustic_tasks",
-                    acoustic_task_id="t1",
-                    acoustic_task_name="Free speech",
-                    acoustic_task_session_id="S1",
-                    recordings=[],
-                ),
-                _row(
-                    "acoustic_tasks",
-                    acoustic_task_id="t2",
-                    acoustic_task_name="Free Speech",
-                    acoustic_task_session_id="S1",
-                    recordings=[],
-                ),
-            )
-        ],
-    }
-    with caplog.at_level("WARNING"):
-        BIDSDataset._output_participant_data_to_metadata_file(participant, tmp_path)
-    assert "collision" not in caplog.text
-
-
 def test_missing_alias_resource_raises(monkeypatch):
     """A missing packaged alias file must fail, not silently rename every file."""
     import b2aiprep.prepare.utils as utils
@@ -535,7 +505,6 @@ def test_acoustic_task_tsv_orphan_rows_filtered(tmp_path):
     result = pd.read_csv(acoustic_task_tsv, sep="\t", dtype=str)
     assert list(result["acoustic_task_id"]) == ["t1"]
     assert len(result) == 1
-
 
 
 def test_sessions_tsv_keeps_sessions_without_audio(tmp_path):

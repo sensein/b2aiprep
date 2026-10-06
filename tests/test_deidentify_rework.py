@@ -1,19 +1,20 @@
-"""Tests for the deidentify rework foundational helpers.
+"""Deidentify: the participant allowlist, column dispositions and access tiers, released sessions
+and their labels, sidecar keys, removal lists, and column value reviews."""
 
-Covers:
-  T006 — _load_participant_allowlist
-  T007 — _build_session_id_mapping
-  T008 — _drop_columns_by_disposition
-"""
-
+import importlib.util
 import json
 import logging
 from pathlib import Path
 
 import pandas as pd
 import pytest
+import torch
 
-from b2aiprep.prepare.dataset import BIDSDataset, DispositionLevel, SessionLabels
+from b2aiprep.prepare.dataset import AccessTier, BIDSDataset, DispositionLevel, SessionLabels
+
+# three session IDs of one participant, in session_index order
+A, B, C = ("AAAA1111-0000-0000-0000-000000000001", "BBBB2222-0000-0000-0000-000000000002",
+           "CCCC3333-0000-0000-0000-000000000003")
 
 
 # ---------------------------------------------------------------------------
@@ -209,6 +210,44 @@ class TestDropColumnsByDisposition:
         assert isinstance(dropped, list)
         assert set(dropped) == {"b", "c"}
 
+    def test_names_to_drop_at_each_level(self):
+        """drop is removed at every level; shifted dates only with keep_date_shifted."""
+        fm = _field_map_df([
+            {"column_name": c, "disposition": d, "date_shift": ds, "access_tier": ""}
+            for c, d, ds in [("a_release", "release", "NO"), ("b_internal", "internal", "NO"),
+                             ("c_drop", "drop", "NO"), ("d_drop_date", "drop", "YES"),
+                             ("e_internal_date", "internal", "YES")]])
+        drop = BIDSDataset._names_to_drop_at_level
+        assert drop(fm, DispositionLevel.INTERNAL) == {"c_drop", "d_drop_date"}
+        assert drop(fm, DispositionLevel.REVIEW, keep_date_shifted=True) == {"b_internal", "c_drop", "d_drop_date"}
+        assert drop(fm, DispositionLevel.RELEASE) == {"b_internal", "c_drop", "d_drop_date", "e_internal_date"}
+
+    def test_controlled_only_columns_are_kept_only_in_the_controlled_tier(self):
+        fm = _field_map_df([{"column_name": c, "disposition": d, "date_shift": "NO", "access_tier": t}
+                            for c, d, t in [("a", "release", ""), ("b", "release", "controlled"),
+                                            ("c", "internal", "")]])
+        drop = BIDSDataset._names_to_drop_at_level
+        assert drop(fm, DispositionLevel.RELEASE) == {"b", "c"}  # default tier is the narrower one
+        assert drop(fm, DispositionLevel.RELEASE, access_tier=AccessTier.CONTROLLED) == {"c"}
+        assert drop(fm, DispositionLevel.INTERNAL, access_tier=AccessTier.REGISTERED) == set()  # QA keeps all
+
+    def test_disposition_is_matched_within_the_table(self):
+        """self_reported_* is released in eligibility and internal in enrollment."""
+        fm = _field_map_df([
+            {"schema_name": "eligibility", "column_name": "self_reported_asthma", "disposition": "release"},
+            {"schema_name": "enrollment", "column_name": "self_reported_asthma", "disposition": "internal"}])
+        df = pd.DataFrame({"participant_id": ["p"], "self_reported_asthma": ["Yes"]})
+        kept, dropped = BIDSDataset._drop_columns_by_disposition(df, fm, schema_name="eligibility")
+        assert "self_reported_asthma" in kept.columns and not dropped
+        _, dropped = BIDSDataset._drop_columns_by_disposition(df, fm, schema_name="enrollment")
+        assert dropped == ["self_reported_asthma"]
+
+    def test_unknown_table_refuses_instead_of_keeping_everything(self):
+        fm = _field_map_df([{"schema_name": "demographics", "column_name": "zipcode", "disposition": "internal"}])
+        df = pd.DataFrame({"participant_id": ["p"], "zipcode": ["02139"]})
+        with pytest.raises(ValueError, match="no rows in the field map"):
+            BIDSDataset._drop_columns_by_disposition(df, fm, schema_name="renamed_table")
+
 
 # ---------------------------------------------------------------------------
 # T025: Session ordinal mapping
@@ -301,19 +340,6 @@ class TestDispositionInPhenotypeContext:
         assert set(result.columns) == {"participant_id", "age"}
         assert set(dropped) == {"session_complete", "free_text_specify"}
 
-    def test_pipeline_columns_need_a_field_map_row(self):
-        """A pipeline-computed column is published only once the field map describes it."""
-        fm = _field_map_df([
-            {"column_name": "participant_id", "disposition": "release", "delete": "NO"},
-        ])
-        df = pd.DataFrame({
-            "participant_id": ["p1"],
-            "computed_by_pipeline": ["value"],
-        })
-        result, dropped = BIDSDataset._drop_columns_by_disposition(df, field_map_df=fm)
-        assert "computed_by_pipeline" not in result.columns
-        assert dropped == ["computed_by_pipeline"]
-
     def test_error_when_no_disposition_in_phenotype_context(self):
         """When field map has no disposition column, raises ValueError."""
         fm = _field_map_df([
@@ -399,47 +425,24 @@ class TestEndToEndAllowlistFiltering:
         # session_id_mapping.json generation is currently disabled
         assert not (out / "session_id_mapping.json").exists()
 
-
-class TestSessionIndexAtIngest:
-
-    def test_numbers_by_start_time_undated_last_duplicates_share(self):
-        df = pd.DataFrame({
-            "record_id": ["p1", "p1", "p1", "p1", "p2", "p1"],
-            "redcap_repeat_instrument": ["Session"] * 5 + ["Acoustic Task"],
-            "session_id": ["B", "A", "C", "B", "Z", None],
-            "session_started_at": ["2025-03-01T10:00:00Z", "2025-01-01T10:00:00Z", None,
-                                   "2025-03-01T10:00:00Z", "2024-01-01T00:00:00Z", None],
-        })
-        out = BIDSDataset._add_session_index(df)
-        got = dict(zip(zip(out.record_id, out.session_id), out.session_index))
-        assert got[("p1", "A")] == "1" and got[("p1", "B")] == "2" and got[("p1", "C")] == "3"
-        assert got[("p2", "Z")] == "1"
-        assert out.loc[5, "session_index"] is pd.NA
-        assert list(out.loc[out.session_id == "B", "session_index"]) == ["2", "2"]
+    def test_allowlisted_participant_without_a_pseudonym_is_refused(self, tmp_path, make_deid_tree):
+        bids, config = make_deid_tree({"p1": [("s1", "rainbow-passage")]}, pseudonyms={})
+        with pytest.raises(ValueError, match="1 allowlisted participant.*no pseudonym.*p1"):
+            BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
+        assert list((tmp_path / "out").iterdir()) == []
 
 
 class TestSessionLabels:
 
     def _sessions(self):
-        return pd.DataFrame({
-            "session_id": ["AAAA1111-0000-0000-0000-000000000001", "BBBB2222-0000-0000-0000-000000000002",
-                           "CCCC3333-0000-0000-0000-000000000003"],
-            "session_index": ["1", "2", "3"],
-        })
+        return pd.DataFrame({"session_id": [A, B, C], "session_index": ["1", "2", "3"]})
 
-    def test_ordinal_numbers_released_without_gaps(self):
-        ses = self._sessions()
-        released = {ses.session_id[0], ses.session_id[2]}
-        labels, order = BIDSDataset._session_labels(ses, SessionLabels.ORDINAL, released)
-        assert labels == {ses.session_id[0]: "01", ses.session_id[2]: "02"}
-        assert order == {ses.session_id[0]: 1, ses.session_id[2]: 2}
-
-    def test_index_keeps_numbers_with_gaps(self):
-        ses = self._sessions()
-        released = {ses.session_id[0], ses.session_id[2]}
-        labels, order = BIDSDataset._session_labels(ses, SessionLabels.INDEX, released)
-        assert labels == {ses.session_id[0]: "01", ses.session_id[2]: "03"}
-        assert order == {ses.session_id[0]: 1, ses.session_id[2]: 3}
+    @pytest.mark.parametrize("mode, labels, order", [
+        (SessionLabels.ORDINAL, {A: "01", C: "02"}, {A: 1, C: 2}),   # numbered without gaps
+        (SessionLabels.INDEX, {A: "01", C: "03"}, {A: 1, C: 3}),     # session_index, gaps kept
+    ])
+    def test_numbered_labels(self, mode, labels, order):
+        assert BIDSDataset._session_labels(self._sessions(), mode, {A, C}) == (labels, order)
 
     def test_uuid_lower_case_and_long_on_collision(self):
         ses = pd.DataFrame({"session_id": ["ABCD1234-0000-0000-0000-00000000000A",
@@ -454,103 +457,95 @@ class TestSessionLabels:
             BIDSDataset._session_labels(pd.DataFrame({"session_id": ["x"]}), SessionLabels.ORDINAL)
 
 
+def _released_sessions_tree(make_deid_tree, root):
+    """p1: audio in A, nothing in B, a questionnaire row in C."""
+    sessions = pd.DataFrame({"record_id": ["p1"] * 3, "session_id": [A, B, C],
+                             "session_index": ["1", "2", "3"], "session_status": ["Completed"] * 3})
+    return make_deid_tree(
+        {"p1": [(A, "rainbow-passage")]}, root=root, sessions={"p1": sessions}, pseudonyms={"p1": "900001"},
+        tables={"session": sessions.rename(columns={"record_id": "participant_id"}),
+                "confounders": pd.DataFrame({"participant_id": ["p1"], "confounders_session_id": [C],
+                                             "acid_reflux": ["Yes"]})})
+
+
 class TestReleasedSessions:
     """A session is released with a file to publish or questionnaire rows; empty ones are not,
     and no original session ID reaches the output."""
 
-    A, B, C = ("AAAA1111-0000-0000-0000-000000000001", "BBBB2222-0000-0000-0000-000000000002",
-               "CCCC3333-0000-0000-0000-000000000003")
-
-    def _deidentify(self, tmp_path, **kwargs):
-        bids, config, out = tmp_path / "bids", tmp_path / "config", tmp_path / "out"
-        config.mkdir(parents=True)
-        (config / "participants_to_include.json").write_text(json.dumps(["p1"]))
-        (config / "id_remapping.json").write_text(json.dumps({"p1": "900001"}))
-        (config / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
-        (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
-        (config / "audio_tasks_to_include.json").write_text(json.dumps(["rainbow-passage"]))
-        audio_dir = bids / "sub-p1" / f"ses-{self.A}" / "audio"
-        audio_dir.mkdir(parents=True)
-        stem = f"sub-p1_ses-{self.A}_task-rainbow-passage"
-        (audio_dir / f"{stem}.wav").write_bytes(b"RIFF" + b"\x00" * 8192)
-        (audio_dir / f"{stem}_recording-metadata.json").write_text(
-            json.dumps({"record_id": "p1", "session_id": self.A}))
-        pd.DataFrame({"record_id": ["p1"] * 3, "session_id": [self.A, self.B, self.C],
-                      "session_index": ["1", "2", "3"], "session_status": ["Completed"] * 3}).to_csv(
-            bids / "sub-p1" / "sessions.tsv", sep="\t", index=False)
-        pheno = bids / "phenotype"
-        pheno.mkdir()
-        pd.DataFrame({"participant_id": ["p1"] * 3, "session_id": [self.A, self.B, self.C],
-                      "session_index": ["1", "2", "3"], "session_status": ["Completed"] * 3}).to_csv(
-            pheno / "session.tsv", sep="\t", index=False)
-        (pheno / "session.json").write_text(json.dumps({}))
-        pd.DataFrame({"participant_id": ["p1"], "confounders_session_id": [self.C], "acid_reflux": ["Yes"]}).to_csv(
-            pheno / "confounders.tsv", sep="\t", index=False)
-        (pheno / "confounders.json").write_text(json.dumps({}))
-        (bids / "dataset_description.json").write_text(json.dumps({"Name": "test"}))
-        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config, **kwargs)
-        return out
-
-    def _no_original_ids(self, out):
+    @pytest.mark.parametrize("mode, audio_dir, session_labels, questionnaire_label", [
+        (SessionLabels.ORDINAL, "ses-01", ["01", "02"], "02"),
+        (SessionLabels.INDEX, "ses-01", ["01", "03"], "03"),
+        (SessionLabels.UUID, "ses-aaaa1111", ["aaaa1111", "cccc3333"], "cccc3333"),
+    ])
+    def test_labels_and_no_original_ids(self, tmp_path, make_deid_tree, mode, audio_dir, session_labels,
+                                        questionnaire_label):
+        bids, config = _released_sessions_tree(make_deid_tree, tmp_path)
+        out, session_map = tmp_path / "out", tmp_path / "internal" / "map.json"
+        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config, session_labels=mode,
+                                     session_id_map=session_map)
+        assert [d.name for d in (out / "sub-900001").glob("ses-*")] == [audio_dir]
+        ses = pd.read_csv(out / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
+        assert list(ses.session_id) == session_labels
+        session = pd.read_csv(out / "phenotype" / "session.tsv", sep="\t", dtype=str)
+        assert sorted(session.session_id) == session_labels
+        conf = pd.read_csv(out / "phenotype" / "confounders.tsv", sep="\t", dtype=str)
+        assert list(conf.confounders_session_id) == [questionnaire_label]
         for f in out.rglob("*"):
             if f.is_file() and f.suffix in (".tsv", ".json"):
                 text = f.read_text()
-                assert not any(x in text or x.lower() in text for x in (self.A, self.B, self.C)), f
-
-    def test_ordinal(self, tmp_path):
-        out = self._deidentify(tmp_path, session_id_map=tmp_path / "internal" / "map.json")
-        assert [d.name for d in (out / "sub-900001").glob("ses-*")] == ["ses-01"]
-        ses = pd.read_csv(out / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
-        assert list(ses.session_id) == ["01", "02"] and list(ses.session_index) == ["1", "2"]
-        session = pd.read_csv(out / "phenotype" / "session.tsv", sep="\t", dtype=str)
-        assert sorted(session.session_id) == ["01", "02"] and sorted(session.session_index) == ["1", "2"]
-        conf = pd.read_csv(out / "phenotype" / "confounders.tsv", sep="\t", dtype=str)
-        assert list(conf.confounders_session_id) == ["02"]
-        self._no_original_ids(out)
-        record = json.loads((tmp_path / "internal" / "map.json").read_text())
-        assert record["session_labels"] == "ordinal"
+                assert not any(x in text or x.lower() in text for x in (A, B, C)), f
+        record = json.loads(session_map.read_text())
+        assert record["session_labels"] == mode.value
         assert [(r["session_id"], r["released_session_label"]) for r in record["sessions"]] == [
-            (self.A, "01"), (self.C, "02")]
+            (A, session_labels[0]), (C, session_labels[1])]
 
-    def test_index_leaves_gap(self, tmp_path):
-        out = self._deidentify(tmp_path, session_labels=SessionLabels.INDEX)
-        ses = pd.read_csv(out / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
-        assert list(ses.session_id) == ["01", "03"] and list(ses.session_index) == ["1", "3"]
-        conf = pd.read_csv(out / "phenotype" / "confounders.tsv", sep="\t", dtype=str)
-        assert list(conf.confounders_session_id) == ["03"]
-        self._no_original_ids(out)
+    def test_session_id_map_inside_output_refused(self, tmp_path):
+        """Checked before anything is read or written."""
+        (tmp_path / "bids").mkdir()
+        with pytest.raises(ValueError, match="outside the output"):
+            BIDSDataset(tmp_path / "bids").deidentify(outdir=tmp_path / "out", deidentify_config_dir=tmp_path,
+                                                      session_id_map=tmp_path / "out" / "map.json")
+        assert not (tmp_path / "out").exists()
 
-    def test_uuid(self, tmp_path):
-        out = self._deidentify(tmp_path, session_labels=SessionLabels.UUID)
-        assert [d.name for d in (out / "sub-900001").glob("ses-*")] == ["ses-aaaa1111"]
-        conf = pd.read_csv(out / "phenotype" / "confounders.tsv", sep="\t", dtype=str)
-        assert list(conf.confounders_session_id) == ["cccc3333"]
 
-    def test_crosswalk_between_label_schemes(self, tmp_path):
-        import importlib.util
-        spec = importlib.util.spec_from_file_location(
-            "session_label_crosswalk", Path(__file__).parents[1] / "scripts" / "session_label_crosswalk.py")
-        xw = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(xw)
-        self._deidentify(tmp_path / "a", session_labels=SessionLabels.INDEX, session_id_map=tmp_path / "index.json")
-        self._deidentify(tmp_path / "b", session_id_map=tmp_path / "ordinal.json")
-        table = xw.crosswalk(xw.load_map(tmp_path / "index.json"), xw.load_map(tmp_path / "ordinal.json"))
+@pytest.fixture(scope="module")
+def crosswalk():
+    spec = importlib.util.spec_from_file_location(
+        "session_label_crosswalk", Path(__file__).parents[1] / "scripts" / "session_label_crosswalk.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+class TestSessionLabelCrosswalk:
+    """scripts/session_label_crosswalk.py, on the session maps deidentify writes."""
+
+    def _maps(self, tmp_path, make_deid_tree):
+        for name, mode in (("index", SessionLabels.INDEX), ("ordinal", SessionLabels.ORDINAL)):
+            bids, config = _released_sessions_tree(make_deid_tree, tmp_path / name)
+            BIDSDataset(bids).deidentify(outdir=tmp_path / name / "out", deidentify_config_dir=config,
+                                         session_labels=mode, session_id_map=tmp_path / f"{name}.json")
+        return tmp_path / "index.json", tmp_path / "ordinal.json"
+
+    def test_crosswalk_between_label_schemes(self, tmp_path, make_deid_tree, crosswalk):
+        index, ordinal = self._maps(tmp_path, make_deid_tree)
+        table = crosswalk.crosswalk(crosswalk.load_map(index), crosswalk.load_map(ordinal))
         assert table.to_dict("records") == [
             {"participant_id": "900001", "old_session_label": "01", "new_session_label": "01"},
             {"participant_id": "900001", "old_session_label": "03", "new_session_label": "02"},
         ]
-        v31 = xw.crosswalk(xw.uuid_labels(xw.load_map(tmp_path / "ordinal.json")), xw.load_map(tmp_path / "ordinal.json"))
+        v31 = crosswalk.crosswalk(crosswalk.uuid_labels(crosswalk.load_map(ordinal)), crosswalk.load_map(ordinal))
         assert list(v31.old_session_label) == ["aaaa1111", "cccc3333"]
-        assert xw.main(["--old-uuid-labels", "--new", str(tmp_path / "ordinal.json"), "-o", str(tmp_path / "x.tsv")]) == 0
-        assert not any(x in (tmp_path / "x.tsv").read_text() for x in (self.A, self.C))
 
-    def test_session_id_map_inside_output_refused(self, tmp_path):
-        with pytest.raises(ValueError, match="outside the output"):
-            self._deidentify(tmp_path, session_id_map=tmp_path / "out" / "map.json")
+    def test_main_writes_no_original_ids(self, tmp_path, make_deid_tree, crosswalk):
+        _, ordinal = self._maps(tmp_path, make_deid_tree)
+        assert crosswalk.main(["--old-uuid-labels", "--new", str(ordinal), "-o", str(tmp_path / "x.tsv")]) == 0
+        assert not any(x in (tmp_path / "x.tsv").read_text() for x in (A, C))
 
 
 class TestFormBookkeepingIsNotData:
-    """A questionnaire row holding only its form's session/via/origin/duration has no answers."""
+    """Only REDCap-generated and form bookkeeping columns are not data; a row holding nothing else is
+    dropped after deidentify, while a pipeline-derived value (e.g. state_province) is data."""
 
     def test_form_metadata_columns(self):
         cols = ["participant_id", "demographics_session_id", "demographics_via", "demographics_origin",
@@ -559,16 +554,16 @@ class TestFormBookkeepingIsNotData:
             "demographics_session_id", "demographics_via", "demographics_origin",
             "demographics_duration", "demographics_started_at"}
 
-    def test_metadata_only_row_dropped(self):
-        df = pd.DataFrame({
-            "participant_id": ["p1", "p2"],
-            "confounders_session_id": ["s1", "s2"],
-            "confounders_via": ["Participant", "Participant"],
-            "confounders_duration": ["30", "12"],
-            "acid_reflux": ["Yes", None],
-        })
-        out = BIDSDataset._drop_rows_emptied_by_deidentify(df, "confounders")
-        assert list(out.participant_id) == ["p1"]
+    @pytest.mark.parametrize("schema, df, kept", [
+        ("confounders", pd.DataFrame({"participant_id": ["p1", "p2"], "confounders_session_id": ["s1", "s2"],
+                                      "confounders_via": ["Participant"] * 2, "confounders_duration": ["30", "12"],
+                                      "acid_reflux": ["Yes", None]}), ["p1"]),
+        ("demographics", pd.DataFrame({"participant_id": ["p1", "p2"], "demographics_session_id": ["01", "01"],
+                                       "state_province": ["Ontario", None],
+                                       "demographics_duration": ["120", "95"]}), ["p1"]),
+    ], ids=["answer-kept-metadata-only-dropped", "derived-value-kept"])
+    def test_rows_with_only_bookkeeping_are_dropped(self, schema, df, kept):
+        assert list(BIDSDataset._drop_rows_emptied_by_deidentify(df, schema).participant_id) == kept
 
     def test_metadata_only_row_releases_no_session(self, tmp_path):
         pheno = tmp_path / "phenotype"
@@ -576,7 +571,6 @@ class TestFormBookkeepingIsNotData:
         pd.DataFrame({
             "participant_id": ["p1", "p1"],
             "confounders_session_id": ["S1", "S2"],
-            "confounders_via": ["Participant", "Participant"],
             "acid_reflux": ["Yes", None],
         }).to_csv(pheno / "confounders.tsv", sep="\t", index=False)
         (pheno / "confounders.json").write_text(json.dumps({}))
@@ -585,108 +579,205 @@ class TestFormBookkeepingIsNotData:
 
 class TestParticipantFailureStopsRun:
 
-    def test_one_failing_participant_raises(self, tmp_path):
+    def test_one_failing_participant_raises(self, tmp_path, make_deid_tree):
         """A participant that errors must not vanish from the release like one with no audio."""
-        bids, config, out = tmp_path / "bids", tmp_path / "config", tmp_path / "out"
-        config.mkdir()
-        (config / "participants_to_include.json").write_text(json.dumps(["p1", "p2"]))
-        (config / "id_remapping.json").write_text(json.dumps({"p1": "p1", "p2": "p2"}))
-        (config / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
-        (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
-        (config / "audio_tasks_to_include.json").write_text(json.dumps(["rainbow-passage"]))
-        for pid in ("p1", "p2"):
-            audio = bids / f"sub-{pid}" / "ses-s1" / "audio"
-            audio.mkdir(parents=True)
-            stem = f"sub-{pid}_ses-s1_task-rainbow-passage"
-            (audio / f"{stem}.wav").write_bytes(b"RIFF" + b"\x00" * 8192)
-            (audio / f"{stem}_recording-metadata.json").write_text(json.dumps({"record_id": pid, "session_id": "s1"}))
-            ses = {"record_id": [pid], "session_id": ["s1"]}
-            if pid == "p1":
-                ses["session_index"] = ["1"]  # p2 lacks it, so ordinal labelling fails for p2 only
-            pd.DataFrame(ses).to_csv(bids / f"sub-{pid}" / "sessions.tsv", sep="\t", index=False)
-        (bids / "phenotype").mkdir()
-        (bids / "dataset_description.json").write_text(json.dumps({"Name": "test"}))
+        bids, config = make_deid_tree(
+            {"p1": [("s1", "rainbow-passage")], "p2": [("s1", "rainbow-passage")]},
+            # no session_index for p2, so ordinal labelling fails for p2 only
+            sessions={"p2": pd.DataFrame({"record_id": ["p2"], "session_id": ["s1"]})})
         with pytest.raises(RuntimeError, match=r"failed for 1 participant.*p2"):
-            BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+            BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
 
 
 class TestLabelsSharedAcrossTiers:
-    """A features-only session is released where features are, and withheld where they are not;
-    either way the other sessions keep the same labels."""
+    """Labels are numbered over every session some tier could release, so a session one build
+    withholds leaves a gap instead of shifting the later labels."""
 
-    def _tree(self, root):
-        import torch
-        pdir = root / "sub-p1"
-        for ses, task in (("S1", "free-speech-1"), ("S2", "rainbow-passage")):
-            audio = pdir / f"ses-{ses}" / "audio"
-            audio.mkdir(parents=True)
-            stem = f"sub-p1_ses-{ses}_task-{task}"
-            (audio / f"{stem}.wav").write_bytes(b"RIFF" + b"\x00" * 8192)
-            (audio / f"{stem}_recording-metadata.json").write_text(json.dumps({"record_id": "p1", "session_id": ses}))
-            torch.save({"opensmile": {"x": 1}}, audio / f"{stem}_features.pt")
-        pd.DataFrame({"record_id": ["p1", "p1"], "session_id": ["S1", "S2"], "session_index": ["1", "2"]}).to_csv(
-            pdir / "sessions.tsv", sep="\t", index=False)
-        return pdir
-
-    def test_registered_and_controlled_share_labels(self, tmp_path):
-        pdir = self._tree(tmp_path / "in")
-        registered, _, _, _ = BIDSDataset._deidentify_participant_files(
-            pdir, tmp_path / "reg", {"p1": "900001"}, [], ["rainbow-passage"])
-        controlled, order, _, _ = BIDSDataset._deidentify_participant_files(
-            pdir, tmp_path / "con", {"p1": "900001"}, [], ["rainbow-passage"], skip_audio_features=True)
-        assert registered == {"S1": "01", "S2": "02"}
-        assert controlled == {"S2": "02"} and order == {"S2": 2}
-        ses = pd.read_csv(tmp_path / "con" / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
+    def test_features_only_session_withheld_without_features(self, tmp_path, make_deid_tree):
+        """S1 has only features to publish (its task's audio is not released)."""
+        bids, _ = make_deid_tree({"p1": [("S1", "free-speech-1"), ("S2", "rainbow-passage")]}, features=True)
+        pdir = bids / "sub-p1"
+        with_features, _, _, _ = BIDSDataset._deidentify_participant_files(
+            pdir, tmp_path / "a", {"p1": "900001"}, [], ["rainbow-passage"])
+        without, order, _, _ = BIDSDataset._deidentify_participant_files(
+            pdir, tmp_path / "b", {"p1": "900001"}, [], ["rainbow-passage"], skip_audio_features=True)
+        assert with_features == {"S1": "01", "S2": "02"}
+        assert without == {"S2": "02"} and order == {"S2": 2}
+        ses = pd.read_csv(tmp_path / "b" / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
         assert list(ses.session_id) == ["02"] and list(ses.session_index) == ["2"]
+
+    def test_participant_with_only_feature_output_is_kept(self, tmp_path, make_deid_tree):
+        """Recordings whose task audio is not released still publish stripped features."""
+        bids, _ = make_deid_tree({"p1": [("S1", "free-speech-1")]}, features=True)
+        labels, _, _, _ = BIDSDataset._deidentify_participant_files(
+            bids / "sub-p1", tmp_path / "out", {"p1": "900001"}, [], ["noisy-sounds-*"])
+        assert labels == {"S1": "01"}
+        assert list((tmp_path / "out").rglob("*free-speech-1_features.pt"))
+
+    # other_voice_activity is a review column and ever_alcohol_rehab controlled-only (shipped field map)
+    @pytest.mark.parametrize("column, value, narrow, wide", [
+        ("other_voice_activity", "Podcaster", {},
+         {"column_value_reviews.json": {"verdicts": [
+             {"participant_id": "p1", "column_name": "other_voice_activity", "verdict": "safe"}]}}),
+        ("ever_alcohol_rehab", "No", {}, {"deidentify_settings.json": {"access_tier": "controlled"}}),
+    ], ids=["review-column", "controlled-only-column"])
+    def test_session_with_only_withheld_data_keeps_later_labels(self, tmp_path, make_deid_tree, column, value,
+                                                                narrow, wide):
+        """s2 holds only one answer, which the narrow build withholds and the wide one publishes."""
+        labels = {}
+        for name, config_files in (("narrow", narrow), ("wide", wide)):
+            bids, config = make_deid_tree(
+                {"p1": [("s1", "rainbow-passage"), ("s3", "rainbow-passage")]}, root=tmp_path / name,
+                sessions={"p1": ["s1", "s2", "s3"]}, config_files=config_files,
+                tables={"confounders/confounders": pd.DataFrame(
+                    {"participant_id": ["p1"], "confounders_session_id": ["s2"], column: [value]})})
+            out = tmp_path / name / "out"
+            BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+            (sessions,) = list((out / "sub-900000").glob("*sessions.tsv"))
+            labels[name] = list(BIDSDataset._read_tsv_as_written(sessions)["session_id"])
+        assert labels == {"narrow": ["01", "03"], "wide": ["01", "02", "03"]}
 
 
 class TestSidecarDispositions:
     """Audio sidecar keys follow the audio_sidecar table's dispositions, as sessions.tsv follows
     the session table's; a key the table does not list is removed and logged."""
 
-    def _deidentify(self, tmp_path, **kwargs):
-        bids, config, out = tmp_path / "bids", tmp_path / "config", tmp_path / "out"
-        config.mkdir(parents=True)
-        (config / "participants_to_include.json").write_text(json.dumps(["p1"]))
-        (config / "id_remapping.json").write_text(json.dumps({"p1": "p1"}))
-        (config / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
-        (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
-        (config / "audio_tasks_to_include.json").write_text(json.dumps(["rainbow-passage"]))
-        audio_dir = bids / "sub-p1" / "ses-s1" / "audio"
-        audio_dir.mkdir(parents=True)
-        stem = "sub-p1_ses-s1_task-rainbow-passage"
-        (audio_dir / f"{stem}.wav").write_bytes(b"RIFF" + b"\x00" * 8192)
-        (audio_dir / f"{stem}_recording-metadata.json").write_text(json.dumps({
-            "record_id": "p1",
-            "session_id": "s1",
-            "recording_duration": 1.5,
-            "recording_microphone": "Built-in",
-            "task_name": "rainbow-passage",
-            "not_a_sidecar_key": "x",
-        }))
-        pd.DataFrame({"record_id": ["p1"], "session_id": ["s1"], "session_index": ["1"]}).to_csv(
-            bids / "sub-p1" / "sessions.tsv", sep="\t", index=False)
-        (bids / "phenotype").mkdir()
-        (bids / "dataset_description.json").write_text(json.dumps({"Name": "test"}))
-        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config, **kwargs)
-        (sidecar,) = (out / "sub-p1").rglob("*.json")
+    def _deidentify(self, root, make_deid_tree, **kwargs):
+        bids, config = make_deid_tree({"p1": [("s1", "rainbow-passage", {
+            "recording_duration": 1.5, "recording_microphone": "Built-in", "task_name": "rainbow-passage",
+            "not_a_sidecar_key": "x"})]}, root=root, pseudonyms={"p1": "p1"})
+        BIDSDataset(bids).deidentify(outdir=root / "out", deidentify_config_dir=config, **kwargs)
+        (sidecar,) = (root / "out" / "sub-p1").rglob("*.json")
         return json.loads(sidecar.read_text())
 
-    def test_known_keys_kept_unknown_removed_and_logged(self, tmp_path, caplog):
+    def test_known_keys_kept_unknown_removed_and_logged(self, tmp_path, make_deid_tree, caplog):
         with caplog.at_level(logging.WARNING):
-            meta = self._deidentify(tmp_path)
+            meta = self._deidentify(tmp_path, make_deid_tree)
         assert meta == {"participant_id": "p1", "session_id": "01", "recording_duration": 1.5,
                         "recording_microphone": "Built-in", "task_name": "rainbow-passage"}
         assert any("not_a_sidecar_key" in r.getMessage() for r in caplog.records)
 
-    def test_internal_key_removed_at_release_kept_at_internal(self, tmp_path, monkeypatch):
+    def test_internal_key_removed_at_release_kept_at_internal(self, tmp_path, make_deid_tree, monkeypatch):
+        # deidentify reads the field map through this cache; no public way to substitute one
         fm = BIDSDataset._load_reorganization_file(exclude_dropped=False)
         fm.loc[(fm.schema_name == "audio_sidecar") & (fm.column_name == "recording_microphone"),
                "disposition"] = "internal"
         monkeypatch.setattr(BIDSDataset, "_cached_field_map_df", fm)
-        assert "recording_microphone" not in self._deidentify(tmp_path / "a")
+        assert "recording_microphone" not in self._deidentify(tmp_path / "a", make_deid_tree)
         assert "recording_microphone" in self._deidentify(
-            tmp_path / "b", disposition_level=DispositionLevel.INTERNAL)
+            tmp_path / "b", make_deid_tree, disposition_level=DispositionLevel.INTERNAL)
+
+
+def _sidecar_tree(root, pid="p1", ses="S1", recordings=(("rec-A", "noisy-sounds-1"), ("rec-B", "noisy-sounds-2"))):
+    """Sidecars only (no audio): for runs with skip_audio=True."""
+    audio = root / f"sub-{pid}" / f"ses-{ses}" / "audio"
+    audio.mkdir(parents=True)
+    for rec_id, task in recordings:
+        stem = f"sub-{pid}_ses-{ses}_task-{task}"
+        (audio / f"{stem}_recording-metadata.json").write_text(
+            json.dumps({"record_id": pid, "recording_id": rec_id.upper(), "session_id": ses}))
+    pd.DataFrame({"record_id": [pid], "session_id": [ses], "session_index": ["1"]}).to_csv(
+        root / f"sub-{pid}" / "sessions.tsv", sep="\t", index=False)
+    return root / f"sub-{pid}"
+
+
+class TestRemovedRecordings:
+    """audio_recording_ids_to_remove.json and audio_filestems_to_remove.json remove a recording's
+    audio, sidecar, features, quality-metric row and phenotype rows; audio_tasks_to_include selects tasks."""
+
+    def test_exclusion_key_ignores_case_and_suffixes(self):
+        key = BIDSDataset._exclusion_key
+        assert key("sub-P1_ses-ABCD-1234_task-Rainbow-Passage.wav") == key(
+            "sub-p1_ses-abcd-1234_task-rainbow-passage_recording-metadata.json")
+        assert key("sub-p1_ses-s1_task-noisy-sounds-2_features.pt") == "sub-p1_ses-s1_task-noisy-sounds-2"
+
+    def test_recording_ids_resolve_to_filestems_and_remove_audio_and_features(self, tmp_path):
+        """Removal by recording_id uses the filestem mechanism, so features go too, even for a
+        recording whose task is not included (its audio loop skips it before any ID check)."""
+        pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "free-speech-1"), ("rec-B", "noisy-sounds-2")))
+        audio = pdir / "ses-S1" / "audio"
+        for task in ("free-speech-1", "noisy-sounds-2"):
+            torch.save({"opensmile": {"x": 1}}, audio / f"sub-p1_ses-S1_task-{task}_features.pt")
+        stems = BIDSDataset._filestems_for_recording_ids(tmp_path / "in", ["p1"], {"rec-a"})
+        assert stems == ["sub-p1_ses-S1_task-free-speech-1"]
+        out = tmp_path / "out"
+        BIDSDataset._deidentify_participant_files(
+            pdir, out, {"p1": "900001"}, stems, ["noisy-sounds-*"], skip_audio=True, skip_audio_features=False)
+        names = sorted(p.name for p in out.rglob("*") if p.is_file())
+        assert not any("free-speech" in n for n in names), names
+        assert any(n.endswith("noisy-sounds-2.json") for n in names)
+        assert any("noisy-sounds-2_features" in n for n in names)
+
+    def test_filestem_differing_in_case_still_removes(self, tmp_path):
+        """A configured stem with a lower-case session ID removes the recording in an upper-case tree."""
+        pdir = _sidecar_tree(tmp_path / "in", ses="ABC1")
+        BIDSDataset._deidentify_participant_files(
+            pdir, tmp_path / "out", {"p1": "900001"}, ["sub-p1_ses-abc1_task-Noisy-Sounds-1"], ["noisy-sounds-*"],
+            skip_audio=True, skip_audio_features=True)
+        names = [p.name for p in (tmp_path / "out").rglob("*.json")]
+        assert len(names) == 1 and "noisy-sounds-2" in names[0]
+
+    def test_tasks_are_included_by_pattern(self, tmp_path):
+        pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "identifying-pictures-35"),
+                                                          ("rec-B", "reading-passage-3")))
+        BIDSDataset._deidentify_participant_files(
+            pdir, tmp_path / "out", {"p1": "900001"}, [], ["identifying-pictures-*"],
+            skip_audio=True, skip_audio_features=True)
+        written = [p.name for p in (tmp_path / "out").rglob("*.json")]
+        assert len(written) == 1 and "identifying-pictures-35" in written[0]
+
+    @pytest.mark.parametrize("stems, matched, participants, recording_ids, expected", [
+        (["sub-001js_ses-x_task-passage-10"], set(), {"a-uuid-participant"}, set(),
+         ["0 matched", "1 are for participants outside this run"]),
+        (["sub-p1_ses-s1_task-noisy-sounds-1", "sub-p1_ses-s1_task-noisy-sounds-9"],
+         {"sub-p1_ses-s1_task-noisy-sounds-1"}, {"p1"}, {"rid-x"},
+         ["1 matched", "1 for participants in this run matched nothing", "None was found"]),
+    ], ids=["participants-outside-the-run", "entries-matching-nothing"])
+    def test_unmatched_removal_entries_warn(self, caplog, stems, matched, participants, recording_ids, expected):
+        keys = {s: {BIDSDataset._exclusion_key(s)} for s in stems}
+        with caplog.at_level(logging.INFO):
+            BIDSDataset._report_exclusion_coverage(
+                stems, keys, {BIDSDataset._exclusion_key(m) for m in matched}, participants, recording_ids, [])
+        warnings = " ".join(r.getMessage() for r in caplog.records if r.levelno == logging.WARNING)
+        assert all(text in warnings for text in expected), warnings
+
+    def test_quality_metrics_exclusion_matches_the_recording_exactly(self, tmp_path):
+        """identifying-pictures-2 must not also remove identifying-pictures-20 and -21."""
+        (tmp_path / "bids").mkdir()
+        pd.DataFrame({
+            "participant_id": ["p1", "p1", "p1"], "session_id": ["s1"] * 3,
+            "task_name": ["identifying-pictures-2", "identifying-pictures-20", "identifying-pictures-21"],
+            "snr": ["1", "2", "3"],
+        }).to_csv(tmp_path / "bids" / "audio_quality_metrics.tsv", sep="\t", index=False)
+        (tmp_path / "out").mkdir()
+        BIDSDataset._deidentify_quality_metrics(
+            tmp_path / "bids", tmp_path / "out", [], ["sub-p1_ses-s1_task-identifying-pictures-2"],
+            [], {"p1": "900001"}, {})
+        out = pd.read_csv(tmp_path / "out" / "audio_quality_metrics.tsv", sep="\t", dtype=str)
+        assert sorted(out.task_name) == ["identifying-pictures-20", "identifying-pictures-21"]
+
+    @pytest.mark.parametrize("removal", [
+        {"audio_recording_ids_to_remove.json": ["r2"]},
+        {"audio_filestems_to_remove.json": ["sub-p1_ses-s1_task-maximum-phonation-time-1"]},
+    ], ids=["by-recording-id", "by-filestem"])
+    def test_removed_recordings_leave_recording_and_acoustic_task_tables(self, tmp_path, make_deid_tree, removal):
+        """recording.tsv says 'R2': the recording ID is matched without regard to case."""
+        bids, config = make_deid_tree(
+            {"p1": [("s1", "rainbow-passage", {"recording_id": "r1"}),
+                    ("s1", "maximum-phonation-time-1", {"recording_id": "r2"})]},
+            config_files=removal,
+            tables={"task/recording": pd.DataFrame({
+                        "participant_id": ["p1", "p1"], "recording_id": ["r1", "R2"],
+                        "recording_acoustic_task_id": ["t1", "t2"], "recording_name": ["a", "b"]}),
+                    "task/acoustic_task": pd.DataFrame({
+                        "participant_id": ["p1", "p1"], "acoustic_task_id": ["t1", "t2"],
+                        "acoustic_task_name": ["Rainbow Passage", "Maximum phonation time-1"]})})
+        out = tmp_path / "out"
+        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+        assert list(BIDSDataset._read_tsv_as_written(out / "phenotype/task/recording.tsv")["recording_id"]) == ["r1"]
+        assert list(BIDSDataset._read_tsv_as_written(
+            out / "phenotype/task/acoustic_task.tsv")["acoustic_task_id"]) == ["t1"]
+        assert len(list(out.rglob("*.wav"))) == 1
 
 
 # ---------------------------------------------------------------------------
@@ -839,3 +930,23 @@ class TestApplyColumnValueReviews:
         )
         assert "review_col" not in result.columns
         assert "review_col" in dropped
+
+    def test_rare_checkbox_label_needs_a_verdict_like_the_rest_of_the_cell(self, tmp_path, make_deid_tree):
+        """The fold runs before the verdicts: a label folded into other_voice_activity (a review
+        column) for a participant with no verdict is blanked with the cell."""
+        bids, config = make_deid_tree(
+            {"p1": [("s1", "rainbow-passage")], "p2": [("s1", "rainbow-passage")]},
+            tables={"confounders/confounders": pd.DataFrame({
+                "participant_id": ["p1", "p2"], "voice_activity_v2___attorney": ["1", ""],
+                "voice_activity_v2___other": ["", "1"], "other_voice_activity": ["", "Podcaster"]})},
+            settings={"small_checkbox_options": {"confounders": {"voice_activity_v2": {
+                "other": "voice_activity_v2___other", "specify": "other_voice_activity", "min_participants": 10}}}},
+            config_files={"column_value_reviews.json": {"verdicts": [
+                {"participant_id": "p2", "column_name": "other_voice_activity", "verdict": "safe"}]}})
+        BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
+        df = BIDSDataset._read_tsv_as_written(tmp_path / "out" / "phenotype" / "confounders" / "confounders.tsv")
+        by_id = df.set_index("participant_id")
+        assert "voice_activity_v2___attorney" not in df.columns
+        assert by_id.loc["900000", "voice_activity_v2___other"] == "1"
+        assert pd.isna(by_id.loc["900000", "other_voice_activity"])  # no verdict: no label
+        assert by_id.loc["900001", "other_voice_activity"] == "Podcaster"

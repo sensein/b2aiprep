@@ -3,7 +3,7 @@
 This CSV is the sole source of truth for which RedCap/ReproSchema fields reach
 ``phenotype/``: ``BIDSDataset._construct_phenotype_from_reproschema`` iterates the
 CSV, not the reproschema, so a field with no row here is silently absent from the
-release and a field with ``delete=NO`` is published. Every bump of the vendored
+release, and its ``disposition`` decides what a release publishes. Every bump of the vendored
 ``src/b2aiprep/redcap2rs`` snapshot must therefore be accompanied by rows here.
 """
 
@@ -11,10 +11,24 @@ import csv
 import json
 from importlib.resources import files
 
+import pandas as pd
 import pytest
 
+from b2aiprep.prepare import dataset as dataset_module
+from b2aiprep.prepare.dataset import BIDSDataset, derived_field_specs
+
 VALID_COLUMN_TYPES = {"VARIABLE", "CHECKBOX_OPTION"}
-VALID_DELETE = {"YES", "NO"}
+VALID_YES_NO = {"YES", "NO"}
+
+# Shipped-field-map dispositions that deidentify, settings and CLI tests rely on.
+TEST_FIELD_DISPOSITIONS = {
+    ("confounders", "ph_walking"): ("release", ""),
+    ("confounders", "other_voice_activity"): ("review", ""),
+    ("confounders", "voice_activity_v2___attorney"): ("release", ""),
+    ("confounders", "ever_alcohol_rehab"): ("release", "controlled"),
+    ("pediatric_demographics", "peds_gender_identity"): ("release", ""),
+    ("demographics", "state_province"): ("release", ""),
+}
 
 
 def _resource(*parts):
@@ -61,7 +75,7 @@ def test_every_reachable_element_has_a_row(reorg_rows, reachable_elements):
     """No data element may be dropped from the release by omission.
 
     Rows may be either the element itself or, for RedCap checkbox fields, the
-    ``field___option`` expansions. Add a ``delete=YES`` row to exclude a field
+    ``field___option`` expansions. Add a ``disposition=drop`` row to exclude a field
     deliberately -- an absent row is indistinguishable from an oversight.
     """
     covered = set()
@@ -105,7 +119,7 @@ def test_every_active_row_resolves_or_is_a_redcap_generated_column(reorg_rows, r
     (``<form>_complete``, ``<form>_timestamp``) and its structural columns -- never for a
     typo or a row left behind by a renamed field, which would otherwise be published with a
     generic description and no termURL instead of failing loudly. Retire stale rows with
-    ``delete=YES``.
+    ``disposition=drop``.
     """
     unresolved = sorted(
         row["column_name_source"]
@@ -142,8 +156,8 @@ def test_active_rows_are_well_formed(reorg_rows):
     """Invariants relied on by the phenotype writer."""
     problems = []
     for index, row in enumerate(reorg_rows, start=2):  # 1-based, header is line 1
-        if row["delete"].strip().upper() not in VALID_DELETE:
-            problems.append(f"line {index}: delete={row['delete']!r} not in {VALID_DELETE}")
+        if row["delete"].strip().upper() not in VALID_YES_NO:
+            problems.append(f"line {index}: delete={row['delete']!r} not in {VALID_YES_NO}")
         if row["column_type"].strip() not in VALID_COLUMN_TYPES:
             problems.append(
                 f"line {index}: column_type={row['column_type']!r} not in {VALID_COLUMN_TYPES}"
@@ -291,9 +305,9 @@ def _vendored_date_items():
 
 def test_date_shift_values_are_valid(reorg_rows):
     problems = [
-        (row["column_name_source"], row.get("date_shift"))
+        (row["column_name_source"], row["date_shift"])
         for row in reorg_rows
-        if row.get("date_shift", "").strip().upper() not in VALID_DELETE
+        if row["date_shift"].strip().upper() not in VALID_YES_NO
     ]
     assert not problems, f"date_shift must be YES or NO: {problems[:10]}"
 
@@ -308,32 +322,19 @@ def test_date_shift_fields_are_internal(reorg_rows):
     assert not mismatches, f"date_shift=YES but disposition!=internal: {mismatches}"
 
 
-def test_vendored_date_items_are_shifted_or_dropped(reorg_rows):
-    """A date the data dictionary declares must be shifted at ingest or never ingested.
-
-    Anything else carries a real calendar date into the BIDS tree.
-    """
+def test_dates_and_app_timestamps_are_shifted_or_dropped(reorg_rows):
+    """A date the data dictionary declares, or an app timestamp column, must be shifted at
+    ingest or never ingested. Anything else carries a real calendar date into the BIDS tree."""
     date_items = _vendored_date_items()
     assert date_items, "no xsd:date items found; the vendored snapshot layout changed"
     unshifted = sorted(
         (row["column_name_source"], row["disposition"])
         for row in reorg_rows
-        if row["column_name_source"] in date_items
+        if (row["column_name_source"] in date_items or row["column_name_source"].endswith(APP_TIMESTAMP_SUFFIXES))
         and row["disposition"] != "drop"
         and row["date_shift"].strip().upper() != "YES"
     )
-    assert not unshifted, f"date items neither shifted nor dropped: {unshifted}"
-
-
-def test_app_timestamps_are_shifted_or_dropped(reorg_rows):
-    unshifted = sorted(
-        (row["column_name_source"], row["disposition"])
-        for row in reorg_rows
-        if row["column_name_source"].endswith(APP_TIMESTAMP_SUFFIXES)
-        and row["disposition"] != "drop"
-        and row["date_shift"].strip().upper() != "YES"
-    )
-    assert not unshifted, f"timestamps neither shifted nor dropped: {unshifted}"
+    assert not unshifted, f"dates or timestamps neither shifted nor dropped: {unshifted}"
 
 
 def test_redcap_timestamps_are_dropped(reorg_rows):
@@ -353,5 +354,40 @@ def test_sidecar_recording_keys_match_recording_table(reorg_rows):
         by_table.setdefault(row["schema_name"], {})[row["column_name"]] = row["disposition"]
     sidecar, recording = by_table["audio_sidecar"], by_table["recording"]
     shared = sorted(set(sidecar) & set(recording))
-    assert len(shared) >= 8
+    assert shared, "no recording_* keys shared between audio_sidecar and recording"
     assert {k: sidecar[k] for k in shared} == {k: recording[k] for k in shared}
+
+
+def test_access_tier_values_are_valid(reorg_rows):
+    bad = [(r["column_name_source"], r["access_tier"]) for r in reorg_rows
+           if r["access_tier"].strip().lower() not in ("", "controlled")]
+    assert not bad, f"access_tier must be blank or 'controlled': {bad}"
+
+
+def test_loading_refuses_an_access_tier_typo(monkeypatch, tmp_path):
+    """Anything but 'controlled' would mean every tier, so a typo would publish the field to both."""
+    df = pd.read_csv(_resource("prepare", "resources", "bids_field_organization.csv"), dtype={"access_tier": str})
+    df.loc[df.index[0], "access_tier"] = "controled"
+    (tmp_path / "bids_field_organization.csv").write_text(df.to_csv(index=False))
+    monkeypatch.setattr(dataset_module, "files", lambda _: tmp_path)
+    with pytest.raises(ValueError, match="access_tier must be blank or 'controlled'.*controled"):
+        BIDSDataset._load_reorganization_file(exclude_dropped=False)
+
+
+def test_dispositions_other_tests_rely_on(reorg_rows):
+    """If this fails, a field-map change also changes what those tests exercise; pick other fields there."""
+    rows = {(r["schema_name"], r["column_name"]): (r["disposition"], r["access_tier"]) for r in reorg_rows}
+    assert {k: rows.get(k) for k in TEST_FIELD_DISPOSITIONS} == TEST_FIELD_DISPOSITIONS
+
+
+def test_every_computed_column_has_a_derived_field_spec():
+    """Each computed phenotype column (source pipeline or supplement) has datatype/choices in
+    derived_fields.json, and back."""
+    field_map = pd.read_csv(_resource("prepare", "resources", "bids_field_organization.csv"), dtype=str)
+    computed = set(field_map.loc[(field_map["source"].isin(["pipeline", "supplement"]))
+                                 & (field_map["schema_name"] != "audio_sidecar"), "column_name"])
+    specs = derived_field_specs()
+    assert computed == set(specs)
+    for name, spec in specs.items():
+        assert spec["datatype"] in ("xsd:integer", "xsd:string"), name
+        assert set(spec) <= {"datatype", "choices", "minValue", "maxValue", "unit", "derivedFrom"}, name

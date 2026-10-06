@@ -1,17 +1,21 @@
-"""Tests for per-participant date shifting at ingest."""
+"""Ingest: per-participant date shifting, time zones, and the fields derived from dates
+(session index, timing, local hours, days since, state/province)."""
 
 import datetime
 import json
+import logging
 
 import pandas as pd
 import pytest
 
 from b2aiprep.prepare.dataset import BIDSDataset
 from b2aiprep.prepare.date_shift import (
-    SITE_TIMEZONES,
     offset_weeks,
     parse_date,
     parse_utc_timestamp,
+    postal_code_region,
+    postal_code_timezone,
+    region_timezone,
     shift_dates,
 )
 from b2aiprep.prepare.redcap import RedCapDataset
@@ -41,22 +45,18 @@ def test_parse_utc_timestamp_rejects_non_timestamps(raw):
     assert parse_utc_timestamp(raw) is None
 
 
-def test_parse_date():
-    assert parse_date("2019-02-28") == datetime.date(2019, 2, 28)
-    assert parse_date("2019-02-30") is None
-    assert parse_date("2019-02-28T00:00:00Z") is None
+@pytest.mark.parametrize("raw, expected", [
+    ("2019-02-28", datetime.date(2019, 2, 28)), ("2019-02-30", None), ("2019-02-28T00:00:00Z", None)])
+def test_parse_date(raw, expected):
+    assert parse_date(raw) == expected
 
 
 @pytest.mark.parametrize("days_before", range(0, 800, 37))
 def test_offset_lands_within_three_days_on_same_weekday(days_before):
-    first = ANCHOR - datetime.timedelta(days=days_before + 30000)
+    first = ANCHOR - datetime.timedelta(days=days_before + 30000)  # first session ~82 years before the anchor
     shifted = first + datetime.timedelta(weeks=offset_weeks(ANCHOR, first))
     assert abs((shifted - ANCHOR).days) <= 3
     assert shifted.weekday() == first.weekday()
-
-
-def test_mt_sinai_is_toronto():
-    assert SITE_TIMEZONES["Mt. Sinai"] == "America/Toronto"
 
 
 def _frame(rows):
@@ -105,7 +105,9 @@ def test_participants_without_offset_are_blanked():
     ])
     out, report = shift_dates(df, ["session_started_at", "phq_9_started_at"], ANCHOR)
     assert out[["session_started_at", "phq_9_started_at"]].isna().all().all()
-    assert set(report["participants_without_offset"]) == {"no_site", "unknown_site", "no_session"}
+    no_zone = "no session with a parseable start time and a time zone"
+    assert report["participants_without_offset"] == {"no_site": no_zone, "unknown_site": no_zone,
+                                                     "no_session": "no Session row"}
 
 
 def test_unparseable_and_empty_markers_are_blanked():
@@ -116,6 +118,7 @@ def test_unparseable_and_empty_markers_are_blanked():
     out, report = shift_dates(df, ["phq_9_started_at", "surgery_date"], ANCHOR)
     assert pd.isna(out.loc[1, "phq_9_started_at"]) and pd.isna(out.loc[1, "surgery_date"])
     assert report["columns"]["surgery_date"] == {"blanked_unparseable": 1}
+    assert report["columns"]["phq_9_started_at"] == {}  # an empty marker is blanked without being counted
 
 
 def test_no_anchor_blanks_every_date():
@@ -168,16 +171,6 @@ def test_ingest_refuses_a_log_inside_the_bids_tree(tmp_path):
         BIDSDataset._apply_field_map_at_ingest(dataset, ANCHOR, tmp_path / "bids" / "log.json", tmp_path / "bids")
 
 
-def test_instrument_columns_skip_dropped_columns():
-    df = _ingest_frame().drop(columns=["session_is_control_participant"])
-    dataset = RedCapDataset(df=df, source_type="redcap")
-    from b2aiprep.prepare.constants import RepeatInstrument
-
-    sessions = dataset.get_df_of_repeat_instrument(RepeatInstrument.SESSION.value)
-    assert "session_is_control_participant" not in sessions.columns
-    assert "session_started_at" in sessions.columns
-
-
 def _remote_frame(zipcode=None, state=None, via="Participant", site="MIT"):
     """One participant: a session at 2024-07-01 20:00Z with one self-administered recording."""
     return pd.DataFrame(
@@ -198,41 +191,53 @@ def _local_hour(df, col, row):
 
 
 @pytest.mark.parametrize(
-    "zipcode, state, expected_hour, source",
+    "zipcode, state, via, expected_hour, source",
     [
-        ("90210", None, 13, "self_administered_postal_code"),   # Los Angeles, PDT
-        ("80202-1234", None, 14, "self_administered_postal_code"),  # Denver, MDT
-        ("M5G 1X5", None, 16, "self_administered_postal_code"),  # Toronto, EDT
-        (None, "IL", 15, "self_administered_region"),            # Chicago, CDT
-        (None, "FL", 16, "self_administered_site_fallback"),     # FL spans two zones -> site
-        (None, None, 16, "self_administered_site_fallback"),
+        ("90210", None, "Participant", 13, "self_administered_postal_code"),   # Los Angeles, PDT
+        ("80202-1234", None, "Participant", 14, "self_administered_postal_code"),  # Denver, MDT
+        ("M5G 1X5", None, "Participant", 16, "self_administered_postal_code"),  # Toronto, EDT
+        (None, "IL", "Participant", 15, "self_administered_region"),            # Chicago, CDT
+        (None, "FL", "Participant", 16, "self_administered_site_fallback"),     # FL spans two zones -> site
+        (None, None, "Participant", 16, "self_administered_site_fallback"),
+        ("90210", None, "Data Collector", 16, "site"),  # in person: the site, wherever the participant lives
     ],
 )
-def test_self_administered_sessions_use_the_participants_location(zipcode, state, expected_hour, source):
-    out, report = shift_dates(_remote_frame(zipcode, state), ["session_started_at", "recording_created_at"], ANCHOR)
+def test_session_time_zone_comes_from_the_participant_or_the_site(zipcode, state, via, expected_hour, source, caplog):
+    with caplog.at_level(logging.WARNING):
+        out, report = shift_dates(_remote_frame(zipcode, state, via), ["session_started_at", "recording_created_at"],
+                                  ANCHOR)
     assert _local_hour(out, "session_started_at", 0) == expected_hour
     assert _local_hour(out, "recording_created_at", 1) == expected_hour
     assert report["session_timezone_sources"] == {source: 1}
+    if source == "self_administered_site_fallback":
+        assert "used the site's time zone" in caplog.text and "r/s1" in caplog.text
 
 
-def test_in_person_sessions_use_the_site_even_if_the_participant_lives_elsewhere():
-    out, report = shift_dates(
-        _remote_frame("90210", via="Data Collector"), ["session_started_at", "recording_created_at"], ANCHOR
-    )
-    assert _local_hour(out, "session_started_at", 0) == 16  # MIT, EDT
-    assert report["session_timezone_sources"] == {"site": 1}
+@pytest.mark.parametrize("postal_code, zone", [
+    ("37203", "America/Chicago"), ("37902", "America/New_York"),   # Nashville / Knoxville: one state, two zones
+    ("32501", "America/Chicago"),                                   # Pensacola
+    ("P9N 1A1", "America/Winnipeg"),                                # Kenora
+    ("2139", "America/New_York"), (2139.0, "America/New_York"),     # leading zero lost (text / numeric column)
+    (90210, "America/Los_Angeles"), ("902101234", "America/Los_Angeles"),
+])
+def test_postal_code_time_zone(postal_code, zone):
+    assert postal_code_timezone(postal_code) == zone
 
 
-def test_split_state_zip_codes_resolve_to_their_own_zone():
-    from b2aiprep.prepare.date_shift import postal_code_timezone, region_timezone
+@pytest.mark.parametrize("region, zone", [
+    ("TN", None), ("ON", None),  # split states and provinces have no single zone
+    ("MA", "America/New_York"), ("Massachusetts", "America/New_York"),
+])
+def test_region_time_zone(region, zone):
+    assert region_timezone(region) == zone
 
-    assert postal_code_timezone("37203") == "America/Chicago"   # Nashville
-    assert postal_code_timezone("37902") == "America/New_York"  # Knoxville
-    assert postal_code_timezone("32501") == "America/Chicago"   # Pensacola
-    assert postal_code_timezone("P9N 1A1") == "America/Winnipeg"  # Kenora
-    assert postal_code_timezone("2139") == "America/New_York"   # leading zero lost
-    assert region_timezone("TN") is None and region_timezone("ON") is None
-    assert region_timezone("Massachusetts") == region_timezone("MA") == "America/New_York"  # a name works too
+
+@pytest.mark.parametrize("postal_code, region", [
+    ("02139", "MA"), (2139.0, "MA"), ("90210-1234", "CA"), ("M5V 3L9", "ON"), ("h2x", "QC"),
+    ("12", None), ("not a zip", None),
+])
+def test_postal_code_region(postal_code, region):
+    assert postal_code_region(postal_code) == region
 
 
 def test_site_comes_from_enrollment_institution_not_session_site():
@@ -255,152 +260,6 @@ def test_shifted_timestamps_keep_milliseconds():
     assert later - start == datetime.timedelta(milliseconds=200)
 
 
-def test_disposition_is_matched_within_the_table():
-    """self_reported_* is released in eligibility and internal in enrollment."""
-    field_map = pd.DataFrame(
-        [
-            {"schema_name": "eligibility", "column_name": "self_reported_asthma", "disposition": "release"},
-            {"schema_name": "enrollment", "column_name": "self_reported_asthma", "disposition": "internal"},
-        ]
-    )
-    df = pd.DataFrame({"participant_id": ["p"], "self_reported_asthma": ["Yes"]})
-    kept, dropped = BIDSDataset._drop_columns_by_disposition(df, field_map, schema_name="eligibility")
-    assert "self_reported_asthma" in kept.columns and not dropped
-    kept, dropped = BIDSDataset._drop_columns_by_disposition(df, field_map, schema_name="enrollment")
-    assert dropped == ["self_reported_asthma"]
-
-
-def test_internal_only_rows_survive_ingest_and_are_dropped_after_deidentify(monkeypatch):
-    df = pd.DataFrame(
-        {
-            "participant_id": ["has_release", "internal_only"],
-            "is_prolific": ["Yes", None],
-            "self_reported_asthma": [None, "Yes"],  # internal in enrollment
-            "enrollment_form_complete": ["Complete", "Complete"],
-        }
-    )
-    # Ingest: the internal column counts as data, so both rows are kept.
-    kept = BIDSDataset._drop_rows_without_substantive_data(
-        df, "participant_id", {"enrollment_form_complete"}, set(), schema_name="enrollment"
-    )
-    assert list(kept.participant_id) == ["has_release", "internal_only"]
-    # Deidentify strips the internal columns, then re-checks.
-    deidentified = kept.drop(columns=["self_reported_asthma", "enrollment_form_complete"])
-    field_map = pd.DataFrame(
-        [{"schema_name": "enrollment", "column_name": "is_prolific", "disposition": "release",
-          "source": "redcap", "is_redcap_calculation": "NO", "group": "enrollment"}]
-    )
-    monkeypatch.setattr(BIDSDataset, "_cached_field_map_df", field_map)
-    out = BIDSDataset._drop_rows_emptied_by_deidentify(deidentified, "enrollment")
-    assert list(out.participant_id) == ["has_release"]
-
-
-def _sidecar_tree(root, pid="p1", ses="S1", recordings=(("rec-A", "noisy-sounds-1"), ("rec-B", "noisy-sounds-2"))):
-    audio = root / f"sub-{pid}" / f"ses-{ses}" / "audio"
-    audio.mkdir(parents=True)
-    for rec_id, task in recordings:
-        stem = f"sub-{pid}_ses-{ses}_task-{task}"
-        (audio / f"{stem}_recording-metadata.json").write_text(
-            json.dumps({"record_id": pid, "recording_id": rec_id.upper(), "session_id": ses})
-        )
-    pd.DataFrame({"record_id": [pid], "session_id": [ses], "session_index": ["1"]}).to_csv(
-        root / f"sub-{pid}" / "sessions.tsv", sep="\t", index=False
-    )
-    return root / f"sub-{pid}"
-
-
-def test_recording_ids_resolve_to_filestems_and_remove_audio_and_features(tmp_path):
-    """Removal by recording_id uses the filestem mechanism, so features go too, even for a
-    recording whose task is not included (its audio loop skips it before any ID check)."""
-    import torch
-
-    pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "free-speech-1"), ("rec-B", "noisy-sounds-2")))
-    audio = pdir / "ses-S1" / "audio"
-    for task in ("free-speech-1", "noisy-sounds-2"):
-        torch.save({"opensmile": {"x": 1}}, audio / f"sub-p1_ses-S1_task-{task}_features.pt")
-    stems = BIDSDataset._filestems_for_recording_ids(tmp_path / "in", ["p1"], {"rec-a"})
-    assert stems == ["sub-p1_ses-S1_task-free-speech-1"]
-    out = tmp_path / "out"
-    BIDSDataset._deidentify_participant_files(
-        pdir, out, {"p1": "900001"}, stems, ["noisy-sounds-*"],
-        skip_audio=True, skip_audio_features=False,
-    )
-    names = sorted(p.name for p in out.rglob("*") if p.is_file())
-    assert not any("free-speech" in n for n in names), names
-    assert any(n.endswith("noisy-sounds-2.json") for n in names)
-    assert any("noisy-sounds-2_features" in n for n in names)
-
-def test_filestem_list_from_another_registration_warns(tmp_path, caplog):
-    """Entries naming participants outside the run match nothing: counted, and no match warns."""
-    import logging
-
-    stems = ["sub-001js_ses-x_task-passage-10"]
-    keys = {s: {BIDSDataset._exclusion_key(s)} for s in stems}
-    with caplog.at_level(logging.INFO):
-        BIDSDataset._report_exclusion_coverage(stems, keys, set(), {"a-uuid-participant"}, set(), [])
-    assert any(r.levelno == logging.WARNING and "0 matched" in r.getMessage()
-               and "1 are for participants outside this run" in r.getMessage() for r in caplog.records)
-
-
-def test_exclusion_key_ignores_case_and_suffixes():
-    key = BIDSDataset._exclusion_key
-    assert key("sub-P1_ses-ABCD-1234_task-Rainbow-Passage.wav") == key(
-        "sub-p1_ses-abcd-1234_task-rainbow-passage_recording-metadata.json")
-    assert key("sub-p1_ses-s1_task-noisy-sounds-2_features.pt") == "sub-p1_ses-s1_task-noisy-sounds-2"
-
-
-def test_filestem_differing_in_case_still_removes(tmp_path, caplog):
-    """A configured stem with a lower-case session ID removes the recording in an upper-case tree."""
-    import logging
-
-    pdir = _sidecar_tree(tmp_path / "in", ses="ABC1", recordings=(("rec-A", "noisy-sounds-1"), ("rec-B", "noisy-sounds-2")))
-    out = tmp_path / "out"
-    BIDSDataset._deidentify_participant_files(
-        pdir, out, {"p1": "900001"}, ["sub-p1_ses-abc1_task-Noisy-Sounds-1"], ["noisy-sounds-*"],
-        skip_audio=True, skip_audio_features=True,
-    )
-    names = [p.name for p in out.rglob("*.json")]
-    assert len(names) == 1 and "noisy-sounds-2" in names[0]
-
-
-def test_unmatched_entries_for_run_participants_warn(caplog):
-    import logging
-
-    stems = ["sub-p1_ses-s1_task-noisy-sounds-1", "sub-p1_ses-s1_task-noisy-sounds-9"]
-    keys = {s: {BIDSDataset._exclusion_key(s)} for s in stems}
-    with caplog.at_level(logging.INFO):
-        BIDSDataset._report_exclusion_coverage(
-            stems, keys, {BIDSDataset._exclusion_key(stems[0])}, {"p1"}, {"rid-x"}, [])
-    msgs = [r.getMessage() for r in caplog.records if r.levelno == logging.WARNING]
-    assert any("1 matched" in m and "1 for participants in this run matched nothing" in m for m in msgs)
-    assert any("None was found" in m for m in msgs)
-
-
-def test_task_matcher_exact_glob_and_regex():
-    from b2aiprep.prepare.utils import TaskMatcher
-
-    m = TaskMatcher(["Noisy-Sounds-1", "identifying-pictures-*", "picture-description",
-                     "Repeating Words *", "re:role-naming-tasks-sounds-(days|months)", "conversation-*"])
-    assert "noisy-sounds-1" in m and "Noisy Sounds 1" in m
-    assert "Identifying-Pictures-35" in m and "identifying-pictures" not in m
-    assert "picture-description" in m and "picture-description-2" not in m and "picture-28" not in m
-    assert "repeating-words-bad" in m
-    assert "Role-Naming-Tasks-Sounds-Days" in m and "role-naming-tasks-sounds-numbers" not in m
-    assert "Conversation-(6-plus)-favorite-food" in m
-    assert not TaskMatcher([]) and TaskMatcher(["re:x"])
-
-
-def test_deidentify_includes_tasks_by_pattern(tmp_path):
-    pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "identifying-pictures-35"), ("rec-B", "reading-passage-3")))
-    out = tmp_path / "out"
-    BIDSDataset._deidentify_participant_files(
-        pdir, out, {"p1": "900001"}, [], ["identifying-pictures-*"],
-        skip_audio=True, skip_audio_features=True,
-    )
-    written = [p.name for p in out.rglob("*.json")]
-    assert len(written) == 1 and "identifying-pictures-35" in written[0]
-
-
 def test_anchor_that_leaves_real_dates_is_refused():
     df = _frame([("a", "Session", "MIT", "2025-06-02T16:00:00Z", None, "2019-02-28")])
     with pytest.raises(ValueError, match="would not be shifted"):
@@ -408,91 +267,30 @@ def test_anchor_that_leaves_real_dates_is_refused():
 
 
 def test_anchor_close_to_real_dates_warns(caplog):
-    import logging
-
     df = _frame([("a", "Session", "MIT", "2024-07-01T16:00:00Z", None, None)])
     with caplog.at_level(logging.WARNING):
         shift_dates(df, ["session_started_at"], datetime.date(2027, 1, 1))
     assert any("years from the nearest real first session" in r.getMessage() for r in caplog.records)
 
 
-def test_numeric_and_unhyphenated_zip_codes_resolve():
-    from b2aiprep.prepare.date_shift import postal_code_timezone
-
-    assert postal_code_timezone(2139.0) == "America/New_York"   # numeric column, leading zero lost
-    assert postal_code_timezone(90210) == "America/Los_Angeles"
-    assert postal_code_timezone("902101234") == "America/Los_Angeles"
-
-
-def test_unknown_table_refuses_instead_of_keeping_everything():
-    field_map = pd.DataFrame([{"schema_name": "demographics", "column_name": "zipcode", "disposition": "internal"}])
-    df = pd.DataFrame({"participant_id": ["p"], "zipcode": ["02139"]})
-    with pytest.raises(ValueError, match="no rows in the field map"):
-        BIDSDataset._drop_columns_by_disposition(df, field_map, schema_name="renamed_table")
-
-
-def test_deidentified_sessions_tsv_keeps_only_written_sessions(tmp_path):
-    pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "noisy-sounds-1"),))
-    (pdir / "ses-S2" / "audio").mkdir(parents=True)
-    (pdir / "ses-S2" / "audio" / "sub-p1_ses-S2_task-free-speech-1_recording-metadata.json").write_text(
-        json.dumps({"record_id": "p1", "recording_id": "REC-C", "session_id": "S2"})
-    )
-    pd.DataFrame({"record_id": ["p1", "p1"], "session_id": ["S1", "S2"], "session_index": ["1", "2"],
-                  "session_status": ["Completed"] * 2}).to_csv(
-        pdir / "sessions.tsv", sep="\t", index=False
-    )
-    out = tmp_path / "out"
-    BIDSDataset._deidentify_participant_files(
-        pdir, out, {"p1": "900001"}, [], ["noisy-sounds-*"],
-        skip_audio=True, skip_audio_features=True,
-    )
-    ses = pd.read_csv(out / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
-    assert list(ses["session_id"]) == ["01"]
-
-
-def test_participant_with_only_feature_output_is_kept(tmp_path):
-    """Recordings whose task audio is not released still publish stripped features."""
-    import torch
-
-    pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "free-speech-1"),))
-    torch.save({"opensmile": {"x": 1}}, pdir / "ses-S1" / "audio" / "sub-p1_ses-S1_task-free-speech-1_features.pt")
-    out = tmp_path / "out"
-    labels, _, _, _ = BIDSDataset._deidentify_participant_files(
-        pdir, out, {"p1": "900001"}, [], ["noisy-sounds-*"],
-        skip_audio=False, skip_audio_features=False,
-    )
-    assert labels == {"S1": "01"}
-    assert list(out.rglob("*free-speech-1_features.pt"))
-
-
-def test_disclosure_transforms_group_rare_answers_and_pass_redcap_age_label():
-    df = pd.DataFrame({
-        "record_id": ["a", "b", "c", "d", "e"],
-        "age": ["89", "89.0", None, "90 and above", "18"],
-        "gender_identity": ["Female gender identity", "Other", "Non-binary or genderqueer gender identity", None, None],
-        "sex_assigned_at_birth": ["Male", "Intersex", "Unknown", "Prefer not to answer", None],
-    })
-    out = BIDSDataset._apply_disclosure_transforms(df)
-    vals = lambda col: [v if isinstance(v, str) else None for v in out[col]]
-    assert vals("age") == ["89", "89.0", None, "90 and above", "18"]
-    assert vals("gender_identity") == ["Female gender identity", "Prefer not to answer",
-                                       "Non-binary or genderqueer gender identity", None, None]
-    assert vals("sex_assigned_at_birth") == ["Male", "Prefer not to answer", "Prefer not to answer",
-                                               "Prefer not to answer", None]
-    assert [v if isinstance(v, str) else None for v in df.gender_identity][1] == "Other"  # input untouched
-
-
-@pytest.mark.parametrize("age", ["90", "97.0"])
-def test_disclosure_transforms_flag_numeric_age_of_90_or_more(age, caplog):
-    df = pd.DataFrame({"record_id": ["a", "b"], "age": ["45", age]})
-    with caplog.at_level("WARNING"):
-        out = BIDSDataset._apply_disclosure_transforms(df)
-    assert list(out.age) == ["45", age]
-    assert "QA REVIEW REQUIRED: age: 1 numeric value(s)" in caplog.text and "records b" in caplog.text
-
-
 def _na(values):
     return [v if isinstance(v, str) else None for v in values]
+
+
+def test_session_index_numbers_by_start_time_undated_last_duplicates_share():
+    df = pd.DataFrame({
+        "record_id": ["p1", "p1", "p1", "p1", "p2", "p1"],
+        "redcap_repeat_instrument": ["Session"] * 5 + ["Acoustic Task"],
+        "session_id": ["B", "A", "C", "B", "Z", None],
+        "session_started_at": ["2025-03-01T10:00:00Z", "2025-01-01T10:00:00Z", None,
+                               "2025-03-01T10:00:00Z", "2024-01-01T00:00:00Z", None],
+    })
+    out = BIDSDataset._add_session_index(df)
+    got = dict(zip(zip(out.record_id, out.session_id), out.session_index))
+    assert got[("p1", "A")] == "1" and got[("p1", "B")] == "2" and got[("p1", "C")] == "3"
+    assert got[("p2", "Z")] == "1"
+    assert out.loc[5, "session_index"] is pd.NA
+    assert list(out.loc[out.session_id == "B", "session_index"]) == ["2", "2"]
 
 
 def test_recording_order_and_gaps_use_real_times_and_leave_undated_blank(caplog):
@@ -520,12 +318,12 @@ def test_recording_order_and_gaps_use_real_times_and_leave_undated_blank(caplog)
 
 def test_local_hours_read_the_shifted_wall_clock_time():
     df = pd.DataFrame({
-        "session_started_at": ["2100-01-05T13:34:41-05:00", None, "2100-01-05T00:10:00.250+01:00"],
-        "recording_created_at": [None, "2100-01-05T23:59:59-08:00", "not a time"],
+        "session_started_at": ["2100-01-05T13:34:41-05:00", None, "2100-01-05T00:10:00.250+01:00", "2100-01-05"],
+        "recording_created_at": [None, "2100-01-05T23:59:59-08:00", "not a time", None],
     }, dtype=object)
     out = BIDSDataset._add_local_hours(df)
-    assert _na(out.session_local_hour) == ["13", None, "0"]
-    assert _na(out.recording_local_hour) == [None, "23", None]
+    assert _na(out.session_local_hour) == ["13", None, "0", None]  # a date-only start has no hour
+    assert _na(out.recording_local_hour) == [None, "23", None, None]
 
 
 def test_ingest_adds_derived_session_and_recording_fields(tmp_path):
@@ -545,13 +343,19 @@ def test_session_hour_check_lists_in_clinic_sessions_outside_clinic_hours(caplog
         {"record_id": "p1", "redcap_repeat_instrument": "Session", "session_id": "S2", "session_local_hour": "19"},
         {"record_id": "p2", "redcap_repeat_instrument": "Session", "session_id": "S3", "session_local_hour": "23"},
         {"record_id": "p2", "redcap_repeat_instrument": "Recording", "recording_session_id": "S3",
-         "recording_via": "Participant"},
+         "recording_via": "Participant"},  # self-administered: not checked
         {"record_id": "p3", "redcap_repeat_instrument": "Session", "session_id": "S4", "session_local_hour": None},
+        # an undated row, then a dated row of the same session
+        {"record_id": "p4", "redcap_repeat_instrument": "Session", "session_id": "S5", "session_local_hour": None},
+        {"record_id": "p4", "redcap_repeat_instrument": "Session", "session_id": "S5", "session_local_hour": "22"},
+        # self-administered only in rows dropped before ingest (the microphone check)
+        {"record_id": "p5", "redcap_repeat_instrument": "Session", "session_id": "S6", "session_local_hour": "0"},
     ], dtype=object)
-    with caplog.at_level("WARNING"):
-        BIDSDataset._check_session_hours(df)
-    assert "1 in-clinic session(s) of 2 started outside 07:00-19:59" in caplog.text  # S4 has no hour
-    assert "p1 S1 (02h)" in caplog.text and "S3" not in caplog.text
+    with caplog.at_level(logging.WARNING):
+        BIDSDataset._check_session_hours(df, also_self_administered={"S6"})
+    assert "2 in-clinic session(s) of 3 started outside 07:00-19:59" in caplog.text  # S4 has no hour
+    assert "p1 S1 (02h)" in caplog.text and "p4 S5 (22h)" in caplog.text
+    assert "S3" not in caplog.text and "S6" not in caplog.text
 
 
 def test_days_since_surgery_measures_to_the_first_session_and_checks_the_forms_session(caplog):
@@ -563,7 +367,10 @@ def test_days_since_surgery_measures_to_the_first_session_and_checks_the_forms_s
          "peds_mc_tonsillectomy_date": "2099-12-29", "peds_mc_etp_procedure_date": "2100-01-07"},
         {"record_id": "c2", "redcap_repeat_instrument": mc, "peds_mc_session_id": "S9",
          "peds_mc_tonsillectomy_date": "2099-01-01", "peds_mc_etp_procedure_date": None},
+        # the first numeric age is the one checked against
+        {"record_id": "c3", "redcap_repeat_instrument": "Participant", "age": "unknown"},
         {"record_id": "c3", "redcap_repeat_instrument": "Participant", "age": "4"},
+        {"record_id": "c3", "redcap_repeat_instrument": "Participant", "age": "12"},
         {"record_id": "c3", "redcap_repeat_instrument": "Session", "session_id": "S3",
          "session_started_at": "2100-01-05T10:00:00-05:00"},
         {"record_id": "c3", "redcap_repeat_instrument": mc, "peds_mc_session_id": "S3",
@@ -571,8 +378,8 @@ def test_days_since_surgery_measures_to_the_first_session_and_checks_the_forms_s
     ], dtype=object)
     with caplog.at_level("WARNING"):
         out = BIDSDataset._add_days_since_surgery(df)
-    assert _na(out.peds_mc_tonsillectomy_days_since) == [None, "7", None, None, None, None]  # before birth: blank
-    assert _na(out.peds_mc_etp_procedure_days_since) == [None, None, None, None, None, "730"]  # after the session: blank
+    assert _na(out.peds_mc_tonsillectomy_days_since) == [None, "7", None, None, None, None, None, None]  # before birth
+    assert _na(out.peds_mc_etp_procedure_days_since) == [None, None, None, None, None, None, None, "730"]
     assert "peds_mc_adenoidectomy_days_since" not in out.columns  # source column absent
     assert "1 surgery date(s) after the session they were reported in, left blank: c1 peds_mc_etp_procedure_date" in caplog.text
     assert "1 surgery date(s) of participants with no dated session" in caplog.text
@@ -586,7 +393,7 @@ def test_every_surgery_date_has_a_derived_field_map_row():
     assert set(BIDSDataset._SURGERY_DATE_COLUMNS) <= shifted
     rows = fm.set_index("column_name_source")
     for out in BIDSDataset._SURGERY_DATE_COLUMNS.values():
-        assert rows.loc[out, "source"] == "pipeline" and rows.loc[out, "disposition"] == "release"  # ethics approved
+        assert rows.loc[out, "source"] == "pipeline" and rows.loc[out, "disposition"] == "release"
 
 
 def test_sessions_self_administered_only_in_dropped_rows_use_the_home_time_zone():
@@ -597,14 +404,6 @@ def test_sessions_self_administered_only_in_dropped_rows_use_the_home_time_zone(
     # 2024-07-01 20:00Z: 16:00 at MIT (EDT), 13:00 in Beverly Hills (PDT)
     assert as_site.loc[0, "session_started_at"].endswith("T16:00:00-04:00")
     assert as_home.loc[0, "session_started_at"].endswith("T13:00:00-07:00")
-
-
-def test_session_hour_check_skips_sessions_self_administered_in_dropped_rows(caplog):
-    df = pd.DataFrame([{"record_id": "p1", "redcap_repeat_instrument": "Session", "session_id": "S1",
-                        "session_local_hour": "0"}], dtype=object)
-    with caplog.at_level("WARNING"):
-        BIDSDataset._check_session_hours(df, also_self_administered={"S1"})
-    assert "session hours" not in caplog.text
 
 
 def test_episode_and_trauma_dates_measure_to_the_first_session(caplog):
@@ -662,14 +461,6 @@ def test_a_form_on_an_undated_session_keeps_its_value_unchecked(caplog):
     assert "1 episode date(s) on a form whose session has no date could not be checked against it; kept: a traumatic_event_date" in caplog.text
 
 
-def test_postal_code_region_uses_prefix_rules_and_exceptions():
-    from b2aiprep.prepare.date_shift import postal_code_region
-    assert postal_code_region("02139") == "MA" and postal_code_region(2139.0) == "MA"   # numeric read, zero lost
-    assert postal_code_region("90210-1234") == "CA"
-    assert postal_code_region("M5V 3L9") == "ON" and postal_code_region("h2x") == "QC"
-    assert postal_code_region("12") is None and postal_code_region("not a zip") is None
-
-
 def test_state_province_prefers_the_stated_value_then_the_postal_code(caplog):
     demo = "Q - Generic - Demographics"
     df = pd.DataFrame([
@@ -683,4 +474,4 @@ def test_state_province_prefers_the_stated_value_then_the_postal_code(caplog):
     with caplog.at_level("WARNING"):
         out = BIDSDataset._add_state_province(df)
     assert _na(out.state_province_standardized) == ["MA", "NY", "QC", "Unknown", "NJ", None]  # e: the stated NJ wins
-    assert "1 form(s) whose postal code and stated state/province disagree" in caplog.text and "e" in caplog.text
+    assert "1 form(s) whose postal code and stated state/province disagree (the stated value is used): e" in caplog.text

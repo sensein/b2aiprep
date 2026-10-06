@@ -388,11 +388,8 @@ def test_construct_phenotype():
         assert columns[1] == "acoustic_task_name", "Second column should be acoustic_task_name"
 
 def test_construct_phenotype_demographics_has_one_row_per_participant():
-    """sex_at_birth must not turn other forms' rows into demographics rows.
-
-    The adult demographics table is built from every REDCap row; giving "Unknown" to rows from
-    other forms made them count as data, and with age back-filled they survived (100k+ rows).
-    """
+    """Rows from other forms get no sex_at_birth and are dropped; "Unknown" goes only to
+    participants with demographics answers (the table is built from every REDCap row)."""
     nan = float("nan")
     df = pd.DataFrame({
         "record_id": ["r01", "r01", "r01", "r01", "r02", "r02", "r02"],
@@ -1084,3 +1081,40 @@ def test_load_reproschema_resolves_paths_through_symlink(tmp_path):
 
     assert "test_id" in result
     assert "abc12345" in result["test_id"]["url"]
+
+
+class TestTablesAreReadAsWritten:
+    """Tables the pipeline reads back (and may rewrite) keep typed answers such as "None" or "N/A"
+    and integers as written; only an empty cell is missing."""
+
+    def test_phenotype_tables_load_as_written(self, tmp_path):
+        base = tmp_path / "recording"
+        pd.DataFrame({"participant_id": ["005009", "005010", "005011"], "recording_local_hour": ["10", "", "7"],
+                      "comment": ["N/A", "None", ""]}).to_csv(base.with_suffix(".tsv"), sep="\t", index=False)
+        base.with_suffix(".json").write_text(json.dumps({"recording": {"description": "", "data_elements": {}}}))
+        df, *_ = BIDSDataset.load_phenotype_file(base)
+        assert df["participant_id"].tolist() == ["005009", "005010", "005011"]
+        assert df["recording_local_hour"].tolist()[0::2] == ["10", "7"] and pd.isna(df["recording_local_hour"].iloc[1])
+        assert df["comment"].tolist()[:2] == ["N/A", "None"] and pd.isna(df["comment"].iloc[2])
+
+    def test_removing_participants_without_audio_keeps_typed_answers(self, tmp_path):
+        folder = tmp_path / "phenotype" / "confounders"
+        folder.mkdir(parents=True)
+        (folder / "confounders.tsv").write_text(
+            "participant_id\tph_walking\tnote\np1\tNone\tN/A\np2\tMild\tNA\np3\tNone\tnull\n")
+        BIDSDataset._filter_phenotype_to_participants(str(tmp_path / "phenotype"), {"p1", "p2"})
+        assert BIDSDataset._read_tsv_as_written(folder / "confounders.tsv").to_dict("list") == {
+            "participant_id": ["p1", "p2"], "ph_walking": ["None", "Mild"], "note": ["N/A", "NA"]}
+
+    def test_removing_recordings_without_a_sidecar_keeps_typed_answers(self, tmp_path):
+        task = tmp_path / "task"
+        task.mkdir()
+        (task / "recording.tsv").write_text("recording_id\trecording_acoustic_task_id\trecording_microphone\n"
+                                            "r1\tt1\tNone\nr2\tt2\tN/A\n")
+        (task / "acoustic_task.tsv").write_text("acoustic_task_id\tacoustic_task_notes\nt1\tNA\nt2\tnull\n")
+        BIDSDataset._filter_task_tables_to_recordings(str(tmp_path), {"r1"})
+        assert BIDSDataset._read_tsv_as_written(task / "recording.tsv").to_dict("list") == {
+            "recording_id": ["r1"], "recording_acoustic_task_id": ["t1"], "recording_microphone": ["None"]}
+        assert BIDSDataset._read_tsv_as_written(task / "acoustic_task.tsv").to_dict("list") == {
+            "acoustic_task_id": ["t1"], "acoustic_task_notes": ["NA"]}
+

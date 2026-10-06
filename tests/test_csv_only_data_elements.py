@@ -247,25 +247,6 @@ def test_diagnosis_no_complete_col_falls_back_to_substantive_check():
     assert kept["participant_id"].tolist() == ["has-data"]
 
 
-
-def test_every_computed_column_has_a_derived_field_spec():
-    """Each source=pipeline phenotype column has datatype/choices in derived_fields.json, and back."""
-    import pandas as pd
-    from importlib.resources import files
-    from b2aiprep.prepare.dataset import derived_field_specs
-
-    field_map = pd.read_csv(
-        files("b2aiprep").joinpath("prepare", "resources", "bids_field_organization.csv"), dtype=str
-    )
-    computed = set(field_map.loc[(field_map["source"].isin(["pipeline", "supplement"]))
-                                 & (field_map["schema_name"] != "audio_sidecar"), "column_name"])
-    specs = derived_field_specs()
-    assert computed == set(specs)
-    for name, spec in specs.items():
-        assert spec["datatype"] in ("xsd:integer", "xsd:string"), name
-        assert set(spec) <= {"datatype", "choices", "minValue", "maxValue", "unit", "derivedFrom"}, name
-
-
 def test_computed_column_element_carries_its_spec_and_no_term():
     element = BIDSDataset._synthetic_data_element(
         "session_local_hour",

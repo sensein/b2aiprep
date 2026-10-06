@@ -3,6 +3,7 @@
 import pandas as pd
 import pytest
 
+from b2aiprep.prepare.dataset import BIDSDataset
 from b2aiprep.prepare.redcap import RedCapDataset
 
 
@@ -11,7 +12,7 @@ def _dataset():
         {"record_id": "a", "redcap_repeat_instrument": "Participant", "enrollment_institution": "MIT"},
         {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "s1"},
         {"record_id": "b", "redcap_repeat_instrument": "Participant", "enrollment_institution": "USF"},
-    ], dtype=object)
+    ], dtype=object, index=[10, 20, 30])  # not 0..n: the merge must keep the export's row labels
     return RedCapDataset(df=df, source_type="redcap")
 
 
@@ -45,8 +46,6 @@ def test_supplement_refuses_duplicate_rows(tmp_path):
 
 def test_building_without_a_published_supplement_column_warns(tmp_path, caplog):
     """redcap2bids without --supplement must not drop some_data_collected_remotely silently."""
-    from b2aiprep.prepare.dataset import BIDSDataset
-
     df = pd.DataFrame({"record_id": ["r1"], "redcap_repeat_instrument": ["Acoustic Task"],
                        "acoustic_task_name": ["A"]})
     with caplog.at_level("WARNING"):

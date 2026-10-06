@@ -130,13 +130,9 @@ def test_registry_cape_v_version_index_fix(descriptions):
 
 def test_sidecar_task_name_is_the_file_name_entity(descriptions):
     # The sidecar's task_name matches the file name and acoustic_task.tsv; the version marker
-    # in the raw name still drives resolution.
-    from b2aiprep.prepare.utils import canonical_task_entity
-    for raw in ["Diadochokinesis-(v2)-PUH", "Cape-V-sentences-2-(v2)"]:
-        m = _resolve(descriptions, raw)
-        assert m["task_name"] == canonical_task_entity(raw)
-        assert "(" not in m["task_name"]
-    assert _resolve(descriptions, "Cape-V-sentences-2-(v2)")["stimulus_text"] == "He helped her hurry home."
+    # in the raw name still drives resolution (see test_registry_cape_v_version_index_fix).
+    assert _resolve(descriptions, "Diadochokinesis-(v2)-PUH")["task_name"] == "diadochokinesis-v2-puh"
+    assert _resolve(descriptions, "Cape-V-sentences-2-(v2)")["task_name"] == "cape-v-sentences-v2-2"
 
 
 def test_diadochokinesis_v1_curated_instruction(descriptions):

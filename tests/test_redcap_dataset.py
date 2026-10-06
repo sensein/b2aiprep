@@ -5,6 +5,7 @@ import pytest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+from b2aiprep.prepare.constants import RepeatInstrument
 from b2aiprep.prepare.redcap import RedCapDataset
 
 
@@ -214,3 +215,15 @@ class TestRedCapDataset:
         
         with pytest.raises(ValueError, match="Unrecognized"):
             dataset.get_recordings_for_acoustic_task("invalid_task")
+
+
+def test_instrument_columns_skip_dropped_columns():
+    """A column removed at ingest (disposition drop) is not requested from its instrument."""
+    df = pd.DataFrame([
+        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "s1",
+         "session_started_at": "2024-07-01T16:00:00Z"},
+        {"record_id": "a", "redcap_repeat_instrument": "Participant"},
+    ], dtype=object)
+    sessions = RedCapDataset(df=df, source_type="redcap").get_df_of_repeat_instrument(RepeatInstrument.SESSION.value)
+    assert "session_is_control_participant" not in sessions.columns
+    assert "session_started_at" in sessions.columns
