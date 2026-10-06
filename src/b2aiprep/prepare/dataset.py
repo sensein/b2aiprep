@@ -80,12 +80,29 @@ _LOGGER = logging.getLogger(__name__)
 REDACTION_MARKER = "[REDACTED]"
 
 
-class ValueReview(t.NamedTuple):
-    """One column value review verdict: ``safe``, ``redact`` (with optional replacement text),
-    or anything else, which withholds the value. ``value_sha256``, when given, is the
-    fingerprint of the answer that was reviewed (``review_fingerprint``)."""
+class Verdict(enum.Enum):
+    """What a reviewer decided for one answer (column_value_reviews.json ``verdict``).
 
-    verdict: str
+    ``withhold`` records that the answer was reviewed and must not be published, so a later
+    review does not have to look at it again; an answer with no verdict at all is withheld too,
+    but as never reviewed. ``drop`` is the older word for ``withhold``.
+    """
+    SAFE = "safe"
+    REDACT = "redact"
+    WITHHOLD = "withhold"
+
+    @classmethod
+    def parse(cls, value: str) -> "Verdict":
+        text = str(value).strip().lower()
+        return cls.WITHHOLD if text == "drop" else cls(text)
+
+
+class ValueReview(t.NamedTuple):
+    """One column value review verdict: ``safe``, ``redact`` (with optional replacement text)
+    or ``withhold``. ``value_sha256``, when given, is the fingerprint of the answer that was
+    reviewed (``review_fingerprint``)."""
+
+    verdict: Verdict
     redacted_text: t.Optional[str] = None
     value_sha256: t.Optional[str] = None
 
@@ -1883,9 +1900,16 @@ class BIDSDataset:
                     "Duplicate column value review for %s/%s (session %s); last entry wins.",
                     key[0], key[1], key[2],
                 )
-            verdict = entry["verdict"].strip().lower()
+            try:
+                verdict = Verdict.parse(entry["verdict"])
+            except ValueError:
+                raise ValueError(
+                    f"{manifest_path}: verdict {entry['verdict']!r} for participant {key[0]}, column "
+                    f"{key[1]}, session {key[2]} is not one of "
+                    f"{', '.join(v.value for v in Verdict)} (or 'drop' for withhold)."
+                ) from None
             text = entry.get("redacted_text")
-            if verdict == "redact" and text is not None and str(text).strip():
+            if verdict is Verdict.REDACT and text is not None and str(text).strip():
                 text = BIDSDataset._normalize_redacted_text(str(text).strip(), key)
             else:
                 text = None
@@ -1948,9 +1972,8 @@ class BIDSDataset:
         """Apply per-cell verdicts to review-disposition columns.
 
         A verdict for the row's session (its ``session_id`` or form ``<form>_session_id``) is used
-        first, then one without a session. ``safe``
-        keeps the value; ``redact`` publishes its ``redacted_text`` or, without one,
-        ``[REDACTED]``. A verdict with a ``value_sha256`` that no longer matches the answer is
+        first, then one without a session. ``safe`` keeps the value; ``redact`` publishes its
+        ``redacted_text`` or, without one, ``[REDACTED]``; ``withhold`` blanks it. A verdict with a ``value_sha256`` that no longer matches the answer is
         for a different answer: the cell is withheld and logged. Columns with zero verdicts are
         dropped entirely (backward compat). Cells with no verdict default to null (fail-safe).
         """
@@ -1984,13 +2007,13 @@ class BIDSDataset:
                 if pd.isna(value):
                     continue  # no answer: nothing to publish, whatever the verdict
                 verdict = review.verdict if review else None
-                if (verdict in ("safe", "redact") and review.value_sha256
+                if (verdict in (Verdict.SAFE, Verdict.REDACT) and review.value_sha256
                         and review_fingerprint(value) != review.value_sha256):
                     changed.append((pid, col, session if pd.notna(session) else None))
                     verdict = None
-                if verdict == "safe":
+                if verdict is Verdict.SAFE:
                     pass
-                elif verdict == "redact":
+                elif verdict is Verdict.REDACT:
                     df.at[idx, col] = review.redacted_text or REDACTION_MARKER
                 else:
                     df.at[idx, col] = pd.NA
