@@ -20,6 +20,7 @@ from copy import copy, deepcopy
 from functools import lru_cache, partial
 import datetime
 import difflib
+import hashlib
 import logging
 import os
 import re
@@ -81,10 +82,30 @@ REDACTION_MARKER = "[REDACTED]"
 
 class ValueReview(t.NamedTuple):
     """One column value review verdict: ``safe``, ``redact`` (with optional replacement text),
-    or anything else, which withholds the value."""
+    or anything else, which withholds the value. ``value_sha256``, when given, is the
+    fingerprint of the answer that was reviewed (``review_fingerprint``)."""
 
     verdict: str
     redacted_text: t.Optional[str] = None
+    value_sha256: t.Optional[str] = None
+
+
+def review_fingerprint(value: t.Any) -> str:
+    """SHA-256 of an answer as reviewed, ignoring whitespace and how a number is written.
+
+    A verdict is meant for the answer someone read. Exports differ in spacing and in number
+    format ("17.0" vs "17") without the answer changing, so both are normalized away; any other
+    change gives a different fingerprint. Only the hash is stored, never the answer.
+    """
+    text = " ".join(str(value).split())
+    try:
+        number = float(text)
+    except ValueError:
+        pass
+    else:
+        if np.isfinite(number):
+            text = str(int(number)) if number.is_integer() else repr(number)
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 class DispositionLevel(enum.Enum):
@@ -1830,7 +1851,9 @@ class BIDSDataset:
         normalized to output names via the field map so that lookups in
         ``_apply_column_value_reviews`` always use output names. A ``redact`` entry may give
         ``redacted_text`` to publish instead of the whole-cell marker; its markers are
-        normalized to ``[REDACTED]`` and a misspelled marker stops the run.
+        normalized to ``[REDACTED]`` and a misspelled marker stops the run. An entry may give
+        ``value_sha256`` (``review_fingerprint`` of the reviewed answer); the verdict then applies
+        only while the answer is unchanged.
         """
         manifest_path = config_dir / "column_value_reviews.json"
         if not manifest_path.exists():
@@ -1871,7 +1894,7 @@ class BIDSDataset:
                 text = BIDSDataset._normalize_redacted_text(str(text).strip(), key)
             else:
                 text = None
-            lookup[key] = ValueReview(verdict, text)
+            lookup[key] = ValueReview(verdict, text, entry.get("value_sha256") or None)
         _LOGGER.info("Loaded %d column value review verdicts from %s.", len(lookup), manifest_path)
         if normalized_count:
             _LOGGER.info("Normalized %d verdicts from source to output column names.", normalized_count)
@@ -1928,8 +1951,9 @@ class BIDSDataset:
         A verdict for the row's session (its ``session_id`` or form ``<form>_session_id``) is used
         first, then one without a session. ``safe``
         keeps the value; ``redact`` publishes its ``redacted_text`` or, without one,
-        ``[REDACTED]``. Columns with zero verdicts are dropped entirely (backward compat).
-        Cells with no verdict default to null (fail-safe).
+        ``[REDACTED]``. A verdict with a ``value_sha256`` that no longer matches the answer is
+        for a different answer: the cell is withheld and logged. Columns with zero verdicts are
+        dropped entirely (backward compat). Cells with no verdict default to null (fail-safe).
         """
         id_col = "participant_id" if "participant_id" in df.columns else "record_id"
         if id_col not in df.columns:
@@ -1939,6 +1963,7 @@ class BIDSDataset:
         row_session = df[session_cols].bfill(axis=1).iloc[:, 0] if session_cols else None
 
         fully_dropped = []
+        changed = []  # (participant, column, session) whose answer differs from the reviewed one
         for col in sorted(review_columns & set(df.columns)):
             col_verdicts = {
                 (pid, session): v for (pid, cname, session), v in verdicts.items() if cname == col
@@ -1952,12 +1977,23 @@ class BIDSDataset:
                 session = row_session.at[idx] if row_session is not None else None
                 review = (pd.notna(session) and col_verdicts.get((pid, session))) or col_verdicts.get((pid, None))
                 verdict = review.verdict if review else None
+                value = row[col]
+                if (verdict in ("safe", "redact") and review.value_sha256 and pd.notna(value)
+                        and review_fingerprint(value) != review.value_sha256):
+                    changed.append((pid, col, session if pd.notna(session) else None))
+                    verdict = None
                 if verdict == "safe":
                     pass
                 elif verdict == "redact":
                     df.at[idx, col] = review.redacted_text or REDACTION_MARKER
                 else:
                     df.at[idx, col] = pd.NA
+        if changed:
+            _LOGGER.warning(
+                "QA check: column value reviews: %d answer(s) differ from the answer that was "
+                "reviewed and are withheld (re-review them): %s", len(changed),
+                "; ".join(f"{p} {c} session {s}" for p, c, s in changed),
+            )
         return df, fully_dropped
 
     @staticmethod

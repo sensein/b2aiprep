@@ -18,6 +18,7 @@ from b2aiprep.prepare.dataset import (
     DispositionLevel,
     SessionLabels,
     ValueReview,
+    review_fingerprint,
 )
 
 
@@ -1452,6 +1453,30 @@ class TestApplyColumnValueReviews:
         }
         result, _ = BIDSDataset._apply_column_value_reviews(df, {"free_text"}, verdicts)
         assert list(result["free_text"]) == ["[REDACTED] visit", "second visit"]
+
+    def test_a_verdict_applies_only_to_the_answer_that_was_reviewed(self, caplog):
+        """An answer changed since review (a correction, a re-export) is withheld, not published
+        unread; spacing and number format are not changes."""
+        df = pd.DataFrame({
+            "participant_id": ["p1", "p2", "p3", "p4"],
+            "free_text": ["now says something else", " 17  ", "Seen  in\r\nclinic", "kept"]})
+        verdicts = {
+            ("p1", "free_text", None): ValueReview("safe", value_sha256=review_fingerprint("what was reviewed")),
+            ("p2", "free_text", None): ValueReview("safe", value_sha256=review_fingerprint("17.0")),
+            ("p3", "free_text", None): ValueReview("redact", "Seen [REDACTED]", review_fingerprint("Seen in clinic")),
+            ("p4", "free_text", None): ValueReview("safe"),  # no fingerprint: as before
+        }
+        with caplog.at_level(logging.WARNING):
+            result, _ = BIDSDataset._apply_column_value_reviews(df, {"free_text"}, verdicts)
+        assert pd.isna(result.loc[0, "free_text"])
+        assert list(result["free_text"][1:]) == [" 17  ", "Seen [REDACTED]", "kept"]
+        assert any("p1 free_text" in r.message and "differ from the answer that was reviewed" in r.message
+                   for r in caplog.records)
+
+    def test_the_fingerprint_is_loaded_with_the_verdict(self, tmp_path):
+        (tmp_path / "column_value_reviews.json").write_text(json.dumps({"verdicts": [
+            {"participant_id": "p1", "column_name": "c", "verdict": "safe", "value_sha256": "abc"}]}))
+        assert BIDSDataset._load_column_value_reviews(tmp_path)[("p1", "c", None)] == ValueReview("safe", None, "abc")
 
     def test_a_session_without_its_own_verdict_is_withheld(self):
         df = pd.DataFrame({
