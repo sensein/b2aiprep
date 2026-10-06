@@ -19,6 +19,7 @@ sub-p1/
 from copy import copy, deepcopy
 from functools import lru_cache, partial
 import datetime
+import difflib
 import logging
 import os
 import re
@@ -73,6 +74,17 @@ from pydantic import BaseModel
 from b2aiprep.prepare.redcap import RedCapDataset, _dropped_source_columns
 
 _LOGGER = logging.getLogger(__name__)
+
+# Published in place of a hidden value, whole or in part (column_value_reviews.json).
+REDACTION_MARKER = "[REDACTED]"
+
+
+class ValueReview(t.NamedTuple):
+    """One column value review verdict: ``safe``, ``redact`` (with optional replacement text),
+    or anything else, which withholds the value."""
+
+    verdict: str
+    redacted_text: t.Optional[str] = None
 
 
 class DispositionLevel(enum.Enum):
@@ -1808,13 +1820,17 @@ class BIDSDataset:
     def _load_column_value_reviews(
         config_dir: Path,
         field_map_df: t.Optional[pd.DataFrame] = None,
-    ) -> t.Dict[t.Tuple[str, str], str]:
+    ) -> t.Dict[t.Tuple[str, str, t.Optional[str]], "ValueReview"]:
         """Load the column value review manifest from the config directory.
 
+        Each verdict is keyed by (participant_id, column, session_id); session_id is None for
+        an entry without one, which then applies to every session of that participant.
         Entries may use either ``column_name`` (the output/BIDS name) or
         ``source_column_name`` (the original REDCap name).  Source names are
         normalized to output names via the field map so that lookups in
-        ``_apply_column_value_reviews`` always use output names.
+        ``_apply_column_value_reviews`` always use output names. A ``redact`` entry may give
+        ``redacted_text`` to publish instead of the whole-cell marker; its markers are
+        normalized to ``[REDACTED]`` and a misspelled marker stops the run.
         """
         manifest_path = config_dir / "column_value_reviews.json"
         if not manifest_path.exists():
@@ -1836,20 +1852,26 @@ class BIDSDataset:
         with open(manifest_path, "r") as f:
             data = json.load(f)
         verdicts_list = data.get("verdicts", [])
-        lookup: t.Dict[t.Tuple[str, str], str] = {}
+        lookup: t.Dict[t.Tuple[str, str, t.Optional[str]], ValueReview] = {}
         normalized_count = 0
         for entry in verdicts_list:
             col = entry.get("column_name") or entry.get("source_column_name", "")
             if col in source_to_output:
                 col = source_to_output[col]
                 normalized_count += 1
-            key = (entry["participant_id"], col)
+            key = (entry["participant_id"], col, entry.get("session_id") or None)
             if key in lookup:
                 _LOGGER.warning(
-                    "Duplicate column value review for %s/%s; last entry wins.",
-                    key[0], key[1],
+                    "Duplicate column value review for %s/%s (session %s); last entry wins.",
+                    key[0], key[1], key[2],
                 )
-            lookup[key] = entry["verdict"].strip().lower()
+            verdict = entry["verdict"].strip().lower()
+            text = entry.get("redacted_text")
+            if verdict == "redact" and text is not None and str(text).strip():
+                text = BIDSDataset._normalize_redacted_text(str(text).strip(), key)
+            else:
+                text = None
+            lookup[key] = ValueReview(verdict, text)
         _LOGGER.info("Loaded %d column value review verdicts from %s.", len(lookup), manifest_path)
         if normalized_count:
             _LOGGER.info("Normalized %d verdicts from source to output column names.", normalized_count)
@@ -1876,24 +1898,47 @@ class BIDSDataset:
         )
 
     @staticmethod
+    def _normalize_redacted_text(text: str, key: t.Tuple[str, str, t.Optional[str]]) -> str:
+        """Write every redaction marker in *text* as ``[REDACTED]``, whatever its case.
+
+        A word or bracketed token close to the marker but not it (``[redcated]``, ``redacted``
+        without brackets, ``[redacted`` unclosed) is a typo that would publish what it meant to
+        hide, so it stops the run.
+        """
+        text = re.sub(r"\[\s*redacted\s*\]", REDACTION_MARKER, text, flags=re.IGNORECASE)
+        rest = text.replace(REDACTION_MARKER, " ")
+        for word in re.findall(r"[A-Za-z]+", rest):
+            w = word.lower()
+            if w.startswith("red") and difflib.SequenceMatcher(None, w, "redacted").ratio() >= 0.85:
+                raise ValueError(
+                    f"column_value_reviews.json: redacted_text for participant {key[0]}, column "
+                    f"{key[1]}, session {key[2]} has {word!r} outside a {REDACTION_MARKER} marker; "
+                    f"write the marker as [redacted] or {REDACTION_MARKER}."
+                )
+        return text
+
+    @staticmethod
     def _apply_column_value_reviews(
         df: pd.DataFrame,
         review_columns: t.AbstractSet[str],
-        verdicts: t.Dict[t.Tuple[str, str], str],
+        verdicts: t.Dict[t.Tuple[str, str, t.Optional[str]], "ValueReview"],
     ) -> t.Tuple[pd.DataFrame, t.List[str]]:
         """Apply per-cell verdicts to review-disposition columns.
 
-        Columns with zero verdicts are dropped entirely (backward compat).
+        A verdict for the row's session is used first, then one without a session. ``safe``
+        keeps the value; ``redact`` publishes its ``redacted_text`` or, without one,
+        ``[REDACTED]``. Columns with zero verdicts are dropped entirely (backward compat).
         Cells with no verdict default to null (fail-safe).
         """
         id_col = "participant_id" if "participant_id" in df.columns else "record_id"
         if id_col not in df.columns:
             return df, []
+        has_session = "session_id" in df.columns
 
         fully_dropped = []
         for col in sorted(review_columns & set(df.columns)):
             col_verdicts = {
-                pid: v for (pid, cname), v in verdicts.items() if cname == col
+                (pid, session): v for (pid, cname, session), v in verdicts.items() if cname == col
             }
             if not col_verdicts:
                 df = df.drop(columns=[col])
@@ -1901,11 +1946,12 @@ class BIDSDataset:
                 continue
             for idx, row in df.iterrows():
                 pid = row[id_col]
-                verdict = col_verdicts.get(pid)
+                review = (has_session and col_verdicts.get((pid, row["session_id"]))) or col_verdicts.get((pid, None))
+                verdict = review.verdict if review else None
                 if verdict == "safe":
                     pass
                 elif verdict == "redact":
-                    df.at[idx, col] = "[REDACTED]"
+                    df.at[idx, col] = review.redacted_text or REDACTION_MARKER
                 else:
                     df.at[idx, col] = pd.NA
         return df, fully_dropped

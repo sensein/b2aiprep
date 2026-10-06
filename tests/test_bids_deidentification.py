@@ -12,7 +12,13 @@ import pandas as pd
 import pytest
 import torch
 
-from b2aiprep.prepare.dataset import AccessTier, BIDSDataset, DispositionLevel, SessionLabels
+from b2aiprep.prepare.dataset import (
+    AccessTier,
+    BIDSDataset,
+    DispositionLevel,
+    SessionLabels,
+    ValueReview,
+)
 
 
 # three session IDs of one participant, in session_index order
@@ -1307,8 +1313,8 @@ class TestLoadColumnValueReviews:
         }
         (tmp_path / "column_value_reviews.json").write_text(json.dumps(manifest))
         result = BIDSDataset._load_column_value_reviews(tmp_path)
-        assert result[("p1", "col_a")] == "safe"
-        assert result[("p2", "col_a")] == "redact"
+        assert result[("p1", "col_a", None)] == ValueReview("safe")
+        assert result[("p2", "col_a", None)] == ValueReview("redact")
 
     def test_missing_file_returns_empty(self, tmp_path):
         result = BIDSDataset._load_column_value_reviews(tmp_path)
@@ -1324,7 +1330,7 @@ class TestLoadColumnValueReviews:
         (tmp_path / "column_value_reviews.json").write_text(json.dumps(manifest))
         with caplog.at_level(logging.WARNING):
             result = BIDSDataset._load_column_value_reviews(tmp_path)
-        assert result[("p1", "col_a")] == "redact"
+        assert result[("p1", "col_a", None)].verdict == "redact"
         assert any("duplicate" in r.message.lower() for r in caplog.records)
 
 
@@ -1342,9 +1348,8 @@ class TestLoadColumnValueReviews:
             "column_name": ["new_out_name", "other_col"],
         })
         result = BIDSDataset._load_column_value_reviews(tmp_path, field_map_df=field_map)
-        assert ("p1", "new_out_name") in result
-        assert result[("p1", "new_out_name")] == "safe"
-        assert result[("p2", "new_out_name")] == "redact"
+        assert result[("p1", "new_out_name", None)].verdict == "safe"
+        assert result[("p2", "new_out_name", None)].verdict == "redact"
 
     def test_column_name_not_in_field_map_kept_as_is(self, tmp_path):
         """Verdicts with column names not in the field map are kept unchanged."""
@@ -1359,7 +1364,34 @@ class TestLoadColumnValueReviews:
             "column_name": ["other"],
         })
         result = BIDSDataset._load_column_value_reviews(tmp_path, field_map_df=field_map)
-        assert ("p1", "unknown_col") in result
+        assert ("p1", "unknown_col", None) in result
+
+    def _load(self, tmp_path, *entries):
+        (tmp_path / "column_value_reviews.json").write_text(json.dumps({"verdicts": list(entries)}))
+        return BIDSDataset._load_column_value_reviews(tmp_path)
+
+    def test_session_and_redacted_text_are_kept_and_markers_written_one_way(self, tmp_path):
+        result = self._load(tmp_path, {
+            "participant_id": "p1", "session_id": "s1", "column_name": "col_a", "verdict": "redact",
+            "redacted_text": "19/30, [redacted] and [ Redacted ]"})
+        assert result == {("p1", "col_a", "s1"): ValueReview("redact", "19/30, [REDACTED] and [REDACTED]")}
+
+    def test_redacted_text_is_ignored_unless_the_verdict_is_redact(self, tmp_path):
+        result = self._load(tmp_path, {
+            "participant_id": "p1", "column_name": "col_a", "verdict": "safe", "redacted_text": "x"})
+        assert result[("p1", "col_a", None)] == ValueReview("safe")
+
+    @pytest.mark.parametrize("text", ["[redcated] here", "a redacted word", "[redacted cut off", "[REDATCED]"])
+    def test_a_misspelled_marker_stops_the_run(self, tmp_path, text):
+        with pytest.raises(ValueError, match="outside a \\[REDACTED\\] marker"):
+            self._load(tmp_path, {"participant_id": "p1", "column_name": "col_a", "verdict": "redact",
+                                  "redacted_text": text})
+
+    def test_words_that_only_resemble_the_marker_are_text(self, tmp_path):
+        text = "reduced dose, drug-related, redness [sic]"
+        result = self._load(tmp_path, {"participant_id": "p1", "column_name": "col_a", "verdict": "redact",
+                                       "redacted_text": text})
+        assert result[("p1", "col_a", None)].redacted_text == text
 
 
 class TestApplyColumnValueReviews:
@@ -1371,8 +1403,8 @@ class TestApplyColumnValueReviews:
             "free_text": ["safe value", "also safe"],
         })
         verdicts = {
-            ("p1", "free_text"): "safe",
-            ("p2", "free_text"): "safe",
+            ("p1", "free_text", None): ValueReview("safe"),
+            ("p2", "free_text", None): ValueReview("safe"),
         }
         result, dropped = BIDSDataset._apply_column_value_reviews(
             df, {"free_text"}, verdicts
@@ -1386,8 +1418,8 @@ class TestApplyColumnValueReviews:
             "free_text": ["Dr. Smith", "safe"],
         })
         verdicts = {
-            ("p1", "free_text"): "redact",
-            ("p2", "free_text"): "safe",
+            ("p1", "free_text", None): ValueReview("redact"),
+            ("p2", "free_text", None): ValueReview("safe"),
         }
         result, _ = BIDSDataset._apply_column_value_reviews(
             df, {"free_text"}, verdicts
@@ -1395,12 +1427,33 @@ class TestApplyColumnValueReviews:
         assert result.loc[result["participant_id"] == "p1", "free_text"].values[0] == "[REDACTED]"
         assert result.loc[result["participant_id"] == "p2", "free_text"].values[0] == "safe"
 
+    def test_redact_publishes_the_replacement_text_for_that_session_only(self):
+        df = pd.DataFrame({
+            "participant_id": ["p1", "p1", "p2"],
+            "session_id": ["s1", "s2", "s1"],
+            "free_text": ["seen Sept 4/25", "seen in clinic", "fine"],
+        })
+        verdicts = {
+            ("p1", "free_text", "s1"): ValueReview("redact", "seen [REDACTED]"),
+            ("p1", "free_text", "s2"): ValueReview("safe"),
+            ("p2", "free_text", None): ValueReview("safe"),
+        }
+        result, _ = BIDSDataset._apply_column_value_reviews(df, {"free_text"}, verdicts)
+        assert list(result["free_text"]) == ["seen [REDACTED]", "seen in clinic", "fine"]
+
+    def test_a_session_without_its_own_verdict_is_withheld(self):
+        df = pd.DataFrame({
+            "participant_id": ["p1", "p1"], "session_id": ["s1", "s2"], "free_text": ["a", "b"]})
+        verdicts = {("p1", "free_text", "s1"): ValueReview("safe")}
+        result, _ = BIDSDataset._apply_column_value_reviews(df, {"free_text"}, verdicts)
+        assert result.loc[0, "free_text"] == "a" and pd.isna(result.loc[1, "free_text"])
+
     def test_drop_nulls_value(self):
         df = pd.DataFrame({
             "participant_id": ["p1"],
             "free_text": ["PII content"],
         })
-        verdicts = {("p1", "free_text"): "drop"}
+        verdicts = {("p1", "free_text", None): ValueReview("drop")}
         result, _ = BIDSDataset._apply_column_value_reviews(
             df, {"free_text"}, verdicts
         )
@@ -1411,7 +1464,7 @@ class TestApplyColumnValueReviews:
             "participant_id": ["p1", "p2"],
             "free_text": ["reviewed", "unreviewed"],
         })
-        verdicts = {("p1", "free_text"): "safe"}  # p2 has no verdict
+        verdicts = {("p1", "free_text", None): ValueReview("safe")}  # p2 has no verdict
         result, _ = BIDSDataset._apply_column_value_reviews(
             df, {"free_text"}, verdicts
         )
@@ -1424,7 +1477,7 @@ class TestApplyColumnValueReviews:
             "reviewed_col": ["has verdict"],
             "unreviewed_col": ["no verdicts at all"],
         })
-        verdicts = {("p1", "reviewed_col"): "safe"}
+        verdicts = {("p1", "reviewed_col", None): ValueReview("safe")}
         result, dropped = BIDSDataset._apply_column_value_reviews(
             df, {"reviewed_col", "unreviewed_col"}, verdicts
         )
