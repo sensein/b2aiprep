@@ -12,11 +12,13 @@ from importlib.resources import files
 import pytest
 
 from b2aiprep.prepare.fhir_utils import (
-    convert_response_to_bids_metadata,
     _classify_speech_type,
-    _stimulus_text_from_questionnaire,
     _resolve_prompt_ref,
+    _resolve_task_registry,
+    _stimulus_text_from_questionnaire,
+    convert_response_to_bids_metadata,
 )
+from b2aiprep.prepare.utils import canonical_task_entity
 
 
 @pytest.fixture(scope="module")
@@ -126,6 +128,13 @@ def test_registry_cape_v_version_index_fix(descriptions):
     v2 = _resolve(descriptions, "Cape-V-sentences-2-(v2)")
     assert v1["stimulus_text"] == "How hard did he hit him?"
     assert v2["stimulus_text"] == "He helped her hurry home."
+
+
+def test_sidecar_task_name_is_the_file_name_entity(descriptions):
+    # The sidecar's task_name matches the file name and acoustic_task.tsv; the version marker
+    # in the raw name still drives resolution (see test_registry_cape_v_version_index_fix).
+    assert _resolve(descriptions, "Diadochokinesis-(v2)-PUH")["task_name"] == "diadochokinesis-v2-puh"
+    assert _resolve(descriptions, "Cape-V-sentences-2-(v2)")["task_name"] == "cape-v-sentences-v2-2"
 
 
 def test_diadochokinesis_v1_curated_instruction(descriptions):
@@ -641,14 +650,14 @@ def test_metadata_bundle_tsv_null_equivalence(descriptions):
     hdr = tsv.splitlines()[0].split("\t")
     ci, ti = hdr.index("stimulus_asset_n_images"), hdr.index("task_name")
     cells = {ln.split("\t")[ti]: ln.split("\t")[ci] for ln in tsv.splitlines()[1:]}
-    assert cells["story-recall-(v2)"] == "10"
+    assert cells["story-recall-v2"] == "10"
     assert cells["identifying-pictures-10"] == ""
     assert cells["rainbow-passage"] == ""
 
     rt = pd.read_csv(io.StringIO(tsv), sep="\t")
     by = {r["task_name"]: r for _, r in rt.iterrows()}
-    assert int(by["story-recall-(v2)"]["stimulus_asset_n_images"]) == 10
-    assert "{n}" in by["story-recall-(v2)"]["stimulus_asset"]
+    assert int(by["story-recall-v2"]["stimulus_asset_n_images"]) == 10
+    assert "{n}" in by["story-recall-v2"]["stimulus_asset"]
     # absent-key sidecars -> null table cells (== absent)
     assert pd.isna(by["identifying-pictures-10"]["stimulus_asset_n_images"])
     assert pd.isna(by["rainbow-passage"]["stimulus_asset_n_images"])
@@ -669,3 +678,35 @@ def test_asset_url_defers_n_templates_to_sequence():
     # single image still resolves via _asset_url (shared builder, '{i}' index)
     single = {"asset_repo": "r", "asset_commit": "c", "asset_path": "docs/pic_{i:02d}.jpg"}
     assert _asset_url(single, "pic-3").endswith("/docs/pic_03.jpg")
+
+
+def test_high_to_low_resolves_to_the_glides_task():
+    """The bare "High to Low" is the Glides pair's second half.
+
+    43 adult recordings carry it; every one of those sessions also holds
+    "Glides-Low to High" and none holds "Glides-High to Low". Before the alias it
+    resolved to no task at all, so those recordings got no registry instructions,
+    prompt, or speech_type.
+    """
+    assert canonical_task_entity("High to Low") == "glides-high-to-low"
+    bare = _resolve_task_registry(canonical_task_entity("High to Low"), population="adult")
+    prefixed = _resolve_task_registry(
+        canonical_task_entity("Glides-High to Low"), population="adult"
+    )
+    assert bare is not None and prefixed is not None
+    assert bare[0]["task_id"] == prefixed[0]["task_id"] == "adult.glides"
+
+
+def test_registry_resolution_is_unchanged_for_non_aliased_names():
+    """Routing resolution through the alias table must not perturb anything else."""
+    for name in (
+        "Prolonged vowel",
+        "Cape V sentences (v2)-1",
+        "Harvard Sentences-List 1-10",
+        "Glides-Low to High",
+    ):
+        aliased = _resolve_task_registry(canonical_task_entity(name), population="adult")
+        plain = _resolve_task_registry(name.replace(" ", "-").lower(), population="adult")
+        assert (aliased is None) == (plain is None), name
+        if aliased is not None:
+            assert aliased[0]["task_id"] == plain[0]["task_id"], name

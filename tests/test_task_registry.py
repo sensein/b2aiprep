@@ -8,6 +8,7 @@ behavior (parity, curated fixes, version fix) lives in ``test_task_prompts.py``.
 
 import json
 from importlib.resources import files
+from pathlib import Path
 
 import pytest
 
@@ -18,6 +19,8 @@ from b2aiprep.prepare.fhir_utils import (
     _resolve_prompt_ref,
     _resolve_task_registry,
 )
+from b2aiprep.prepare.utils import load_recording_name_aliases, normalize_task_label
+
 
 VALID_SPEECH_TYPES = {"read", "recall", "elicited", "non-lexical"}
 VALID_INSTR_SOURCES = {"curated", "harvested", ""}
@@ -119,3 +122,21 @@ def test_banks_have_expected_counts():
     assert len(reading["sentences"]) == 11
     repeating = json.loads(reg_dir.joinpath("repeating_sentences_bank.json").read_text())
     assert len(repeating["sentences"]) == 6
+
+
+def test_alias_table_is_well_formed_and_resolves():
+    aliases = load_recording_name_aliases()
+    assert aliases, "expected curated aliases (at least the CAPE-V ordering variants)"
+    for variant, canonical in aliases.items():
+        assert normalize_task_label(variant) == variant, variant
+        assert normalize_task_label(canonical) == canonical, canonical
+        assert canonical not in aliases, f"alias chain: {variant} -> {canonical} -> {aliases[canonical]}"
+        # the canonical label must be a task the registry knows
+        resolved = _resolve_task_registry(canonical)
+        assert resolved is not None, f"{canonical} resolves to no registry task"
+
+
+def test_alias_file_documents_itself():
+    resource = Path(__file__).resolve().parents[1] / "src/b2aiprep/prepare/resources/task_registry/recording_name_aliases.json"
+    data = json.loads(resource.read_text(encoding="utf-8"))
+    assert "_comment" in data

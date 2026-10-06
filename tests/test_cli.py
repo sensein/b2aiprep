@@ -11,12 +11,17 @@ import json
 import pytest
 import torch
 import pandas as pd
-import shutil
 from unittest.mock import patch, MagicMock
 from click.testing import CliRunner
 
-from b2aiprep.commands import create_subject_splits, deidentify_bids_dataset
-from b2aiprep.prepare.dataset import BIDSDataset
+from b2aiprep.commands import (
+    _unreleasable_columns,
+    create_subject_splits,
+    deidentify_bids_dataset,
+    redcap2bids,
+    validate_bundled_dataset,
+)
+from b2aiprep.prepare.dataset import AccessTier, BIDSDataset, DispositionLevel, SessionLabels
 
 class TestDeidentifyCommand:
     """Test cases for the deidentify_bids_dataset command."""
@@ -38,7 +43,7 @@ class TestDeidentifyCommand:
                 {"linkId": "session_id", "answer": [{"valueString": "s1"}]},
             ]})
         )
-        pd.DataFrame({"record_id": ["p1"], "session_id": ["s1"]}).to_csv(
+        pd.DataFrame({"record_id": ["p1"], "session_id": ["s1"], "session_index": ["1"]}).to_csv(
             bids_path / "sub-p1" / "sessions.tsv", sep="\t", index=False
         )
 
@@ -73,7 +78,19 @@ class TestDeidentifyCommand:
             assert result.exit_code == 0
             
             # Check that deidentify was called with correct parameters
-            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, deidentify_config_dir=Path(setup_publish_config), skip_audio=False, skip_audio_features=False, max_workers=16)
+            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, deidentify_config_dir=Path(setup_publish_config), skip_audio=False, skip_audio_features=False, max_workers=16, disposition_level=None, keep_shifted_dates=False, session_labels=SessionLabels.ORDINAL, session_id_map=None)
+
+    def test_deidentify_command_passes_qa_and_session_options(self, temp_bids_dir, temp_output_dir,
+                                                              setup_publish_config, tmp_path):
+        session_map = tmp_path / "map.json"
+        with patch.object(BIDSDataset, "deidentify") as mock_deidentify:
+            result = CliRunner().invoke(deidentify_bids_dataset, [
+                temp_bids_dir, temp_output_dir, str(setup_publish_config), "--disposition-level", "internal",
+                "--keep-shifted-dates", "--session-labels", "index", "--session-id-map", str(session_map)])
+        assert result.exit_code == 0, result.output
+        kwargs = mock_deidentify.call_args.kwargs
+        assert kwargs["disposition_level"] is DispositionLevel.INTERNAL and kwargs["keep_shifted_dates"] is True
+        assert kwargs["session_labels"] is SessionLabels.INDEX and Path(kwargs["session_id_map"]) == session_map
 
     def test_deidentify_command_help_text(self):
         """Test that the help text is updated correctly."""
@@ -92,6 +109,8 @@ class TestDeidentifyCommand:
     def test_deidentify_command_integration(self, temp_bids_dir, temp_output_dir, setup_publish_config):
         """Integration test for the deidentify command without mocking."""
         runner = CliRunner()
+        # deidentify refuses an allowlisted participant without a pseudonym
+        (setup_publish_config / "id_remapping.json").write_text(json.dumps({"p1": "p1"}))
         setup_publish_config = setup_publish_config.as_posix()
         
         # Run the command without mocking (will use actual implementation)
@@ -100,8 +119,10 @@ class TestDeidentifyCommand:
         # Check that the command succeeded
         assert result.exit_code == 0
         
-        # Check that output directory was created
-        assert Path(temp_output_dir).exists()
+        out = Path(temp_output_dir) / "sub-p1"
+        assert (out / "ses-01" / "audio" / "sub-p1_ses-01_task-test.wav").exists()
+        assert (out / "ses-01" / "audio" / "sub-p1_ses-01_task-test.json").exists()
+        assert (out / "sub-p1_sessions.tsv").exists()
 
 
 def create_dummy_wav_file(filepath, duration_seconds=1.0, sample_rate=16000):
@@ -186,6 +207,7 @@ def setup_bids_structure():
         session_data = {
             "record_id": ["001"],
             "session_id": ["001"],
+            "session_index": ["1"],
         }
         session_df = pd.DataFrame(session_data)
 
@@ -278,6 +300,7 @@ def setup_bids_structure_with_nan_feature():
         session_data = {
             "record_id": ["001"],
             "session_id": ["001"],
+            "session_index": ["1"],
         }
         session_df = pd.DataFrame(session_data)
 
@@ -370,6 +393,7 @@ def setup_bids_structure_after_deidentify():
         session_data = {
             "record_id": ["001"],
             "session_id": ["001"],
+            "session_index": ["1"],
         }
         session_df = pd.DataFrame(session_data)
 
@@ -460,7 +484,7 @@ def test_redcap2bids_cli(setup_temp_files):
     """Test the 'b2aiprep-cli redcap2bids' command using subprocess."""
     redcap_csv_path, audio_dir, _, _ = setup_temp_files
 
-    with tempfile.TemporaryDirectory() as outdir:
+    with tempfile.TemporaryDirectory() as outdir, tempfile.TemporaryDirectory() as logdir:
         command = [
             "b2aiprep-cli",
             "redcap2bids",
@@ -469,11 +493,23 @@ def test_redcap2bids_cli(setup_temp_files):
             outdir,
             "--audiodir",
             audio_dir,
+            "--date-shift-anchor",
+            "2100-01-01",
+            "--date-shift-log",
+            os.path.join(logdir, "date_shift.json"),
         ]
 
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert os.path.exists(outdir), "Output directory was not created"
+        with open(os.path.join(logdir, "date_shift.json")) as f:
+            assert json.load(f)["anchor"] == "2100-01-01"
+
+
+def test_redcap2bids_fails_without_a_date_shift_anchor(setup_temp_files, tmp_path):
+    redcap_csv_path, _, _, _ = setup_temp_files
+    result = CliRunner().invoke(redcap2bids, [redcap_csv_path, "--outdir", str(tmp_path / "out")])
+    assert result.exit_code == 2 and "--date-shift-anchor" in result.output
 
 
 def test_create_bundled_dataset_cli(setup_bids_structure):
@@ -512,68 +548,6 @@ def test_create_bundled_dataset_cli_with_sensitive(setup_bids_structure_after_de
         assert os.path.exists(outdir), "Output directory was not created"
 
 
-def test_validate_bundled_dataset_cli(setup_publish_config):
-    """Test the 'b2aiprep-cli validate-bundled-dataset' command using subprocess."""
-    with tempfile.TemporaryDirectory() as temp_dir:
-        dataset_dir = Path(temp_dir)
-        features_dir = dataset_dir / "features"
-        features_dir.mkdir()
-        phenotype_dir = dataset_dir / "phenotype"
-        phenotype_dir.mkdir()
-
-        task_dir = phenotype_dir / "task"
-        task_dir.mkdir(parents=True, exist_ok=True)
-
-        # Create minimal bundled dataset structure
-        df = pd.DataFrame({"participant_id": ["sub-01"], "task_name": ["test"], "session_id": ["ses-01"]})
-        df.to_parquet(features_dir / "torchaudio_spectrogram.parquet")
-        df.to_parquet(features_dir / "torchaudio_mfcc.parquet")
-        
-        (features_dir / "static_features.tsv").write_text("participant_id\tsession_id\ntest\tses-01")
-        (features_dir / "static_features.json").write_text('{"participant_id": "test"}')
-        
-        (task_dir / "session.tsv").write_text("session_id\nses-01")
-
-        command = ["b2aiprep-cli", "validate-bundled-dataset", str(dataset_dir), str(setup_publish_config)]
-
-        result = subprocess.run(command, capture_output=True, text=True)
-        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
-
-
-def test_validate_bundled_dataset_cli_missing_static_features_fails(setup_publish_config):
-    """Missing static_features.tsv should fail validate-bundled-dataset."""
-    with tempfile.TemporaryDirectory() as temp_dir:
-        dataset_dir = Path(temp_dir)
-        features_dir = dataset_dir / "features"
-        features_dir.mkdir()
-        phenotype_dir = dataset_dir / "phenotype"
-        phenotype_dir.mkdir()
-
-        task_dir = phenotype_dir / "task"
-        task_dir.mkdir(parents=True, exist_ok=True)
-
-        df = pd.DataFrame({"participant_id": ["sub-01"], "task_name": ["task1"], "session_id": ["ses-01"]})
-        df.to_parquet(features_dir / "torchaudio_spectrogram.parquet")
-        df.to_parquet(features_dir / "torchaudio_mfcc.parquet")
-
-        # Intentionally omit static_features.tsv
-        (features_dir / "static_features.json").write_text('{"participant_id": "test"}')
-        (task_dir / "session.tsv").write_text("session_id\nses-01")
-
-        command = [
-            "b2aiprep-cli",
-            "validate-bundled-dataset",
-            str(dataset_dir),
-            str(setup_publish_config),
-        ]
-
-        result = subprocess.run(command, capture_output=True, text=True)
-        combined = (result.stdout or "") + (result.stderr or "")
-        assert result.returncode != 0
-        assert "Validation FAILED" in combined
-        assert "static_features.tsv" in combined
-
-
 def test_deidentify_bids_dataset_cli_id_rename(
     setup_bids_structure, setup_publish_config, tmp_path
 ):
@@ -585,10 +559,10 @@ def test_deidentify_bids_dataset_cli_id_rename(
     # Create phenotype directory structure
     phenotype_dir = bids_dir / "phenotype"
     phenotype_dir.mkdir()
-    (phenotype_dir / "questionnaire1.tsv").write_text(
+    (phenotype_dir / "confounders.tsv").write_text(
         "participant_id\trecord_id\ntest\trec-test"
     )
-    (phenotype_dir / "questionnaire1.json").write_text(
+    (phenotype_dir / "confounders.json").write_text(
         '{"participant_id": {"Description": "Participant identifier"}, '
         '"record_id": {"Description": "Record identifier"}}'
     )
@@ -629,10 +603,10 @@ def test_deidentify_bids_dataset_cli_remove_audio(
     # Create phenotype directory structure
     phenotype_dir = bids_dir / "phenotype"
     phenotype_dir.mkdir()
-    (phenotype_dir / "questionnaire1.tsv").write_text(
+    (phenotype_dir / "confounders.tsv").write_text(
         "participant_id\trecord_id\ntest\trec-test"
     )
-    (phenotype_dir / "questionnaire1.json").write_text(
+    (phenotype_dir / "confounders.json").write_text(
         '{"participant_id": {"Description": "Participant identifier"}, '
         '"record_id": {"Description": "Record identifier"}}'
     )
@@ -654,6 +628,8 @@ def test_deidentify_bids_dataset_cli_remove_audio(
     audio_to_remove_path = config_dir / "audio_filestems_to_remove.json"
     with open(audio_to_remove_path, "w") as f:
         json.dump(["sub-001_ses-001_task-reading"], f, indent=2)
+    (config_dir / "id_remapping.json").write_text(json.dumps({"001": "001"}))  # deidentify requires a pseudonym
+    (config_dir / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
 
     # Match the task names used in setup_bids_structure + extra task below
     with open(config_dir / "audio_tasks_to_include.json", "w") as f:
@@ -782,7 +758,6 @@ def test_reproschema_to_redcap_cli():
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert output_dir.exists(), "Output directory was not created"
-
 
 
 def test_generate_id_lookup_table_cli():
@@ -968,3 +943,153 @@ class TestCreateSubjectSplits:
         assert result.exit_code == 0
         assert "num_participants_per_file" in result.output
         assert "id_column" in result.output
+
+
+# --- validate-bundled-dataset ---------------------------------------------------------------
+
+def _bundle(root, phenotype_participants=("005009",), session_columns=(), sessions=(("005009", "01"),),
+            tables=None, omit=()):
+    """A minimal bundle in v4 naming (zero-padded pseudonyms, ordinal session labels).
+
+    Features hold one row for 005009 / 01. *tables*: {"group/name": (DataFrame, sidecar or None)}.
+    """
+    features, task = root / "features", root / "phenotype" / "task"
+    features.mkdir(parents=True)
+    task.mkdir(parents=True)
+    df = pd.DataFrame({"participant_id": ["005009"], "task_name": ["test"], "session_id": ["01"]})
+    df.to_parquet(features / "torchaudio_spectrogram.parquet")
+    df.to_parquet(features / "torchaudio_mfcc.parquet")
+    if "static_features.tsv" not in omit:
+        (features / "static_features.tsv").write_text("participant_id\tsession_id\n005009\t01\n")
+    (features / "static_features.json").write_text("{}")
+    pd.DataFrame({"participant_id": [p for p, _ in sessions], "session_id": [s for _, s in sessions],
+                  **{c: ["x"] * len(sessions) for c in session_columns}}).to_csv(
+        task / "session.tsv", sep="\t", index=False)
+    pd.DataFrame({"participant_id": list(phenotype_participants)}).to_csv(
+        root / "phenotype" / "demographics.tsv", sep="\t", index=False)
+    for path, (table, sidecar) in (tables or {}).items():
+        target = root / "phenotype" / f"{path}.tsv"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        table.to_csv(target, sep="\t", index=False)
+        if sidecar is not None:
+            target.with_suffix(".json").write_text(json.dumps(sidecar))
+    return root
+
+
+def _allowlist_config(root, verdicts=None):
+    """A v4 deidentify config: an allowlist, no participants_to_remove.json."""
+    root.mkdir()
+    (root / "participants_to_include.json").write_text(json.dumps(["p1", "p2"]))
+    (root / "id_remapping.json").write_text(json.dumps({"p1": "005009", "p2": "005010"}))
+    (root / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
+    (root / "audio_tasks_to_include.json").write_text(json.dumps(["test"]))
+    if verdicts is not None:
+        (root / "column_value_reviews.json").write_text(json.dumps({"verdicts": verdicts}))
+    return root
+
+
+def _validate(bundle, config):
+    return CliRunner().invoke(validate_bundled_dataset, [str(bundle), str(config)])
+
+
+def test_validate_bundled_dataset_passes_a_release_bundle(tmp_path):
+    bundle = _bundle(tmp_path / "bundle", ["005009", "005010"],
+                     session_columns=["session_status", "session_index", "session_local_hour"])
+    result = _validate(bundle, _allowlist_config(tmp_path / "cfg"))
+    assert result.exit_code == 0, result.output
+    assert "PASSED" in result.output
+
+
+def test_validate_bundled_dataset_with_a_removal_list_config(tmp_path, setup_publish_config):
+    """The older participants_to_remove.json config (no allowlist) still validates."""
+    result = _validate(_bundle(tmp_path / "bundle"), setup_publish_config)
+    assert result.exit_code == 0, result.output
+
+
+def test_validate_bundled_dataset_flags_a_pseudonym_not_on_the_allowlist(tmp_path):
+    """Leading-zero pseudonyms such as 005009 and '01' session labels are read as text and still match."""
+    result = _validate(_bundle(tmp_path / "bundle", ["005009", "089247"]), _allowlist_config(tmp_path / "cfg"))
+    assert result.exit_code != 0
+    assert "should not be released in demographics.tsv: 1" in result.output
+    assert "not found in" not in result.output
+
+
+def test_validate_bundled_dataset_fails_without_static_features(tmp_path):
+    result = _validate(_bundle(tmp_path / "bundle", omit=("static_features.tsv",)), _allowlist_config(tmp_path / "cfg"))
+    assert result.exit_code != 0
+    assert "Missing required file in features/: static_features.tsv" in result.output
+
+
+def test_validate_bundled_dataset_fails_without_allowlist_or_removal_list(tmp_path):
+    cfg = tmp_path / "cfg"
+    cfg.mkdir()
+    (cfg / "id_remapping.json").write_text("{}")
+    (cfg / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
+    (cfg / "audio_tasks_to_include.json").write_text(json.dumps(["test"]))
+    result = _validate(_bundle(tmp_path / "bundle"), cfg)
+    assert result.exit_code != 0 and "config file not found" in result.output
+    assert "participants_to_remove.json" in result.output
+
+
+@pytest.mark.parametrize("column", ["session_started_at", "session_complete", "session_site", "not_a_field",
+                                    "record_id"])
+def test_validate_bundled_dataset_fails_on_columns_a_release_must_not_have(tmp_path, column):
+    """Internal, drop, date-shifted, unknown, and the original participant ID."""
+    result = _validate(_bundle(tmp_path / "bundle", session_columns=[column]), _allowlist_config(tmp_path / "cfg"))
+    assert result.exit_code != 0 and column in result.output
+
+
+@pytest.mark.parametrize("verdicts, passes", [
+    (None, False),
+    ([{"participant_id": "p1", "column_name": "other_voice_activity", "verdict": "safe"}], True),
+], ids=["unreviewed", "reviewed"])
+def test_validate_bundled_dataset_allows_a_review_column_only_with_verdicts(tmp_path, verdicts, passes):
+    """other_voice_activity is a review column (shipped field map)."""
+    bundle = _bundle(tmp_path / "bundle", tables={"confounders/confounders": (pd.DataFrame(
+        {"participant_id": ["005009"], "other_voice_activity": ["x"]}), None)})
+    result = _validate(bundle, _allowlist_config(tmp_path / "cfg", verdicts))
+    assert (result.exit_code == 0) is passes, result.output
+    if not passes:
+        assert "other_voice_activity" in result.output
+
+
+def test_unreleasable_columns_flags_controlled_only_columns_outside_the_controlled_tier(tmp_path):
+    fm = pd.DataFrame({"schema_name": ["t", "t"], "column_name": ["a", "b"], "disposition": ["release", "release"],
+                       "date_shift": ["NO", "NO"], "access_tier": ["", "controlled"]})
+    tsv = tmp_path / "t.tsv"
+    assert any("controlled-only" in i and "b" in i for i in _unreleasable_columns(tsv, ["participant_id", "a", "b"], fm))
+    assert _unreleasable_columns(tsv, ["participant_id", "a", "b"], fm, AccessTier.CONTROLLED) == []
+
+
+def test_validate_bundled_dataset_compares_sessions_per_participant(tmp_path):
+    """Ordinal labels repeat across participants: 005009's session 01 is not 005010's."""
+    bundle = _bundle(tmp_path / "bundle", ["005009", "005010"], sessions=(("005010", "01"),))
+    result = _validate(bundle, _allowlist_config(tmp_path / "cfg"))
+    assert result.exit_code != 0 and "torchaudio_mfcc.parquet not found in session.tsv" in result.output
+
+
+def test_validate_bundled_dataset_needs_participant_id_in_session_tsv(tmp_path):
+    bundle = _bundle(tmp_path / "bundle")
+    (bundle / "phenotype" / "task" / "session.tsv").write_text("session_id\n01\n")
+    result = _validate(bundle, _allowlist_config(tmp_path / "cfg"))
+    assert result.exit_code != 0 and "missing required column(s) participant_id" in result.output
+
+
+# ph_walking has answer choices; other_voice_activity is free text (a review column)
+@pytest.mark.parametrize("ph_walking, free_text, passes", [
+    ("None", "Mild", False),  # an answer choice that readers drop as missing
+    ("Mild", "N/A", True),    # typed free text is left as written
+], ids=["answer-choice", "free-text"])
+def test_validate_bundled_dataset_flags_answer_choices_readers_take_for_missing(tmp_path, ph_walking, free_text,
+                                                                                passes):
+    sidecar = {"confounders": {"data_elements": {
+        "ph_walking": {"choices": [{"name": {"en": "None"}, "value": "none"}, {"name": {"en": "Mild"}, "value": "mild"}]},
+        "other_voice_activity": {"description": "free text"}}}}
+    bundle = _bundle(tmp_path / "bundle", tables={"confounders/confounders": (pd.DataFrame(
+        {"participant_id": ["005009"], "ph_walking": [ph_walking], "other_voice_activity": [free_text]}), sidecar)})
+    verdicts = [{"participant_id": "p1", "column_name": "other_voice_activity", "verdict": "safe"}]
+    result = _validate(bundle, _allowlist_config(tmp_path / "cfg", verdicts))
+    assert (result.exit_code == 0) is passes, result.output
+    if not passes:
+        assert "ph_walking (1)" in result.output and "other_voice_activity (" not in result.output
+

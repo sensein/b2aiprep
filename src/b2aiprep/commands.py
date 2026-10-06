@@ -22,7 +22,7 @@ from tqdm import tqdm
 from b2aiprep.prepare.bids import get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.constants import RepeatInstrument
 from b2aiprep.prepare.redcap import RedCapDataset
-from b2aiprep.prepare.dataset import BIDSDataset, _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
+from b2aiprep.prepare.dataset import AccessTier, BIDSDataset, DispositionLevel, SessionLabels, _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
 from b2aiprep.prepare.bundle_data import (
     feature_extraction_generator,
     spectrogram_generator,
@@ -35,7 +35,7 @@ from b2aiprep.prepare.prepare import (
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 
 from b2aiprep.prepare.data_validation import validate_phenotype, validate_no_extra_audio_tasks_present
-from b2aiprep.prepare.utils import normalize_task_label, generate_seed, generate_pseudonym, load_lookup_table, build_lookup_table
+from b2aiprep.prepare.utils import TaskMatcher, normalize_task_label, generate_seed, generate_pseudonym, load_lookup_table, build_lookup_table
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
@@ -110,12 +110,45 @@ def dashboard(bids_dir: str):
 @click.option("--audiodir", type=click.Path(), default=None, show_default=True)
 @click.option("--max-audio-workers", type=int, default=16, show_default=True, help="Number of parallel threads for audio file copying")
 @click.option("--sanitize_audio_format/--no-sanitize_audio_format", type=bool, default=False, show_default=True)
+@click.option(
+    "--date-shift-anchor",
+    type=click.DateTime(formats=["%Y-%m-%d"]),
+    required=True,
+    help="Date (YYYY-MM-DD) each participant's earliest session is shifted to, within three days. "
+    "No default, so every build states its anchor explicitly.",
+)
+@click.option(
+    "--date-shift-log",
+    type=click.Path(dir_okay=False),
+    default=None,
+    help="Also write the date-shift report (anchor and counts) as JSON here. Must be outside "
+    "--outdir. The report is always logged.",
+)
+@click.option(
+    "--skip-audio-copy",
+    is_flag=True,
+    default=False,
+    help="Resolve source audio and write every sidecar and sessions.tsv, but copy no audio files. "
+    "For metadata-only builds; not for a release.",
+)
+@click.option(
+    "--supplement",
+    "supplements",
+    type=click.Path(exists=True, dir_okay=False),
+    multiple=True,
+    help="CSV shaped like a RedCap export (record_id, optional redcap_repeat_instrument) adding "
+    "fields RedCap does not hold yet. May be given more than once.",
+)
 def redcap2bids(
     filename,
     outdir,
     audiodir,
     max_audio_workers,
     sanitize_audio_format,
+    date_shift_anchor,
+    date_shift_log,
+    skip_audio_copy,
+    supplements,
 ):
     """Parses a RedCap CSV and a folder of audio files into the Brain Imaging Data Structure (BIDS) format.
 
@@ -127,6 +160,8 @@ def redcap2bids(
                                   If not provided, only the REDCap data is processed.
         max_audio_workers (int, optional): Number of parallel threads for audio copying. Defaults to 16.
         sanitize_audio_format (bool, optional): Standardize the audio to 16KHz, mono-channel. Default False.
+        date_shift_anchor (datetime): Anchor date for per-participant date shifting.
+        date_shift_log (str, optional): Also write the date-shift report here, outside ``outdir``.
 
     Raises:
         ValueError: If the specified output directory path exists but is not a directory.
@@ -141,13 +176,18 @@ def redcap2bids(
     if audiodir is not None:
         audiodir = Path(audiodir)
     redcap_dataset = RedCapDataset.from_redcap(filename)
-    
+    for supplement in supplements:
+        redcap_dataset.add_supplement(supplement)
+
     BIDSDataset.from_redcap(
         redcap_dataset,
         outdir=Path(outdir),
         audiodir=audiodir,
         max_audio_workers=max_audio_workers,
-        sanitize_audio_format=sanitize_audio_format
+        sanitize_audio_format=sanitize_audio_format,
+        date_shift_anchor=date_shift_anchor.date(),
+        date_shift_log=date_shift_log,
+        skip_audio_copy=skip_audio_copy,
     )
 
 @click.command()
@@ -645,6 +685,43 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     )
 
 
+def _unreleasable_columns(tsv_file, columns, field_map, access_tier=AccessTier.REGISTERED,
+                          reviewed_columns=frozenset()):
+    """Issues for columns a release must not contain: internal, drop, date-shifted, unknown,
+    (outside the controlled tier) ``access_tier=controlled``, a review column with no verdict in
+    the config's ``column_value_reviews.json`` (*reviewed_columns*), or ``record_id``.
+
+    Deidentify drops a review column that has no verdicts, so one in a bundle came from a QA
+    build (``--disposition-level review``) and holds unreviewed values.
+
+    A table is matched to its field-map rows by file name (``demographics.tsv`` -> table
+    ``demographics``), as deidentify writes it. Nothing on disk marks a QA build
+    (``--disposition-level internal/review``, ``--keep-shifted-dates``), so this is what stops
+    one from passing as a release.
+    """
+    table = tsv_file.stem
+    rows = field_map.loc[field_map["schema_name"] == table]
+    if rows.empty:
+        return [f"{tsv_file.name}: table {table!r} is not in the field map"]
+    published = (
+        rows["disposition"].eq("release")
+        | (rows["disposition"].eq("review") & rows["column_name"].isin(set(reviewed_columns)))
+    ) & (rows["date_shift"].astype(str).str.upper() != "YES")
+    if access_tier != AccessTier.CONTROLLED and "access_tier" in rows.columns:
+        published &= ~rows["access_tier"].fillna("").astype(str).str.strip().str.lower().eq("controlled")
+    allowed = set(rows.loc[published, "column_name"].dropna())
+    known = set(rows["column_name"].dropna())
+    ids = {"participant_id"}  # record_id is the original ID; deidentify writes participant_id
+    withheld = sorted(c for c in columns if c in known and c not in allowed and c not in ids)
+    unknown = sorted(c for c in columns if c not in known and c not in ids)
+    issues = []
+    if withheld:
+        issues.append(f"{tsv_file.name}: {len(withheld)} internal/drop/date/controlled-only/unreviewed column(s) present: {', '.join(withheld)}")
+    if unknown:
+        issues.append(f"{tsv_file.name}: {len(unknown)} column(s) not in the field map: {', '.join(unknown)}")
+    return issues
+
+
 @click.command()
 @click.argument("dataset_path", type=click.Path(exists=True))
 @click.argument("config_dir", type=click.Path(exists=True))
@@ -663,8 +740,16 @@ def validate_bundled_dataset(dataset_path, config_dir):
     """
     dataset_path = Path(dataset_path)
     config_dir = Path(config_dir)
+    # The tier the config builds; without deidentify_settings.json, the registered (narrower) rules.
+    access_tier = (
+        BIDSDataset._load_deidentify_settings(config_dir)["access_tier"]
+        if (config_dir / "deidentify_settings.json").exists() else AccessTier.REGISTERED
+    )
 
-    click.echo(f"Validating bundled dataset at {dataset_path}")
+    # Review columns may be published only where the config's review manifest has verdicts.
+    reviewed_columns = {col for _, col in BIDSDataset._load_column_value_reviews(config_dir)}
+
+    click.echo(f"Validating bundled dataset at {dataset_path} (access tier: {access_tier.value})")
 
     issues: t.List[str] = []
     
@@ -691,39 +776,59 @@ def validate_bundled_dataset(dataset_path, config_dir):
     if not phenotype_dir.exists():
         issues.append("Phenotype directory missing")
 
-    # 2. Load config
+    # 2. Load config. Participants are checked against the allowlist (participants_to_include.json,
+    # as deidentify uses it), or else against the older removal list.
     try:
-        with open(config_dir / "participants_to_remove.json") as f:
-            participants_to_remove = set(json.load(f))
-        
-        with open(config_dir / "audio_tasks_to_include.json") as f:
-            audio_task_to_include = set(json.load(f))
-            audio_task_to_include_normalized = {
-                normalize_task_label(task)
-                for task in audio_task_to_include
-                if isinstance(task, str) and task.strip()
-            }
-            
         with open(config_dir / "id_remapping.json") as f:
             id_remapping = json.load(f)
             original_ids = set(id_remapping.keys())
+        include_path = config_dir / "participants_to_include.json"
+        remove_path = config_dir / "participants_to_remove.json"
+        allowed_released: t.Optional[set] = None
+        participants_to_remove: set = set()
+        if include_path.exists():
+            with open(include_path) as f:
+                allowed_released = {str(id_remapping.get(p, p)) for p in json.load(f)}
+        else:
+            with open(remove_path) as f:
+                removed = [str(p) for p in json.load(f)]
+            # Removed participants would appear under their released pseudonym, if anywhere.
+            participants_to_remove = set(removed) | {str(id_remapping.get(p, p)) for p in removed}
+
+        with open(config_dir / "audio_tasks_to_include.json") as f:
+            audio_task_to_include = set(json.load(f))
+            # Exact labels, globs and regexes, as deidentify matches them.
+            audio_task_to_include_normalized = TaskMatcher(
+                task for task in audio_task_to_include if isinstance(task, str) and task.strip()
+            )
     except FileNotFoundError as e:
-        click.echo(f"ERROR: Config file not found: {e}")
-        return
+        click.echo(f"\nValidation FAILED: config file not found: {e}")
+        raise SystemExit(1)
+
+    def _unexpected_participants(present: set) -> set:
+        """Participants that should not be in the release."""
+        present = {str(p) for p in present}
+        if allowed_released is not None:
+            return present - allowed_released
+        return present & participants_to_remove
 
     # 3. Check participants and tasks in Parquet files
     parquet_files = list(features_dir.glob("*.parquet"))
     if not parquet_files:
         issues.append("No parquet files found in features directory")
 
-    # Capture parquet session IDs for cross-checks (best-effort).
-    parquet_sessions_all: set[str] = set()
+    # Sessions are compared as (participant_id, session_id): ordinal labels (01, 02, ...) repeat
+    # across participants, so bare session IDs would match almost anything.
+    def _session_keys(df: pd.DataFrame) -> set:
+        df = df.dropna(subset=["session_id"])
+        return set(zip(df["participant_id"].astype(str), df["session_id"].astype(str)))
+
+    # Capture parquet sessions for cross-checks (best-effort).
+    parquet_sessions_all: set = set()
     for parquet_file in parquet_files:
         try:
-            df_sessions = pd.read_parquet(parquet_file, columns=["session_id"])
             parquet_sessions_all.update(
-                [str(v) for v in df_sessions.get("session_id", pd.Series(dtype=str)).dropna().unique()]
-            )
+                _session_keys(pd.read_parquet(parquet_file, columns=["participant_id", "session_id"])))
         except Exception:
             continue
 
@@ -732,10 +837,10 @@ def validate_bundled_dataset(dataset_path, config_dir):
             df = pd.read_parquet(parquet_file, columns=["participant_id", "task_name", "session_id"])
             
             # Check participants
-            present_participants = set(df["participant_id"].unique())
-            removed_present = present_participants.intersection(participants_to_remove)
+            present_participants = set(df["participant_id"].dropna().astype(str).unique())
+            removed_present = _unexpected_participants(present_participants)
             if removed_present:
-                issues.append(f"Found participants that should be removed in {parquet_file.name}: {len(removed_present)} participants")
+                issues.append(f"Found participants that should not be released in {parquet_file.name}: {len(removed_present)} participants")
                 
             # Check tasks
             present_tasks = set(df["task_name"].dropna().unique())
@@ -756,15 +861,28 @@ def validate_bundled_dataset(dataset_path, config_dir):
             issues.append(f"Error reading {parquet_file.name}: {e}")
 
     # 4. Check phenotype files
+    field_map = BIDSDataset._load_reorganization_file(exclude_dropped=False)
     if phenotype_dir.exists():
         for tsv_file in phenotype_dir.rglob("*.tsv"):
             try:
-                df = pd.read_csv(tsv_file, sep="\t")
+                if tsv_file.with_suffix(".json").exists():
+                    df, _, _, elements = BIDSDataset.load_phenotype_file(tsv_file.with_suffix(".json"))
+                else:
+                    df, elements = BIDSDataset._read_tsv_as_written(tsv_file), {}
+                issues.extend(_unreleasable_columns(tsv_file, df.columns, field_map, access_tier, reviewed_columns))
+                # An answer choice a default TSV reader takes for missing would be lost by users
+                # (relabel it). Free text is left as typed: a typed "N/A" means no answer anyway.
+                choice_columns = [c for c in df.columns if isinstance(elements.get(c), dict) and elements[c].get("choices")]
+                words = df[choice_columns].apply(lambda col: col.str.strip().isin(BIDSDataset._MISSING_VALUE_WORDS)).sum()
+                words = words[words > 0]
+                if not words.empty:
+                    issues.append(f"{tsv_file.name}: answers that TSV readers read as missing (e.g. 'None'); "
+                                  "relabel them: " + ", ".join(f"{c} ({n})" for c, n in words.items()))
                 if "participant_id" in df.columns:
-                    present_participants = set(df["participant_id"].unique())
-                    removed_present = present_participants.intersection(participants_to_remove)
+                    present_participants = set(df["participant_id"].dropna().unique())
+                    removed_present = _unexpected_participants(present_participants)
                     if removed_present:
-                        issues.append(f"Found participants that should be removed in {tsv_file.name}: {len(removed_present)} participants")
+                        issues.append(f"Found participants that should not be released in {tsv_file.name}: {len(removed_present)} participants")
                     
                     unmapped_present = present_participants.intersection(original_ids)
                     if unmapped_present:
@@ -782,19 +900,18 @@ def validate_bundled_dataset(dataset_path, config_dir):
     sessions_file = next((p for p in sessions_candidates if p.exists()), None)
     if sessions_file is not None:
         try:
-            sessions_df = pd.read_csv(sessions_file, sep="\t")
-            if "session_id" not in sessions_df.columns:
-                issues.append(f"Sessions file missing required column session_id: {sessions_file.as_posix()}")
+            sessions_df = pd.read_csv(sessions_file, sep="\t", dtype=str)
+            missing = [c for c in ("participant_id", "session_id") if c not in sessions_df.columns]
+            if missing:
+                issues.append(f"Sessions file missing required column(s) {', '.join(missing)}: {sessions_file.as_posix()}")
             else:
-                phenotype_sessions = set(sessions_df["session_id"].dropna().astype(str).unique())
+                phenotype_sessions = _session_keys(sessions_df)
 
                 for parquet_file in parquet_files:
                     try:
-                        df = pd.read_parquet(parquet_file, columns=["session_id"])
-                        parquet_sessions = set(df["session_id"].dropna().astype(str).unique())
-
-                        if not parquet_sessions.issubset(phenotype_sessions):
-                            extra = parquet_sessions - phenotype_sessions
+                        df = pd.read_parquet(parquet_file, columns=["participant_id", "session_id"])
+                        extra = _session_keys(df) - phenotype_sessions
+                        if extra:
                             issues.append(
                                 f"Sessions in {parquet_file.name} not found in {sessions_file.name}: {len(extra)} sessions"
                             )
@@ -809,14 +926,14 @@ def validate_bundled_dataset(dataset_path, config_dir):
     static_features_path = features_dir / "static_features.tsv"
     if static_features_path.exists():
         try:
-            static_df = pd.read_csv(static_features_path, sep="\t")
-            if "session_id" not in static_df.columns:
-                issues.append("static_features.tsv missing required column session_id")
+            static_df = pd.read_csv(static_features_path, sep="\t", dtype=str)
+            missing = [c for c in ("participant_id", "session_id") if c not in static_df.columns]
+            if missing:
+                issues.append(f"static_features.tsv missing required column(s) {', '.join(missing)}")
             else:
-                static_sessions = set(static_df["session_id"].dropna().astype(str).unique())
                 reference_sessions = phenotype_sessions if phenotype_sessions is not None else parquet_sessions_all
-                if reference_sessions and not static_sessions.issubset(reference_sessions):
-                    extra = static_sessions - reference_sessions
+                extra = _session_keys(static_df) - (reference_sessions or set())
+                if reference_sessions and extra:
                     issues.append(
                         f"Sessions in static_features.tsv not found in reference sessions: {len(extra)} sessions"
                     )
@@ -846,8 +963,41 @@ def validate_bundled_dataset(dataset_path, config_dir):
 @click.option("--skip_audio/--no-skip_audio", type=bool, default=False, show_default=True, help="Skip processing audio files")
 @click.option("--skip_audio_features/--no-skip_audio_features", type=bool, default=False, show_default=True, help="Skip processing audio feature files")
 @click.option("--max_workers", type=int, default=16, show_default=True, help="Maximum number of worker threads to use")
+@click.option(
+    "--disposition-level",
+    type=click.Choice(["release", "review", "internal"]),
+    default=None,
+    help="QA builds only: keep columns up to this disposition (internal keeps everything; review "
+    "passes unreviewed columns through unchecked). Default: release, or review when a "
+    "column_value_reviews.json manifest is present.",
+)
+@click.option(
+    "--keep-shifted-dates",
+    is_flag=True,
+    default=False,
+    help="QA builds only: keep date_shift=YES columns even when internal columns are removed.",
+)
+@click.option(
+    "--session-labels",
+    type=click.Choice([m.value for m in SessionLabels]),
+    default=SessionLabels.ORDINAL.value,
+    show_default=True,
+    help="How released sessions are named. ordinal: 01, 02, ... in start order over the sessions "
+    "any access tier could release, so tiers share labels. index: the session's number among all its participant's sessions (gaps where "
+    "one is withheld). uuid: first 8 characters of the session ID, as in v3.1.",
+)
+@click.option(
+    "--session-id-map",
+    type=click.Path(dir_okay=False),
+    default=None,
+    help="Write the internal record of each released session's original ID and label here "
+    "(outside OUTDIR; it holds original IDs and is never released). Used to build label "
+    "crosswalks between releases.",
+)
 def deidentify_bids_dataset(
-    bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features, max_workers: int = 16
+    bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features, max_workers: int = 16,
+    disposition_level=None, keep_shifted_dates=False, session_labels=SessionLabels.ORDINAL.value,
+    session_id_map=None,
 ):
     """Creates a deidentified version of a given BIDS dataset.
 
@@ -875,6 +1025,10 @@ def deidentify_bids_dataset(
         skip_audio=skip_audio,
         skip_audio_features=skip_audio_features,
         max_workers=max_workers,
+        disposition_level=DispositionLevel(disposition_level) if disposition_level else None,
+        keep_shifted_dates=keep_shifted_dates,
+        session_labels=SessionLabels(session_labels),
+        session_id_map=session_id_map,
     )
     
     _LOGGER.info("Deidentified dataset created successfully.")

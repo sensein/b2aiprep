@@ -732,3 +732,38 @@ def test_drop_columns_basic():
 
     # Check phenotype
     assert list(result_phenotype.keys()) == ["keep_col1", "keep_col2"]
+
+
+def test_exclusion_matches_across_the_naming_change():
+    """A removal entry written against a pre-normalization tree still matches.
+
+    The list is keyed on file stems, so an entry naming "task-Animal-fluency" has to
+    match the "task-animal-fluency" that redcap2bids now writes -- otherwise a file
+    marked for removal is silently published.
+    """
+    new_style = Path("sub-x/ses-y/audio/sub-x_ses-y_task-animal-fluency.wav")
+    kept = BIDSDataset._apply_exclusion_list_to_filepaths(
+        [new_style],
+        exclusion_list=["sub-x_ses-y_task-Animal-fluency"],
+        exclusion_type="filename",
+    )
+    assert kept == []
+    # a different participant with the same task is untouched: only the task entity
+    # is normalized, never the subject or session
+    other = Path("sub-z/ses-y/audio/sub-z_ses-y_task-animal-fluency.wav")
+    assert BIDSDataset._apply_exclusion_list_to_filepaths(
+        [other],
+        exclusion_list=["sub-x_ses-y_task-Animal-fluency"],
+        exclusion_type="filename",
+    ) == [other]
+
+
+def test_unmatched_exclusion_entries_are_reported(caplog):
+    """An exclusion list that matches nothing must say so, not report "removed 0"."""
+    with caplog.at_level("WARNING"):
+        BIDSDataset._apply_exclusion_list_to_filepaths(
+            [Path("sub-x/ses-y/audio/sub-x_ses-y_task-animal-fluency.wav")],
+            exclusion_list=["sub-gone_ses-gone_task-passage-10"],
+            exclusion_type="filename",
+        )
+    assert "matched no file" in caplog.text

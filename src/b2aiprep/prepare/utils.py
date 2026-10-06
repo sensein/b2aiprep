@@ -33,6 +33,52 @@ def normalize_task_label(task_label: Any) -> str:
     return value.strip("-")
 
 
+class TaskMatcher:
+    """Match task labels against a config list of exact labels, globs and regexes.
+
+    Entries are compared with labels after :func:`normalize_task_label`:
+
+    * exact: ``"Noisy-Sounds-1"`` matches ``noisy-sounds-1``.
+    * glob: ``*`` / ``?`` wildcards, e.g. ``"identifying-pictures-*"``. The literal parts are
+      normalized the same way as labels, so ``"Identifying Pictures *"`` works too.
+    * regex: prefix ``re:``, matched in full against the normalized label, case-insensitive,
+      e.g. ``"re:repeating-words-[a-z]+"``.
+
+    ``label in matcher`` normalizes *label* first, so raw and normalized labels both work.
+    """
+
+    def __init__(self, entries: Any = ()):
+        self.exact: set = set()
+        self.patterns: List[re.Pattern] = []
+        for entry in entries or ():
+            text = str(entry).strip()
+            if not text:
+                continue
+            if text.startswith("re:"):
+                self.patterns.append(re.compile(text[3:], re.IGNORECASE))
+            elif "*" in text or "?" in text:
+                regex = []
+                for part in re.split(r"([*?])", text):
+                    if part == "*":
+                        regex.append(".*")
+                    elif part == "?":
+                        regex.append(".")
+                    elif part:
+                        # Same normalization as labels, but edge separators are kept so that
+                        # "identifying-pictures-*" requires the "-" before the wildcard.
+                        regex.append(re.escape(_TASK_LABEL_NORMALIZATION_RE.sub("-", part.lower())))
+                self.patterns.append(re.compile("".join(regex)))
+            else:
+                self.exact.add(normalize_task_label(text))
+
+    def __contains__(self, label: Any) -> bool:
+        value = normalize_task_label(label)
+        return value in self.exact or any(p.fullmatch(value) for p in self.patterns)
+
+    def __bool__(self) -> bool:
+        return bool(self.exact or self.patterns)
+
+
 _TASK_ENTITY_RE = re.compile(r"(task-)([^_]+)")
 
 

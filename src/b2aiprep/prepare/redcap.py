@@ -10,6 +10,7 @@ The RedCapDataset class handles validation, imputation, and export functionality
 that is common to both data sources.
 """
 
+import functools
 import json
 import logging
 import os
@@ -592,6 +593,23 @@ def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
 _LOGGER = logging.getLogger(__name__)
 
 
+@functools.lru_cache(maxsize=1)
+def _dropped_source_columns() -> t.FrozenSet[str]:
+    """Source columns whose every field-map row is ``disposition=drop``.
+
+    ``BIDSDataset.from_redcap`` removes these at ingest, so an instrument column list naming
+    one must not re-create it.
+    """
+    field_map = pd.read_csv(
+        files("b2aiprep").joinpath("prepare", "resources", "bids_field_organization.csv"),
+        dtype=str,
+    )
+    kept = set(field_map.loc[field_map["disposition"] != "drop", "column_name_source"])
+    return frozenset(
+        set(field_map.loc[field_map["disposition"] == "drop", "column_name_source"]) - kept
+    )
+
+
 class RedCapDataset:
     """
     A centralized class for parsing and managing data from RedCap and ReproSchema sources.
@@ -621,6 +639,41 @@ class RedCapDataset:
         self.source_type = source_type
         self.metadata = metadata if metadata is not None else {}
         
+    def add_supplement(self, csv_path: t.Union[str, Path]) -> None:
+        """Add columns from a supplementary CSV shaped like a RedCap export (``record_id`` first).
+
+        For fields RedCap does not hold yet (e.g. ``some_data_collected_remotely``, from a site's
+        list): rows match on ``record_id`` and ``redcap_repeat_instrument`` (blank or absent = the
+        participant row). A column RedCap already has stops the run, so the supplement cannot
+        silently override RedCap once the field is added there. Record IDs not in the export are
+        logged and ignored.
+        """
+        supplement = pd.read_csv(csv_path, dtype=str, keep_default_na=False, na_values=[""])
+        if "record_id" not in supplement.columns:
+            raise ValueError(f"Supplement {csv_path} has no record_id column.")
+        instrument = RepeatInstrument.PARTICIPANT.value.text
+        if "redcap_repeat_instrument" not in supplement.columns:
+            supplement["redcap_repeat_instrument"] = instrument
+        supplement["redcap_repeat_instrument"] = supplement["redcap_repeat_instrument"].fillna(instrument)
+        keys = ["record_id", "redcap_repeat_instrument"]
+        fields = [c for c in supplement.columns if c not in keys]
+        clash = [c for c in fields if c in self.df.columns]
+        if clash:
+            raise ValueError(f"Supplement {csv_path} adds column(s) RedCap already has: {clash}. "
+                             "Stop passing the supplement once RedCap holds the field.")
+        if supplement.duplicated(keys).any():
+            raise ValueError(f"Supplement {csv_path} has more than one row for the same record and instrument.")
+        unknown = sorted(set(supplement["record_id"]) - set(self.df["record_id"].astype(str)))
+        if unknown:
+            # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
+            _LOGGER.warning("Supplement %s: %d record_id(s) not in the RedCap export, ignored: %s",
+                            csv_path, len(unknown), ", ".join(unknown))
+        merged = self.df.merge(supplement, on=keys, how="left", validate="many_to_one")
+        merged.index = self.df.index
+        self.df = merged
+        _LOGGER.info("Supplement %s: added %s (%d row(s) matched).", csv_path, ", ".join(fields),
+                     int(supplement["record_id"].isin(set(self.df["record_id"].astype(str))).sum()))
+
     @classmethod
     def from_redcap(cls, csv_path: t.Union[str, Path]) -> 'RedCapDataset':
         """
@@ -723,7 +776,11 @@ class RedCapDataset:
         if not Path(file_path).exists():
             raise FileNotFoundError(f"File {file_path} does not exist.")
 
-        data = pd.read_csv(file_path, low_memory=False, na_values="")
+        # Postal codes are text: read as numbers they lose leading zeros (02139 -> 2139).
+        header = pd.read_csv(file_path, nrows=0).columns
+        text_columns = {c: str for c in ("zipcode", "peds_zipcode") if c in header}
+        # Only an empty cell is missing: a typed "NA", "N/A" or "None" is the participant's answer.
+        data = pd.read_csv(file_path, low_memory=False, keep_default_na=False, na_values=[""], dtype=text_columns)
         
         # Determine the repeat instrument column name
         if "redcap_repeat_instrument" in data.columns:
@@ -1039,7 +1096,10 @@ class RedCapDataset:
         Returns:
             The filtered DataFrame
         """
-        columns = instrument.get_columns()
+        columns = [
+            c for c in instrument.get_columns()
+            if c in self.df.columns or c not in _dropped_source_columns()
+        ]
         idx = self.df["redcap_repeat_instrument"] == instrument.text
         columns_present = [c for c in columns if c in self.df.columns]
         dff = self.df.loc[idx, columns_present].copy()

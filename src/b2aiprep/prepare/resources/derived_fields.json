@@ -1,0 +1,1063 @@
+{
+  "_comment": "Data dictionary details for the columns b2aiprep computes (source=pipeline in bids_field_organization.csv) and the fields added from a RedCap supplement (source=supplement), keyed by output column_name. Their description comes from the field map; this file adds datatype, choices, minValue/maxValue, unit and derivedFrom (the columns each one is computed from). No termURL: they have no ReproSchema item.",
+  "fields": {
+    "sex_at_birth": {
+      "datatype": "xsd:string",
+      "choices": [
+        {
+          "name": {
+            "en": "Female"
+          },
+          "value": "Female"
+        },
+        {
+          "name": {
+            "en": "Male"
+          },
+          "value": "Male"
+        },
+        {
+          "name": {
+            "en": "Unknown"
+          },
+          "value": "Unknown"
+        }
+      ],
+      "derivedFrom": [
+        "sex_assigned_at_birth",
+        "gender_identity",
+        "specify_gender_identity"
+      ]
+    },
+    "state_province": {
+      "datatype": "xsd:string",
+      "choices": [
+        {
+          "name": {
+            "en": "Alberta"
+          },
+          "value": "AB"
+        },
+        {
+          "name": {
+            "en": "Alaska"
+          },
+          "value": "AK"
+        },
+        {
+          "name": {
+            "en": "Alabama"
+          },
+          "value": "AL"
+        },
+        {
+          "name": {
+            "en": "Arkansas"
+          },
+          "value": "AR"
+        },
+        {
+          "name": {
+            "en": "Arizona"
+          },
+          "value": "AZ"
+        },
+        {
+          "name": {
+            "en": "British Columbia"
+          },
+          "value": "BC"
+        },
+        {
+          "name": {
+            "en": "California"
+          },
+          "value": "CA"
+        },
+        {
+          "name": {
+            "en": "Colorado"
+          },
+          "value": "CO"
+        },
+        {
+          "name": {
+            "en": "Connecticut"
+          },
+          "value": "CT"
+        },
+        {
+          "name": {
+            "en": "District of Columbia"
+          },
+          "value": "DC"
+        },
+        {
+          "name": {
+            "en": "Delaware"
+          },
+          "value": "DE"
+        },
+        {
+          "name": {
+            "en": "Florida"
+          },
+          "value": "FL"
+        },
+        {
+          "name": {
+            "en": "Georgia"
+          },
+          "value": "GA"
+        },
+        {
+          "name": {
+            "en": "Hawaii"
+          },
+          "value": "HI"
+        },
+        {
+          "name": {
+            "en": "Iowa"
+          },
+          "value": "IA"
+        },
+        {
+          "name": {
+            "en": "Idaho"
+          },
+          "value": "ID"
+        },
+        {
+          "name": {
+            "en": "Illinois"
+          },
+          "value": "IL"
+        },
+        {
+          "name": {
+            "en": "Indiana"
+          },
+          "value": "IN"
+        },
+        {
+          "name": {
+            "en": "Kansas"
+          },
+          "value": "KS"
+        },
+        {
+          "name": {
+            "en": "Kentucky"
+          },
+          "value": "KY"
+        },
+        {
+          "name": {
+            "en": "Louisiana"
+          },
+          "value": "LA"
+        },
+        {
+          "name": {
+            "en": "Massachusetts"
+          },
+          "value": "MA"
+        },
+        {
+          "name": {
+            "en": "Manitoba"
+          },
+          "value": "MB"
+        },
+        {
+          "name": {
+            "en": "Maryland"
+          },
+          "value": "MD"
+        },
+        {
+          "name": {
+            "en": "Maine"
+          },
+          "value": "ME"
+        },
+        {
+          "name": {
+            "en": "Michigan"
+          },
+          "value": "MI"
+        },
+        {
+          "name": {
+            "en": "Minnesota"
+          },
+          "value": "MN"
+        },
+        {
+          "name": {
+            "en": "Missouri"
+          },
+          "value": "MO"
+        },
+        {
+          "name": {
+            "en": "Mississippi"
+          },
+          "value": "MS"
+        },
+        {
+          "name": {
+            "en": "Montana"
+          },
+          "value": "MT"
+        },
+        {
+          "name": {
+            "en": "New Brunswick"
+          },
+          "value": "NB"
+        },
+        {
+          "name": {
+            "en": "North Carolina"
+          },
+          "value": "NC"
+        },
+        {
+          "name": {
+            "en": "North Dakota"
+          },
+          "value": "ND"
+        },
+        {
+          "name": {
+            "en": "Nebraska"
+          },
+          "value": "NE"
+        },
+        {
+          "name": {
+            "en": "New Hampshire"
+          },
+          "value": "NH"
+        },
+        {
+          "name": {
+            "en": "New Jersey"
+          },
+          "value": "NJ"
+        },
+        {
+          "name": {
+            "en": "Newfoundland and Labrador"
+          },
+          "value": "NL"
+        },
+        {
+          "name": {
+            "en": "New Mexico"
+          },
+          "value": "NM"
+        },
+        {
+          "name": {
+            "en": "Nova Scotia"
+          },
+          "value": "NS"
+        },
+        {
+          "name": {
+            "en": "Northwest Territories"
+          },
+          "value": "NT"
+        },
+        {
+          "name": {
+            "en": "Nunavut"
+          },
+          "value": "NU"
+        },
+        {
+          "name": {
+            "en": "Nevada"
+          },
+          "value": "NV"
+        },
+        {
+          "name": {
+            "en": "New York"
+          },
+          "value": "NY"
+        },
+        {
+          "name": {
+            "en": "Ohio"
+          },
+          "value": "OH"
+        },
+        {
+          "name": {
+            "en": "Oklahoma"
+          },
+          "value": "OK"
+        },
+        {
+          "name": {
+            "en": "Ontario"
+          },
+          "value": "ON"
+        },
+        {
+          "name": {
+            "en": "Oregon"
+          },
+          "value": "OR"
+        },
+        {
+          "name": {
+            "en": "Pennsylvania"
+          },
+          "value": "PA"
+        },
+        {
+          "name": {
+            "en": "Prince Edward Island"
+          },
+          "value": "PE"
+        },
+        {
+          "name": {
+            "en": "Puerto Rico"
+          },
+          "value": "PR"
+        },
+        {
+          "name": {
+            "en": "Quebec"
+          },
+          "value": "QC"
+        },
+        {
+          "name": {
+            "en": "Rhode Island"
+          },
+          "value": "RI"
+        },
+        {
+          "name": {
+            "en": "South Carolina"
+          },
+          "value": "SC"
+        },
+        {
+          "name": {
+            "en": "South Dakota"
+          },
+          "value": "SD"
+        },
+        {
+          "name": {
+            "en": "Saskatchewan"
+          },
+          "value": "SK"
+        },
+        {
+          "name": {
+            "en": "Tennessee"
+          },
+          "value": "TN"
+        },
+        {
+          "name": {
+            "en": "Texas"
+          },
+          "value": "TX"
+        },
+        {
+          "name": {
+            "en": "Utah"
+          },
+          "value": "UT"
+        },
+        {
+          "name": {
+            "en": "Virginia"
+          },
+          "value": "VA"
+        },
+        {
+          "name": {
+            "en": "Vermont"
+          },
+          "value": "VT"
+        },
+        {
+          "name": {
+            "en": "Washington"
+          },
+          "value": "WA"
+        },
+        {
+          "name": {
+            "en": "Wisconsin"
+          },
+          "value": "WI"
+        },
+        {
+          "name": {
+            "en": "West Virginia"
+          },
+          "value": "WV"
+        },
+        {
+          "name": {
+            "en": "Wyoming"
+          },
+          "value": "WY"
+        },
+        {
+          "name": {
+            "en": "Yukon"
+          },
+          "value": "YT"
+        },
+        {
+          "name": {
+            "en": "Unknown"
+          },
+          "value": "Unknown"
+        }
+      ],
+      "derivedFrom": [
+        "state_province_as_entered",
+        "zipcode"
+      ]
+    },
+    "peds_state_province": {
+      "datatype": "xsd:string",
+      "choices": [
+        {
+          "name": {
+            "en": "Alberta"
+          },
+          "value": "AB"
+        },
+        {
+          "name": {
+            "en": "Alaska"
+          },
+          "value": "AK"
+        },
+        {
+          "name": {
+            "en": "Alabama"
+          },
+          "value": "AL"
+        },
+        {
+          "name": {
+            "en": "Arkansas"
+          },
+          "value": "AR"
+        },
+        {
+          "name": {
+            "en": "Arizona"
+          },
+          "value": "AZ"
+        },
+        {
+          "name": {
+            "en": "British Columbia"
+          },
+          "value": "BC"
+        },
+        {
+          "name": {
+            "en": "California"
+          },
+          "value": "CA"
+        },
+        {
+          "name": {
+            "en": "Colorado"
+          },
+          "value": "CO"
+        },
+        {
+          "name": {
+            "en": "Connecticut"
+          },
+          "value": "CT"
+        },
+        {
+          "name": {
+            "en": "District of Columbia"
+          },
+          "value": "DC"
+        },
+        {
+          "name": {
+            "en": "Delaware"
+          },
+          "value": "DE"
+        },
+        {
+          "name": {
+            "en": "Florida"
+          },
+          "value": "FL"
+        },
+        {
+          "name": {
+            "en": "Georgia"
+          },
+          "value": "GA"
+        },
+        {
+          "name": {
+            "en": "Hawaii"
+          },
+          "value": "HI"
+        },
+        {
+          "name": {
+            "en": "Iowa"
+          },
+          "value": "IA"
+        },
+        {
+          "name": {
+            "en": "Idaho"
+          },
+          "value": "ID"
+        },
+        {
+          "name": {
+            "en": "Illinois"
+          },
+          "value": "IL"
+        },
+        {
+          "name": {
+            "en": "Indiana"
+          },
+          "value": "IN"
+        },
+        {
+          "name": {
+            "en": "Kansas"
+          },
+          "value": "KS"
+        },
+        {
+          "name": {
+            "en": "Kentucky"
+          },
+          "value": "KY"
+        },
+        {
+          "name": {
+            "en": "Louisiana"
+          },
+          "value": "LA"
+        },
+        {
+          "name": {
+            "en": "Massachusetts"
+          },
+          "value": "MA"
+        },
+        {
+          "name": {
+            "en": "Manitoba"
+          },
+          "value": "MB"
+        },
+        {
+          "name": {
+            "en": "Maryland"
+          },
+          "value": "MD"
+        },
+        {
+          "name": {
+            "en": "Maine"
+          },
+          "value": "ME"
+        },
+        {
+          "name": {
+            "en": "Michigan"
+          },
+          "value": "MI"
+        },
+        {
+          "name": {
+            "en": "Minnesota"
+          },
+          "value": "MN"
+        },
+        {
+          "name": {
+            "en": "Missouri"
+          },
+          "value": "MO"
+        },
+        {
+          "name": {
+            "en": "Mississippi"
+          },
+          "value": "MS"
+        },
+        {
+          "name": {
+            "en": "Montana"
+          },
+          "value": "MT"
+        },
+        {
+          "name": {
+            "en": "New Brunswick"
+          },
+          "value": "NB"
+        },
+        {
+          "name": {
+            "en": "North Carolina"
+          },
+          "value": "NC"
+        },
+        {
+          "name": {
+            "en": "North Dakota"
+          },
+          "value": "ND"
+        },
+        {
+          "name": {
+            "en": "Nebraska"
+          },
+          "value": "NE"
+        },
+        {
+          "name": {
+            "en": "New Hampshire"
+          },
+          "value": "NH"
+        },
+        {
+          "name": {
+            "en": "New Jersey"
+          },
+          "value": "NJ"
+        },
+        {
+          "name": {
+            "en": "Newfoundland and Labrador"
+          },
+          "value": "NL"
+        },
+        {
+          "name": {
+            "en": "New Mexico"
+          },
+          "value": "NM"
+        },
+        {
+          "name": {
+            "en": "Nova Scotia"
+          },
+          "value": "NS"
+        },
+        {
+          "name": {
+            "en": "Northwest Territories"
+          },
+          "value": "NT"
+        },
+        {
+          "name": {
+            "en": "Nunavut"
+          },
+          "value": "NU"
+        },
+        {
+          "name": {
+            "en": "Nevada"
+          },
+          "value": "NV"
+        },
+        {
+          "name": {
+            "en": "New York"
+          },
+          "value": "NY"
+        },
+        {
+          "name": {
+            "en": "Ohio"
+          },
+          "value": "OH"
+        },
+        {
+          "name": {
+            "en": "Oklahoma"
+          },
+          "value": "OK"
+        },
+        {
+          "name": {
+            "en": "Ontario"
+          },
+          "value": "ON"
+        },
+        {
+          "name": {
+            "en": "Oregon"
+          },
+          "value": "OR"
+        },
+        {
+          "name": {
+            "en": "Pennsylvania"
+          },
+          "value": "PA"
+        },
+        {
+          "name": {
+            "en": "Prince Edward Island"
+          },
+          "value": "PE"
+        },
+        {
+          "name": {
+            "en": "Puerto Rico"
+          },
+          "value": "PR"
+        },
+        {
+          "name": {
+            "en": "Quebec"
+          },
+          "value": "QC"
+        },
+        {
+          "name": {
+            "en": "Rhode Island"
+          },
+          "value": "RI"
+        },
+        {
+          "name": {
+            "en": "South Carolina"
+          },
+          "value": "SC"
+        },
+        {
+          "name": {
+            "en": "South Dakota"
+          },
+          "value": "SD"
+        },
+        {
+          "name": {
+            "en": "Saskatchewan"
+          },
+          "value": "SK"
+        },
+        {
+          "name": {
+            "en": "Tennessee"
+          },
+          "value": "TN"
+        },
+        {
+          "name": {
+            "en": "Texas"
+          },
+          "value": "TX"
+        },
+        {
+          "name": {
+            "en": "Utah"
+          },
+          "value": "UT"
+        },
+        {
+          "name": {
+            "en": "Virginia"
+          },
+          "value": "VA"
+        },
+        {
+          "name": {
+            "en": "Vermont"
+          },
+          "value": "VT"
+        },
+        {
+          "name": {
+            "en": "Washington"
+          },
+          "value": "WA"
+        },
+        {
+          "name": {
+            "en": "Wisconsin"
+          },
+          "value": "WI"
+        },
+        {
+          "name": {
+            "en": "West Virginia"
+          },
+          "value": "WV"
+        },
+        {
+          "name": {
+            "en": "Wyoming"
+          },
+          "value": "WY"
+        },
+        {
+          "name": {
+            "en": "Yukon"
+          },
+          "value": "YT"
+        },
+        {
+          "name": {
+            "en": "Unknown"
+          },
+          "value": "Unknown"
+        }
+      ],
+      "derivedFrom": [
+        "peds_state_province_as_entered",
+        "peds_zipcode"
+      ]
+    },
+    "session_index": {
+      "datatype": "xsd:integer",
+      "minValue": 1,
+      "derivedFrom": [
+        "session_started_at"
+      ]
+    },
+    "session_local_hour": {
+      "datatype": "xsd:integer",
+      "minValue": 0,
+      "maxValue": 23,
+      "unit": "hour",
+      "derivedFrom": [
+        "session_started_at"
+      ]
+    },
+    "session_seconds_since_first_session": {
+      "datatype": "xsd:integer",
+      "minValue": 0,
+      "unit": "seconds",
+      "derivedFrom": [
+        "session_started_at"
+      ]
+    },
+    "recording_local_hour": {
+      "datatype": "xsd:integer",
+      "minValue": 0,
+      "maxValue": 23,
+      "unit": "hour",
+      "derivedFrom": [
+        "recording_created_at"
+      ]
+    },
+    "recording_order": {
+      "datatype": "xsd:integer",
+      "minValue": 1,
+      "derivedFrom": [
+        "recording_created_at"
+      ]
+    },
+    "recording_seconds_since_first_session": {
+      "datatype": "xsd:integer",
+      "unit": "seconds",
+      "derivedFrom": [
+        "recording_created_at",
+        "session_started_at"
+      ]
+    },
+    "peds_mc_tonsillectomy_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "peds_mc_tonsillectomy_date",
+        "session_started_at"
+      ]
+    },
+    "peds_mc_adenoidectomy_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "peds_mc_adenoidectomy_date",
+        "session_started_at"
+      ]
+    },
+    "peds_mc_lingual_tonsillectomy_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "peds_mc_lingual_tonsillectomy_date",
+        "session_started_at"
+      ]
+    },
+    "peds_mc_etp_procedure_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "peds_mc_etp_procedure_date",
+        "session_started_at"
+      ]
+    },
+    "peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date",
+        "session_started_at"
+      ]
+    },
+    "peds_mc_neck_mass_branchial_cleft_cyst_surgery_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "peds_mc_neck_mass_branchial_cleft_cyst_surgery_date",
+        "session_started_at"
+      ]
+    },
+    "peds_mc_neck_mass_dermoid_cyst_surgery_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "peds_mc_neck_mass_dermoid_cyst_surgery_date",
+        "session_started_at"
+      ]
+    },
+    "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date",
+        "session_started_at"
+      ]
+    },
+    "peds_mc_neck_mass_enlarged_lymph_node_surgery_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "peds_mc_neck_mass_enlarged_lymph_node_surgery_date",
+        "session_started_at"
+      ]
+    },
+    "peds_mc_no_surgeries_procedure_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "peds_mc_no_surgeries_procedure_date",
+        "session_started_at"
+      ]
+    },
+    "mbd_last_depressive_episode_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "mbd_last_depressive_episode",
+        "session_started_at"
+      ]
+    },
+    "mbd_last_manic_episode_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "mbd_last_manic_episode",
+        "session_started_at"
+      ]
+    },
+    "dmdd_last_depressive_episode_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "dmdd_last_depressive_episode",
+        "session_started_at"
+      ]
+    },
+    "diagnosis_ad_last_anxious_episode_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "diagnosis_ad_last_anxious_episode",
+        "session_started_at"
+      ]
+    },
+    "traumatic_event_days_since": {
+      "datatype": "xsd:integer",
+      "unit": "days",
+      "derivedFrom": [
+        "traumatic_event_date",
+        "session_started_at"
+      ]
+    },
+    "speech_type": {
+      "datatype": "xsd:string",
+      "choices": [
+        {
+          "name": {
+            "en": "read"
+          },
+          "value": "read"
+        },
+        {
+          "name": {
+            "en": "recall"
+          },
+          "value": "recall"
+        },
+        {
+          "name": {
+            "en": "elicited"
+          },
+          "value": "elicited"
+        },
+        {
+          "name": {
+            "en": "non-lexical"
+          },
+          "value": "non-lexical"
+        }
+      ]
+    },
+    "site": {
+      "datatype": "xsd:string",
+      "derivedFrom": [
+        "enrollment_institution"
+      ]
+    },
+    "some_data_collected_remotely": {
+      "datatype": "xsd:string",
+      "choices": [
+        {
+          "name": {
+            "en": "Yes"
+          },
+          "value": "Yes"
+        },
+        {
+          "name": {
+            "en": "No"
+          },
+          "value": "No"
+        }
+      ]
+    }
+  }
+}
