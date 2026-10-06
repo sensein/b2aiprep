@@ -12,11 +12,13 @@ from importlib.resources import files
 import pytest
 
 from b2aiprep.prepare.fhir_utils import (
-    convert_response_to_bids_metadata,
     _classify_speech_type,
-    _stimulus_text_from_questionnaire,
     _resolve_prompt_ref,
+    _resolve_task_registry,
+    _stimulus_text_from_questionnaire,
+    convert_response_to_bids_metadata,
 )
+from b2aiprep.prepare.utils import canonical_task_entity
 
 
 @pytest.fixture(scope="module")
@@ -676,3 +678,35 @@ def test_asset_url_defers_n_templates_to_sequence():
     # single image still resolves via _asset_url (shared builder, '{i}' index)
     single = {"asset_repo": "r", "asset_commit": "c", "asset_path": "docs/pic_{i:02d}.jpg"}
     assert _asset_url(single, "pic-3").endswith("/docs/pic_03.jpg")
+
+
+def test_high_to_low_resolves_to_the_glides_task():
+    """The bare "High to Low" is the Glides pair's second half.
+
+    43 adult recordings carry it; every one of those sessions also holds
+    "Glides-Low to High" and none holds "Glides-High to Low". Before the alias it
+    resolved to no task at all, so those recordings got no registry instructions,
+    prompt, or speech_type.
+    """
+    assert canonical_task_entity("High to Low") == "glides-high-to-low"
+    bare = _resolve_task_registry(canonical_task_entity("High to Low"), population="adult")
+    prefixed = _resolve_task_registry(
+        canonical_task_entity("Glides-High to Low"), population="adult"
+    )
+    assert bare is not None and prefixed is not None
+    assert bare[0]["task_id"] == prefixed[0]["task_id"] == "adult.glides"
+
+
+def test_registry_resolution_is_unchanged_for_non_aliased_names():
+    """Routing resolution through the alias table must not perturb anything else."""
+    for name in (
+        "Prolonged vowel",
+        "Cape V sentences (v2)-1",
+        "Harvard Sentences-List 1-10",
+        "Glides-Low to High",
+    ):
+        aliased = _resolve_task_registry(canonical_task_entity(name), population="adult")
+        plain = _resolve_task_registry(name.replace(" ", "-").lower(), population="adult")
+        assert (aliased is None) == (plain is None), name
+        if aliased is not None:
+            assert aliased[0]["task_id"] == plain[0]["task_id"], name

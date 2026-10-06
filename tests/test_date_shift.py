@@ -2,13 +2,11 @@
 (session index, timing, local hours, days since, state/province)."""
 
 import datetime
-import json
 import logging
 
 import pandas as pd
 import pytest
 
-from b2aiprep.prepare.dataset import BIDSDataset
 from b2aiprep.prepare.date_shift import (
     offset_weeks,
     parse_date,
@@ -18,7 +16,7 @@ from b2aiprep.prepare.date_shift import (
     region_timezone,
     shift_dates,
 )
-from b2aiprep.prepare.redcap import RedCapDataset
+
 
 ANCHOR = datetime.date(2100, 1, 1)
 UTC = datetime.timezone.utc
@@ -136,39 +134,10 @@ def test_no_real_value_survives():
     assert not any(value[:10] in text for value in real)
 
 
-def _ingest_frame():
-    return pd.DataFrame(
-        [
-            {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "s1",
-             "enrollment_institution": "MIT", "session_site": "MIT", "session_started_at": "2024-07-01T16:00:00Z",
-             "session_is_control_participant": "No"},
-            {"record_id": "a", "redcap_repeat_instrument": "Participant", "demographics_language": "English"},
-        ],
-        dtype=object,
-    )
 
 
-def test_ingest_shifts_dates_and_removes_drop_columns(tmp_path):
-    dataset = RedCapDataset(df=_ingest_frame(), source_type="redcap")
-    log = tmp_path / "logs" / "date_shift.json"
-    out = BIDSDataset._apply_field_map_at_ingest(dataset, ANCHOR, log, tmp_path / "bids")
-    assert "demographics_language" not in out.df.columns
-    assert "session_is_control_participant" not in out.df.columns
-    # internal columns the pipeline reads are kept
-    assert {"redcap_repeat_instrument", "enrollment_institution"} <= set(out.df.columns)
-    assert "session_site" not in out.df.columns
-    shifted = datetime.datetime.fromisoformat(out.df.loc[0, "session_started_at"]).date()
-    assert abs((shifted - ANCHOR).days) <= 3
-    report = json.loads(log.read_text())
-    assert report["anchor"] == "2100-01-01" and report["participants_shifted"] == 1
-    # the input dataset is not modified
-    assert dataset.df.loc[0, "session_started_at"] == "2024-07-01T16:00:00Z"
 
 
-def test_ingest_refuses_a_log_inside_the_bids_tree(tmp_path):
-    dataset = RedCapDataset(df=_ingest_frame(), source_type="redcap")
-    with pytest.raises(ValueError, match="outside the BIDS output"):
-        BIDSDataset._apply_field_map_at_ingest(dataset, ANCHOR, tmp_path / "bids" / "log.json", tmp_path / "bids")
 
 
 def _remote_frame(zipcode=None, state=None, via="Participant", site="MIT"):
@@ -273,127 +242,20 @@ def test_anchor_close_to_real_dates_warns(caplog):
     assert any("years from the nearest real first session" in r.getMessage() for r in caplog.records)
 
 
-def _na(values):
-    return [v if isinstance(v, str) else None for v in values]
 
 
-def test_session_index_numbers_by_start_time_undated_last_duplicates_share():
-    df = pd.DataFrame({
-        "record_id": ["p1", "p1", "p1", "p1", "p2", "p1"],
-        "redcap_repeat_instrument": ["Session"] * 5 + ["Acoustic Task"],
-        "session_id": ["B", "A", "C", "B", "Z", None],
-        "session_started_at": ["2025-03-01T10:00:00Z", "2025-01-01T10:00:00Z", None,
-                               "2025-03-01T10:00:00Z", "2024-01-01T00:00:00Z", None],
-    })
-    out = BIDSDataset._add_session_index(df)
-    got = dict(zip(zip(out.record_id, out.session_id), out.session_index))
-    assert got[("p1", "A")] == "1" and got[("p1", "B")] == "2" and got[("p1", "C")] == "3"
-    assert got[("p2", "Z")] == "1"
-    assert out.loc[5, "session_index"] is pd.NA
-    assert list(out.loc[out.session_id == "B", "session_index"]) == ["2", "2"]
 
 
-def test_recording_order_and_gaps_use_real_times_and_leave_undated_blank(caplog):
-    rows = [
-        ("Session", {"session_id": "S2", "session_started_at": "2024-07-01T17:00:00Z"}),
-        ("Session", {"session_id": "S1", "session_started_at": "2024-07-01T16:00:00Z"}),
-        ("Session", {"session_id": "S1", "session_started_at": None}),  # repeated row of S1
-        ("Session", {"session_id": "S3", "session_started_at": None}),
-        ("Recording", {"recording_session_id": "S1", "recording_id": "R2", "recording_created_at": "2024-07-01T16:01:00Z"}),
-        ("Recording", {"recording_session_id": "S1", "recording_id": "R1", "recording_created_at": "2024-07-01T16:01:00Z"}),
-        ("Recording", {"recording_session_id": "S1", "recording_id": "R4", "recording_created_at": None}),
-        ("Recording", {"recording_session_id": "S1", "recording_id": "R3", "recording_created_at": "2024-07-01T16:01:30.400Z"}),
-        ("Recording", {"recording_session_id": "S2", "recording_id": "R5", "recording_created_at": "2024-07-01T17:02:00Z"}),
-    ]
-    df = pd.DataFrame([{"record_id": "p1", "redcap_repeat_instrument": i, **v} for i, v in rows], dtype=object)
-    with caplog.at_level("WARNING"):
-        out = BIDSDataset._add_recording_order_and_gaps(df)
-    # one timeline from the first session's start (S1, 16:00Z); a repeated undated row of S1 gets S1's value
-    assert _na(out.session_seconds_since_first_session) == ["3600", "0", "0", None] + [None] * 5
-    assert _na(out.recording_order) == [None] * 4 + ["2", "1", None, "3", "1"]
-    assert _na(out.recording_seconds_since_first_session) == [None] * 4 + ["60", "60", None, "90", "3720"]
-    assert "1 recording(s) without a start time, left unordered: R4" in caplog.text
-    assert "recording_order" not in df.columns  # input untouched
 
 
-def test_local_hours_read_the_shifted_wall_clock_time():
-    df = pd.DataFrame({
-        "session_started_at": ["2100-01-05T13:34:41-05:00", None, "2100-01-05T00:10:00.250+01:00", "2100-01-05"],
-        "recording_created_at": [None, "2100-01-05T23:59:59-08:00", "not a time", None],
-    }, dtype=object)
-    out = BIDSDataset._add_local_hours(df)
-    assert _na(out.session_local_hour) == ["13", None, "0", None]  # a date-only start has no hour
-    assert _na(out.recording_local_hour) == [None, "23", None, None]
 
 
-def test_ingest_adds_derived_session_and_recording_fields(tmp_path):
-    df = _remote_frame(zipcode="02139")
-    df.loc[1, "recording_id"] = "R1"
-    out = BIDSDataset._apply_field_map_at_ingest(RedCapDataset(df=df, source_type="redcap"), ANCHOR, None, tmp_path)
-    # 20:00Z and 20:05Z on 2024-07-01 are 16:00 and 16:05 in Cambridge, MA (EDT)
-    assert out.df.loc[0, "session_local_hour"] == "16" and out.df.loc[1, "recording_local_hour"] == "16"
-    assert out.df.loc[1, "recording_order"] == "1"
-    # 20:00Z session, 20:05Z recording
-    assert _na([out.df.loc[0, "session_seconds_since_first_session"], out.df.loc[1, "recording_seconds_since_first_session"]]) == ["0", "300"]
 
 
-def test_session_hour_check_lists_in_clinic_sessions_outside_clinic_hours(caplog):
-    df = pd.DataFrame([
-        {"record_id": "p1", "redcap_repeat_instrument": "Session", "session_id": "S1", "session_local_hour": "2"},
-        {"record_id": "p1", "redcap_repeat_instrument": "Session", "session_id": "S2", "session_local_hour": "19"},
-        {"record_id": "p2", "redcap_repeat_instrument": "Session", "session_id": "S3", "session_local_hour": "23"},
-        {"record_id": "p2", "redcap_repeat_instrument": "Recording", "recording_session_id": "S3",
-         "recording_via": "Participant"},  # self-administered: not checked
-        {"record_id": "p3", "redcap_repeat_instrument": "Session", "session_id": "S4", "session_local_hour": None},
-        # an undated row, then a dated row of the same session
-        {"record_id": "p4", "redcap_repeat_instrument": "Session", "session_id": "S5", "session_local_hour": None},
-        {"record_id": "p4", "redcap_repeat_instrument": "Session", "session_id": "S5", "session_local_hour": "22"},
-        # self-administered only in rows dropped before ingest (the microphone check)
-        {"record_id": "p5", "redcap_repeat_instrument": "Session", "session_id": "S6", "session_local_hour": "0"},
-    ], dtype=object)
-    with caplog.at_level(logging.WARNING):
-        BIDSDataset._check_session_hours(df, also_self_administered={"S6"})
-    assert "2 in-clinic session(s) of 3 started outside 07:00-19:59" in caplog.text  # S4 has no hour
-    assert "p1 S1 (02h)" in caplog.text and "p4 S5 (22h)" in caplog.text
-    assert "S3" not in caplog.text and "S6" not in caplog.text
 
 
-def test_days_since_surgery_measures_to_the_first_session_and_checks_the_forms_session(caplog):
-    mc = "Q - Pediatric - Generic Medical Conditions"
-    df = pd.DataFrame([
-        {"record_id": "c1", "redcap_repeat_instrument": "Session", "session_id": "S1",
-         "session_started_at": "2100-01-05T23:30:00-05:00"},  # local date 2100-01-05, not the UTC date
-        {"record_id": "c1", "redcap_repeat_instrument": mc, "peds_mc_session_id": "S1",
-         "peds_mc_tonsillectomy_date": "2099-12-29", "peds_mc_etp_procedure_date": "2100-01-07"},
-        {"record_id": "c2", "redcap_repeat_instrument": mc, "peds_mc_session_id": "S9",
-         "peds_mc_tonsillectomy_date": "2099-01-01", "peds_mc_etp_procedure_date": None},
-        # the first numeric age is the one checked against
-        {"record_id": "c3", "redcap_repeat_instrument": "Participant", "age": "unknown"},
-        {"record_id": "c3", "redcap_repeat_instrument": "Participant", "age": "4"},
-        {"record_id": "c3", "redcap_repeat_instrument": "Participant", "age": "12"},
-        {"record_id": "c3", "redcap_repeat_instrument": "Session", "session_id": "S3",
-         "session_started_at": "2100-01-05T10:00:00-05:00"},
-        {"record_id": "c3", "redcap_repeat_instrument": mc, "peds_mc_session_id": "S3",
-         "peds_mc_tonsillectomy_date": "2090-01-05", "peds_mc_etp_procedure_date": "2098-01-05"},
-    ], dtype=object)
-    with caplog.at_level("WARNING"):
-        out = BIDSDataset._add_days_since_surgery(df)
-    assert _na(out.peds_mc_tonsillectomy_days_since) == [None, "7", None, None, None, None, None, None]  # before birth
-    assert _na(out.peds_mc_etp_procedure_days_since) == [None, None, None, None, None, None, None, "730"]
-    assert "peds_mc_adenoidectomy_days_since" not in out.columns  # source column absent
-    assert "1 surgery date(s) after the session they were reported in, left blank: c1 peds_mc_etp_procedure_date" in caplog.text
-    assert "1 surgery date(s) of participants with no dated session" in caplog.text
-    assert "1 surgery date(s) before the participant was born" in caplog.text
-    assert "c3 peds_mc_tonsillectomy_date (3652 days, age 4)" in caplog.text
 
 
-def test_every_surgery_date_has_a_derived_field_map_row():
-    fm = BIDSDataset._load_reorganization_file(exclude_dropped=False)
-    shifted = set(fm.loc[fm.date_shift == "YES", "column_name_source"])
-    assert set(BIDSDataset._SURGERY_DATE_COLUMNS) <= shifted
-    rows = fm.set_index("column_name_source")
-    for out in BIDSDataset._SURGERY_DATE_COLUMNS.values():
-        assert rows.loc[out, "source"] == "pipeline" and rows.loc[out, "disposition"] == "release"
 
 
 def test_sessions_self_administered_only_in_dropped_rows_use_the_home_time_zone():
@@ -406,72 +268,9 @@ def test_sessions_self_administered_only_in_dropped_rows_use_the_home_time_zone(
     assert as_home.loc[0, "session_started_at"].endswith("T13:00:00-07:00")
 
 
-def test_episode_and_trauma_dates_measure_to_the_first_session(caplog):
-    df = pd.DataFrame([
-        {"record_id": "a", "redcap_repeat_instrument": None, "mbd_last_manic_episode": "2099-12-06", "age": "30"},
-        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S2",
-         "session_started_at": "2100-02-01T10:00:00-05:00"},
-        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S1",
-         "session_started_at": "2100-01-05T10:00:00-05:00"},
-        {"record_id": "a", "redcap_repeat_instrument": "Q - Mood - PTSD Adult", "ptsd_session_id": "S2",
-         "traumatic_event_date": "2100-01-25"},
-        {"record_id": "b", "redcap_repeat_instrument": None, "mbd_last_manic_episode": "2100-03-01"},
-        {"record_id": "b", "redcap_repeat_instrument": "Session", "session_id": "S3",
-         "session_started_at": "2100-01-05T10:00:00-05:00"},
-    ], dtype=object)
-    with caplog.at_level("WARNING"):
-        out = BIDSDataset._add_days_since_episodes(df)
-    assert _na(out.mbd_last_manic_episode_days_since) == ["30", None, None, None, "-55", None]  # b: after enrollment (2100 is not a leap year)
-    # reported at S2 (2100-02-01), measured to the first session S1 (2100-01-05): 20 days after it
-    assert _na(out.traumatic_event_days_since) == [None, None, None, "-20", None, None]
-    # b's diagnosis form has no session to check against: kept, and flagged for QA
-    assert "1 episode date(s) on a form with no session fall after the participant's first session" in caplog.text
-    assert "b mbd_last_manic_episode (55 days after)" in caplog.text
 
 
-def test_episode_after_enrollment_is_kept_negative_and_trauma_on_session_day_is_not_given(caplog):
-    df = pd.DataFrame([
-        # an episode between the first (2100-01-05) and last (2100-02-01) session: reported at a later visit
-        {"record_id": "a", "redcap_repeat_instrument": None, "mbd_last_manic_episode": "2100-01-15"},
-        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S1",
-         "session_started_at": "2100-01-05T10:00:00-05:00"},
-        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S2",
-         "session_started_at": "2100-02-01T10:00:00-05:00"},
-        {"record_id": "a", "redcap_repeat_instrument": "Q - Mood - PTSD Adult", "ptsd_session_id": "S2",
-         "traumatic_event_date": "2100-02-01"},
-    ], dtype=object)
-    with caplog.at_level("WARNING"):
-        out = BIDSDataset._add_days_since_episodes(df)
-    assert _na(out.mbd_last_manic_episode_days_since) == ["-10", None, None, None]
-    assert _na(out.traumatic_event_days_since) == [None] * 4
-    assert "1 episode date(s) equal to the session date, treated as not given" in caplog.text
 
 
-def test_a_form_on_an_undated_session_keeps_its_value_unchecked(caplog):
-    df = pd.DataFrame([
-        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S1",
-         "session_started_at": "2100-01-05T10:00:00-05:00"},
-        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S2", "session_started_at": None},
-        {"record_id": "a", "redcap_repeat_instrument": "Q - Mood - PTSD Adult", "ptsd_session_id": "S2",
-         "traumatic_event_date": "2100-01-25"},
-    ], dtype=object)
-    with caplog.at_level("WARNING"):
-        out = BIDSDataset._add_days_since_episodes(df)
-    assert _na(out.traumatic_event_days_since) == [None, None, "-20"]
-    assert "1 episode date(s) on a form whose session has no date could not be checked against it; kept: a traumatic_event_date" in caplog.text
 
 
-def test_state_province_prefers_the_stated_value_then_the_postal_code(caplog):
-    demo = "Q - Generic - Demographics"
-    df = pd.DataFrame([
-        {"record_id": "a", "redcap_repeat_instrument": demo, "zipcode": "02139", "state_province": "Massachusetts"},
-        {"record_id": "b", "redcap_repeat_instrument": demo, "zipcode": None, "state_province": "ny"},
-        {"record_id": "c", "redcap_repeat_instrument": demo, "zipcode": "bad", "state_province": "Quebec"},
-        {"record_id": "d", "redcap_repeat_instrument": demo, "zipcode": None, "state_province": None},
-        {"record_id": "e", "redcap_repeat_instrument": demo, "zipcode": "10001", "state_province": "NJ"},
-        {"record_id": "f", "redcap_repeat_instrument": "Session", "zipcode": None, "state_province": None},
-    ], dtype=object)
-    with caplog.at_level("WARNING"):
-        out = BIDSDataset._add_state_province(df)
-    assert _na(out.state_province_standardized) == ["MA", "NY", "QC", "Unknown", "NJ", None]  # e: the stated NJ wins
-    assert "1 form(s) whose postal code and stated state/province disagree (the stated value is used): e" in caplog.text

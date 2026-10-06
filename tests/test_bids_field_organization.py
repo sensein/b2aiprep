@@ -17,6 +17,7 @@ import pytest
 from b2aiprep.prepare import dataset as dataset_module
 from b2aiprep.prepare.dataset import BIDSDataset, derived_field_specs
 
+
 VALID_COLUMN_TYPES = {"VARIABLE", "CHECKBOX_OPTION"}
 VALID_YES_NO = {"YES", "NO"}
 
@@ -391,3 +392,22 @@ def test_every_computed_column_has_a_derived_field_spec():
     for name, spec in specs.items():
         assert spec["datatype"] in ("xsd:integer", "xsd:string"), name
         assert set(spec) <= {"datatype", "choices", "minValue", "maxValue", "unit", "derivedFrom"}, name
+
+
+def test_derived_choices_cover_what_the_pipeline_writes():
+    from b2aiprep.prepare.dataset import derived_field_specs
+    from b2aiprep.prepare.date_shift import CA_PROVINCES, US_STATES
+
+    values = lambda name: {c["value"] for c in derived_field_specs()[name]["choices"]}
+    assert values("sex_at_birth") == {"Female", "Male", BIDSDataset._SEX_UNKNOWN_LABEL}
+    for name in ("state_province", "peds_state_province"):
+        assert values(name) == set(US_STATES) | set(CA_PROVINCES) | {BIDSDataset._SEX_UNKNOWN_LABEL}
+
+
+def test_every_surgery_date_has_a_derived_field_map_row():
+    fm = BIDSDataset._load_reorganization_file(exclude_dropped=False)
+    shifted = set(fm.loc[fm.date_shift == "YES", "column_name_source"])
+    assert set(BIDSDataset._SURGERY_DATE_COLUMNS) <= shifted
+    rows = fm.set_index("column_name_source")
+    for out in BIDSDataset._SURGERY_DATE_COLUMNS.values():
+        assert rows.loc[out, "source"] == "pipeline" and rows.loc[out, "disposition"] == "release"

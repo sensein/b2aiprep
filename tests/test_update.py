@@ -1,4 +1,3 @@
-"""RedCap sliders are described as the integer they record, not as their end labels."""
 import json
 
 from b2aiprep.prepare.update import _build_data_elements
