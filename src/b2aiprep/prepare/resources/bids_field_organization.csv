@@ -866,7 +866,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
+8, Dominican",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,household_count,household_count,demographics,How many people live with you?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,household_income_ca,household_income_ca,demographics,"What was your total household income last year (CAD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc.",NO,release,VARIABLE,redcap,v4,NO,NO,
 demographics_schema,demographics,household_income_usa,household_income_usa,demographics,"What was your total household income last year (USD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -3238,7 +3238,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___2,hispanic_latino_selection___2,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3246,7 +3246,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___3,hispanic_latino_selection___3,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3254,7 +3254,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___4,hispanic_latino_selection___4,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3262,7 +3262,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___5,hispanic_latino_selection___5,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3270,7 +3270,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___6,hispanic_latino_selection___6,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3278,7 +3278,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___7,hispanic_latino_selection___7,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3286,7 +3286,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___8,hispanic_latino_selection___8,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3294,7 +3294,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___9,hispanic_latino_selection___9,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3302,7 +3302,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,marital_status___1,marital_status___1,demographics,What is your marital status? Choose all that apply,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,marital_status___2,marital_status___2,demographics,What is your marital status? Choose all that apply,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,marital_status___3,marital_status___3,demographics,What is your marital status? Choose all that apply,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
