@@ -1441,6 +1441,18 @@ class TestApplyColumnValueReviews:
         result, _ = BIDSDataset._apply_column_value_reviews(df, {"free_text"}, verdicts)
         assert list(result["free_text"]) == ["seen [REDACTED]", "seen in clinic", "fine"]
 
+    def test_a_form_table_matches_verdicts_on_its_own_session_column(self):
+        """Form tables name the session after the form (confounders_session_id, mph_session_id)."""
+        df = pd.DataFrame({
+            "participant_id": ["p1", "p1"], "confounders_session_id": ["s1", "s2"],
+            "free_text": ["first visit", "second visit"]})
+        verdicts = {
+            ("p1", "free_text", "s1"): ValueReview("redact", "[REDACTED] visit"),
+            ("p1", "free_text", "s2"): ValueReview("safe"),
+        }
+        result, _ = BIDSDataset._apply_column_value_reviews(df, {"free_text"}, verdicts)
+        assert list(result["free_text"]) == ["[REDACTED] visit", "second visit"]
+
     def test_a_session_without_its_own_verdict_is_withheld(self):
         df = pd.DataFrame({
             "participant_id": ["p1", "p1"], "session_id": ["s1", "s2"], "free_text": ["a", "b"]})

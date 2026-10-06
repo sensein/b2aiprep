@@ -1925,7 +1925,8 @@ class BIDSDataset:
     ) -> t.Tuple[pd.DataFrame, t.List[str]]:
         """Apply per-cell verdicts to review-disposition columns.
 
-        A verdict for the row's session is used first, then one without a session. ``safe``
+        A verdict for the row's session (its ``session_id`` or form ``<form>_session_id``) is used
+        first, then one without a session. ``safe``
         keeps the value; ``redact`` publishes its ``redacted_text`` or, without one,
         ``[REDACTED]``. Columns with zero verdicts are dropped entirely (backward compat).
         Cells with no verdict default to null (fail-safe).
@@ -1933,7 +1934,9 @@ class BIDSDataset:
         id_col = "participant_id" if "participant_id" in df.columns else "record_id"
         if id_col not in df.columns:
             return df, []
-        has_session = "session_id" in df.columns
+        session_cols = BIDSDataset._session_id_columns(df)
+        # A form row carries one session ID; the first non-empty one is its session.
+        row_session = df[session_cols].bfill(axis=1).iloc[:, 0] if session_cols else None
 
         fully_dropped = []
         for col in sorted(review_columns & set(df.columns)):
@@ -1946,7 +1949,8 @@ class BIDSDataset:
                 continue
             for idx, row in df.iterrows():
                 pid = row[id_col]
-                review = (has_session and col_verdicts.get((pid, row["session_id"]))) or col_verdicts.get((pid, None))
+                session = row_session.at[idx] if row_session is not None else None
+                review = (pd.notna(session) and col_verdicts.get((pid, session))) or col_verdicts.get((pid, None))
                 verdict = review.verdict if review else None
                 if verdict == "safe":
                     pass
