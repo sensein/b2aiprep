@@ -93,18 +93,13 @@ class ValueReview(t.NamedTuple):
 def review_fingerprint(value: t.Any) -> str:
     """SHA-256 of an answer as reviewed, ignoring whitespace and how a number is written.
 
-    A verdict is meant for the answer someone read. Exports differ in spacing and in number
-    format ("17.0" vs "17") without the answer changing, so both are normalized away; any other
-    change gives a different fingerprint. Only the hash is stored, never the answer.
+    A verdict is meant for the answer someone read. Exports differ in spacing and in how a whole
+    number is written ("17.0" vs "17") without the answer changing, so both are normalized away;
+    any other change, including "0017" or "1e3" for "17" or "1000", gives a different fingerprint.
+    Only the hash is stored, never the answer.
     """
     text = " ".join(str(value).split())
-    try:
-        number = float(text)
-    except ValueError:
-        pass
-    else:
-        if np.isfinite(number):
-            text = str(int(number)) if number.is_integer() else repr(number)
+    text = re.sub(r"^(-?\d+)\.0+$", r"\1", text)
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
@@ -1924,20 +1919,24 @@ class BIDSDataset:
     def _normalize_redacted_text(text: str, key: t.Tuple[str, str, t.Optional[str]]) -> str:
         """Write every redaction marker in *text* as ``[REDACTED]``, whatever its case.
 
-        A word or bracketed token close to the marker but not it (``[redcated]``, ``redacted``
-        without brackets, ``[redacted`` unclosed) is a typo that would publish what it meant to
+        A word or bracketed token close to the marker but not it (``[redcated]``, ``[REDAC]``,
+        ``redacted`` without brackets, ``[redacted`` unclosed) is a typo that would publish what it meant to
         hide, so it stops the run.
         """
         text = re.sub(r"\[\s*redacted\s*\]", REDACTION_MARKER, text, flags=re.IGNORECASE)
         rest = text.replace(REDACTION_MARKER, " ")
-        for word in re.findall(r"[A-Za-z]+", rest):
-            w = word.lower()
-            if w.startswith("red") and difflib.SequenceMatcher(None, w, "redacted").ratio() >= 0.85:
-                raise ValueError(
-                    f"column_value_reviews.json: redacted_text for participant {key[0]}, column "
-                    f"{key[1]}, session {key[2]} has {word!r} outside a {REDACTION_MARKER} marker; "
-                    f"write the marker as [redacted] or {REDACTION_MARKER}."
-                )
+        # A bracketed word close to the marker ([REDAC], [RDACTED]) or, outside brackets, a word
+        # starting "red" close to it ("redacted", "redcated"); real words such as "reduced" pass.
+        bracketed = [w for w in re.findall(r"\[\s*([A-Za-z]+)", rest)
+                     if difflib.SequenceMatcher(None, w.lower(), "redacted").ratio() >= 0.6]
+        loose = [w for w in re.findall(r"[A-Za-z]+", rest) if w.lower().startswith("red")
+                 and difflib.SequenceMatcher(None, w.lower(), "redacted").ratio() >= 0.85]
+        if bracketed or loose:
+            raise ValueError(
+                f"column_value_reviews.json: redacted_text for participant {key[0]}, column "
+                f"{key[1]}, session {key[2]} has {(bracketed + loose)[0]!r} outside a "
+                f"{REDACTION_MARKER} marker; write the marker as [redacted] or {REDACTION_MARKER}."
+            )
         return text
 
     @staticmethod
@@ -1964,6 +1963,7 @@ class BIDSDataset:
 
         fully_dropped = []
         changed = []  # (participant, column, session) whose answer differs from the reviewed one
+        unmatched = []  # verdicts for a column of this table that no row used
         for col in sorted(review_columns & set(df.columns)):
             col_verdicts = {
                 (pid, session): v for (pid, cname, session), v in verdicts.items() if cname == col
@@ -1972,13 +1972,19 @@ class BIDSDataset:
                 df = df.drop(columns=[col])
                 fully_dropped.append(col)
                 continue
+            used = set()
             for idx, row in df.iterrows():
                 pid = row[id_col]
                 session = row_session.at[idx] if row_session is not None else None
-                review = (pd.notna(session) and col_verdicts.get((pid, session))) or col_verdicts.get((pid, None))
-                verdict = review.verdict if review else None
+                key = (pid, session) if pd.notna(session) and (pid, session) in col_verdicts else (pid, None)
+                review = col_verdicts.get(key)
+                if review:
+                    used.add(key)
                 value = row[col]
-                if (verdict in ("safe", "redact") and review.value_sha256 and pd.notna(value)
+                if pd.isna(value):
+                    continue  # no answer: nothing to publish, whatever the verdict
+                verdict = review.verdict if review else None
+                if (verdict in ("safe", "redact") and review.value_sha256
                         and review_fingerprint(value) != review.value_sha256):
                     changed.append((pid, col, session if pd.notna(session) else None))
                     verdict = None
@@ -1988,6 +1994,13 @@ class BIDSDataset:
                     df.at[idx, col] = review.redacted_text or REDACTION_MARKER
                 else:
                     df.at[idx, col] = pd.NA
+            unmatched += [(pid, col, session) for (pid, session) in col_verdicts.keys() - used]
+        if unmatched:
+            _LOGGER.warning(
+                "QA check: column value reviews: %d verdict(s) match no row of this table "
+                "(participant not here, or a session ID that differs from the tree's): %s",
+                len(unmatched), "; ".join(f"{p} {c} session {s}" for p, c, s in sorted(unmatched, key=str)),
+            )
         if changed:
             _LOGGER.warning(
                 "QA check: column value reviews: %d answer(s) differ from the answer that was "

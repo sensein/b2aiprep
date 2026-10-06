@@ -1382,14 +1382,15 @@ class TestLoadColumnValueReviews:
             "participant_id": "p1", "column_name": "col_a", "verdict": "safe", "redacted_text": "x"})
         assert result[("p1", "col_a", None)] == ValueReview("safe")
 
-    @pytest.mark.parametrize("text", ["[redcated] here", "a redacted word", "[redacted cut off", "[REDATCED]"])
+    @pytest.mark.parametrize("text", ["[redcated] here", "a redacted word", "[redacted cut off", "[REDATCED]",
+                                      "13/30 - [REDAC]", "[RDACTED] visit"])
     def test_a_misspelled_marker_stops_the_run(self, tmp_path, text):
         with pytest.raises(ValueError, match="outside a \\[REDACTED\\] marker"):
             self._load(tmp_path, {"participant_id": "p1", "column_name": "col_a", "verdict": "redact",
                                   "redacted_text": text})
 
     def test_words_that_only_resemble_the_marker_are_text(self, tmp_path):
-        text = "reduced dose, drug-related, redness [sic]"
+        text = "reduced dose, drug-related, redness [sic] [sic-dysphonia] [red] (performed by OT)"
         result = self._load(tmp_path, {"participant_id": "p1", "column_name": "col_a", "verdict": "redact",
                                        "redacted_text": text})
         assert result[("p1", "col_a", None)].redacted_text == text
@@ -1472,6 +1473,30 @@ class TestApplyColumnValueReviews:
         assert list(result["free_text"][1:]) == [" 17  ", "Seen [REDACTED]", "kept"]
         assert any("p1 free_text" in r.message and "differ from the answer that was reviewed" in r.message
                    for r in caplog.records)
+
+    @pytest.mark.parametrize("a, b, same", [
+        ("17.0", "17", True), (" 17 ", "17", True), ("a\r\nb", "a b", True), ("-3.00", "-3", True),
+        ("0017", "17", False), ("1e3", "1000", False), ("1_000", "1000", False), ("17.5", "17.50", False),
+        ("12345678901234567", "12345678901234568", False)])
+    def test_the_fingerprint_ignores_spacing_and_whole_number_format_only(self, a, b, same):
+        assert (review_fingerprint(a) == review_fingerprint(b)) is same
+
+    def test_an_empty_cell_stays_empty_whatever_its_verdict(self):
+        """A redact verdict must not write its text into a cell that has no answer."""
+        df = pd.DataFrame({"participant_id": ["p1", "p1"], "free_text": ["seen in clinic", None]})
+        verdicts = {("p1", "free_text", None): ValueReview("redact", "seen [REDACTED]")}
+        result, _ = BIDSDataset._apply_column_value_reviews(df, {"free_text"}, verdicts)
+        assert result.loc[0, "free_text"] == "seen [REDACTED]" and pd.isna(result.loc[1, "free_text"])
+
+    def test_verdicts_that_match_no_row_are_logged(self, caplog):
+        df = pd.DataFrame({"participant_id": ["p1"], "mph_session_id": ["s1"], "free_text": ["a"]})
+        verdicts = {("p1", "free_text", "s1"): ValueReview("safe"),
+                    ("p1", "free_text", "S-OTHER"): ValueReview("safe"),
+                    ("p9", "free_text", None): ValueReview("safe")}
+        with caplog.at_level(logging.WARNING):
+            BIDSDataset._apply_column_value_reviews(df, {"free_text"}, verdicts)
+        msg = next(r.message for r in caplog.records if "match no row" in r.message)
+        assert "2 verdict(s)" in msg and "S-OTHER" in msg and "p9 free_text" in msg
 
     def test_the_fingerprint_is_loaded_with_the_verdict(self, tmp_path):
         (tmp_path / "column_value_reviews.json").write_text(json.dumps({"verdicts": [
