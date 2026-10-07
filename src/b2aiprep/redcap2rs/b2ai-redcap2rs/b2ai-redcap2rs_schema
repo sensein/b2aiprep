@@ -19,13 +19,21 @@
             "../activities/bridge2ai_paper_consent_all_sites_english/bridge2ai_paper_consent_all_sites_english_schema",
             "../activities/bridge2ai_econsent_usf_english/bridge2ai_econsent_usf_english_schema",
             "../activities/bridge2ai_econsent_usf_english_version_3/bridge2ai_econsent_usf_english_version_3_schema",
+            "../activities/bridge2ai_econsent_usf_english_version_4/bridge2ai_econsent_usf_english_version_4_schema",
             "../activities/bridge2ai_econsent_usf_spanish/bridge2ai_econsent_usf_spanish_schema",
             "../activities/bridge2ai_econsent_usf_spanish_version_3/bridge2ai_econsent_usf_spanish_version_3_schema",
+            "../activities/bridge2ai_econsent_usf_spanish_version_4/bridge2ai_econsent_usf_spanish_version_4_schema",
             "../activities/bridge2ai_econsent_mit_english/bridge2ai_econsent_mit_english_schema",
             "../activities/bridge2ai_econsent_mit_english_version_2/bridge2ai_econsent_mit_english_version_2_schema",
+            "../activities/bridge2ai_econsent_mit_english_version_3/bridge2ai_econsent_mit_english_version_3_schema",
             "../activities/bridge2ai_econsent_mit_spanish_version_2/bridge2ai_econsent_mit_spanish_version_2_schema",
+            "../activities/bridge2ai_econsent_mit_spanish_version_3/bridge2ai_econsent_mit_spanish_version_3_schema",
             "../activities/bridge2ai_econsent_wcm_english/bridge2ai_econsent_wcm_english_schema",
+            "../activities/bridge2ai_econsent_wcm_english_version_2/bridge2ai_econsent_wcm_english_version_2_schema",
             "../activities/bridge2ai_econsent_wcm_spanish_version_1/bridge2ai_econsent_wcm_spanish_version_1_schema",
+            "../activities/bridge2ai_econsent_wcm_spanish_version_2/bridge2ai_econsent_wcm_spanish_version_2_schema",
+            "../activities/bridge2ai_econsent_vumc_english_version_1/bridge2ai_econsent_vumc_english_version_1_schema",
+            "../activities/bridge2ai_econsent_vumc_spanish_version_1/bridge2ai_econsent_vumc_spanish_version_1_schema",
             "../activities/d_control/d_control_schema",
             "../activities/d_voice_glottic_insufficiency_presbyphonia/d_voice_glottic_insufficiency_presbyphonia_schema",
             "../activities/d_voice_benign_lesions/d_voice_benign_lesions_schema",
@@ -152,6 +160,14 @@
                 "variableName": "bridge2ai_econsent_usf_english_version_3_schema"
             },
             {
+                "isAbout": "../activities/bridge2ai_econsent_usf_english_version_4/bridge2ai_econsent_usf_english_version_4_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Usf English Version 4"
+                },
+                "variableName": "bridge2ai_econsent_usf_english_version_4_schema"
+            },
+            {
                 "isAbout": "../activities/bridge2ai_econsent_usf_spanish/bridge2ai_econsent_usf_spanish_schema",
                 "isVis": true,
                 "prefLabel": {
@@ -166,6 +182,14 @@
                     "en": "Bridge2Ai Econsent Usf Spanish Version 3"
                 },
                 "variableName": "bridge2ai_econsent_usf_spanish_version_3_schema"
+            },
+            {
+                "isAbout": "../activities/bridge2ai_econsent_usf_spanish_version_4/bridge2ai_econsent_usf_spanish_version_4_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Usf Spanish Version 4"
+                },
+                "variableName": "bridge2ai_econsent_usf_spanish_version_4_schema"
             },
             {
                 "isAbout": "../activities/bridge2ai_econsent_mit_english/bridge2ai_econsent_mit_english_schema",
@@ -184,12 +208,28 @@
                 "variableName": "bridge2ai_econsent_mit_english_version_2_schema"
             },
             {
+                "isAbout": "../activities/bridge2ai_econsent_mit_english_version_3/bridge2ai_econsent_mit_english_version_3_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Mit English Version 3"
+                },
+                "variableName": "bridge2ai_econsent_mit_english_version_3_schema"
+            },
+            {
                 "isAbout": "../activities/bridge2ai_econsent_mit_spanish_version_2/bridge2ai_econsent_mit_spanish_version_2_schema",
                 "isVis": true,
                 "prefLabel": {
                     "en": "Bridge2Ai Econsent Mit Spanish Version 2"
                 },
                 "variableName": "bridge2ai_econsent_mit_spanish_version_2_schema"
+            },
+            {
+                "isAbout": "../activities/bridge2ai_econsent_mit_spanish_version_3/bridge2ai_econsent_mit_spanish_version_3_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Mit Spanish Version 3"
+                },
+                "variableName": "bridge2ai_econsent_mit_spanish_version_3_schema"
             },
             {
                 "isAbout": "../activities/bridge2ai_econsent_wcm_english/bridge2ai_econsent_wcm_english_schema",
@@ -200,12 +240,44 @@
                 "variableName": "bridge2ai_econsent_wcm_english_schema"
             },
             {
+                "isAbout": "../activities/bridge2ai_econsent_wcm_english_version_2/bridge2ai_econsent_wcm_english_version_2_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Wcm English Version 2"
+                },
+                "variableName": "bridge2ai_econsent_wcm_english_version_2_schema"
+            },
+            {
                 "isAbout": "../activities/bridge2ai_econsent_wcm_spanish_version_1/bridge2ai_econsent_wcm_spanish_version_1_schema",
                 "isVis": true,
                 "prefLabel": {
                     "en": "Bridge2Ai Econsent Wcm Spanish Version 1"
                 },
                 "variableName": "bridge2ai_econsent_wcm_spanish_version_1_schema"
+            },
+            {
+                "isAbout": "../activities/bridge2ai_econsent_wcm_spanish_version_2/bridge2ai_econsent_wcm_spanish_version_2_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Wcm Spanish Version 2"
+                },
+                "variableName": "bridge2ai_econsent_wcm_spanish_version_2_schema"
+            },
+            {
+                "isAbout": "../activities/bridge2ai_econsent_vumc_english_version_1/bridge2ai_econsent_vumc_english_version_1_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Vumc English Version 1"
+                },
+                "variableName": "bridge2ai_econsent_vumc_english_version_1_schema"
+            },
+            {
+                "isAbout": "../activities/bridge2ai_econsent_vumc_spanish_version_1/bridge2ai_econsent_vumc_spanish_version_1_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Vumc Spanish Version 1"
+                },
+                "variableName": "bridge2ai_econsent_vumc_spanish_version_1_schema"
             },
             {
                 "isAbout": "../activities/d_control/d_control_schema",
@@ -618,6 +690,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.9.0",
+    "version": "4.11.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

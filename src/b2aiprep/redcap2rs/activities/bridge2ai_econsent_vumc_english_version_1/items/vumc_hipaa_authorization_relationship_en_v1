@@ -1,0 +1,39 @@
+{
+    "id": "vumc_hipaa_authorization_relationship_en_v1",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "vumc_hipaa_authorization_relationship_en_v1"
+    },
+    "question": {
+        "en": "Relationship to the patient/volunteer (place check mark next to the one that applies):"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Self (patient is age of majority)"
+                },
+                "value": "self"
+            },
+            {
+                "name": {
+                    "en": "Parent of minor"
+                },
+                "value": "parent"
+            },
+            {
+                "name": {
+                    "en": "Legally Authorized Representative / Health Care Decision-maker"
+                },
+                "value": "lar"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

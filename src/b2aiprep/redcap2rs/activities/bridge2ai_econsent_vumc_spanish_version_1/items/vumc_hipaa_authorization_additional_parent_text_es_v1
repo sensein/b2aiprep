@@ -1,0 +1,20 @@
+{
+    "id": "vumc_hipaa_authorization_additional_parent_text_es_v1",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "vumc_hipaa_authorization_additional_parent_text_es_v1"
+    },
+    "question": {
+        "en": "Esta secci\u00f3n debe completarse si ambos padres necesitan proporcionar su autorizaci\u00f3n:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
