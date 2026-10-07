@@ -3567,8 +3567,8 @@ class BIDSDataset:
         *rules* is ``exclude_participants`` from ``deidentify_settings.json``: a list of ``{"table":
         ..., "column": ..., "values": [...]}``; a participant with any of *values* in that column (any
         row) is not released at all. A table or column that is not there stops the run, so a typo
-        cannot silently exclude no one. Only counts are logged: the IDs would tie participants to
-        the answer.
+        cannot silently exclude no one. The excluded record IDs are listed in the run log (internal,
+        outside the release tree) so the exclusion can be checked.
         """
         excluded: t.Set[str] = set()
         for rule in rules:
@@ -3588,8 +3588,9 @@ class BIDSDataset:
             id_col = "participant_id" if "participant_id" in df.columns else "record_id"
             matched = set(df.loc[df[column].isin(values), id_col].dropna().astype(str))
             _LOGGER.log(logging.INFO if matched else logging.WARNING,
-                        "exclude_participants: %d participant(s) with %s.%s in %s not released.",
-                        len(matched), table, column, sorted(values))
+                        "exclude_participants: %d participant(s) with %s.%s in %s not released%s",
+                        len(matched), table, column, sorted(values),
+                        f": {', '.join(sorted(matched))}" if matched else ".")
             excluded |= matched
         return excluded
 

@@ -1633,10 +1633,14 @@ def test_relabelled_answers_and_their_choices_reach_the_released_json(tmp_path, 
                                   {"name": {"en": "Extreme"}, "value": "extreme"}]
 
 
-def test_exclude_participants_removes_a_participant_by_one_answer(tmp_path, make_deid_tree):
+def test_exclude_participants_removes_a_participant_by_one_answer(tmp_path, make_deid_tree, caplog):
     bids, config = _pediatric_tree(make_deid_tree, GENDER_RULE)
-    BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
+    with caplog.at_level(logging.INFO):
+        BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
     assert sorted(p.name for p in (tmp_path / "out").glob("sub-*")) == ["sub-900000"]
+    # the internal run log names the excluded record, so the exclusion can be checked
+    line = next(r.message for r in caplog.records if r.message.startswith("exclude_participants:"))
+    assert line.endswith("not released: p2") and "p1" not in line
     released = BIDSDataset._read_tsv_as_written(
         tmp_path / "out" / "phenotype" / "pediatric" / "pediatric_demographics.tsv")
     assert list(released["participant_id"]) == ["900000"]
