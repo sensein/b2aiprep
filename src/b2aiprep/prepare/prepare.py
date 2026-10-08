@@ -107,6 +107,23 @@ def remap_id(
         return original_id
 
 #@python.define
+def transcription_language(wav_path: str | os.PathLike) -> str:
+    """Language to transcribe a recording in: the ``language`` of its sidecar
+    (``<stem>_recording-metadata.json``, BCP-47 from RedCap ``selected_language``, e.g.
+    ``es-419``) reduced to the ISO 639 code Whisper takes (``es``). English when the sidecar or
+    its ``language`` is missing, as before this was read (#325)."""
+    wav_path = Path(wav_path)
+    sidecar = wav_path.with_name(f"{wav_path.stem}_recording-metadata.json")
+    try:
+        language = json.loads(sidecar.read_text()).get("language")
+    except (OSError, ValueError):
+        _logger.warning(f"No readable sidecar {sidecar}; transcribing {wav_path.name} as English.")
+        return "en"
+    if not language:
+        return "en"
+    return str(language).split("-")[0].strip().lower()
+
+
 def extract_single(
     wav_path: str | os.PathLike,
     transcription_model_size: str,
@@ -343,7 +360,7 @@ def extract_single(
             speech_to_text_model = HFModel(
                 path_or_uri=f"openai/whisper-{transcription_model_size}", revision="main"
             )
-            language = Language.model_validate({"language_code": "en"})
+            language = Language.model_validate({"language_code": transcription_language(wav_path)})
             transcription = retry(transcribe_audios)(
                 [audio_16k], model=speech_to_text_model, device=device, language=language,return_timestamps=None
             )
