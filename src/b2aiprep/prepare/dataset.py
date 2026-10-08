@@ -19,6 +19,8 @@ sub-p1/
 from copy import copy, deepcopy
 from functools import lru_cache, partial
 import datetime
+import difflib
+import hashlib
 import logging
 import os
 import re
@@ -73,6 +75,49 @@ from pydantic import BaseModel
 from b2aiprep.prepare.redcap import RedCapDataset, _dropped_source_columns
 
 _LOGGER = logging.getLogger(__name__)
+
+# Published in place of a hidden value, whole or in part (column_value_reviews.json).
+REDACTION_MARKER = "[REDACTED]"
+
+
+class Verdict(enum.Enum):
+    """What a reviewer decided for one answer (column_value_reviews.json ``verdict``).
+
+    ``withhold`` records that the answer was reviewed and must not be published, so a later
+    review does not have to look at it again; an answer with no verdict at all is withheld too,
+    but as never reviewed. ``drop`` is the older word for ``withhold``.
+    """
+    SAFE = "safe"
+    REDACT = "redact"
+    WITHHOLD = "withhold"
+
+    @classmethod
+    def parse(cls, value: str) -> "Verdict":
+        text = str(value).strip().lower()
+        return cls.WITHHOLD if text == "drop" else cls(text)
+
+
+class ValueReview(t.NamedTuple):
+    """One column value review verdict: ``safe``, ``redact`` (with optional replacement text)
+    or ``withhold``. ``value_sha256``, when given, is the fingerprint of the answer that was
+    reviewed (``review_fingerprint``)."""
+
+    verdict: Verdict
+    redacted_text: t.Optional[str] = None
+    value_sha256: t.Optional[str] = None
+
+
+def review_fingerprint(value: t.Any) -> str:
+    """SHA-256 of an answer as reviewed, ignoring whitespace and how a number is written.
+
+    A verdict is meant for the answer someone read. Exports differ in spacing and in how a whole
+    number is written ("17.0" vs "17") without the answer changing, so both are normalized away;
+    any other change, including "0017" or "1e3" for "17" or "1000", gives a different fingerprint.
+    Only the hash is stored, never the answer.
+    """
+    text = " ".join(str(value).split())
+    text = re.sub(r"^(-?\d+)\.0+$", r"\1", text)
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 class DispositionLevel(enum.Enum):
@@ -1808,13 +1853,19 @@ class BIDSDataset:
     def _load_column_value_reviews(
         config_dir: Path,
         field_map_df: t.Optional[pd.DataFrame] = None,
-    ) -> t.Dict[t.Tuple[str, str], str]:
+    ) -> t.Dict[t.Tuple[str, str, t.Optional[str]], "ValueReview"]:
         """Load the column value review manifest from the config directory.
 
+        Each verdict is keyed by (participant_id, column, session_id); session_id is None for
+        an entry without one, which then applies to every session of that participant.
         Entries may use either ``column_name`` (the output/BIDS name) or
         ``source_column_name`` (the original REDCap name).  Source names are
         normalized to output names via the field map so that lookups in
-        ``_apply_column_value_reviews`` always use output names.
+        ``_apply_column_value_reviews`` always use output names. A ``redact`` entry may give
+        ``redacted_text`` to publish instead of the whole-cell marker; its markers are
+        normalized to ``[REDACTED]`` and a misspelled marker stops the run. An entry may give
+        ``value_sha256`` (``review_fingerprint`` of the reviewed answer); the verdict then applies
+        only while the answer is unchanged.
         """
         manifest_path = config_dir / "column_value_reviews.json"
         if not manifest_path.exists():
@@ -1836,20 +1887,33 @@ class BIDSDataset:
         with open(manifest_path, "r") as f:
             data = json.load(f)
         verdicts_list = data.get("verdicts", [])
-        lookup: t.Dict[t.Tuple[str, str], str] = {}
+        lookup: t.Dict[t.Tuple[str, str, t.Optional[str]], ValueReview] = {}
         normalized_count = 0
         for entry in verdicts_list:
             col = entry.get("column_name") or entry.get("source_column_name", "")
             if col in source_to_output:
                 col = source_to_output[col]
                 normalized_count += 1
-            key = (entry["participant_id"], col)
+            key = (entry["participant_id"], col, entry.get("session_id") or None)
             if key in lookup:
                 _LOGGER.warning(
-                    "Duplicate column value review for %s/%s; last entry wins.",
-                    key[0], key[1],
+                    "Duplicate column value review for %s/%s (session %s); last entry wins.",
+                    key[0], key[1], key[2],
                 )
-            lookup[key] = entry["verdict"].strip().lower()
+            try:
+                verdict = Verdict.parse(entry["verdict"])
+            except ValueError:
+                raise ValueError(
+                    f"{manifest_path}: verdict {entry['verdict']!r} for participant {key[0]}, column "
+                    f"{key[1]}, session {key[2]} is not one of "
+                    f"{', '.join(v.value for v in Verdict)} (or 'drop' for withhold)."
+                ) from None
+            text = entry.get("redacted_text")
+            if verdict is Verdict.REDACT and text is not None and str(text).strip():
+                text = BIDSDataset._normalize_redacted_text(str(text).strip(), key)
+            else:
+                text = None
+            lookup[key] = ValueReview(verdict, text, entry.get("value_sha256") or None)
         _LOGGER.info("Loaded %d column value review verdicts from %s.", len(lookup), manifest_path)
         if normalized_count:
             _LOGGER.info("Normalized %d verdicts from source to output column names.", normalized_count)
@@ -1876,38 +1940,96 @@ class BIDSDataset:
         )
 
     @staticmethod
+    def _normalize_redacted_text(text: str, key: t.Tuple[str, str, t.Optional[str]]) -> str:
+        """Write every redaction marker in *text* as ``[REDACTED]``, whatever its case.
+
+        A word or bracketed token close to the marker but not it (``[redcated]``, ``[REDAC]``,
+        ``redacted`` without brackets, ``[redacted`` unclosed) is a typo that would publish what it meant to
+        hide, so it stops the run.
+        """
+        text = re.sub(r"\[\s*redacted\s*\]", REDACTION_MARKER, text, flags=re.IGNORECASE)
+        rest = text.replace(REDACTION_MARKER, " ")
+        # A bracketed word close to the marker ([REDAC], [RDACTED]) or, outside brackets, a word
+        # starting "red" close to it ("redacted", "redcated"); real words such as "reduced" pass.
+        bracketed = [w for w in re.findall(r"\[\s*([A-Za-z]+)", rest)
+                     if difflib.SequenceMatcher(None, w.lower(), "redacted").ratio() >= 0.6]
+        loose = [w for w in re.findall(r"[A-Za-z]+", rest) if w.lower().startswith("red")
+                 and difflib.SequenceMatcher(None, w.lower(), "redacted").ratio() >= 0.85]
+        if bracketed or loose:
+            raise ValueError(
+                f"column_value_reviews.json: redacted_text for participant {key[0]}, column "
+                f"{key[1]}, session {key[2]} has {(bracketed + loose)[0]!r} outside a "
+                f"{REDACTION_MARKER} marker; write the marker as [redacted] or {REDACTION_MARKER}."
+            )
+        return text
+
+    @staticmethod
     def _apply_column_value_reviews(
         df: pd.DataFrame,
         review_columns: t.AbstractSet[str],
-        verdicts: t.Dict[t.Tuple[str, str], str],
+        verdicts: t.Dict[t.Tuple[str, str, t.Optional[str]], "ValueReview"],
     ) -> t.Tuple[pd.DataFrame, t.List[str]]:
         """Apply per-cell verdicts to review-disposition columns.
 
-        Columns with zero verdicts are dropped entirely (backward compat).
-        Cells with no verdict default to null (fail-safe).
+        A verdict for the row's session (its ``session_id`` or form ``<form>_session_id``) is used
+        first, then one without a session. ``safe`` keeps the value; ``redact`` publishes its
+        ``redacted_text`` or, without one, ``[REDACTED]``; ``withhold`` blanks it. A verdict with a ``value_sha256`` that no longer matches the answer is
+        for a different answer: the cell is withheld and logged. Columns with zero verdicts are
+        dropped entirely (backward compat). Cells with no verdict default to null (fail-safe).
         """
         id_col = "participant_id" if "participant_id" in df.columns else "record_id"
         if id_col not in df.columns:
             return df, []
+        session_cols = BIDSDataset._session_id_columns(df)
+        # A form row carries one session ID; the first non-empty one is its session.
+        row_session = df[session_cols].bfill(axis=1).iloc[:, 0] if session_cols else None
 
         fully_dropped = []
+        changed = []  # (participant, column, session) whose answer differs from the reviewed one
+        unmatched = []  # verdicts for a column of this table that no row used
         for col in sorted(review_columns & set(df.columns)):
             col_verdicts = {
-                pid: v for (pid, cname), v in verdicts.items() if cname == col
+                (pid, session): v for (pid, cname, session), v in verdicts.items() if cname == col
             }
             if not col_verdicts:
                 df = df.drop(columns=[col])
                 fully_dropped.append(col)
                 continue
+            used = set()
             for idx, row in df.iterrows():
                 pid = row[id_col]
-                verdict = col_verdicts.get(pid)
-                if verdict == "safe":
+                session = row_session.at[idx] if row_session is not None else None
+                key = (pid, session) if pd.notna(session) and (pid, session) in col_verdicts else (pid, None)
+                review = col_verdicts.get(key)
+                if review:
+                    used.add(key)
+                value = row[col]
+                if pd.isna(value):
+                    continue  # no answer: nothing to publish, whatever the verdict
+                verdict = review.verdict if review else None
+                if (verdict in (Verdict.SAFE, Verdict.REDACT) and review.value_sha256
+                        and review_fingerprint(value) != review.value_sha256):
+                    changed.append((pid, col, session if pd.notna(session) else None))
+                    verdict = None
+                if verdict is Verdict.SAFE:
                     pass
-                elif verdict == "redact":
-                    df.at[idx, col] = "[REDACTED]"
+                elif verdict is Verdict.REDACT:
+                    df.at[idx, col] = review.redacted_text or REDACTION_MARKER
                 else:
                     df.at[idx, col] = pd.NA
+            unmatched += [(pid, col, session) for (pid, session) in col_verdicts.keys() - used]
+        if unmatched:
+            _LOGGER.warning(
+                "QA check: column value reviews: %d verdict(s) match no row of this table "
+                "(participant not here, or a session ID that differs from the tree's): %s",
+                len(unmatched), "; ".join(f"{p} {c} session {s}" for p, c, s in sorted(unmatched, key=str)),
+            )
+        if changed:
+            _LOGGER.warning(
+                "QA check: column value reviews: %d answer(s) differ from the answer that was "
+                "reviewed and are withheld (re-review them): %s", len(changed),
+                "; ".join(f"{p} {c} session {s}" for p, c, s in changed),
+            )
         return df, fully_dropped
 
     @staticmethod
