@@ -747,7 +747,7 @@ def validate_bundled_dataset(dataset_path, config_dir):
     )
 
     # Review columns may be published only where the config's review manifest has verdicts.
-    reviewed_columns = {col for _, col in BIDSDataset._load_column_value_reviews(config_dir)}
+    reviewed_columns = {col for _, col, _ in BIDSDataset._load_column_value_reviews(config_dir)}
 
     click.echo(f"Validating bundled dataset at {dataset_path} (access tier: {access_tier.value})")
 
