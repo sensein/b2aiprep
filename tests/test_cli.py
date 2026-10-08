@@ -9,6 +9,7 @@ from pathlib import Path
 import json
 
 import pytest
+from conftest import WAV_BYTES
 import torch
 import pandas as pd
 from unittest.mock import patch, MagicMock
@@ -36,7 +37,7 @@ class TestDeidentifyCommand:
         # Create a minimal participant so the allowlist is non-empty
         audio_dir = bids_path / "sub-p1" / "ses-s1" / "audio"
         audio_dir.mkdir(parents=True)
-        (audio_dir / "sub-p1_ses-s1_task-test.wav").write_bytes(b"RIFF" + b"\x00" * 100)
+        (audio_dir / "sub-p1_ses-s1_task-test.wav").write_bytes(WAV_BYTES)
         (audio_dir / "sub-p1_ses-s1_task-test_recording-metadata.json").write_text(
             json.dumps({"item": [
                 {"linkId": "record_id", "answer": [{"valueString": "p1"}]},
@@ -120,7 +121,7 @@ class TestDeidentifyCommand:
         assert result.exit_code == 0
         
         out = Path(temp_output_dir) / "sub-p1"
-        assert (out / "ses-01" / "audio" / "sub-p1_ses-01_task-test.wav").exists()
+        assert (out / "ses-01" / "audio" / "sub-p1_ses-01_task-test.flac").exists()
         assert (out / "ses-01" / "audio" / "sub-p1_ses-01_task-test.json").exists()
         assert (out / "sub-p1_sessions.tsv").exists()
 
@@ -662,7 +663,7 @@ def test_deidentify_bids_dataset_cli_remove_audio(
         outdir / "sub-001" / "ses-1" / "audio" / "sub-001_ses-1_task-reading.json"
     ).exists()
     assert not (
-        outdir / "sub-001" / "ses-1" / "audio" / "sub-001_ses-1_task-reading.wav"
+        outdir / "sub-001" / "ses-1" / "audio" / "sub-001_ses-1_task-reading.flac"
     ).exists()
     assert not (
         outdir

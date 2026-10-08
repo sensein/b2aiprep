@@ -70,7 +70,7 @@ from b2aiprep.prepare.prepare import (
     update_metadata_record_and_session_id,
     reduce_id_length
 )
-from b2aiprep.prepare.bids import get_paths
+from b2aiprep.prepare.bids import AUDIO_EXTENSIONS, get_paths
 from pydantic import BaseModel
 from b2aiprep.prepare.redcap import RedCapDataset, _dropped_source_columns
 
@@ -184,8 +184,13 @@ def _derived_data_element(column_name: str, description: str) -> t.Dict[str, t.A
     return element
 
 
+def _save_as_flac(audio: Audio, dst: Path) -> None:
+    """Write *audio* to *dst* as 16-bit FLAC (lossless for 16-bit PCM sources)."""
+    audio.save_to_file(dst, format="flac", bits_per_sample=DEFAULT_BIT_DEPTH)
+
+
 def _guard_resample_overshoot(resampled_audio, in_peak: float):
-    """Prevent the 16-bit save from silently hard-clamping resample overshoot.
+    """Prevent the PCM save from silently hard-clamping resample overshoot.
 
     Resampling can push samples past full-scale (|x| > 1); writing those to PCM
     would clamp them destructively with no error. If that happened, rescale the
@@ -275,21 +280,21 @@ def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_work
     def copy_one_file(src: Path, dst: Path) -> t.Optional[str]:
         """Copy a single file, return error message if failed."""
         try:
+            src_audio = Audio(filepath=src)
             if sanitize_audio_format:
-                src_audio = Audio(filepath=src)
                 downmixed_audio = downmix_audios_to_mono([src_audio])[0]
                 audio_16k = resample_audios([downmixed_audio], DEFAULT_RESAMPLE_RATE)[0]
-                # Guard against the 16-bit save silently clamping resample overshoot.
+                # Guard against the PCM save clamping resample overshoot, keeping the input peak.
                 in_peak = float(downmixed_audio.waveform.abs().max())
                 audio_16k, scale = _guard_resample_overshoot(audio_16k, in_peak)
                 if scale is not None:
                     _LOGGER.warning(
                         "Resample overshoot for %s; rescaled x%.5f to input peak %.4f "
-                        "to avoid destructive 16-bit clamp.", src, scale, in_peak,
+                        "to avoid destructive PCM clamp.", src, scale, in_peak,
                     )
-                audio_16k.save_to_file(dst,bits_per_sample=DEFAULT_BIT_DEPTH)
+                _save_as_flac(audio_16k, dst)
             else:
-                shutil.copyfile(src, dst)
+                _save_as_flac(src_audio, dst)
             return None
         except Exception as e:
             return f"Failed to copy {src} -> {dst}: {e}"
@@ -836,8 +841,9 @@ class BIDSDataset:
         """
         session_path = self.data_path / f"sub-{subject_id}" / f"ses-{session_id}" / "audio"
         audio = []
-        for audio_file in session_path.glob("*.wav"):
-            audio.append(audio_file)
+        for audio_file in sorted(session_path.iterdir()):
+            if audio_file.suffix in AUDIO_EXTENSIONS:
+                audio.append(audio_file)
         return audio
 
     def find_audio_features(self, subject_id: str, session_id: str) -> t.List[Path]:
@@ -2968,7 +2974,7 @@ class BIDSDataset:
                         continue
 
                     # Schedule audio copy (to be executed in parallel later)
-                    ext = audio_file.suffix
+                    ext = ".flac"
                     audio_file_destination = (
                         audio_output_path / f"{prefix}_task-{_rec_entity}{ext}"
                     )
@@ -2991,7 +2997,7 @@ class BIDSDataset:
             if skip_audio_copy:
                 has_audio = session_id in sessions_with_source
             else:
-                has_audio = any(f.suffix == ".wav" for f in session_audio.iterdir())
+                has_audio = any(f.suffix in AUDIO_EXTENSIONS for f in session_audio.iterdir())
             if not has_audio:
                 shutil.rmtree(session_audio)
                 removed_sessions.add(session_id)
@@ -3928,7 +3934,7 @@ class BIDSDataset:
         )
         return stems
 
-    _EXCLUSION_SUFFIXES = (".wav", ".json", ".pt", "_recording-metadata", "_features")
+    _EXCLUSION_SUFFIXES = (".flac", ".wav", ".json", ".pt", "_recording-metadata", "_features")
 
     @staticmethod
     def _exclusion_key(stem: str) -> str:
@@ -4711,11 +4717,11 @@ class BIDSDataset:
         if skip_audio:
             suffix = "_recording-metadata.json"
             recordings = [
-                p.with_name(p.name[: -len(suffix)] + ".wav")
+                p.with_name(p.name[: -len(suffix)] + ".flac")
                 for p in sorted(participant_dir.rglob(f"*{suffix}"))
             ]
         else:
-            recordings = sorted(participant_dir.rglob("*.wav"))
+            recordings = sorted(p for p in participant_dir.rglob("*") if p.suffix in AUDIO_EXTENSIONS)
         audio_jobs: t.List[t.Tuple[Path, Path, str, str]] = []
         # Sessions with a file some access tier could publish: it survives the audio-check and
         # the removal lists, whatever this tier's task list or --skip_audio_features. Labels are
@@ -4825,7 +4831,7 @@ class BIDSDataset:
         for wav_path, json_path, session_id_raw, stem_ending in audio_jobs:
             label = labels[session_id_raw]
             out_wav = outdir / f"sub-{new_pid}" / f"ses-{label}" / "audio" / (
-                f"sub-{new_pid}_ses-{label}_{stem_ending}.wav"
+                f"sub-{new_pid}_ses-{label}_{stem_ending}.flac"
             )
             metadata = json.loads(json_path.read_text())
             out_wav.parent.mkdir(parents=True, exist_ok=True)
@@ -4837,7 +4843,11 @@ class BIDSDataset:
             with open(out_wav.with_suffix(".json"), "w") as f:
                 json.dump(metadata, f, indent=2)
             if not skip_audio:
-                shutil.copyfile(wav_path, out_wav)
+                # Released audio is always FLAC; a WAV from an older tree is converted.
+                if wav_path.suffix == ".flac":
+                    shutil.copyfile(wav_path, out_wav)
+                else:
+                    _save_as_flac(Audio(filepath=wav_path), out_wav)
 
         for feat_path, session_id_raw, stem_ending, task_is_included in feature_jobs:
             label = labels[session_id_raw]
@@ -5191,8 +5201,10 @@ class VBAIDataset(BIDSDataset):
             f"sub-{subject_id}",
             f"ses-{session_id}",
             "audio",
-            f"sub-{subject_id}_ses-{session_id}_{task}_rec-{name}.wav",
+            f"sub-{subject_id}_ses-{session_id}_{task}_rec-{name}.flac",
         )
+        if not audio_file.exists():
+            audio_file = audio_file.with_suffix(".wav")
         return Audio(filepath=str(audio_file))
 
     def load_recordings(self) -> t.List[Audio]:
@@ -5218,8 +5230,10 @@ class VBAIDataset(BIDSDataset):
                 f"sub-{subject_id}",
                 f"ses-{session_id}",
                 "audio",
-                f"sub-{subject_id}_ses-{session_id}_{task}_rec-{name}.wav",
+                f"sub-{subject_id}_ses-{session_id}_{task}_rec-{name}.flac",
             )
+            if not audio_file.exists():
+                audio_file = audio_file.with_suffix(".wav")
             try:
                 audio_data.append(Audio(filepath=str(audio_file)))
             except (LibsndfileError, FileNotFoundError):
