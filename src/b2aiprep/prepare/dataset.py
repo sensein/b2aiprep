@@ -988,6 +988,39 @@ class BIDSDataset:
         _LOGGER.info(f"TSV file with {df.shape[0]} rows created and saved to: {tsv_path}")
 
     @staticmethod
+    def _order_phenotype_output(
+        df: pd.DataFrame, data_elements: t.Dict[str, t.Any]
+    ) -> t.Tuple[pd.DataFrame, t.Dict[str, t.Any]]:
+        """Put ``participant_id`` then the ``<form>_session_id`` first, keep every other column
+        in its existing order, and sort rows by ``participant_id`` then session.
+
+        Applied to the TSV columns and the sidecar ``data_elements`` together so the two stay
+        aligned. ``data_elements`` is the bare ``{column: descriptor}`` mapping. Pure reordering:
+        no value is added, dropped or changed, so the row/cell count is preserved. It is applied
+        at both stages that write phenotype tables -- redcap2bids and deidentify -- because
+        deidentify replaces ``participant_id`` with a pseudonym, which changes the sort order.
+        Tables without ``participant_id`` (e.g. task bookkeeping tables) are returned untouched.
+        """
+        cols = list(df.columns)
+        if "participant_id" not in cols:
+            return df, data_elements
+        session = next(
+            (c for c in cols if c == "session_id" or c.endswith("_session_id")), None
+        )
+        lead = ["participant_id"] + ([session] if session else [])
+        order = lead + [c for c in cols if c not in lead]
+        if order != cols:
+            df = df[order]
+        df = df.sort_values(lead, kind="stable", ignore_index=True)
+        if isinstance(data_elements, dict):
+            reordered = {k: data_elements[k] for k in order if k in data_elements}
+            # Preserve any data element that has no matching column (should not happen).
+            for key, value in data_elements.items():
+                reordered.setdefault(key, value)
+            data_elements = reordered
+        return df, data_elements
+
+    @staticmethod
     def _load_reproschema(
         reproschema_file: Path,
         reproschema_folder: Path,
@@ -2641,6 +2674,13 @@ class BIDSDataset:
                 os.makedirs(output_dir_grouped, exist_ok=True)
             else:
                 output_dir_grouped = output_dir
+            # participant_id, then <form>_session_id, then the rest; rows sorted by
+            # participant then session. Keeps the TSV and its JSON sidecar aligned.
+            for _body in updated_schema.values():
+                if isinstance(_body, dict) and isinstance(_body.get("data_elements"), dict):
+                    selected_df, _body["data_elements"] = BIDSDataset._order_phenotype_output(
+                        selected_df, _body["data_elements"]
+                    )
             BIDSDataset._dataframe_to_tsv(
                 selected_df,
                 os.path.join(output_dir_grouped, filename.replace(".json", ".tsv"))
@@ -4370,6 +4410,13 @@ class BIDSDataset:
                         "phenotype/%s: dropped %d columns by disposition: %s",
                         phenotype_filepath.stem, len(dropped_cols), ", ".join(sorted(dropped_cols)),
                     )
+
+                # Re-apply the canonical order: deidentify replaced participant_id with a
+                # pseudonym, so the rows must be re-sorted on the new ids, and columns/data
+                # elements realigned in case any were dropped above.
+                df_pheno, phenotype_dict = BIDSDataset._order_phenotype_output(
+                    df_pheno, phenotype_dict,
+                )
 
                 phenotype_subdir = phenotype_output_path.joinpath(
                     phenotype_filepath.parent.relative_to(phenotype_base_path)
