@@ -10,6 +10,7 @@ from unittest.mock import MagicMock, patch
 
 import pandas as pd
 import pytest
+from conftest import WAV_BYTES
 
 from b2aiprep.prepare.bids import get_audio_paths, get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.constants import AUDIO_TASKS, RepeatInstrument
@@ -1250,7 +1251,7 @@ def test_audio_and_sidecar_share_the_entity(tmp_path):
     src_dir = tmp_path / "src"
     src_dir.mkdir()
     wav = src_dir / "11111111-2222-3333-4444-555555555555.wav"
-    wav.write_bytes(b"RIFF" + b"\x00" * 8192)  # must exceed _MIN_AUDIO_BYTES to pass pre-scan
+    wav.write_bytes(WAV_BYTES)  # must exceed _MIN_AUDIO_BYTES to pass pre-scan
     # convert_response_to_bids_metadata indexes every instrument column, so give the task and
     # recording rows the full column set (as a RedCap export row would) and override a few.
     def row(instrument, **values):
@@ -1298,7 +1299,7 @@ def test_audio_and_sidecar_share_the_entity(tmp_path):
     )
     audio_dir = out / "sub-p1" / "ses-S1" / "audio"
     names = sorted(p.name for p in audio_dir.iterdir())
-    assert "sub-p1_ses-S1_task-audio-check-v2-1.wav" in names
+    assert "sub-p1_ses-S1_task-audio-check-v2-1.flac" in names
     assert "sub-p1_ses-S1_task-audio-check-v2-1_recording-metadata.json" in names
     # Every key redcap2bids writes is described by the field map's audio_sidecar table (after
     # deidentify renames record_id), so none is removed as unknown at release.
@@ -1307,7 +1308,7 @@ def test_audio_and_sidecar_share_the_entity(tmp_path):
     table = set(fm.loc[fm.schema_name == "audio_sidecar", "column_name"])
     keys = {"participant_id" if k == "record_id" else k for k in sidecar}
     assert keys <= table, keys - table
-    assert not any("(" in n or ")" in n or n != n.lower().replace("sub-p1_ses-s1", "sub-p1_ses-S1") for n in names if n.endswith(".wav"))
+    assert not any("(" in n or ")" in n or n != n.lower().replace("sub-p1_ses-s1", "sub-p1_ses-S1") for n in names if n.endswith(".flac"))
 
 
 def test_recording_without_a_name_is_skipped_not_named_nan(tmp_path, caplog):
@@ -1390,7 +1391,7 @@ def test_no_acoustictask_sidecar_generated(tmp_path):
     src_dir = tmp_path / "src"
     src_dir.mkdir()
     wav = src_dir / "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.wav"
-    wav.write_bytes(b"RIFF" + b"\x00" * 8192)
+    wav.write_bytes(WAV_BYTES)
 
     def row(instrument, **values):
         cols = json.loads(files("b2aiprep.prepare.resources").joinpath("instrument_columns", f"{instrument}.json").read_text())
@@ -1447,7 +1448,7 @@ def test_no_acoustictask_sidecar_generated(tmp_path):
     assert len(task_sidecars) == 0, f"Unexpected task sidecar(s): {task_sidecars}"
 
     # Audio file must exist
-    wavs = [f for f in all_files if f.endswith(".wav")]
+    wavs = [f for f in all_files if f.endswith(".flac")]
     assert len(wavs) == 1
 
 
@@ -1511,7 +1512,7 @@ def test_sessions_tsv_keeps_sessions_without_audio(tmp_path):
     """A session with no audio gets no audio directory but stays in sessions.tsv, so its
     questionnaire rows still name a listed session."""
     wav = tmp_path / "11111111-2222-3333-4444-555555555555.wav"
-    wav.write_bytes(b"RIFF" + b"\x00" * 8192)  # must exceed _MIN_AUDIO_BYTES to pass pre-scan
+    wav.write_bytes(WAV_BYTES)  # must exceed _MIN_AUDIO_BYTES to pass pre-scan
     task = _row("acoustic_tasks", acoustic_task_id="t1", acoustic_task_name="Rainbow Passage",
                 acoustic_task_session_id="S1",
                 recordings=[_row("recordings", recording_id=wav.stem, recording_name="Rainbow Passage",

@@ -21,7 +21,7 @@
     "description": "Length of the audio recording."
   },
   "recording_size": {
-    "description": "Size of the audio file."
+    "description": "Size in KiB of the original source audio file, measured before conversion to FLAC; not the size of the released .flac file."
   },
   "recording_profile_name": {
     "description": "Type of recording profile."

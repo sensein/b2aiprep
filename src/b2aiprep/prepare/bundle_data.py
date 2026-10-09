@@ -145,7 +145,8 @@ def feature_extraction_generator(
             _LOGGER.warning(f"Feature {feature_name} for {wav_path} not found in feature file likely due to sensitive. Skipping.")
             continue
 
-        data = torch.tensor(data)
+        # float() first: numpy has no bfloat16, which some extractors (ppgs) emit.
+        data = torch.as_tensor(data).float()
         if torch.isnan(data).all().item():
             _LOGGER.warning(f"Feature {feature_name} for {wav_path} is all NaNs in feature file. Skipping.")
             continue
