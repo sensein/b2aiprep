@@ -19,7 +19,7 @@ from streamlit import config as _config
 from streamlit.web.bootstrap import run
 from tqdm import tqdm
 
-from b2aiprep.prepare.bids import AUDIO_EXTENSIONS, get_paths, validate_bids_folder_audios
+from b2aiprep.prepare.bids import AUDIO_EXTENSIONS, FLAC_EXTENSION, get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.constants import RepeatInstrument
 from b2aiprep.prepare.redcap import RedCapDataset
 from b2aiprep.prepare.dataset import AccessTier, BIDSDataset, DispositionLevel, SessionLabels, _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
@@ -391,7 +391,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
 
     # remove _features at the end of the file stem
     audio_paths = [
-        x.parent.joinpath(x.stem.replace(features_ending,'')).with_suffix(".flac")
+        x.parent.joinpath(x.stem.replace(features_ending,'')).with_suffix(FLAC_EXTENSION)
         for x in feature_paths
     ]
 
@@ -505,7 +505,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     _LOGGER.info("Generating metadata.tsv")
     metadata_dir = outdir / "metadata"
     metadata_dir.mkdir(parents=True, exist_ok=True)
-    wav_paths = [p for p in bids_path.rglob("*") if p.suffix in AUDIO_EXTENSIONS]
+    wav_paths = [p for p in bids_path.rglob("*") if p.is_file() and p.suffix in AUDIO_EXTENSIONS]
     # Every per-recording sidecar is now flat scalars (the prompts list was
     # replaced by scalar stimulus_text), so the metadata table is emitted as a
     # TSV -- consistent with phenotype.tsv / static_features.tsv -- instead of

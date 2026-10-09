@@ -27,7 +27,8 @@ SUBJECT_PREFIX = "sub"
 SESSION_PREFIX = "ses"
 AUDIO_FOLDER = "audio"
 # Audio formats a BIDS tree may hold: new trees are written as FLAC, older ones as WAV.
-AUDIO_EXTENSIONS = (".flac", ".wav")
+FLAC_EXTENSION = ".flac"
+AUDIO_EXTENSIONS = (FLAC_EXTENSION, ".wav")
 _LOGGER = logging.getLogger(__name__)
 
 
