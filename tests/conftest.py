@@ -34,7 +34,19 @@ def setup_publish_config(tmp_path):
 
 
 
-WAV_BYTES = b"RIFF" + b"\x00" * 8192  # enough for deidentify to copy; never decoded
+def _silent_wav_bytes(seconds: float = 0.5, rate: int = 16000) -> bytes:
+    """A real 16-bit PCM WAV: the pipeline decodes every recording to convert it to FLAC."""
+    import io
+
+    import numpy as np
+    import soundfile as sf
+
+    buf = io.BytesIO()
+    sf.write(buf, np.zeros(int(seconds * rate), dtype=np.float32), rate, format="WAV", subtype="PCM_16")
+    return buf.getvalue()
+
+
+WAV_BYTES = _silent_wav_bytes()  # above _MIN_AUDIO_BYTES, so it passes the pre-scan
 
 
 def write_phenotype_table(folder, name, df, choices=None):

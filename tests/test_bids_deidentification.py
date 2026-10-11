@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 import pandas as pd
 import pytest
+from conftest import WAV_BYTES
 import torch
 
 from b2aiprep.prepare.dataset import (
@@ -103,7 +104,7 @@ class TestBIDSDatasetDeidentification:
 
             # Create dummy audio file
             audio_file = audio_dir / f"sub-{participant}_ses-{session}_task-test.wav"
-            audio_file.write_bytes(b"dummy audio data")
+            audio_file.write_bytes(WAV_BYTES)
 
             # Create fhir metadata file
             metadata = {
@@ -173,7 +174,7 @@ class TestBIDSDatasetDeidentification:
         )
 
         # Check that no audio files were copied
-        audio_files = list(output_dir.rglob("*.wav"))
+        audio_files = list(output_dir.rglob("*.flac"))
         assert len(audio_files) == 0
 
     def test_deidentify_with_audio(self, temp_bids_dir, output_dir, setup_publish_config):
@@ -186,7 +187,7 @@ class TestBIDSDatasetDeidentification:
         )
 
         # Check that audio files were copied (should be processed by filter)
-        audio_files = list(output_dir.rglob("*.wav"))
+        audio_files = list(output_dir.rglob("*.flac"))
         # Note: The actual number depends on filtering logic, but should be > 0
         assert len(audio_files) >= 0
 
@@ -292,9 +293,9 @@ class TestBIDSDatasetDeidentification:
         )
 
         # Check that audio files and sidecars were written
-        wav_files = list(output_dir.rglob("*.wav"))
+        wav_files = list(output_dir.rglob("*.flac"))
         json_files = list(output_dir.rglob("*.json"))
-        assert len(wav_files) > 0, "Expected at least one wav file in output"
+        assert len(wav_files) > 0, "Expected at least one flac file in output"
         assert len(json_files) > 0, "Expected at least one json file in output"
 
     def test_logging_messages(self, temp_bids_dir, output_dir, caplog, setup_publish_config):
@@ -944,7 +945,7 @@ class TestEndToEndAllowlistFiltering:
             audio_dir = bids / f"sub-{pid}" / "ses-s1" / "audio"
             audio_dir.mkdir(parents=True)
             wav = audio_dir / f"sub-{pid}_ses-s1_task-{task}.wav"
-            wav.write_bytes(b"RIFF" + b"\x00" * 8192)
+            wav.write_bytes(WAV_BYTES)
             # Sidecar
             sidecar = audio_dir / f"sub-{pid}_ses-s1_task-{task}_recording-metadata.json"
             sidecar.write_text(json.dumps({
@@ -1301,7 +1302,7 @@ class TestRemovedRecordings:
         assert list(BIDSDataset._read_tsv_as_written(out / "phenotype/task/recording.tsv")["recording_id"]) == ["r1"]
         assert list(BIDSDataset._read_tsv_as_written(
             out / "phenotype/task/acoustic_task.tsv")["acoustic_task_id"]) == ["t1"]
-        assert len(list(out.rglob("*.wav"))) == 1
+        assert len(list(out.rglob("*.flac"))) == 1
 
 
 class TestLoadColumnValueReviews:

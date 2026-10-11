@@ -311,7 +311,7 @@ def extract_single(
         features["torch_config"] = torch_config
         features["is_speech_task"] = is_speech_task
         features["sample_rate"] = audio_16k.sampling_rate
-        features["duration"] = len(audio_16k.waveform) / audio_16k.sampling_rate
+        features["duration"] = audio_16k.waveform.shape[-1] / audio_16k.sampling_rate
         features["sensitive_features"] = None
 
     try:

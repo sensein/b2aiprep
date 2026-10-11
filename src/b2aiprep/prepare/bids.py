@@ -26,12 +26,15 @@ from pathlib import Path
 SUBJECT_PREFIX = "sub"
 SESSION_PREFIX = "ses"
 AUDIO_FOLDER = "audio"
+# Audio formats a BIDS tree may hold: new trees are written as FLAC, older ones as WAV.
+FLAC_EXTENSION = ".flac"
+AUDIO_EXTENSIONS = (FLAC_EXTENSION, ".wav")
 _LOGGER = logging.getLogger(__name__)
 
 
 def get_paths(
     dir_path: str | os.PathLike,
-    file_extension: str,
+    file_extension: str | tuple[str, ...],
 ):
     """Retrieve all file paths from a BIDS-like directory structure.
 
@@ -41,7 +44,7 @@ def get_paths(
 
     Args:
         dir_path: The root directory of the BIDS dataset.
-        file_extension: The file extension to search for (e.g., ".wav").
+        file_extension: The file extension, or tuple of extensions, to search for (e.g., ".flac").
 
     Returns:
         A list of dictionaries, each containing the path to an audio file and
@@ -84,10 +87,10 @@ def get_paths(
 def get_audio_paths(
     bids_dir_path: str | os.PathLike,
 ) -> list[dict[str, Path | int]]:
-    """Retrieve all .wav audio file paths from a BIDS-like directory structure.
+    """Retrieve all audio file paths (.flac or .wav) from a BIDS-like directory structure.
 
     This function traverses the specified BIDS directory, collecting paths to
-    .wav audio files from all subject and session directories that match the
+    audio files from all subject and session directories that match the
     expected naming conventions.
 
     Args:
@@ -99,7 +102,7 @@ def get_audio_paths(
     """
     return get_paths(
         dir_path=bids_dir_path,
-        file_extension=".wav",
+        file_extension=AUDIO_EXTENSIONS,
     )
 
 
