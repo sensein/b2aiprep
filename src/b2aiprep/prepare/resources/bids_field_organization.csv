@@ -1,4 +1,4 @@
-schema_name_source,schema_name,column_name_source,column_name,group,description,delete,disposition,column_type,source,version_added,is_redcap_calculation,date_shift,access_tier
+schema_name_source,schema_name,column_name_source,column_name,group,description,legacy_delete,disposition,column_type,source,version_added,is_redcap_calculation,date_shift,access_tier
 acoustic_task_schema,acoustic_task,acoustic_task_cohort,acoustic_task_cohort,task,"Protocol cohort the acoustic task belongs to (adult: generic, mood, neurology, respiratory, or voice; pediatric: pediatric).",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 acoustic_task_schema,acoustic_task,acoustic_task_completed_at,acoustic_task_completed_at,task,Acoustic Task Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES,
 acoustic_task_schema,acoustic_task,acoustic_task_duration,acoustic_task_duration,task,"Total length of the acoustic task recording, measured in seconds.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,

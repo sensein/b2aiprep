@@ -157,8 +157,8 @@ def test_active_rows_are_well_formed(reorg_rows):
     """Invariants relied on by the phenotype writer."""
     problems = []
     for index, row in enumerate(reorg_rows, start=2):  # 1-based, header is line 1
-        if row["delete"].strip().upper() not in VALID_YES_NO:
-            problems.append(f"line {index}: delete={row['delete']!r} not in {VALID_YES_NO}")
+        if row["legacy_delete"].strip().upper() not in VALID_YES_NO:
+            problems.append(f"line {index}: legacy_delete={row['legacy_delete']!r} not in {VALID_YES_NO}")
         if row["column_type"].strip() not in VALID_COLUMN_TYPES:
             problems.append(
                 f"line {index}: column_type={row['column_type']!r} not in {VALID_COLUMN_TYPES}"

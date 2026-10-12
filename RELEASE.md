@@ -43,8 +43,9 @@ b2aiprep-cli redcap2bids <path/to/redcap_csv> \
 #### What reaches the BIDS tree: the field map
 
 `src/b2aiprep/prepare/resources/bids_field_organization.csv` decides what happens to every RedCap
-column through its `disposition` column (the older `delete` column is kept as a historical record
-and is not read):
+column through its `disposition` column. The older `legacy_delete` column (named `delete` until
+v4.0.0) is kept as a historical record only: it is not read and does not control anything, so a
+`YES` there does not mean the column is removed.
 
 | disposition | redcap2bids | deidentify |
 |---|---|---|
