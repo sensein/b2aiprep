@@ -11,7 +11,7 @@ The phenotype directory stores participant-specific data that is not directly re
 
 - **phenotype/<group>/<table>.tsv**: A tab-separated values (TSV) file with one table of phenotype data, keyed by `participant_id` (and `session_id` where the data belongs to a session).
 
-- **phenotype/<group>/<table>.json**: A JSON file describing each column of the matching TSV file.
+- **phenotype/<group>/<table>.json**: A JSON file describing each column of the matching TSV file. For each column, `description` says what the column holds and `question` is the question as worded on the form. Columns made from one form question, such as the options of a checkbox question (`<question>___<option>`) or a follow-up asked after an earlier answer, share that wording, including instructions such as "(Select all that apply)".
 
 - **phenotype/enrollment/participant.tsv** and **participant.json**: The list of participants and their enrollment information. This dataset has no `participants.tsv` at the root.
 
