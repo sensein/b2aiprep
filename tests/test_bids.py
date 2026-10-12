@@ -1576,6 +1576,23 @@ def test_checkbox_options_keep_their_integer_type():
     assert raw["valueType"] == ["xsd:string"]
 
 
+def test_checkbox_option_choice_holds_the_value_the_cells_hold():
+    """Cleaned cells are 1/blank, so the option's choice value is 1, not the RedCap code."""
+    question = {
+        "question": {"en": "Which apply?"},
+        "choices": [{"name": {"en": "ADHD"}, "value": "adhd"}, {"name": {"en": "Anxiety"}, "value": "anxiety"}],
+        "valueType": ["xsd:string"],
+    }
+    cleaned = BIDSDataset._checkbox_option_element(question, "anxiety", clean_phenotype_data=True)
+    assert cleaned["choices"] == [{"name": {"en": "Anxiety"}, "value": 1}]
+    assert cleaned["valueType"] == ["xsd:integer"]
+    raw = BIDSDataset._checkbox_option_element(question, "anxiety", clean_phenotype_data=False)
+    assert raw["choices"] == [{"name": {"en": "Anxiety"}, "value": "anxiety"}]
+    # the question's element is shared by all of its options and must not change
+    assert [c["value"] for c in question["choices"]] == ["adhd", "anxiety"]
+    assert question["valueType"] == ["xsd:string"]
+
+
 def test_a_missing_description_is_stated_not_left_blank():
     """An empty description would otherwise reach a published dictionary as ""."""
     for row in ({}, {"description": ""}, {"description": "   "}, {"description": None}):

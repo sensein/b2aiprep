@@ -2334,6 +2334,25 @@ class BIDSDataset:
         return df
 
     @staticmethod
+    def _checkbox_option_element(
+        question_element: t.Dict[str, t.Any], option: t.Optional[str], clean_phenotype_data: bool,
+    ) -> t.Dict[str, t.Any]:
+        """Data element of one ``<question>___<option>`` checkbox column, from its question's element.
+
+        Only the option's choice is kept. Cleaning writes a selected option as 1 (blank otherwise),
+        so the choice's value becomes 1 too: the dictionary then gives the value the cells hold, and
+        the option code stays in the column name. The question's element is not changed.
+        """
+        element = copy(question_element)
+        choices = [c for c in question_element.get("choices") or [] if str(c.get("value")) == str(option)]
+        if clean_phenotype_data:
+            element["choices"] = [{**c, "value": 1} for c in choices]
+            element["valueType"] = ["xsd:integer"]
+        else:
+            element["choices"] = [dict(c) for c in choices]
+        return element
+
+    @staticmethod
     def _synthetic_data_element(
         column: str,
         updated_data: t.Mapping[str, t.Any],
@@ -2549,15 +2568,9 @@ class BIDSDataset:
                     synthesized_cols.add(col_norm)
                     csv_only_column = True
                 elif column_base in checkbox_columns:
-                    data_element = copy(source_elements[column_base])
-                    # reduce the choices to just the choice for this checkbox
-                    data_element['choices'] = [
-                        choice for choice in data_element.get('choices', [])
-                        if str(choice.get('value')) == str(column_choice)
-                    ]
-                    if clean_phenotype_data:
-                        # for checkbox columns, we convert to integer 0/1
-                        data_element['valueType'] = ['xsd:integer']
+                    data_element = BIDSDataset._checkbox_option_element(
+                        source_elements[column_base], column_choice, clean_phenotype_data
+                    )
                 else:
                     # populate the detailed metadata for this column
                     data_element = copy(source_elements[column])
