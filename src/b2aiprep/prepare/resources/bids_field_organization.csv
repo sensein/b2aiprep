@@ -464,7 +464,7 @@ confounders_schema,confounders,head_surgical,head_surgical,confounders,"[DEPRECA
 Head",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,headache_migraine,headache_migraine,confounders,"Indicates whether the participant is experiencing a headache or migraine today, as one of the symptoms checked at the time of the questionnaire (Yes or No).",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,hearing_loss,hearing_loss,confounders,"Whether a doctor has ever diagnosed the participant with hearing loss, listed among conditions affecting the ears, nose or mouth (Yes/No).",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,height,height,confounders,"Participant's self-reported height, entered as a number; the unit (inches or centimeters) is indicated by the companion unit column.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,height,height,confounders,Participant's self-reported height in inches.,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,heroin,heroin,confounders,"Heroin or other opioids, including synthetic opioids like fentanyl",NO,internal,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,hormone_use,hormone_use,confounders,"[DEPRECATED]
 Hormone use",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -676,7 +676,7 @@ confounders_schema,confounders,tuberculosis,tuberculosis,confounders,Indicates w
 confounders_schema,confounders,typical_day_consume_caffeinated_products,typical_day_consume_caffeinated_products,confounders,What type(s) of caffeinated products do you typically consume?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,typical_day_consume_other_specify,typical_day_consume_other_specify,confounders,Other caffeinated product typically consumed,NO,review,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,typical_day_drink_caffeinated_products,typical_day_drink_caffeinated_products,confounders,"Indicates whether the participant typically consumes coffee or other caffeinated products on a usual day (e.g., teas, carbonated beverages, energy drinks, espresso), recorded as Yes or No.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,unit,unit,confounders,"Measurement system the participant selected for height and weight: Metric (centimeters, kilograms) or US customary (inches, pounds).",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,unit,unit,confounders,"Measurement system the participant selected (Metric or US customary). It does not change the height and weight entries, which the form records in inches and pounds.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,used_drugs,used_drugs,confounders,"Have you ever used marijuana, cocaine or crack, and/or other drugs?",NO,internal,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,used_nicotine_products_in_entire_life,used_nicotine_products_in_entire_life,confounders,"Whether the participant has used any nicotine products at least 100 times in their entire life: Yes, No, Not certain.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,used_substance_on_your_own,used_substance_on_your_own,confounders,"Have you ever used medicines ON YOUR OWN without a doctor's prescription, or in greater amounts or longer than prescribed?",NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
@@ -689,7 +689,7 @@ confounders_schema,confounders,vocal_fold_hemorrhage,vocal_fold_hemorrhage,confo
 confounders_schema,confounders,voice_activity,voice_activity,confounders,"[DEPRECATED]
 Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,voice_activity_v2,voice_activity_v2,confounders,Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,weight,weight,confounders,"Participant's self-reported body weight, entered as a number; the unit (pounds or kilograms) is indicated by the companion unit column.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,weight,weight,confounders,Participant's self-reported body weight in pounds.,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,years_used_nicotine,years_used_nicotine,confounders,"Response category for how long the participant has used nicotine: less than 1 year, a number of years entered, not certain; the number of years itself is in a separate field.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_10_pack_year_tobacco_cigarette,diagnosis_ca_10_pack_year_tobacco_cigarette,diagnosis,"Indicates whether the participant has a tobacco cigarette smoking history of at least 10 pack-years, recorded as Yes or No.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_absolute_eosinophil_count,diagnosis_ca_absolute_eosinophil_count,diagnosis,"Highest absolute eosinophil count measured in the past 12 months, reported as a numeric value in cells per microliter (µL).",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
