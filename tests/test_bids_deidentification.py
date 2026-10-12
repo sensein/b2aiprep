@@ -461,6 +461,10 @@ class TestBIDSDatasetClean:
         # Check that sex_at_birth column was added
         assert "sex_at_birth" in df_sex.columns
         assert "sex_at_birth" in phenotype_sex["place_holder_schema"]["data_elements"]
+        # its description is the field map's, like every other column's
+        fm = BIDSDataset._field_map_rows_for_table(None, None)
+        assert phenotype_sex["place_holder_schema"]["data_elements"]["sex_at_birth"]["description"] == (
+            fm.loc[fm["column_name"] == "sex_at_birth", "description"].iloc[0])
         assert [v if pd.notna(v) else None for v in df_sex["sex_at_birth"]] == [
             "Male", "Unknown", "Female", "Unknown", "Unknown", None, "Male"]  # p7: stated sex kept for a trans participant
         BIDSDataset._fill_unknown_sex_at_birth(df_sex)

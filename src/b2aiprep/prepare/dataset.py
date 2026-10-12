@@ -3450,8 +3450,11 @@ class BIDSDataset:
                 columns.append(c)
                 columns.append("sex_at_birth")
                 data_elements_updated[c] = phenotype[first_key]["data_elements"][c]
+                # the field map holds the description, as for every other column
+                rows = BIDSDataset._field_map_rows_for_table(None, None)
+                described = rows.loc[rows["column_name"] == "sex_at_birth", "description"].dropna()
                 data_elements_updated["sex_at_birth"] = _derived_data_element(
-                    "sex_at_birth", "Sex assigned at birth, from the participant's own answers."
+                    "sex_at_birth", str(described.iloc[0]) if len(described) else "Sex assigned at birth."
                 )
             elif c == "sex_at_birth":
                 continue
