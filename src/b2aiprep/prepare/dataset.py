@@ -3619,6 +3619,15 @@ class BIDSDataset:
         return [c for c in df.columns if c == "session_id" or c.endswith("_session_id")]
 
     @staticmethod
+    def _task_table_link_column(df: pd.DataFrame) -> t.Optional[str]:
+        """The column linking a task's own table (stroop.tsv, ...) to its acoustic task, else None.
+
+        The one test for "this is a task table": session discovery skips these tables and row
+        pruning joins on this column, so both must agree on which tables they are.
+        """
+        return next((c for c in df.columns if c.endswith("_recording_acoustic_task_id")), None)
+
+    @staticmethod
     def _sessions_with_questionnaire_data(
         phenotype_dir: Path,
         level: DispositionLevel = DispositionLevel.RELEASE,
@@ -3640,7 +3649,7 @@ class BIDSDataset:
             df, schema_name, _, _ = BIDSDataset.load_phenotype_file(tsv)
             if schema_name in BIDSDataset._SESSION_BOOKKEEPING_SCHEMAS:
                 continue
-            if any(c.endswith("_recording_acoustic_task_id") for c in df.columns):
+            if BIDSDataset._task_table_link_column(df) is not None:
                 continue
             cols = BIDSDataset._session_id_columns(df)
             if not cols:
@@ -4153,7 +4162,7 @@ class BIDSDataset:
         elif table == "acoustic_task":
             column, ids = "acoustic_task_id", removed_task_ids
         else:
-            column = next((c for c in df.columns if c.endswith("_recording_acoustic_task_id")), None)
+            column = BIDSDataset._task_table_link_column(df)
             ids = removed_task_ids
         if column is None or not ids or column not in df.columns:
             return df
@@ -4883,7 +4892,7 @@ class BIDSDataset:
         labelable: t.Set[str] = set()
         # (stem, task label, sidecar) of each recording the task list leaves out, and the labels
         # it releases; resolved once the feature files are known.
-        task_filtered: t.List[t.Tuple[str, str, Path]] = []
+        left_out: t.List[t.Tuple[str, str, Path]] = []
         released_task_labels: t.Set[str] = set()
         for audio_source_path in recordings:
             # Audio-check safety net
@@ -4916,7 +4925,7 @@ class BIDSDataset:
                 task_label = normalize_task_label(task_match.group(1))
                 if not normalized_include_tasks or task_label not in normalized_include_tasks:
                     n_skipped += 1
-                    task_filtered.append((audio_source_path.stem, task_label, json_path))
+                    left_out.append((audio_source_path.stem, task_label, json_path))
                     continue
                 released_task_labels.add(task_label)
 
@@ -4957,7 +4966,7 @@ class BIDSDataset:
             BIDSDataset._exclusion_key(job[0].stem.replace("_features", "")) for job in feature_jobs
         }
         filtered_here: t.List[TaskFilteredRecording] = []
-        for stem, task_label, json_path in task_filtered:
+        for stem, task_label, json_path in left_out:
             key = BIDSDataset._exclusion_key(stem)
             features_released = key in released_feature_keys
             rid = None
