@@ -519,9 +519,9 @@ class BIDSDataset:
             audio_files_by_recording[uuid] = audio_file
 
         participants_with_audio = set()
-        all_recording_ids_with_sidecar: t.Set[str] = set()
+        all_sidecars: t.Dict[str, t.Dict[str, t.Any]] = {}
         for participant in tqdm(participants, desc="Writing participant data to file"):
-            had_audio, rec_ids_with_sidecar = cls._output_participant_data_to_metadata_file(
+            had_audio, sidecars = cls._output_participant_data_to_metadata_file(
                 participant,
                 Path(outdir),
                 audio_files_by_recording=audio_files_by_recording,
@@ -533,16 +533,17 @@ class BIDSDataset:
             )
             if had_audio:
                 participants_with_audio.add(participant["record_id"])
-                all_recording_ids_with_sidecar.update(rec_ids_with_sidecar)
+                all_sidecars.update(sidecars)
 
         # Filter recording.tsv to only recordings that produced a sidecar, then
         # filter acoustic_task.tsv to only tasks that still have at least one
         # recording. Recordings whose source was missing or truncated were
         # skipped; their rows would otherwise reference nonexistent files.
-        if audio_files_by_recording is not None and all_recording_ids_with_sidecar:
+        if audio_files_by_recording is not None and all_sidecars:
             BIDSDataset._filter_task_tables_to_recordings(
-                os.path.join(outdir, "phenotype"), all_recording_ids_with_sidecar,
+                os.path.join(outdir, "phenotype"), set(all_sidecars),
             )
+            BIDSDataset._add_sidecar_fields_to_recording_table(outdir, all_sidecars)
 
         # QA report: participants with no distributed audio
         participants_without_audio = {p["record_id"] for p in participants} - participants_with_audio
@@ -996,6 +997,165 @@ class BIDSDataset:
                         "removing tasks with no surviving recordings.",
                         before_at, after_at,
                     )
+
+    # Sidecar fields redcap2bids copies into recording.tsv.
+    _RECORDING_SIDECAR_FIELDS = (
+        "task_name", "language", "instructions", "speech_type", "stimulus_text", "stimulus_source",
+        "stimulus_asset", "stimulus_asset_n_images", "audio_sample_rate", "audio_channel_count",
+    )
+
+    @staticmethod
+    def _sidecar_cell(value: t.Any) -> t.Optional[str]:
+        """A sidecar value as recording.tsv writes it: text, with an absent or empty value blank."""
+        if value is None or (isinstance(value, float) and np.isnan(value)) or str(value).strip() == "":
+            return None
+        return str(value)
+
+    @staticmethod
+    def _read_recording_sidecars(outdir: Path) -> t.Dict[str, t.Dict[str, t.Any]]:
+        """``{recording_id: sidecar}`` from the ``*_recording-metadata.json`` files of a source tree.
+
+        Raises:
+            ValueError: naming sidecars without a ``recording_id`` and IDs found in two sidecars.
+        """
+        sidecars: t.Dict[str, t.Dict[str, t.Any]] = {}
+        no_id: t.List[str] = []
+        duplicated: t.Set[str] = set()
+        for path in sorted(outdir.glob("sub-*/ses-*/audio/*_recording-metadata.json")):
+            sidecar = json.loads(path.read_text())
+            recording_id = sidecar.get("recording_id")
+            if not recording_id:
+                no_id.append(path.name)
+                continue
+            if recording_id in sidecars:
+                duplicated.add(str(recording_id))
+            sidecars[recording_id] = sidecar
+        problems = []
+        if no_id:
+            problems.append(f"{len(no_id)} sidecar(s) without a recording_id: {', '.join(no_id)}")
+        if duplicated:
+            problems.append(f"{len(duplicated)} recording_id(s) in more than one sidecar: {', '.join(sorted(duplicated))}")
+        if problems:
+            raise ValueError("; ".join(problems))
+        return sidecars
+
+    @staticmethod
+    def _duplicated_recording_ids(table: pd.DataFrame) -> t.List[str]:
+        return sorted(table.loc[table["recording_id"].duplicated(keep=False), "recording_id"].dropna().unique())
+
+    @staticmethod
+    def _add_sidecar_fields_to_recording_table(
+        outdir: t.Union[str, Path], sidecars: t.Optional[t.Mapping[str, t.Mapping[str, t.Any]]] = None,
+    ) -> None:
+        """Copy each recording's ``_RECORDING_SIDECAR_FIELDS`` into recording.tsv.
+
+        *sidecars* is ``{recording_id: sidecar}``; read from the tree when not given. A key a
+        sidecar leaves out is a blank cell. Descriptions come from the field map, types from
+        derived_fields.json.
+
+        Raises:
+            ValueError: if a recording.tsv row has no recording_id, no sidecar, or the same
+                recording_id as another row.
+        """
+        outdir = Path(outdir)
+        tsv = outdir / "phenotype" / "task" / "recording.tsv"
+        if not tsv.is_file():
+            return
+        if sidecars is None:
+            sidecars = BIDSDataset._read_recording_sidecars(outdir)
+
+        df, schema_name, header, data_elements = BIDSDataset.load_phenotype_file(tsv)
+        problems = []
+        if df["recording_id"].isna().any():
+            problems.append(f"{int(df['recording_id'].isna().sum())} row(s) without a recording_id")
+        duplicated = BIDSDataset._duplicated_recording_ids(df)
+        if duplicated:
+            problems.append(f"{len(duplicated)} recording_id(s) on more than one row: {', '.join(duplicated)}")
+        without_sidecar = sorted(set(df["recording_id"].dropna()) - set(sidecars))
+        if without_sidecar:
+            problems.append(f"{len(without_sidecar)} row(s) without a sidecar: {', '.join(without_sidecar)}")
+        if problems:
+            raise ValueError("recording.tsv: cannot add the sidecar fields: " + "; ".join(problems))
+        for field in BIDSDataset._RECORDING_SIDECAR_FIELDS:
+            df[field] = [BIDSDataset._sidecar_cell(sidecars[r].get(field)) for r in df["recording_id"]]
+            data_elements[field] = _derived_data_element(
+                field,
+                BIDSDataset._field_map_description(field, "recording") or f"{field} from the recording's sidecar.",
+            )
+        df.to_csv(tsv, sep="\t", index=False)
+        with open(tsv.with_suffix(".json"), "w") as f:
+            json.dump({schema_name: {**header, "data_elements": data_elements}}, f, indent=2)
+        _LOGGER.info(
+            "phenotype/task/recording.tsv: added %d sidecar field(s) to %d row(s).",
+            len(BIDSDataset._RECORDING_SIDECAR_FIELDS), len(df),
+        )
+
+    _PLAIN_NUMBER = re.compile(r"^-?(0|[1-9][0-9]*)(\.[0-9]+)?$")
+
+    @staticmethod
+    def _same_cell(sidecar_value: t.Any, table_value: t.Any) -> bool:
+        """Blank == absent; plain decimals compare as numbers ("30" == "30.0"), but a leading zero
+        makes a value text ("01" != "1")."""
+        a, b = BIDSDataset._sidecar_cell(sidecar_value), BIDSDataset._sidecar_cell(table_value)
+        if a is None or b is None:
+            return a is None and b is None
+        if a == b:
+            return True
+        if BIDSDataset._PLAIN_NUMBER.match(a) and BIDSDataset._PLAIN_NUMBER.match(b):
+            return float(a) == float(b)
+        return False
+
+    @staticmethod
+    def _check_sidecars_match_recording_table(bids_path: t.Union[str, Path]) -> None:
+        """Every audio file's ``<stem>.json`` sidecar must agree with its recording.tsv row on each
+        key both carry. Rows without audio are not checked: a tier can publish a recording's
+        features but not its audio. Logs and returns when there is nothing to check.
+
+        Raises:
+            ValueError: listing each recording and field that differ, each sidecar with no (or no
+                unique) recording.tsv row, and recording_ids on more than one row.
+        """
+        bids_path = Path(bids_path)
+        tsv = bids_path / "phenotype" / "task" / "recording.tsv"
+        if not tsv.is_file():
+            _LOGGER.warning("No phenotype/task/recording.tsv in %s; sidecars not checked against it.", bids_path)
+            return
+        table = BIDSDataset._read_tsv_as_written(tsv)
+        problems: t.List[str] = []
+        duplicated = BIDSDataset._duplicated_recording_ids(table)
+        if duplicated:
+            problems.append(f"recording_id(s) on more than one recording.tsv row: {', '.join(duplicated)}")
+        rows = {r["recording_id"]: r for r in table.to_dict("records")}
+        columns = set(table.columns)
+        checked = 0
+        for audio in sorted(p for p in bids_path.glob("sub-*/ses-*/audio/*") if p.suffix in AUDIO_EXTENSIONS):
+            path = audio.with_suffix(".json")
+            if not path.is_file():
+                continue
+            sidecar = json.loads(path.read_text())
+            recording_id = sidecar.get("recording_id")
+            if not recording_id:
+                problems.append(f"{path.name}: no recording_id")
+                continue
+            row = rows.get(recording_id)
+            if row is None:
+                problems.append(f"{path.name}: recording_id {recording_id} has no recording.tsv row")
+                continue
+            checked += 1
+            for key in sorted(columns & set(sidecar)):
+                if not BIDSDataset._same_cell(sidecar[key], row[key]):
+                    problems.append(
+                        f"{recording_id} {key}: sidecar {sidecar[key]!r}, recording.tsv {row[key]!r}"
+                    )
+        if problems:
+            raise ValueError(
+                f"{len(problems)} sidecar/recording.tsv disagreement(s):\n" + "\n".join(problems)
+            )
+        if checked == 0:
+            _LOGGER.warning("No audio file with a <stem>.json sidecar in %s; sidecars not checked against "
+                            "recording.tsv.", bids_path)
+            return
+        _LOGGER.info("Sidecars agree with recording.tsv (%d recording(s) checked).", checked)
 
     @staticmethod
     def _read_tsv_as_written(path: t.Union[str, Path]) -> pd.DataFrame:
@@ -2832,8 +2992,8 @@ class BIDSDataset:
         task_name: t.Optional[str] = None,
         recording_name: t.Optional[str] = None,
         task_entity: t.Optional[str] = None,
-    ):
-        """Write a Pydantic model (presumably a FHIR resource) to a JSON file.
+    ) -> Path:
+        """Write a Pydantic model (presumably a FHIR resource) to a JSON file, and return its path.
 
         Follows the BIDS file name conventions.
 
@@ -2873,6 +3033,7 @@ class BIDSDataset:
             output_path.mkdir(parents=True, exist_ok=False)
         with open(output_path / filename, "w") as f:
             f.write(json.dumps(data, indent=2))
+        return output_path / filename
 
     @staticmethod
     def _output_participant_data_to_metadata_file(
@@ -2880,7 +3041,7 @@ class BIDSDataset:
         max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:OrderedDict = {},
         questionnaire_lookup: t.Optional[t.Dict[tuple, dict]] = None,
         skip_audio_copy: bool = False,
-    ) -> t.Tuple[bool, t.Set[str]]:
+    ) -> t.Tuple[bool, t.Dict[str, t.Dict[str, t.Any]]]:
         """Output participant data to FHIR format.
 
         Args:
@@ -2889,6 +3050,11 @@ class BIDSDataset:
             audio_files_by_recording: Dictionary mapping recording IDs to audio file paths (optional).
             max_audio_workers: Number of parallel threads for audio copying (default: 16).
             sanitize_audio_format: Standardize to 16KHz mono-audio
+
+        Returns:
+            Whether the participant has any source audio, and ``{recording_id: sidecar}`` for the
+            recording sidecars left on disk: a sidecar a name collision overwrote, or one in a
+            session removed for having no audio, is not among them.
         """
         participant_id = participant["record_id"]
         subject_path = outdir / f"sub-{participant_id}"
@@ -2954,7 +3120,7 @@ class BIDSDataset:
         if audio_files_by_recording is not None and not recordings_with_source:
             # No audio at all for this participant -- skip entirely.
             # The caller aggregates these and logs a single QA warning.
-            return False, set()
+            return False, {}
 
         if recordings_without_source:
             _LOGGER.info(
@@ -2971,7 +3137,9 @@ class BIDSDataset:
 
         # validated questionnaires are asked per session
         sessions_rows = []
-        
+        # By file: a name collision rewrites the same file, so the last write is what is on disk.
+        sidecars_by_path: t.Dict[Path, t.Tuple[str, t.Dict[str, t.Any]]] = {}
+
         for session in participant["sessions"]:
             # Columns removed at ingest (disposition=drop) are absent from the session dict.
             sessions_row = {key: session[key] for key in session_instrument.columns if key in session}
@@ -3065,7 +3233,7 @@ class BIDSDataset:
                         population=task_population,
                         language=participant_language,
                     )
-                    BIDSDataset._write_pydantic_model_to_bids_file(
+                    sidecar_path = BIDSDataset._write_pydantic_model_to_bids_file(
                         audio_output_path,
                         meta_data,
                         schema_name=recording_instrument.schema_name_clobbered,
@@ -3075,6 +3243,8 @@ class BIDSDataset:
                         recording_name=_rec_name,
                         task_entity=_rec_entity,
                     )
+                    # round trip: the values as written to the file
+                    sidecars_by_path[sidecar_path] = (_rec_id, json.loads(json.dumps(meta_data)))
                     if audio_files_by_recording is None:
                         continue
                     audio_file = audio_files_by_recording.get(recording["recording_id"], None)
@@ -3124,7 +3294,16 @@ class BIDSDataset:
         sessions_tsv_path = subject_path / "sessions.tsv"
         sessions_df.to_csv(sessions_tsv_path, sep="\t", index=False)
 
-        return True, recordings_with_source
+        sidecars = {rec_id: data for path, (rec_id, data) in sidecars_by_path.items() if path.exists()}
+        lost = sorted(r for r in recordings_with_source if r not in sidecars) if audio_files_by_recording is not None else []
+        if lost:
+            _LOGGER.warning(
+                "Participant %s: %d recording(s) with source audio have no sidecar (a recording_name "
+                "collision overwrote it, or its session was removed for having no audio); their "
+                "recording.tsv rows are removed. recording_ids: %s",
+                participant_id, len(lost), ", ".join(lost),
+            )
+        return True, sidecars
     @staticmethod
     def load_phenotype_file(
         phenotype_filepath: Path,

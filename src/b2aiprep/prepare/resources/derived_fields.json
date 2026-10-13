@@ -1058,6 +1058,34 @@
           "value": "No"
         }
       ]
+    },
+    "task_name": {
+      "datatype": "xsd:string"
+    },
+    "language": {
+      "datatype": "xsd:string"
+    },
+    "instructions": {
+      "datatype": "xsd:string"
+    },
+    "stimulus_text": {
+      "datatype": "xsd:string"
+    },
+    "stimulus_source": {
+      "datatype": "xsd:string"
+    },
+    "stimulus_asset": {
+      "datatype": "xsd:string"
+    },
+    "stimulus_asset_n_images": {
+      "datatype": "xsd:integer"
+    },
+    "audio_sample_rate": {
+      "datatype": "xsd:integer",
+      "unit": "Hz"
+    },
+    "audio_channel_count": {
+      "datatype": "xsd:integer"
     }
   }
 }
