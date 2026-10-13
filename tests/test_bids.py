@@ -1563,12 +1563,12 @@ def test_no_ontology_reference_is_invented():
 
 
 def test_checkbox_options_keep_their_integer_type():
-    """A ___ option still becomes 0/1 when the phenotype data is cleaned."""
+    """A ___ option is 1 when selected, blank otherwise, once the phenotype data is cleaned."""
     cleaned = BIDSDataset._synthetic_data_element(
         "participant_data_collection_origins___reproschema", {"description": "x"},
         column_choice="reproschema", clean_phenotype_data=True,
     )
-    assert cleaned["valueType"] == ["xsd:integer"]
+    assert cleaned["valueType"] == cleaned["datatype"] == ["xsd:integer"]
     raw = BIDSDataset._synthetic_data_element(
         "participant_data_collection_origins___reproschema", {"description": "x"},
         column_choice="reproschema", clean_phenotype_data=False,
@@ -1582,15 +1582,18 @@ def test_checkbox_option_choice_holds_the_value_the_cells_hold():
         "question": {"en": "Which apply?"},
         "choices": [{"name": {"en": "ADHD"}, "value": "adhd"}, {"name": {"en": "Anxiety"}, "value": "anxiety"}],
         "valueType": ["xsd:string"],
+        "multipleChoice": True,
     }
     cleaned = BIDSDataset._checkbox_option_element(question, "anxiety", clean_phenotype_data=True)
     assert cleaned["choices"] == [{"name": {"en": "Anxiety"}, "value": 1}]
     assert cleaned["valueType"] == cleaned["datatype"] == ["xsd:integer"]
+    assert "multipleChoice" not in cleaned
     raw = BIDSDataset._checkbox_option_element(question, "anxiety", clean_phenotype_data=False)
     assert raw["choices"] == [{"name": {"en": "Anxiety"}, "value": "anxiety"}]
     # the question's element is shared by all of its options and must not change
     assert [c["value"] for c in question["choices"]] == ["adhd", "anxiety"]
     assert question["valueType"] == ["xsd:string"]
+    assert question["multipleChoice"] is True
 
 
 def test_checkbox_option_without_a_matching_choice_is_reported(caplog):

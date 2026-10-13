@@ -2339,6 +2339,7 @@ class BIDSDataset:
 
         None, with a warning, when the field map has no non-blank description for it: a column built
         by the pipeline would otherwise be published with a fallback text without anyone noticing.
+        Raises ValueError when *schema_name* has no rows in the field map at all.
         """
         rows = BIDSDataset._field_map_rows_for_table(None, schema_name)
         described = rows.loc[rows["column_name"] == column, "description"].dropna().astype(str).str.strip()
@@ -2357,7 +2358,8 @@ class BIDSDataset:
         Only the option's choice is kept. Cleaning writes a selected option as 1 (blank otherwise),
         so the choice's value becomes 1 and the type integer (``valueType`` and ``datatype``): the
         dictionary then gives the value the cells hold, and the option code stays in the column
-        name. The question's element is not changed.
+        name. ``multipleChoice`` describes the question, not a 1/blank option column, so it is
+        dropped. The question's element is not changed.
         """
         element = copy(question_element)
         choices = [c for c in question_element.get("choices") or [] if str(c.get("value")) == str(option)]
@@ -2370,6 +2372,7 @@ class BIDSDataset:
             element["choices"] = [{**c, "value": 1} for c in choices]
             element["valueType"] = ["xsd:integer"]
             element["datatype"] = ["xsd:integer"]
+            element.pop("multipleChoice", None)
         else:
             element["choices"] = [dict(c) for c in choices]
         return element
@@ -2420,10 +2423,10 @@ class BIDSDataset:
                 "Checkbox option column %r has no ReproSchema definition; its dictionary will not "
                 "name the option.", column,
             )
-        value_type = (
-            ["xsd:integer"] if (column_choice is not None and clean_phenotype_data) else ["xsd:string"]
-        )
-        return {"description": description, "valueType": value_type}
+        if column_choice is not None and clean_phenotype_data:
+            # Same type as an option column ReproSchema defines (_checkbox_option_element).
+            return {"description": description, "valueType": ["xsd:integer"], "datatype": ["xsd:integer"]}
+        return {"description": description, "valueType": ["xsd:string"]}
 
     def _construct_phenotype_from_reproschema(
         df: pd.DataFrame,
@@ -3266,7 +3269,6 @@ class BIDSDataset:
                         f"{df[c].dropna().unique().tolist()}. Converting to binary."
                     )
                 df[c] = df[c].apply(lambda x: 1 if pd.notna(x) and str(x).strip() != "" else np.nan).astype(pd.Int8Dtype())
-                # TODO: phenotype changes for checkbox columns?
         # Warn about empty columns - but keep them as some are expected
         BIDSDataset._warn_about_empty_columns(df, phenotype)
         
@@ -3481,7 +3483,7 @@ class BIDSDataset:
                 # the field map holds the description, as for every other column
                 data_elements_updated["sex_at_birth"] = _derived_data_element(
                     "sex_at_birth",
-                    BIDSDataset._field_map_description("sex_at_birth") or "Sex assigned at birth.",
+                    BIDSDataset._field_map_description("sex_at_birth", "demographics") or "Sex assigned at birth.",
                 )
             elif c == "sex_at_birth":
                 continue
