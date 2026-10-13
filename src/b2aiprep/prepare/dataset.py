@@ -156,6 +156,19 @@ class SessionLabels(enum.Enum):
     UUID = "uuid"
 
 
+class TaskFilteredRecording(t.NamedTuple):
+    """A recording whose audio deidentify left out because its task is not in
+    ``audio_tasks_to_include.json``. ``features_released`` says its (stripped) feature file is
+    published in this tier; when it is not, nothing of the recording is released. ``recording_id``
+    is read only then (None otherwise)."""
+
+    participant_id: str
+    task_label: str
+    recording_id: t.Optional[str]
+    exclusion_key: str
+    features_released: bool
+
+
 DEFAULT_RESAMPLE_RATE = 16000
 DEFAULT_BIT_DEPTH = 16
 # Largest positive 16-bit PCM sample (32767) as a float: +1.0 would scale to 32768 and clamp.
@@ -3651,6 +3664,15 @@ class BIDSDataset:
         return [c for c in df.columns if c == "session_id" or c.endswith("_session_id")]
 
     @staticmethod
+    def _task_table_link_column(df: pd.DataFrame) -> t.Optional[str]:
+        """The column linking a task's own table (stroop.tsv, ...) to its acoustic task, else None.
+
+        The one test for "this is a task table": session discovery skips these tables and row
+        pruning joins on this column, so both must agree on which tables they are.
+        """
+        return next((c for c in df.columns if c.endswith("_recording_acoustic_task_id")), None)
+
+    @staticmethod
     def _sessions_with_questionnaire_data(
         phenotype_dir: Path,
         level: DispositionLevel = DispositionLevel.RELEASE,
@@ -3662,6 +3684,8 @@ class BIDSDataset:
         Each table other than the bookkeeping ones is reduced as deidentify reduces it (columns
         above *level* removed, then rows left with no answers dropped) before its session IDs
         are read, so a row holding only internal data or form bookkeeping releases no session.
+        A task's own table (``<prefix>_recording_acoustic_task_id``, e.g. stroop.tsv) is skipped
+        too: its rows are published only with a released recording, which releases the session.
         """
         found: t.Set[str] = set()
         if not phenotype_dir.exists():
@@ -3669,6 +3693,8 @@ class BIDSDataset:
         for tsv in sorted(phenotype_dir.rglob("*.tsv")):
             df, schema_name, _, _ = BIDSDataset.load_phenotype_file(tsv)
             if schema_name in BIDSDataset._SESSION_BOOKKEEPING_SCHEMAS:
+                continue
+            if BIDSDataset._task_table_link_column(df) is not None:
                 continue
             cols = BIDSDataset._session_id_columns(df)
             if not cols:
@@ -4009,11 +4035,7 @@ class BIDSDataset:
         def _scan(pid: str) -> t.List[str]:
             found = []
             for sidecar in (bids_path / f"sub-{pid}").glob(f"ses-*/audio/*{suffix}"):
-                try:
-                    rid = json.loads(sidecar.read_text()).get("recording_id", "")
-                except (OSError, json.JSONDecodeError):
-                    continue
-                if str(rid).strip().lower() in recording_ids:
+                if BIDSDataset._sidecar_recording_id(sidecar) in recording_ids:
                     stem = sidecar.name[: -len(suffix)]
                     parts = stem.split("_")
                     task_idx = next((i for i, p in enumerate(parts) if p.startswith("task-")), None)
@@ -4029,6 +4051,15 @@ class BIDSDataset:
         return stems
 
     _EXCLUSION_SUFFIXES = (*AUDIO_EXTENSIONS, ".json", ".pt", "_recording-metadata", "_features")
+
+    @staticmethod
+    def _sidecar_recording_id(sidecar: Path) -> t.Optional[str]:
+        """The sidecar's ``recording_id``, stripped and lower-cased; None when unreadable or absent."""
+        try:
+            rid = json.loads(sidecar.read_text()).get("recording_id")
+        except (OSError, json.JSONDecodeError):
+            return None
+        return (str(rid).strip().lower() or None) if rid else None
 
     @staticmethod
     def _exclusion_key(stem: str) -> str:
@@ -4092,6 +4123,55 @@ class BIDSDataset:
             )
 
     @staticmethod
+    def _task_family(task_label: str) -> str:
+        """The task a numbered label belongs to: ``harvard-sentences-list-31-5`` -> ``harvard-sentences-list``."""
+        return re.sub(r"(-\d+)+$", "", task_label) or task_label
+
+    @staticmethod
+    def _report_task_filter(
+        task_filtered: t.Sequence[TaskFilteredRecording], released_task_labels: t.AbstractSet[str],
+    ) -> None:
+        """Say which recordings audio_tasks_to_include.json left out, per task family.
+
+        A family left out whole is reported at INFO. A family with some labels released and others
+        left out is a WARNING: the list most likely misses labels collected after it was written
+        (v4.0.0 silently lost Harvard lists 1, 10, 15, 31, 51, 58 and 72 that way).
+        """
+        if not task_filtered:
+            _LOGGER.info("Task filter: audio_tasks_to_include.json left out no recording.")
+            return
+        by_family: t.Dict[str, t.List[TaskFilteredRecording]] = defaultdict(list)
+        for rec in task_filtered:
+            by_family[BIDSDataset._task_family(rec.task_label)].append(rec)
+        released_by_family: t.Dict[str, t.Set[str]] = defaultdict(set)
+        for label in released_task_labels:
+            released_by_family[BIDSDataset._task_family(label)].add(label)
+        _LOGGER.info(
+            "Task filter: audio_tasks_to_include.json left out the audio of %d recording(s) of %d "
+            "participant(s), in %d task famil(y/ies).",
+            len(task_filtered), len({r.participant_id for r in task_filtered}), len(by_family),
+        )
+        for family, recs in sorted(by_family.items()):
+            labels = sorted({r.task_label for r in recs})
+            participants = sorted({r.participant_id for r in recs})
+            _LOGGER.info(
+                "Task filter: '%s': %d recording(s) of %d participant(s) left out (%d keep stripped "
+                "features); labels %s; participants %s",
+                family, len(recs), len(participants), sum(r.features_released for r in recs),
+                labels, participants,
+            )
+            _LOGGER.debug(
+                "Task filter: '%s' recording IDs: %s", family, sorted(r.recording_id for r in recs if r.recording_id),
+            )
+            released = released_by_family.get(family)
+            if released:
+                _LOGGER.warning(
+                    "Task filter: %d label(s) of '%s' are not in audio_tasks_to_include.json while %d "
+                    "other label(s) of it are released, so the list is probably missing them: %s",
+                    len(labels), family, len(released), labels,
+                )
+
+    @staticmethod
     def _acoustic_tasks_left_without_recordings(
         recording_tsv: Path, removed_recording_ids: t.AbstractSet[str],
     ) -> t.Set[str]:
@@ -4112,13 +4192,21 @@ class BIDSDataset:
         removed_recording_ids: t.AbstractSet[str],
         removed_task_ids: t.AbstractSet[str],
     ) -> pd.DataFrame:
-        """Remove recording.tsv rows of removed recordings, and acoustic_task.tsv rows left with none.
+        """Remove recording.tsv rows of removed recordings, and the rows of acoustic tasks left with
+        none: in acoustic_task.tsv and in each task's own table (``<prefix>_recording_acoustic_task_id``,
+        e.g. random_item_generation.tsv).
 
         A recording removed by ``audio_recording_ids_to_remove.json`` or the filestem list loses its
-        audio, sidecar, features and quality-metric row; its phenotype rows go too.
+        audio, sidecar, features and quality-metric row; its phenotype rows go too. So do those of a
+        recording ``audio_tasks_to_include.json`` leaves out, unless its features are published.
         """
-        column = {"recording": "recording_id", "acoustic_task": "acoustic_task_id"}.get(table)
-        ids = removed_recording_ids if table == "recording" else removed_task_ids
+        if table == "recording":
+            column, ids = "recording_id", removed_recording_ids
+        elif table == "acoustic_task":
+            column, ids = "acoustic_task_id", removed_task_ids
+        else:
+            column = BIDSDataset._task_table_link_column(df)
+            ids = removed_task_ids
         if column is None or not ids or column not in df.columns:
             return df
         removed = df[column].astype("string").str.strip().str.lower().isin(ids).fillna(False).astype(bool)
@@ -4295,8 +4383,11 @@ class BIDSDataset:
         # stops rather than publish a dataset silently missing them.
         failed_participants: t.List[str] = []
         matched_exclusion_keys: t.Set[str] = set()
-        # Recordings a removal list matched; their recording.tsv rows are removed below.
+        # Recordings a removal list matched, and those the task list leaves out with nothing
+        # released; their phenotype rows are removed below.
         removed_recording_ids: t.Set[str] = {str(r).strip().lower() for r in recording_ids_to_remove}
+        task_filtered: t.List[TaskFilteredRecording] = []
+        released_task_labels: t.Set[str] = set()
 
         def _process_one(pdir: Path) -> t.Optional[t.Tuple[str, t.Dict[str, str], t.Dict[str, int], t.Counter[str]]]:
             pid = pdir.name[4:]
@@ -4315,6 +4406,8 @@ class BIDSDataset:
                     sessions_with_data=sessions_with_data,
                     sessions_with_labelable_data=sessions_with_labelable_data,
                     _removed_recording_ids=removed_recording_ids,
+                    _task_filtered=task_filtered,
+                    _released_task_labels=released_task_labels,
                 )
                 matched_exclusion_keys.update(matched)
                 if labels is not None:
@@ -4344,6 +4437,7 @@ class BIDSDataset:
             | {str(participant_ids_to_remap.get(d.name[len("sub-"):], "")).lower() for d in participant_dirs},
             recording_ids_to_remove, recording_id_stems,
         )
+        BIDSDataset._report_task_filter(task_filtered, released_task_labels)
         if failed_participants:
             raise RuntimeError(
                 f"Deidentify failed for {len(failed_participants)} participant(s); see the tracebacks "
@@ -4505,7 +4599,8 @@ class BIDSDataset:
             self.data_path,
             outdir,
             participant_ids_to_exclude,
-            audio_filestems_to_remove,
+            audio_filestems_to_remove
+            + sorted({r.exclusion_key for r in task_filtered if not r.features_released}),
             audio_tasks_to_include,
             participant_ids_to_remap,
             participant_session_id_to_remap,
@@ -4764,6 +4859,8 @@ class BIDSDataset:
         access_tier: AccessTier = AccessTier.REGISTERED,
         _removed_recording_ids: t.Optional[t.Set[str]] = None,
         sessions_with_labelable_data: t.Optional[t.AbstractSet[str]] = None,
+        _task_filtered: t.Optional[t.List[TaskFilteredRecording]] = None,
+        _released_task_labels: t.Optional[t.Set[str]] = None,
     ) -> t.Tuple[t.Optional[t.Dict[str, str]], t.Optional[t.Dict[str, int]], t.Counter[str], t.Set[str]]:
         """Process one participant directory for deidentification.
 
@@ -4780,6 +4877,11 @@ class BIDSDataset:
         no audio or feature file survives filtering (any partially-created output directory is
         removed). The ``recording_id`` of each recording a removal list matched is added to
         *_removed_recording_ids* (lower-cased), so its phenotype rows can be removed too.
+
+        A recording whose task is not in *audio_tasks_to_include* is appended to *_task_filtered*.
+        When its feature file is not published in this tier either, nothing of it is released, so
+        its ``recording_id`` is added to *_removed_recording_ids* as well. The labels of released
+        recordings are added to *_released_task_labels*.
         """
         pid = participant_dir.name[4:]
         new_pid = participant_ids_to_remap.get(pid, pid)
@@ -4831,6 +4933,10 @@ class BIDSDataset:
         # the removal lists, whatever this tier's task list or --skip_audio_features. Labels are
         # numbered over these, so a session keeps its label in every tier.
         labelable: t.Set[str] = set()
+        # (stem, task label, sidecar) of each recording the task list leaves out, and the labels
+        # it releases; resolved once the feature files are known.
+        left_out: t.List[t.Tuple[str, str, Path]] = []
+        released_task_labels: t.Set[str] = set()
         for audio_source_path in recordings:
             # Audio-check safety net
             task_match = re.search(r"task-(.+?)(_|$)", audio_source_path.stem)
@@ -4843,13 +4949,10 @@ class BIDSDataset:
                 n_skipped += 1
                 _LOGGER.debug("Skipping excluded filestem: %s", audio_source_path.name)
                 if _removed_recording_ids is not None:
-                    removed_sidecar = audio_source_path.parent / f"{audio_source_path.stem}_recording-metadata.json"
-                    try:
-                        rid = json.loads(removed_sidecar.read_text()).get("recording_id")
-                    except (OSError, json.JSONDecodeError):
-                        rid = None
+                    rid = BIDSDataset._sidecar_recording_id(
+                        audio_source_path.parent / f"{audio_source_path.stem}_recording-metadata.json")
                     if rid:
-                        _removed_recording_ids.add(str(rid).strip().lower())
+                        _removed_recording_ids.add(rid)
                 continue
 
             # Sidecar must exist before we copy the wav (match old behavior)
@@ -4862,13 +4965,12 @@ class BIDSDataset:
 
             # Task inclusion (empty list = publish nothing, matching old behavior)
             if task_match:
-                if not normalized_include_tasks:
-                    n_skipped += 1
-                    continue
                 task_label = normalize_task_label(task_match.group(1))
-                if task_label not in normalized_include_tasks:
+                if not normalized_include_tasks or task_label not in normalized_include_tasks:
                     n_skipped += 1
+                    left_out.append((audio_source_path.stem, task_label, json_path))
                     continue
+                released_task_labels.add(task_label)
 
             stem_ending = "-".join(sanitize_task_entity_in_bids_stem(audio_source_path.stem).split("_")[2:])
             audio_jobs.append((
@@ -4901,6 +5003,27 @@ class BIDSDataset:
                 feat_path, BIDSDataset._extract_session_id_from_path(feat_path), stem_ending, task_is_included,
             ))
 
+        # A recording left out by the task list keeps its rows where this tier publishes its
+        # (stripped) feature file; otherwise nothing of it is released and its rows go too.
+        released_feature_keys = {
+            BIDSDataset._exclusion_key(job[0].stem.replace("_features", "")) for job in feature_jobs
+        }
+        filtered_here: t.List[TaskFilteredRecording] = []
+        for stem, task_label, json_path in left_out:
+            key = BIDSDataset._exclusion_key(stem)
+            features_released = key in released_feature_keys
+            rid = None
+            if not features_released:
+                rid = BIDSDataset._sidecar_recording_id(json_path)
+                if rid is None:
+                    _LOGGER.warning(
+                        "No recording_id in %s: nothing of the recording is released, but its phenotype "
+                        "rows cannot be matched and stay.", json_path.name,
+                    )
+                elif _removed_recording_ids is not None:
+                    _removed_recording_ids.add(rid)
+            filtered_here.append(TaskFilteredRecording(pid, task_label, rid, key, features_released))
+
         # Feature files count: a participant whose recordings are all from tasks whose audio is
         # not released still has (stripped) features to publish.
         out_participant = outdir / f"sub-{new_pid}"
@@ -4911,6 +5034,11 @@ class BIDSDataset:
                 "Participant %s: no audio or feature files after filtering (%d skipped).", pid, n_skipped,
             )
             return None, None, Counter(), matched_exclusions
+        # Reported only for participants in the release.
+        if _task_filtered is not None:
+            _task_filtered.extend(filtered_here)
+        if _released_task_labels is not None:
+            _released_task_labels.update(released_task_labels)
 
         # --- Label the released sessions ---
         sessions = BIDSDataset._read_participant_sessions(participant_dir)
@@ -5044,7 +5172,9 @@ class BIDSDataset:
         if "task_name" in df.columns:
             df = df.loc[~df["task_name"].apply(is_audio_check)]
 
-        # Doesn't filter to only included audio tasks as these are similar to non-identifiable features
+        # Doesn't filter to only included audio tasks as these are similar to non-identifiable
+        # features: a recording left out by the task list keeps its row where its (stripped)
+        # features are published. deidentify() passes the others in exclude_audio_filestems.
         # # Filter to only included audio tasks
         # if audio_tasks_to_include_list and "task_name" in df.columns:
         #     normalized_tasks = {normalize_task_label(task) for task in audio_tasks_to_include_list}

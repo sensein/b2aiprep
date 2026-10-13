@@ -18,6 +18,7 @@ from b2aiprep.prepare.dataset import (
     BIDSDataset,
     DispositionLevel,
     SessionLabels,
+    TaskFilteredRecording,
     ValueReview,
     Verdict,
     review_fingerprint,
@@ -1300,13 +1301,91 @@ class TestRemovedRecordings:
                         "recording_acoustic_task_id": ["t1", "t2"], "recording_name": ["a", "b"]}),
                     "task/acoustic_task": pd.DataFrame({
                         "participant_id": ["p1", "p1"], "acoustic_task_id": ["t1", "t2"],
-                        "acoustic_task_name": ["Rainbow Passage", "Maximum phonation time-1"]})})
+                        "acoustic_task_name": ["Rainbow Passage", "Maximum phonation time-1"]}),
+                    # a task's own table: its rows follow the acoustic task
+                    "task/random_item_generation": pd.DataFrame({
+                        "participant_id": ["p1", "p1"], "random_recording_acoustic_task_id": ["T1", "t2"],
+                        "random_duration": ["10", "20"]})})
         out = tmp_path / "out"
         BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
         assert list(BIDSDataset._read_tsv_as_written(out / "phenotype/task/recording.tsv")["recording_id"]) == ["r1"]
         assert list(BIDSDataset._read_tsv_as_written(
             out / "phenotype/task/acoustic_task.tsv")["acoustic_task_id"]) == ["t1"]
+        assert list(BIDSDataset._read_tsv_as_written(
+            out / "phenotype/task/random_item_generation.tsv")["random_recording_acoustic_task_id"]) == ["T1"]
         assert len(list(out.rglob("*.flac"))) == 1
+
+    @pytest.mark.parametrize("skip_audio_features, kept", [
+        (True, ["1"]), (False, ["1", "2"]),
+    ], ids=["no-features-rows-go", "stripped-features-rows-stay"])
+    def test_task_left_out_by_the_list_takes_its_rows_unless_its_features_are_released(
+        self, tmp_path, make_deid_tree, skip_audio_features, kept,
+    ):
+        bids, config = make_deid_tree(
+            {"p1": [("s1", "rainbow-passage", {"recording_id": "r1"}),
+                    ("s1", "free-speech-1", {"recording_id": "r2"})]},
+            tasks=["rainbow-passage"], features=True,
+            tables={"task/recording": pd.DataFrame({
+                        "participant_id": ["p1", "p1"], "recording_id": ["r1", "r2"],
+                        "recording_acoustic_task_id": ["t1", "t2"], "recording_name": ["a", "b"]}),
+                    "task/acoustic_task": pd.DataFrame({
+                        "participant_id": ["p1", "p1"], "acoustic_task_id": ["t1", "t2"],
+                        "acoustic_task_name": ["Rainbow Passage", "Free speech-1"]})})
+        pd.DataFrame({"participant_id": ["p1", "p1"], "session_id": ["s1", "s1"],
+                      "task_name": ["rainbow-passage", "free-speech-1"], "snr": ["1", "2"]},
+                     ).to_csv(bids / "audio_quality_metrics.tsv", sep="\t", index=False)
+        out = tmp_path / "out"
+        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config,
+                                     skip_audio_features=skip_audio_features)
+        read = BIDSDataset._read_tsv_as_written
+        assert list(read(out / "phenotype/task/recording.tsv")["recording_id"]) == [f"r{k}" for k in kept]
+        assert list(read(out / "phenotype/task/acoustic_task.tsv")["acoustic_task_id"]) == [f"t{k}" for k in kept]
+        assert len(pd.read_csv(out / "audio_quality_metrics.tsv", sep="\t", dtype=str)) == len(kept)
+        assert [p.name for p in out.rglob("*.flac")] == ["sub-900000_ses-01_task-rainbow-passage.flac"]
+
+    def test_a_task_table_row_alone_does_not_release_a_session(self, tmp_path, make_deid_tree):
+        """A session whose only recording is removed is not released for its stroop.tsv row."""
+        bids, config = make_deid_tree(
+            {"p1": [("s1", "rainbow-passage", {"recording_id": "r1"}),
+                    ("s2", "word-color-stroop", {"recording_id": "r2"})]},
+            config_files={"audio_recording_ids_to_remove.json": ["r2"]},
+            tables={"task/recording": pd.DataFrame({
+                        "participant_id": ["p1", "p1"], "recording_session_id": ["s1", "s2"],
+                        "recording_id": ["r1", "r2"], "recording_acoustic_task_id": ["t1", "t2"],
+                        "recording_name": ["a", "b"]}),
+                    "task/acoustic_task": pd.DataFrame({
+                        "participant_id": ["p1", "p1"], "acoustic_task_id": ["t1", "t2"],
+                        "acoustic_task_name": ["Rainbow Passage", "Word-color Stroop"]}),
+                    "task/stroop": pd.DataFrame({
+                        "participant_id": ["p1"], "stroop_session_id": ["s2"],
+                        "stroop_recording_acoustic_task_id": ["t2"], "stroop_duration": ["30"]})})
+        out = tmp_path / "out"
+        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+        sessions = pd.read_csv(next((out / "sub-900000").glob("*sessions.tsv")), sep="\t", dtype=str)
+        assert len(sessions) == 1
+        stroop = out / "phenotype/task/stroop.tsv"
+        assert not stroop.exists() or BIDSDataset._read_tsv_as_written(stroop).empty
+
+    def test_left_out_recording_without_a_recording_id_warns(self, tmp_path, make_deid_tree, caplog):
+        bids, config = make_deid_tree(
+            {"p1": [("s1", "rainbow-passage", {"recording_id": "r1"}), ("s1", "free-speech-1")]},
+            tasks=["rainbow-passage"])
+        with caplog.at_level(logging.WARNING):
+            BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config,
+                                         skip_audio_features=True)
+        assert any("No recording_id in" in r.getMessage() for r in caplog.records)
+
+    def test_task_filter_warns_when_a_family_is_only_partly_included(self, caplog):
+        def rec(label):
+            return TaskFilteredRecording("p1", label, f"rid-{label}", f"sub-p1_ses-s1_task-{label}", False)
+        with caplog.at_level(logging.INFO):
+            BIDSDataset._report_task_filter(
+                [rec("harvard-sentences-list-31-1"), rec("free-speech-1"), rec("free-speech-2")],
+                {"harvard-sentences-list-2-1", "rainbow-passage"})
+        warnings = [r.getMessage() for r in caplog.records if r.levelno == logging.WARNING]
+        assert len(warnings) == 1 and "'harvard-sentences-list'" in warnings[0], warnings
+        info = " ".join(r.getMessage() for r in caplog.records if r.levelno == logging.INFO)
+        assert "'free-speech': 2 recording(s) of 1 participant(s)" in info, info
 
 
 class TestLoadColumnValueReviews:
