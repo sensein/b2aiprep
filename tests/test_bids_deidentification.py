@@ -462,6 +462,10 @@ class TestBIDSDatasetClean:
         # Check that sex_at_birth column was added
         assert "sex_at_birth" in df_sex.columns
         assert "sex_at_birth" in phenotype_sex["place_holder_schema"]["data_elements"]
+        # its description is the field map's, like every other column's
+        fm = BIDSDataset._field_map_rows_for_table(None, None)
+        assert phenotype_sex["place_holder_schema"]["data_elements"]["sex_at_birth"]["description"] == (
+            fm.loc[fm["column_name"] == "sex_at_birth", "description"].iloc[0])
         assert [v if pd.notna(v) else None for v in df_sex["sex_at_birth"]] == [
             "Male", "Unknown", "Female", "Unknown", "Unknown", None, "Male"]  # p7: stated sex kept for a trans participant
         BIDSDataset._fill_unknown_sex_at_birth(df_sex)
@@ -724,9 +728,9 @@ class TestDropColumnsByDisposition:
 
     def test_drop_internal_and_review(self):
         fm = _field_map_df([
-            {"column_name": "col_a", "disposition": "release", "delete": "NO"},
-            {"column_name": "col_b", "disposition": "internal", "delete": "YES"},
-            {"column_name": "col_c", "disposition": "review", "delete": "NO"},
+            {"column_name": "col_a", "disposition": "release", "legacy_delete": "NO"},
+            {"column_name": "col_b", "disposition": "internal", "legacy_delete": "YES"},
+            {"column_name": "col_c", "disposition": "review", "legacy_delete": "NO"},
         ])
         df = pd.DataFrame({"col_a": [1], "col_b": [2], "col_c": [3]})
         result, dropped = BIDSDataset._drop_columns_by_disposition(
@@ -737,8 +741,8 @@ class TestDropColumnsByDisposition:
 
     def test_error_when_no_disposition(self):
         fm = _field_map_df([
-            {"column_name": "col_a", "delete": "NO"},
-            {"column_name": "col_b", "delete": "YES"},
+            {"column_name": "col_a", "legacy_delete": "NO"},
+            {"column_name": "col_b", "legacy_delete": "YES"},
         ])
         df = pd.DataFrame({"col_a": [1], "col_b": [2]})
         with pytest.raises(ValueError, match="disposition"):
@@ -747,7 +751,7 @@ class TestDropColumnsByDisposition:
     def test_columns_not_in_field_map_removed(self, caplog):
         """A column with no field-map row has no disposition, so it is never published."""
         fm = _field_map_df([
-            {"column_name": "col_a", "disposition": "release", "delete": "NO"},
+            {"column_name": "col_a", "disposition": "release", "legacy_delete": "NO"},
         ])
         df = pd.DataFrame({"participant_id": ["p1"], "col_a": [1], "pipeline_computed": [99]})
         with caplog.at_level(logging.WARNING):
@@ -761,8 +765,8 @@ class TestDropColumnsByDisposition:
 
     def test_review_columns_stripped(self):
         fm = _field_map_df([
-            {"column_name": "col_r", "disposition": "review", "delete": "NO"},
-            {"column_name": "col_ok", "disposition": "release", "delete": "NO"},
+            {"column_name": "col_r", "disposition": "review", "legacy_delete": "NO"},
+            {"column_name": "col_ok", "disposition": "release", "legacy_delete": "NO"},
         ])
         df = pd.DataFrame({"col_r": [1], "col_ok": [2]})
         result, dropped = BIDSDataset._drop_columns_by_disposition(
@@ -774,9 +778,9 @@ class TestDropColumnsByDisposition:
 
     def test_returns_dropped_list(self):
         fm = _field_map_df([
-            {"column_name": "a", "disposition": "release", "delete": "NO"},
-            {"column_name": "b", "disposition": "internal", "delete": "YES"},
-            {"column_name": "c", "disposition": "review", "delete": "NO"},
+            {"column_name": "a", "disposition": "release", "legacy_delete": "NO"},
+            {"column_name": "b", "disposition": "internal", "legacy_delete": "YES"},
+            {"column_name": "c", "disposition": "review", "legacy_delete": "NO"},
         ])
         df = pd.DataFrame({"a": [1], "b": [2], "c": [3]})
         _, dropped = BIDSDataset._drop_columns_by_disposition(
@@ -858,9 +862,9 @@ class TestSessionsCarryForward:
     def test_disposition_columns_dropped(self):
         """sessions.tsv columns with disposition=internal are dropped."""
         fm = _field_map_df([
-            {"column_name": "session_duration", "disposition": "release", "delete": "NO"},
-            {"column_name": "session_site", "disposition": "internal", "delete": "YES"},
-            {"column_name": "session_id", "disposition": "release", "delete": "NO"},
+            {"column_name": "session_duration", "disposition": "release", "legacy_delete": "NO"},
+            {"column_name": "session_site", "disposition": "internal", "legacy_delete": "YES"},
+            {"column_name": "session_id", "disposition": "release", "legacy_delete": "NO"},
         ])
         df = pd.DataFrame({
             "session_id": ["s1"],
@@ -888,10 +892,10 @@ class TestDispositionInPhenotypeContext:
     def test_only_release_columns_survive(self):
         """After disposition drop, only release columns remain."""
         fm = _field_map_df([
-            {"column_name": "participant_id", "disposition": "release", "delete": "NO"},
-            {"column_name": "age", "disposition": "release", "delete": "NO"},
-            {"column_name": "session_complete", "disposition": "internal", "delete": "YES"},
-            {"column_name": "free_text_specify", "disposition": "review", "delete": "NO"},
+            {"column_name": "participant_id", "disposition": "release", "legacy_delete": "NO"},
+            {"column_name": "age", "disposition": "release", "legacy_delete": "NO"},
+            {"column_name": "session_complete", "disposition": "internal", "legacy_delete": "YES"},
+            {"column_name": "free_text_specify", "disposition": "review", "legacy_delete": "NO"},
         ])
         df = pd.DataFrame({
             "participant_id": ["p1", "p2"],
@@ -906,8 +910,8 @@ class TestDispositionInPhenotypeContext:
     def test_error_when_no_disposition_in_phenotype_context(self):
         """When field map has no disposition column, raises ValueError."""
         fm = _field_map_df([
-            {"column_name": "age", "delete": "NO"},
-            {"column_name": "zipcode", "delete": "YES"},
+            {"column_name": "age", "legacy_delete": "NO"},
+            {"column_name": "zipcode", "legacy_delete": "YES"},
         ])
         df = pd.DataFrame({"age": ["30"], "zipcode": ["02139"]})
         with pytest.raises(ValueError, match="disposition"):

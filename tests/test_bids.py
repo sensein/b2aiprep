@@ -1563,17 +1563,52 @@ def test_no_ontology_reference_is_invented():
 
 
 def test_checkbox_options_keep_their_integer_type():
-    """A ___ option still becomes 0/1 when the phenotype data is cleaned."""
+    """A ___ option is 1 when selected, blank otherwise, once the phenotype data is cleaned."""
     cleaned = BIDSDataset._synthetic_data_element(
         "participant_data_collection_origins___reproschema", {"description": "x"},
         column_choice="reproschema", clean_phenotype_data=True,
     )
-    assert cleaned["valueType"] == ["xsd:integer"]
+    assert cleaned["valueType"] == cleaned["datatype"] == ["xsd:integer"]
     raw = BIDSDataset._synthetic_data_element(
         "participant_data_collection_origins___reproschema", {"description": "x"},
         column_choice="reproschema", clean_phenotype_data=False,
     )
     assert raw["valueType"] == ["xsd:string"]
+
+
+def test_checkbox_option_choice_holds_the_value_the_cells_hold():
+    """Cleaned cells are 1/blank, so the option's choice value is 1, not the RedCap code."""
+    question = {
+        "question": {"en": "Which apply?"},
+        "choices": [{"name": {"en": "ADHD"}, "value": "adhd"}, {"name": {"en": "Anxiety"}, "value": "anxiety"}],
+        "valueType": ["xsd:string"],
+        "multipleChoice": True,
+    }
+    cleaned = BIDSDataset._checkbox_option_element(question, "anxiety", clean_phenotype_data=True)
+    assert cleaned["choices"] == [{"name": {"en": "Anxiety"}, "value": 1}]
+    assert cleaned["valueType"] == cleaned["datatype"] == ["xsd:integer"]
+    assert "multipleChoice" not in cleaned
+    raw = BIDSDataset._checkbox_option_element(question, "anxiety", clean_phenotype_data=False)
+    assert raw["choices"] == [{"name": {"en": "Anxiety"}, "value": "anxiety"}]
+    # the question's element is shared by all of its options and must not change
+    assert [c["value"] for c in question["choices"]] == ["adhd", "anxiety"]
+    assert question["valueType"] == ["xsd:string"]
+    assert question["multipleChoice"] is True
+
+
+def test_checkbox_option_without_a_matching_choice_is_reported(caplog):
+    question = {"choices": [{"name": {"en": "ADHD"}, "value": "adhd"}]}
+    with caplog.at_level(logging.WARNING):
+        element = BIDSDataset._checkbox_option_element(question, "renamed_code", clean_phenotype_data=True)
+    assert element["choices"] == []
+    assert any("renamed_code" in r.getMessage() for r in caplog.records if r.levelno == logging.WARNING)
+
+
+def test_field_map_description_is_read_and_a_missing_one_reported(caplog):
+    assert BIDSDataset._field_map_description("sex_at_birth")
+    with caplog.at_level(logging.WARNING):
+        assert BIDSDataset._field_map_description("no_such_column_anywhere") is None
+    assert any("no_such_column_anywhere" in r.getMessage() for r in caplog.records)
 
 
 def test_a_missing_description_is_stated_not_left_blank():

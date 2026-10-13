@@ -1588,8 +1588,8 @@ class BIDSDataset:
         """Load the field map (bids_field_organization.csv).
 
         Args:
-            exclude_dropped: Leave out ``disposition=drop`` rows. The CSV's ``delete`` column is
-                kept as a historical record only and is not read.
+            exclude_dropped: Leave out ``disposition=drop`` rows. The CSV's ``legacy_delete`` column
+                is kept as a historical record only and is not read.
 
         Returns:
             DataFrame containing the reorganization data.
@@ -2347,6 +2347,50 @@ class BIDSDataset:
         return df
 
     @staticmethod
+    def _field_map_description(column: str, schema_name: t.Optional[str] = None) -> t.Optional[str]:
+        """The field map's description of *column* (in *schema_name*'s rows when given).
+
+        None, with a warning, when the field map has no non-blank description for it: a column built
+        by the pipeline would otherwise be published with a fallback text without anyone noticing.
+        Raises ValueError when *schema_name* has no rows in the field map at all.
+        """
+        rows = BIDSDataset._field_map_rows_for_table(None, schema_name)
+        described = rows.loc[rows["column_name"] == column, "description"].dropna().astype(str).str.strip()
+        described = described[described != ""]
+        if described.empty:
+            _LOGGER.warning("bids_field_organization.csv has no description for %r.", column)
+            return None
+        return described.iloc[0]
+
+    @staticmethod
+    def _checkbox_option_element(
+        question_element: t.Dict[str, t.Any], option: t.Optional[str], clean_phenotype_data: bool,
+    ) -> t.Dict[str, t.Any]:
+        """Data element of one ``<question>___<option>`` checkbox column, from its question's element.
+
+        Only the option's choice is kept. Cleaning writes a selected option as 1 (blank otherwise),
+        so the choice's value becomes 1 and the type integer (``valueType`` and ``datatype``): the
+        dictionary then gives the value the cells hold, and the option code stays in the column
+        name. ``multipleChoice`` describes the question, not a 1/blank option column, so it is
+        dropped. The question's element is not changed.
+        """
+        element = copy(question_element)
+        choices = [c for c in question_element.get("choices") or [] if str(c.get("value")) == str(option)]
+        if not choices:
+            _LOGGER.warning(
+                "Checkbox option %r matches no choice of its question in ReproSchema; the column's "
+                "dictionary will not name the option.", option,
+            )
+        if clean_phenotype_data:
+            element["choices"] = [{**c, "value": 1} for c in choices]
+            element["valueType"] = ["xsd:integer"]
+            element["datatype"] = ["xsd:integer"]
+            element.pop("multipleChoice", None)
+        else:
+            element["choices"] = [dict(c) for c in choices]
+        return element
+
+    @staticmethod
     def _synthetic_data_element(
         column: str,
         updated_data: t.Mapping[str, t.Any],
@@ -2371,7 +2415,8 @@ class BIDSDataset:
             column: the source (RedCap) column name.
             updated_data: the row from bids_field_organization.csv describing this column.
             column_choice: the option code when `column` is a `___`-suffixed checkbox option.
-            clean_phenotype_data: when True, checkbox options are emitted as 0/1 integers.
+            clean_phenotype_data: when True, checkbox options are emitted as integers: 1 when
+                selected, blank otherwise.
         """
         _raw_desc = updated_data.get("description")
         description = str(_raw_desc).strip() if pd.notna(_raw_desc) else ""
@@ -2386,10 +2431,15 @@ class BIDSDataset:
         if str(updated_data.get("source", "")).lower() in ("pipeline", "supplement") and output_name in derived_field_specs():
             # Computed by b2aiprep: the spec gives its datatype, choices and range (still no termURL).
             return _derived_data_element(output_name, description)
-        value_type = (
-            ["xsd:integer"] if (column_choice is not None and clean_phenotype_data) else ["xsd:string"]
-        )
-        return {"description": description, "valueType": value_type}
+        if column_choice is not None:
+            _LOGGER.warning(
+                "Checkbox option column %r has no ReproSchema definition; its dictionary will not "
+                "name the option.", column,
+            )
+        if column_choice is not None and clean_phenotype_data:
+            # Same type as an option column ReproSchema defines (_checkbox_option_element).
+            return {"description": description, "valueType": ["xsd:integer"], "datatype": ["xsd:integer"]}
+        return {"description": description, "valueType": ["xsd:string"]}
 
     def _construct_phenotype_from_reproschema(
         df: pd.DataFrame,
@@ -2562,15 +2612,9 @@ class BIDSDataset:
                     synthesized_cols.add(col_norm)
                     csv_only_column = True
                 elif column_base in checkbox_columns:
-                    data_element = copy(source_elements[column_base])
-                    # reduce the choices to just the choice for this checkbox
-                    data_element['choices'] = [
-                        choice for choice in data_element.get('choices', [])
-                        if str(choice.get('value')) == str(column_choice)
-                    ]
-                    if clean_phenotype_data:
-                        # for checkbox columns, we convert to integer 0/1
-                        data_element['valueType'] = ['xsd:integer']
+                    data_element = BIDSDataset._checkbox_option_element(
+                        source_elements[column_base], column_choice, clean_phenotype_data
+                    )
                 else:
                     # populate the detailed metadata for this column
                     data_element = copy(source_elements[column])
@@ -3238,7 +3282,6 @@ class BIDSDataset:
                         f"{df[c].dropna().unique().tolist()}. Converting to binary."
                     )
                 df[c] = df[c].apply(lambda x: 1 if pd.notna(x) and str(x).strip() != "" else np.nan).astype(pd.Int8Dtype())
-                # TODO: phenotype changes for checkbox columns?
         # Warn about empty columns - but keep them as some are expected
         BIDSDataset._warn_about_empty_columns(df, phenotype)
         
@@ -3450,8 +3493,10 @@ class BIDSDataset:
                 columns.append(c)
                 columns.append("sex_at_birth")
                 data_elements_updated[c] = phenotype[first_key]["data_elements"][c]
+                # the field map holds the description, as for every other column
                 data_elements_updated["sex_at_birth"] = _derived_data_element(
-                    "sex_at_birth", "Sex assigned at birth, from the participant's own answers."
+                    "sex_at_birth",
+                    BIDSDataset._field_map_description("sex_at_birth", "demographics") or "Sex assigned at birth.",
                 )
             elif c == "sex_at_birth":
                 continue
@@ -3885,9 +3930,7 @@ class BIDSDataset:
                 df.insert(df.columns.get_loc(source) + 1, out, mapped)
             element = dict(phenotype.get(out) or {})
             if out != source and not element:
-                rows = BIDSDataset._field_map_rows_for_table(None, schema_name)
-                described = rows.loc[rows["column_name"] == out, "description"].dropna()
-                description = str(described.iloc[0]) if len(described) else ""
+                description = BIDSDataset._field_map_description(out, schema_name) or ""
                 element = (_derived_data_element(out, description) if out in derived_field_specs()
                            else {"description": description, "valueType": ["xsd:string"]})
             element["choices"] = [{"name": {"en": v}, "value": v} for v in sorted(mapped.dropna().unique())]
