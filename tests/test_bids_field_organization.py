@@ -359,6 +359,16 @@ def test_sidecar_recording_keys_match_recording_table(reorg_rows):
     assert {k: sidecar[k] for k in shared} == {k: recording[k] for k in shared}
 
 
+def test_sidecar_fields_copied_to_recording_table_keep_their_rules(reorg_rows):
+    """Each sidecar field recording.tsv carries has a recording row with the sidecar row's
+    disposition, access tier and source, so the two copies are released the same way."""
+    rule = lambda r: (r["disposition"], r["access_tier"], r["source"])
+    rows = {(r["schema_name"], r["column_name"]): r for r in reorg_rows}
+    for field in BIDSDataset._RECORDING_SIDECAR_FIELDS:
+        assert ("recording", field) in rows, field
+        assert rule(rows[("recording", field)]) == rule(rows[("audio_sidecar", field)]), field
+
+
 def test_access_tier_values_are_valid(reorg_rows):
     bad = [(r["column_name_source"], r["access_tier"]) for r in reorg_rows
            if r["access_tier"].strip().lower() not in ("", "controlled")]

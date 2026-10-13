@@ -1024,7 +1024,7 @@ def convert_response_to_bids_metadata( participant: dict,
             # recall, cinderella) carry their reference text via the flat fallback,
             # so the registry leaves stimulus_source unset. Tag it doc-text: the
             # reference is redcap/hand-entered plain text (any accompanying image is
-            # illustrative, not the reading target), matching metadata.json.
+            # illustrative, not the reading target), as the field map describes stimulus_source.
             if stim_source is None and stim_text and reg["speech_type"] in ("read", "recall"):
                 stim_source = "doc-text"
             resolved = {

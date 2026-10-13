@@ -356,7 +356,8 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
      - transcription
 
     For output, we grab only the spectrograms. For a subset of tasks, we include
-    the transcriptions in the metadata.
+    the transcriptions in static_features.tsv. The per-recording sidecar fields are in
+    phenotype/task/recording.tsv, which must agree with the sidecars.
 
     derivatives/b2aiprep/
     ├── spectrogram.parquet
@@ -383,6 +384,9 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         raise FileNotFoundError(
             f"No feature files (.pt) found in {bids_path}. Please check the directory structure."
         )
+
+    # Before writing anything, so a disagreement leaves no partial bundle.
+    BIDSDataset._check_sidecars_match_recording_table(bids_path)
 
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
@@ -502,44 +506,6 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         "status": "created",
     }
     
-    _LOGGER.info("Generating metadata.tsv")
-    metadata_dir = outdir / "metadata"
-    metadata_dir.mkdir(parents=True, exist_ok=True)
-    wav_paths = [p for p in bids_path.rglob("*") if p.is_file() and p.suffix in AUDIO_EXTENSIONS]
-    # Every per-recording sidecar is now flat scalars (the prompts list was
-    # replaced by scalar stimulus_text), so the metadata table is emitted as a
-    # TSV -- consistent with phenotype.tsv / static_features.tsv -- instead of
-    # parquet. Collect all records into one DataFrame (columns = union of keys).
-    records = []
-    for wav_path in wav_paths:
-        path = wav_path.with_suffix(".json")
-        try:
-            records.append(json.loads(path.read_text()))
-        except FileNotFoundError:
-            continue
-        except (json.JSONDecodeError, ValueError) as e:
-            _LOGGER.warning(f"Failed to process metadata file {path}: {e}")
-            continue
-
-    df = pd.DataFrame(records)
-    # stimulus_asset_n_images is an integer count present only for multi-image
-    # sequence stimuli (Story Recall v2); absent otherwise. A plain DataFrame would
-    # promote that column to float (rendering '10.0') because the absent rows are
-    # NaN. The nullable-integer dtype keeps present counts as '10' and writes absent
-    # rows as an empty cell -- matching the 'absent key (JSON) == null (table)'
-    # contract documented in resources/metadata.json.
-    if "stimulus_asset_n_images" in df.columns:
-        df["stimulus_asset_n_images"] = df["stimulus_asset_n_images"].astype("Int64")
-    df.to_csv(metadata_dir.joinpath("metadata.tsv"), sep="\t", index=False)
-
-    metadata_json_file = resources.files("b2aiprep").joinpath(
-        "prepare", "resources", "metadata.json"
-    )
-
-    metadata = json.load(metadata_json_file.open())
-    with open(metadata_dir.joinpath("metadata.json"), "w") as f:
-        json.dump(metadata, f, indent=2)
-    _LOGGER.info("Finished creating metadata files.")
 
     _LOGGER.info("Loading other features into HF datasets.")
 

@@ -619,48 +619,37 @@ def test_single_image_tasks_omit_n_images(descriptions):
         assert "stimulus_asset_n_images" not in m
 
 
-def test_metadata_bundle_tsv_null_equivalence(descriptions):
-    # Mirror the metadata bundling step (commands.py create_bundled_dataset:
-    # records=[sidecar dicts] -> pd.DataFrame -> to_csv(sep='\t')). A sequence task
-    # carries stimulus_asset_n_images; single-image / no-image sidecars OMIT the key
-    # (JSON), which must materialize as a null column cell (TSV/parquet) and round-
-    # trip as NaN == absent. Also proves the '{n}' template survives the TSV.
-    import io
+def test_recording_table_null_equivalence(descriptions, tmp_path):
+    # Sidecars go into recording.tsv (BIDSDataset._add_sidecar_fields_to_recording_table). A
+    # sequence task carries stimulus_asset_n_images; single-image / no-image sidecars OMIT the key
+    # (JSON), which must become a blank cell in the table (== absent). Also proves the '{n}'
+    # template survives the TSV and the count is written as '10', not '10.0'.
     import pandas as pd
+    from b2aiprep.prepare.dataset import BIDSDataset
 
-    recs = [
-        _resolve(descriptions, "Story Recall-(v2)", population="adult"),      # sequence -> 10
-        _resolve(descriptions, "Identifying Pictures-10", population="pediatric"),  # single image, no count
-        _resolve(descriptions, "Rainbow Passage", population="adult"),         # no asset at all
-    ]
+    recs = {
+        "r1": _resolve(descriptions, "Story Recall-(v2)", population="adult"),      # sequence -> 10
+        "r2": _resolve(descriptions, "Identifying Pictures-10", population="pediatric"),  # single image, no count
+        "r3": _resolve(descriptions, "Rainbow Passage", population="adult"),         # no asset at all
+    }
     # the single-image / no-asset sidecars must NOT carry the key (absent in JSON)
-    assert "stimulus_asset_n_images" not in recs[1]
-    assert "stimulus_asset_n_images" not in recs[2]
+    assert "stimulus_asset_n_images" not in recs["r2"]
+    assert "stimulus_asset_n_images" not in recs["r3"]
 
-    df = pd.DataFrame(recs)
-    assert "stimulus_asset_n_images" in df.columns  # union of keys -> column exists
-    # bundler casts to nullable Int64 so the count stays an integer (not 10.0) while
-    # absent rows write as an empty cell.
-    df["stimulus_asset_n_images"] = df["stimulus_asset_n_images"].astype("Int64")
-    buf = io.StringIO()
-    df.to_csv(buf, sep="\t", index=False)
-    tsv = buf.getvalue()
+    task = tmp_path / "phenotype" / "task"
+    task.mkdir(parents=True)
+    pd.DataFrame({"recording_id": list(recs)}).to_csv(task / "recording.tsv", sep="\t", index=False)
+    (task / "recording.json").write_text(json.dumps({"recording": {"description": "", "data_elements": {}}}))
+    BIDSDataset._add_sidecar_fields_to_recording_table(tmp_path, recs)
 
-    # on-disk cells: integer '10' (NOT '10.0') for the sequence, empty otherwise
-    hdr = tsv.splitlines()[0].split("\t")
-    ci, ti = hdr.index("stimulus_asset_n_images"), hdr.index("task_name")
-    cells = {ln.split("\t")[ti]: ln.split("\t")[ci] for ln in tsv.splitlines()[1:]}
-    assert cells["story-recall-v2"] == "10"
-    assert cells["identifying-pictures-10"] == ""
-    assert cells["rainbow-passage"] == ""
-
-    rt = pd.read_csv(io.StringIO(tsv), sep="\t")
-    by = {r["task_name"]: r for _, r in rt.iterrows()}
-    assert int(by["story-recall-v2"]["stimulus_asset_n_images"]) == 10
-    assert "{n}" in by["story-recall-v2"]["stimulus_asset"]
-    # absent-key sidecars -> null table cells (== absent)
-    assert pd.isna(by["identifying-pictures-10"]["stimulus_asset_n_images"])
-    assert pd.isna(by["rainbow-passage"]["stimulus_asset_n_images"])
+    lines = (task / "recording.tsv").read_text().splitlines()
+    hdr = lines[0].split("\t")
+    ci, ti, ai = hdr.index("stimulus_asset_n_images"), hdr.index("task_name"), hdr.index("stimulus_asset")
+    cells = {ln.split("\t")[ti]: ln.split("\t") for ln in lines[1:]}
+    assert cells["story-recall-v2"][ci] == "10"
+    assert "{n}" in cells["story-recall-v2"][ai]
+    assert cells["identifying-pictures-10"][ci] == ""
+    assert cells["rainbow-passage"][ci] == "" and cells["rainbow-passage"][ai] == ""
 
 
 def test_asset_url_defers_n_templates_to_sequence():

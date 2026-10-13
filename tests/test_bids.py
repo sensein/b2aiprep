@@ -1120,6 +1120,144 @@ class TestTablesAreReadAsWritten:
             "acoustic_task_id": ["t1"], "acoustic_task_notes": ["NA"]}
 
 
+class TestRecordingTableCarriesSidecarFields:
+    """recording.tsv holds each recording's sidecar fields, and the bundle checks the two agree."""
+
+    @staticmethod
+    def _source_tree(root, sidecars):
+        task = root / "phenotype" / "task"
+        task.mkdir(parents=True)
+        (task / "recording.tsv").write_text(
+            "participant_id\trecording_id\trecording_microphone\np1\tr1\tNone\np1\tr2\tN/A\n")
+        (task / "recording.json").write_text(json.dumps({"recording": {
+            "description": "Recordings.", "data_elements": {"recording_microphone": {"description": "Mic."}}}}))
+        audio = root / "sub-p1" / "ses-S1" / "audio"
+        audio.mkdir(parents=True)
+        for stem, sidecar in sidecars.items():
+            (audio / f"sub-p1_ses-S1_task-{stem}_recording-metadata.json").write_text(json.dumps(sidecar))
+        return task
+
+    def test_each_sidecar_field_becomes_a_column(self, tmp_path):
+        task = self._source_tree(tmp_path, {
+            "prolonged-vowel": {"recording_id": "r1", "task_name": "prolonged-vowel", "language": "en",
+                                "speech_type": "non-lexical", "audio_sample_rate": 16000, "audio_channel_count": 1},
+            "story-recall-v2": {"recording_id": "r2", "task_name": "story-recall-v2", "language": "es-419",
+                                "stimulus_asset": "https://example.org/a.png", "stimulus_asset_n_images": 10},
+        })
+        BIDSDataset._add_sidecar_fields_to_recording_table(tmp_path)
+        df, schema_name, header, elements = BIDSDataset.load_phenotype_file(task / "recording")
+        assert list(df.columns) == ["participant_id", "recording_id", "recording_microphone",
+                                    *BIDSDataset._RECORDING_SIDECAR_FIELDS]
+        assert df["task_name"].tolist() == ["prolonged-vowel", "story-recall-v2"]
+        assert df["audio_sample_rate"].tolist()[0] == "16000" and pd.isna(df["audio_sample_rate"].iloc[1])
+        assert df["stimulus_asset_n_images"].tolist()[1] == "10"
+        # a value a sidecar leaves out is blank; typed answers in other columns survive
+        assert pd.isna(df["stimulus_asset"].iloc[0])
+        assert df["recording_microphone"].tolist() == ["None", "N/A"]
+        assert schema_name == "recording" and header == {"description": "Recordings."}
+        assert elements["recording_microphone"] == {"description": "Mic."}
+        assert elements["task_name"]["description"] == BIDSDataset._field_map_description("task_name", "recording")
+        assert elements["audio_sample_rate"]["datatype"] == ["xsd:integer"]
+
+    def test_a_row_without_a_sidecar_is_an_error(self, tmp_path):
+        self._source_tree(tmp_path, {"prolonged-vowel": {"recording_id": "r1"}})
+        with pytest.raises(ValueError, match="row\(s\) without a sidecar: r2"):
+            BIDSDataset._add_sidecar_fields_to_recording_table(tmp_path)
+
+    @staticmethod
+    def _deidentified_tree(root, recording_tsv, sidecar):
+        task = root / "phenotype" / "task"
+        task.mkdir(parents=True)
+        (task / "recording.tsv").write_text(recording_tsv)
+        audio = root / "sub-005009" / "ses-01" / "audio"
+        audio.mkdir(parents=True)
+        (audio / "sub-005009_ses-01_task-prolonged-vowel.flac").write_bytes(b"")
+        (audio / "sub-005009_ses-01_task-prolonged-vowel.json").write_text(json.dumps(sidecar))
+
+    def test_bundle_check_passes_when_sidecar_and_table_agree(self, tmp_path):
+        self._deidentified_tree(
+            tmp_path,
+            "participant_id\trecording_id\trecording_duration\ttask_name\taudio_sample_rate\tstimulus_asset\n"
+            "005009\tr1\t30.0\tprolonged-vowel\t16000\t\n",
+            {"participant_id": "005009", "session_id": "01", "recording_id": "r1", "recording_duration": "30",
+             "task_name": "prolonged-vowel", "audio_sample_rate": 16000},
+        )
+        BIDSDataset._check_sidecars_match_recording_table(tmp_path)
+
+    def test_bundle_check_names_each_disagreement(self, tmp_path):
+        self._deidentified_tree(
+            tmp_path,
+            "participant_id\trecording_id\ttask_name\tlanguage\n005009\tr1\tprolonged-vowel\ten\n",
+            {"participant_id": "005009", "recording_id": "r1", "task_name": "glides-high-to-low", "language": "en"},
+        )
+        with pytest.raises(ValueError, match="r1 task_name: sidecar 'glides-high-to-low', recording.tsv 'prolonged-vowel'"):
+            BIDSDataset._check_sidecars_match_recording_table(tmp_path)
+
+    def test_bundle_check_fails_on_a_sidecar_with_no_row(self, tmp_path):
+        self._deidentified_tree(tmp_path, "participant_id\trecording_id\n005009\tr9\n",
+                                {"participant_id": "005009", "recording_id": "r1"})
+        with pytest.raises(ValueError, match="recording_id r1 has no recording.tsv row"):
+            BIDSDataset._check_sidecars_match_recording_table(tmp_path)
+
+    def test_bundle_check_fails_on_a_recording_id_on_two_rows(self, tmp_path):
+        self._deidentified_tree(tmp_path, "recording_id\ttask_name\nr1\tprolonged-vowel\nr1\tglides-high-to-low\n",
+                                {"recording_id": "r1", "task_name": "glides-high-to-low"})
+        with pytest.raises(ValueError, match="on more than one recording.tsv row: r1"):
+            BIDSDataset._check_sidecars_match_recording_table(tmp_path)
+
+    def test_bundle_check_warns_when_there_is_nothing_to_check(self, tmp_path, caplog):
+        task = tmp_path / "phenotype" / "task"
+        task.mkdir(parents=True)
+        (task / "recording.tsv").write_text("recording_id\nr1\n")
+        with caplog.at_level(logging.WARNING):
+            BIDSDataset._check_sidecars_match_recording_table(tmp_path)
+        assert any("sidecars not checked" in r.getMessage() for r in caplog.records)
+
+    @pytest.mark.parametrize("sidecar, table, same", [
+        (16000, "16000", True), ("30", "30.0", True), (None, "", True), ("en", "en", True),
+        ("001573", "1573", False), ("01", "1", False), ("en", "es-419", False), ("", "x", False),
+    ])
+    def test_values_compare_as_written_except_plain_numbers(self, sidecar, table, same):
+        assert BIDSDataset._same_cell(sidecar, table) is same
+
+    def test_a_recording_id_on_two_rows_cannot_take_sidecar_fields(self, tmp_path):
+        task = self._source_tree(tmp_path, {"prolonged-vowel": {"recording_id": "r1"}})
+        (task / "recording.tsv").write_text("participant_id\trecording_id\np1\tr1\np1\tr1\n")
+        with pytest.raises(ValueError, match="on more than one row: r1"):
+            BIDSDataset._add_sidecar_fields_to_recording_table(tmp_path)
+
+    def test_a_sidecar_without_a_recording_id_is_named(self, tmp_path):
+        self._source_tree(tmp_path, {"prolonged-vowel": {"task_name": "prolonged-vowel"}})
+        with pytest.raises(ValueError, match="sidecar\\(s\\) without a recording_id: sub-p1_ses-S1_task-prolonged-vowel"):
+            BIDSDataset._add_sidecar_fields_to_recording_table(tmp_path)
+
+    def test_writer_returns_only_the_sidecars_left_on_disk(self, tmp_path, caplog):
+        """Two recordings whose names give one task entity share a sidecar file: only the later is
+        returned, and the earlier is named, so recording.tsv does not keep a row with no sidecar."""
+        src = tmp_path / "src"
+        src.mkdir()
+        ids = ["aaaaaaaa-0000-0000-0000-000000000001", "aaaaaaaa-0000-0000-0000-000000000002"]
+        for rid in ids:
+            (src / f"{rid}.wav").write_bytes(WAV_BYTES)
+        recordings = [
+            _row("recordings", recording_id=ids[0], recording_name="Prolonged vowel-1",
+                 recording_acoustic_task_id="t1", recording_session_id="S1"),
+            _row("recordings", recording_id=ids[1], recording_name="Prolonged Vowel-1",
+                 recording_acoustic_task_id="t1", recording_session_id="S1"),
+        ]
+        task = _row("acoustic_tasks", acoustic_task_id="t1", acoustic_task_name="Prolonged vowel",
+                    acoustic_task_session_id="S1", acoustic_task_cohort="generic", recordings=recordings)
+        participant = {"record_id": "p1", "sessions": [_session(task)]}
+        with caplog.at_level(logging.WARNING):
+            had_audio, sidecars = BIDSDataset._output_participant_data_to_metadata_file(
+                participant, tmp_path / "bids", audio_files_by_recording={r: src / f"{r}.wav" for r in ids},
+                max_audio_workers=1, audio_descriptor_dict={}, skip_audio_copy=True,
+            )
+        assert had_audio and list(sidecars) == [ids[1]]
+        assert sidecars[ids[1]]["recording_id"] == ids[1]
+        assert any("have no sidecar" in r.getMessage() and ids[0] in r.getMessage() for r in caplog.records)
+
+
 def test_building_without_a_published_supplement_column_warns(tmp_path, caplog):
     """redcap2bids without --supplement must not drop some_data_collected_remotely silently."""
     df = pd.DataFrame({"record_id": ["r1"], "redcap_repeat_instrument": ["Acoustic Task"],
