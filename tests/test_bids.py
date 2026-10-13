@@ -1585,12 +1585,27 @@ def test_checkbox_option_choice_holds_the_value_the_cells_hold():
     }
     cleaned = BIDSDataset._checkbox_option_element(question, "anxiety", clean_phenotype_data=True)
     assert cleaned["choices"] == [{"name": {"en": "Anxiety"}, "value": 1}]
-    assert cleaned["valueType"] == ["xsd:integer"]
+    assert cleaned["valueType"] == cleaned["datatype"] == ["xsd:integer"]
     raw = BIDSDataset._checkbox_option_element(question, "anxiety", clean_phenotype_data=False)
     assert raw["choices"] == [{"name": {"en": "Anxiety"}, "value": "anxiety"}]
     # the question's element is shared by all of its options and must not change
     assert [c["value"] for c in question["choices"]] == ["adhd", "anxiety"]
     assert question["valueType"] == ["xsd:string"]
+
+
+def test_checkbox_option_without_a_matching_choice_is_reported(caplog):
+    question = {"choices": [{"name": {"en": "ADHD"}, "value": "adhd"}]}
+    with caplog.at_level(logging.WARNING):
+        element = BIDSDataset._checkbox_option_element(question, "renamed_code", clean_phenotype_data=True)
+    assert element["choices"] == []
+    assert any("renamed_code" in r.getMessage() for r in caplog.records if r.levelno == logging.WARNING)
+
+
+def test_field_map_description_is_read_and_a_missing_one_reported(caplog):
+    assert BIDSDataset._field_map_description("sex_at_birth")
+    with caplog.at_level(logging.WARNING):
+        assert BIDSDataset._field_map_description("no_such_column_anywhere") is None
+    assert any("no_such_column_anywhere" in r.getMessage() for r in caplog.records)
 
 
 def test_a_missing_description_is_stated_not_left_blank():
