@@ -1268,6 +1268,15 @@ def test_building_without_a_published_supplement_column_warns(tmp_path, caplog):
                for r in caplog.records if r.levelname == "WARNING")
 
 
+def test_phenotype_tables_take_their_description_from_the_resource(tmp_path):
+    from b2aiprep.prepare.dataset import phenotype_table_descriptions
+    df = pd.DataFrame({"record_id": ["r1"], "redcap_repeat_instrument": ["Acoustic Task"],
+                       "acoustic_task_name": ["A"]})
+    BIDSDataset._construct_phenotype_from_reproschema(df, output_dir=str(tmp_path))
+    _, schema_name, header, _ = BIDSDataset.load_phenotype_file(next(tmp_path.rglob("acoustic_task.json")))
+    assert header["description"] == phenotype_table_descriptions()[schema_name] != ""
+
+
 def test_rows_are_dropped_for_both_instruments():
     from b2aiprep.prepare.dataset import BIDSDataset
 
