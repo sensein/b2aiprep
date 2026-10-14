@@ -31,6 +31,8 @@
           "dims": ["mfcc_coeff", "time"],
           "shape": [60, null],
 
+          "units": "dimensionless (cepstral coefficients of the dB-scaled Mel spectrogram)",
+
           "config": {
             "sample_rate": 16000,
             "n_mfcc": 60,

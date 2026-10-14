@@ -84,7 +84,8 @@
               "authors": "Churchwell, Morrison, and Pardo",
               "venue": "ICASSP 2024 Workshop on Explainable Machine Learning for Speech and Audio",
               "year": 2024,
-              "url": "https://arxiv.org/abs/2406.12998"
+              "doi": "10.48550/arXiv.2402.17735",
+              "url": "https://arxiv.org/abs/2402.17735"
             },
 
             "note": "PPG computation is performed using the pretrained neural model with default internal parameters."

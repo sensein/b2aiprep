@@ -31,6 +31,8 @@
           "dims": ["mel_bin", "time"],
           "shape": [60, null],
 
+          "units": "power",
+
           "config": {
             "sample_rate": 16000,
             "n_fft": 400,
