@@ -404,6 +404,15 @@ def test_every_computed_column_has_a_derived_field_spec():
         assert set(spec) <= {"datatype", "choices", "minValue", "maxValue", "unit", "derivedFrom"}, name
 
 
+def test_every_publishable_phenotype_table_has_a_description():
+    """A table with a release or review column (review columns ship after a value review) has an entry in
+    phenotype_table_descriptions.json."""
+    from b2aiprep.prepare.dataset import phenotype_table_descriptions
+    field_map = pd.read_csv(_resource("prepare", "resources", "bids_field_organization.csv"), dtype=str)
+    publishable = set(field_map.loc[field_map["disposition"].isin(["release", "review"]), "schema_name"]) - {"audio_sidecar"}
+    assert publishable <= set(phenotype_table_descriptions())
+
+
 def test_derived_choices_cover_what_the_pipeline_writes():
     from b2aiprep.prepare.dataset import derived_field_specs
     from b2aiprep.prepare.date_shift import CA_PROVINCES, US_STATES
