@@ -192,14 +192,13 @@ def main(argv=None):
         precise[tsv_col] = values
     precise["task_duration_s"] = precise["task_end_s"] - precise["task_start_s"]
     precise["task_fraction"] = precise["task_duration_s"] / precise["recording_duration_s"]
-    for col, values in precise.items():
-        t[col] = values.round(3).map(lambda v: "" if pd.isna(v) else f"{v:g}")
+    for col, values in precise.items():  # milliseconds, trailing zeros dropped
+        t[col] = values.round(3).map(lambda v: "" if pd.isna(v) else f"{v:.3f}".rstrip("0").rstrip("."))
+    # The family follows the current label; its branch is the one triage gave the family's rows.
+    t["task_family"] = t["task"].str.replace(r"(-\d+)+$", "", regex=True)
     family_branch = t.groupby("task_family")["branch"].agg(lambda s: sorted(set(s)))
     fail([f for f, b in family_branch.items() if len(b) != 1], "task families with more than one branch")
-    family_branch = family_branch.map(lambda b: b[0])
-    t["task_family"] = t["task"].str.replace(r"(-\d+)+$", "", regex=True)
-    fail(sorted(set(t["task_family"]) - set(family_branch.index)), "task families triage has no branch for")
-    t["branch"] = t["task_family"].map(family_branch)
+    t["branch"] = t["task_family"].map(family_branch.map(lambda b: b[0]))
     fail([c for c in RELEASE_COLUMNS if c not in t.columns], "release columns missing from triage.tsv")
 
     fail(description_problems("audio_quality_annotations", RELEASE_COLUMNS, column_info),

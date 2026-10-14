@@ -14,6 +14,7 @@ import click
 import pandas as pd
 import torch
 from datasets import Dataset
+import pyarrow.parquet as pq
 from pyarrow.parquet import SortingColumn
 from streamlit import config as _config
 from streamlit.web.bootstrap import run
@@ -42,6 +43,9 @@ from b2aiprep.prepare.utils import TaskMatcher, copy_package_resource, normalize
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
+
+# Columns the per-recording table checks read (the rest only need their names).
+_KEY_COLUMNS: t.FrozenSet[str] = frozenset({"participant_id", "session_id", "task_name", "recording_id"})
 
 _SENSITIVE_PARQUET_STEMS: t.FrozenSet[str] = {
         f"{feature_group}_{feature_name}" if feature_group else feature_name
@@ -700,7 +704,12 @@ def _per_recording_table_issues(features_dir: Path, phenotype_dir: Path, phenoty
         if not path.exists():
             continue
         try:
-            df = pd.read_csv(path, sep="\t", dtype=str) if ext == ".tsv" else pd.read_parquet(path)
+            if ext == ".tsv":
+                df = pd.read_csv(path, sep="\t", dtype=str)
+                columns = list(df.columns)
+            else:  # a transcripts parquet has a row per word: read only the keys
+                columns = pq.read_schema(path).names
+                df = pd.read_parquet(path, columns=[c for c in columns if c in _KEY_COLUMNS])
         except Exception as e:
             issues.append(f"Error reading {path.name}: {e}")
             continue
@@ -728,7 +737,7 @@ def _per_recording_table_issues(features_dir: Path, phenotype_dir: Path, phenoty
                               f"{len(set(df['recording_id'].dropna()) - recording_ids)} recordings")
         elif static_path.exists():
             if static_keys is None:
-                s = pd.read_csv(static_path, sep="\t", dtype=str)
+                s = pd.read_csv(static_path, sep="\t", dtype=str, usecols=lambda c: c in _KEY_COLUMNS)
                 static_keys = (set(zip(s["participant_id"], s["session_id"], s["task_name"]))
                                if {"participant_id", "session_id", "task_name"} <= set(s.columns) else set())
             if static_keys and keys - static_keys:
@@ -737,7 +746,7 @@ def _per_recording_table_issues(features_dir: Path, phenotype_dir: Path, phenoty
         if not json_path.exists():
             issues.append(f"{json_path.name} missing for {path.name}")
         else:
-            undocumented = set(df.columns) - set(json.loads(json_path.read_text()))
+            undocumented = set(columns) - set(json.loads(json_path.read_text()))
             if undocumented:
                 issues.append(f"Columns of {path.name} not described in {json_path.name}: {sorted(undocumented)}")
     return issues

@@ -4807,14 +4807,7 @@ class BIDSDataset:
         _LOGGER.info("Finished processing quality metrics.")
 
         # --- per-recording tables (senselab triage), keyed by recording_id ---
-        BIDSDataset._deidentify_recording_tables(
-            self.data_path,
-            outdir,
-            normalized_include_tasks,
-            skip_audio,
-            participant_ids_to_remap,
-            participant_session_id_to_remap,
-        )
+        BIDSDataset._deidentify_recording_tables(self.data_path, outdir, normalized_include_tasks)
 
         # session_id_mapping.json generation is disabled pending a decision on
         # whether to ship it (contains original session UUIDs) and whether the
@@ -5438,17 +5431,15 @@ class BIDSDataset:
         data_path: Path,
         outdir: Path,
         normalized_include_tasks: TaskMatcher,
-        skip_audio: bool,
-        participant_ids_to_remap: t.Dict[str, str],
-        participant_session_id_to_remap: t.Dict[str, str],
     ) -> None:
         """Deidentify the per-recording tables at the dataset root (`_RECORDING_TABLES`) that exist.
 
         A row is kept when its recording is in the output's phenotype/task/recording.tsv; a table in
         `_AUDIO_ONLY_RECORDING_TABLES` also needs the recording's audio released (its task in the task
-        list, audio not skipped). Participant and session IDs are remapped. A table whose keys are
-        missing, or that names a recording the dataset does not have, stops the run. Each table's
-        JSON is the package resource of the same name.
+        list, as for `transcription`). Its participant and session IDs are the output recording.tsv's
+        for the recording. A table whose keys are missing, that names a recording the dataset does not
+        have, or whose participant or session for a recording differs from recording.tsv's stops the run.
+        Each table's JSON is the package resource of the same name.
         """
         present = {
             name: data_path / f"{name}{ext}"
@@ -5459,37 +5450,48 @@ class BIDSDataset:
             _LOGGER.info("No per-recording tables at the dataset root; skipping.")
             return
 
-        def _recording_ids(root: Path) -> t.Set[str]:
+        def _recordings(root: Path) -> pd.DataFrame:
             path = root / "phenotype" / "task" / "recording.tsv"
             if not path.exists():
                 raise ValueError(f"{', '.join(p.name for p in present.values())} need {path}, which does not exist.")
-            return set(pd.read_csv(path, sep="\t", dtype=str, usecols=["recording_id"])["recording_id"].dropna())
+            return pd.read_csv(
+                path, sep="\t", dtype=str, usecols=["recording_id", "participant_id", "recording_session_id"],
+            ).dropna(subset=["recording_id"]).set_index("recording_id")
 
-        known, released = _recording_ids(data_path), _recording_ids(outdir)
+        known, released = _recordings(data_path), _recordings(outdir)
         for name, path in present.items():
             df = (pd.read_csv(path, sep="\t", dtype=str, keep_default_na=False) if path.suffix == ".tsv"
                   else pd.read_parquet(path))
             missing = [c for c in ("participant_id", "session_id", "recording_id", "task_name") if c not in df.columns]
             if missing:
                 raise ValueError(f"{path.name} is missing column(s): {', '.join(missing)}")
-            unknown = set(df["recording_id"]) - known
+            if df["recording_id"].isna().any():
+                raise ValueError(f"{path.name}: {int(df['recording_id'].isna().sum())} row(s) without a recording_id")
+            unknown = set(df["recording_id"]) - set(known.index)
             if unknown:
                 raise ValueError(
                     f"{path.name} names {len(unknown)} recording(s) not in phenotype/task/recording.tsv, "
                     f"e.g. {sorted(unknown)[:5]}"
                 )
-            keep = df["recording_id"].isin(released)
-            if name in _AUDIO_ONLY_RECORDING_TABLES:
-                keep &= (not skip_audio) & df["task_name"].map(
-                    lambda task: normalize_task_label(task) in normalized_include_tasks
+            # The table must place each recording where the dataset does (e.g. not prepared against an older tree).
+            source = known.reindex(df["recording_id"])
+            disagree = sorted(set(df["recording_id"][
+                (source["participant_id"].values != df["participant_id"].values)
+                | (source["recording_session_id"].values != df["session_id"].values)
+            ]))
+            if disagree:
+                raise ValueError(
+                    f"{path.name}: participant or session differs from phenotype/task/recording.tsv for "
+                    f"{len(disagree)} recording(s), e.g. {disagree[:5]}"
                 )
-            # A released recording is in a released session; anything else would keep an original ID.
-            keep &= df["session_id"].isin(participant_session_id_to_remap)
+            keep = df["recording_id"].isin(released.index)
+            if name in _AUDIO_ONLY_RECORDING_TABLES:
+                included = {task: normalize_task_label(task) in normalized_include_tasks for task in df["task_name"].unique()}
+                keep &= df["task_name"].map(included)
             out = df.loc[keep].copy()
-            out["participant_id"] = out["participant_id"].map(participant_ids_to_remap)
-            if out["participant_id"].isna().any():
-                raise ValueError(f"{path.name}: released rows of participants without a pseudonym")
-            out["session_id"] = out["session_id"].map(participant_session_id_to_remap)
+            ids = released.reindex(out["recording_id"])
+            out["participant_id"] = ids["participant_id"].values
+            out["session_id"] = ids["recording_session_id"].values
             order = [c for c in ("participant_id", "session_id", "task_name", "recording_id", "word_index") if c in out]
             out = out.sort_values(order, kind="stable")
             if path.suffix == ".tsv":

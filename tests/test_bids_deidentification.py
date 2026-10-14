@@ -1397,9 +1397,11 @@ class TestRecordingTables:
     def _tree(tmp_path, annotations=True, transcripts=True, **overrides):
         """r1 rainbow-passage (audio released), r2 free-speech-1 (features only), r3 not released."""
         bids, out = tmp_path / "bids", tmp_path / "out"
-        for root, rids in ((bids, ["r1", "r2", "r3"]), (out, ["r1", "r2"])):
+        for root, rows in ((bids, [("r1", "p1", "s1"), ("r2", "p1", "s1"), ("r3", "p2", "s2")]),
+                           (out, [("r1", "900001", "01"), ("r2", "900001", "01")])):
             (root / "phenotype" / "task").mkdir(parents=True)
-            pd.DataFrame({"recording_id": rids}).to_csv(root / "phenotype" / "task" / "recording.tsv", sep="\t", index=False)
+            pd.DataFrame(rows, columns=["recording_id", "participant_id", "recording_session_id"]).to_csv(
+                root / "phenotype" / "task" / "recording.tsv", sep="\t", index=False)
         keys = {"participant_id": ["p1", "p1", "p2"], "session_id": ["s1", "s1", "s2"],
                 "recording_id": ["r1", "r2", "r3"], "task_name": ["rainbow-passage", "free-speech-1", "rainbow-passage"]}
         keys.update(overrides)
@@ -1412,10 +1414,8 @@ class TestRecordingTables:
         return bids, out
 
     @staticmethod
-    def _run(bids, out, skip_audio=False):
-        BIDSDataset._deidentify_recording_tables(
-            bids, out, TaskMatcher(["rainbow-passage"]), skip_audio, {"p1": "900001", "p2": "900002"},
-            {"s1": "01", "s2": "01"})
+    def _run(bids, out):
+        BIDSDataset._deidentify_recording_tables(bids, out, TaskMatcher(["rainbow-passage"]))
 
     def test_keeps_released_recordings_and_transcripts_only_with_audio(self, tmp_path):
         bids, out = self._tree(tmp_path)
@@ -1427,11 +1427,6 @@ class TestRecordingTables:
         for name in ("audio_quality_annotations", "consensus_transcripts"):
             assert json.loads((out / f"{name}.json").read_text())["recording_id"]["description"]
 
-    def test_no_transcripts_when_audio_is_skipped(self, tmp_path):
-        bids, out = self._tree(tmp_path)
-        self._run(bids, out, skip_audio=True)
-        assert pd.read_parquet(out / "consensus_transcripts.parquet").empty
-
     def test_absent_tables_are_skipped(self, tmp_path):
         bids, out = self._tree(tmp_path, annotations=False, transcripts=False)
         self._run(bids, out)
@@ -1441,7 +1436,9 @@ class TestRecordingTables:
     @pytest.mark.parametrize("overrides, message", [
         ({"recording_id": ["r1", "r2", "r9"]}, "not in phenotype/task/recording.tsv"),
         ({"task_name": None}, "missing column(s): task_name"),
-    ], ids=["unknown-recording", "missing-key-column"])
+        ({"session_id": ["s1", "s2", "s2"]}, "participant or session differs from phenotype/task/recording.tsv for 1"),
+        ({"participant_id": ["p2", "p1", "p2"]}, "participant or session differs from phenotype/task/recording.tsv for 1"),
+    ], ids=["unknown-recording", "missing-key-column", "stale-session", "stale-participant"])
     def test_a_malformed_table_stops_the_run(self, tmp_path, overrides, message):
         bids, out = self._tree(tmp_path, transcripts=False, **{k: v for k, v in overrides.items() if v is not None})
         if any(v is None for v in overrides.values()):
@@ -1449,6 +1446,11 @@ class TestRecordingTables:
             df.drop(columns=[k for k, v in overrides.items() if v is None]).to_csv(
                 bids / "audio_quality_annotations.tsv", sep="\t", index=False)
         with pytest.raises(ValueError, match=re.escape(message)):
+            self._run(bids, out)
+
+    def test_a_transcript_row_without_a_recording_id_stops_the_run(self, tmp_path):
+        bids, out = self._tree(tmp_path, annotations=False, recording_id=["r1", None, "r3"])
+        with pytest.raises(ValueError, match="1 row\\(s\\) without a recording_id"):
             self._run(bids, out)
 
 
