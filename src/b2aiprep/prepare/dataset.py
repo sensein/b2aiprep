@@ -185,6 +185,15 @@ def derived_field_specs() -> t.Dict[str, t.Dict[str, t.Any]]:
     return json.loads(path.read_text(encoding="utf-8"))["fields"]
 
 
+def phenotype_table_descriptions() -> t.Dict[str, str]:
+    """Description of each phenotype table, keyed by table (schema) name.
+
+    See resources/phenotype_table_descriptions.json. A table it does not list keeps an empty description.
+    """
+    path = files("b2aiprep").joinpath("prepare", "resources", "phenotype_table_descriptions.json")
+    return json.loads(path.read_text(encoding="utf-8"))["tables"]
+
+
 def _derived_data_element(column_name: str, description: str) -> t.Dict[str, t.Any]:
     """Data element for a computed column: its description plus its entry in derived_fields.json."""
     spec = derived_field_specs()[column_name]
@@ -2803,7 +2812,9 @@ class BIDSDataset:
 
         # with our full updated_schemas dict prepared, we can iterate through the *new* schema names
         # and output a single folder for each
+        table_descriptions = phenotype_table_descriptions()
         for schema_name, payload in updated_schemas.items():
+            payload["description"] = table_descriptions.get(schema_name, payload["description"])
             columns_for_indexing = payload.pop("columns_for_indexing")
             columns_for_output = payload.pop("columns_for_output")
             schema_name_sources = set(payload.pop("schema_name_source"))
