@@ -1,0 +1,65 @@
+{
+  "participant_id": {
+    "description": "Unique identifier for each participant."
+  },
+  "session_id": {
+    "description": "Unique identifier for each session."
+  },
+  "recording_id": {
+    "description": "Unique identifier for each recording; joins to phenotype/task/recording.tsv."
+  },
+  "task_name": {
+    "description": "The audio task conducted for the recording."
+  },
+  "word_index": {
+    "description": "Position of the word in the recording's consensus transcript, from 0"
+  },
+  "text": {
+    "description": "Consensus word"
+  },
+  "bracketed": {
+    "description": "Whether the word is a non-speech tag, e.g. [UH] or [COUGH]"
+  },
+  "start_s": {
+    "description": "Start of the word in the recording",
+    "units": "s"
+  },
+  "end_s": {
+    "description": "End of the word in the recording",
+    "units": "s"
+  },
+  "outcome": {
+    "description": "How the two recognisers' words aligned",
+    "levels": {
+      "agreement": "both produced the word",
+      "variant": "they produced different words",
+      "insertion": "only one produced a word"
+    }
+  },
+  "agreement": {
+    "description": "Share of the recognisers that produced the word (1.0 both, 0.5 one)",
+    "units": "fraction"
+  },
+  "crisperwhisper_text": {
+    "description": "CrisperWhisper's word; empty where it produced none"
+  },
+  "crisperwhisper_start_s": {
+    "description": "Start of CrisperWhisper's word",
+    "units": "s"
+  },
+  "crisperwhisper_end_s": {
+    "description": "End of CrisperWhisper's word",
+    "units": "s"
+  },
+  "qwen_text": {
+    "description": "Qwen's word; empty where it produced none"
+  },
+  "qwen_start_s": {
+    "description": "Start of Qwen's word",
+    "units": "s"
+  },
+  "qwen_end_s": {
+    "description": "End of Qwen's word",
+    "units": "s"
+  }
+}

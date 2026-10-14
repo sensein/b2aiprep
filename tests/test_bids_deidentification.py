@@ -3,6 +3,7 @@
 import importlib.util
 import json
 import logging
+import re
 import shutil
 import tempfile
 from pathlib import Path
@@ -23,6 +24,7 @@ from b2aiprep.prepare.dataset import (
     Verdict,
     review_fingerprint,
 )
+from b2aiprep.prepare.utils import TaskMatcher
 
 
 # three session IDs of one participant, in session_index order
@@ -1386,6 +1388,68 @@ class TestRemovedRecordings:
         assert len(warnings) == 1 and "'harvard-sentences-list'" in warnings[0], warnings
         info = " ".join(r.getMessage() for r in caplog.records if r.levelno == logging.INFO)
         assert "'free-speech': 2 recording(s) of 1 participant(s)" in info, info
+
+
+class TestRecordingTables:
+    """The triage tables at the dataset root: rows of released recordings only, transcripts with audio only."""
+
+    @staticmethod
+    def _tree(tmp_path, annotations=True, transcripts=True, **overrides):
+        """r1 rainbow-passage (audio released), r2 free-speech-1 (features only), r3 not released."""
+        bids, out = tmp_path / "bids", tmp_path / "out"
+        for root, rids in ((bids, ["r1", "r2", "r3"]), (out, ["r1", "r2"])):
+            (root / "phenotype" / "task").mkdir(parents=True)
+            pd.DataFrame({"recording_id": rids}).to_csv(root / "phenotype" / "task" / "recording.tsv", sep="\t", index=False)
+        keys = {"participant_id": ["p1", "p1", "p2"], "session_id": ["s1", "s1", "s2"],
+                "recording_id": ["r1", "r2", "r3"], "task_name": ["rainbow-passage", "free-speech-1", "rainbow-passage"]}
+        keys.update(overrides)
+        if annotations:
+            pd.DataFrame({**keys, "snr_db": ["1", "2", "3"]}).to_csv(
+                bids / "audio_quality_annotations.tsv", sep="\t", index=False)
+        if transcripts:
+            pd.DataFrame({**keys, "word_index": [0, 0, 0], "text": ["a", "b", "c"]}).to_parquet(
+                bids / "consensus_transcripts.parquet", index=False)
+        return bids, out
+
+    @staticmethod
+    def _run(bids, out, skip_audio=False):
+        BIDSDataset._deidentify_recording_tables(
+            bids, out, TaskMatcher(["rainbow-passage"]), skip_audio, {"p1": "900001", "p2": "900002"},
+            {"s1": "01", "s2": "01"})
+
+    def test_keeps_released_recordings_and_transcripts_only_with_audio(self, tmp_path):
+        bids, out = self._tree(tmp_path)
+        self._run(bids, out)
+        ann = pd.read_csv(out / "audio_quality_annotations.tsv", sep="\t", dtype=str)
+        assert sorted(ann[["participant_id", "session_id", "recording_id"]].values.tolist()) == [
+            ["900001", "01", "r1"], ["900001", "01", "r2"]]
+        assert pd.read_parquet(out / "consensus_transcripts.parquet").recording_id.tolist() == ["r1"]
+        for name in ("audio_quality_annotations", "consensus_transcripts"):
+            assert json.loads((out / f"{name}.json").read_text())["recording_id"]["description"]
+
+    def test_no_transcripts_when_audio_is_skipped(self, tmp_path):
+        bids, out = self._tree(tmp_path)
+        self._run(bids, out, skip_audio=True)
+        assert pd.read_parquet(out / "consensus_transcripts.parquet").empty
+
+    def test_absent_tables_are_skipped(self, tmp_path):
+        bids, out = self._tree(tmp_path, annotations=False, transcripts=False)
+        self._run(bids, out)
+        assert not (out / "audio_quality_annotations.tsv").exists()
+        assert not (out / "consensus_transcripts.parquet").exists()
+
+    @pytest.mark.parametrize("overrides, message", [
+        ({"recording_id": ["r1", "r2", "r9"]}, "not in phenotype/task/recording.tsv"),
+        ({"task_name": None}, "missing column(s): task_name"),
+    ], ids=["unknown-recording", "missing-key-column"])
+    def test_a_malformed_table_stops_the_run(self, tmp_path, overrides, message):
+        bids, out = self._tree(tmp_path, transcripts=False, **{k: v for k, v in overrides.items() if v is not None})
+        if any(v is None for v in overrides.values()):
+            df = pd.read_csv(bids / "audio_quality_annotations.tsv", sep="\t", dtype=str)
+            df.drop(columns=[k for k, v in overrides.items() if v is None]).to_csv(
+                bids / "audio_quality_annotations.tsv", sep="\t", index=False)
+        with pytest.raises(ValueError, match=re.escape(message)):
+            self._run(bids, out)
 
 
 class TestLoadColumnValueReviews:

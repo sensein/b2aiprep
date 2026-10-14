@@ -1,4 +1,5 @@
-"""Prepare senselab triage output as `audio_quality_annotations.tsv` for a BIDS source tree.
+"""Prepare senselab triage output as `audio_quality_annotations.tsv` and `consensus_transcripts.parquet`
+for a BIDS source tree.
 
 The triage table (`triage.tsv`, one row per recording) is keyed by the file it read. This script:
 
@@ -10,8 +11,16 @@ The triage table (`triage.tsv`, one row per recording) is keyed by the file it r
 3. drops the ``sub-``/``ses-`` prefixes, restores the task timing and recording duration at full
    precision from the triage parquets (the TSV rounds to 4 significant digits), recomputes
    ``task_family``/``branch`` from the current label, and keeps only the release columns;
-4. writes the review/discard recordings to ``removal_candidates.tsv`` for the removal list. Nothing is
+4. writes the consensus transcript of every recording, one row per word, from each recording's
+   ``summary.json`` (the consensus words, their timing and each recogniser's reading);
+5. writes the review/discard recordings to ``removal_candidates.tsv`` for the removal list. Nothing is
    removed here: deidentify never reads triage.
+
+Both tables cover every recording. Deidentify keeps the rows of released recordings, and transcripts only
+where the recording's audio is released. Copy ``audio_quality_annotations.tsv`` and
+``consensus_transcripts.parquet`` to the BIDS root before deidentifying. Their column descriptions are
+b2aiprep resources (deidentify writes them); this script stops if a column is not described there or if
+triage.json now describes one of Satra's columns differently.
 
 Run with the b2aiprep environment (only pandas and pyarrow are needed):
 
@@ -36,7 +45,7 @@ AUDIO_SUFFIXES = (".wav", ".flac")
 # missing, decisive_evidence, annotations) and the per-kind lists empty on released rows
 # (interference_in_task, fault_in_task).
 RELEASE_COLUMNS = [
-    "participant_id", "session_id", "recording_id", "task", "task_family", "branch",
+    "participant_id", "session_id", "recording_id", "task_name", "task_family", "branch",
     "recording_duration_s", "task_start_s", "task_end_s", "task_duration_s", "task_fraction",
     "task_events_found", "task_events_instructed",
     "level_rel_session_db", "active_s", "snr_db", "noise_floor_dbfs", "session_background_dbfs",
@@ -52,13 +61,19 @@ PRECISE = {
     ("triage_decisions.parquet", "extent_end_s"): "task_end_s",
     ("recording_vectors.parquet", "duration_s"): "recording_duration_s",
 }
-COLUMN_DESCRIPTIONS = {  # entries triage.json does not have, or that change here
-    "participant_id": {"Description": "Participant identifier, as in the BIDS tree (without the sub- prefix)"},
-    "session_id": {"Description": "Session identifier, as in the BIDS tree (without the ses- prefix)"},
-    "recording_id": {"Description": "Identifier of the recording, as in recording.tsv"},
-    "task": {"Description": "BIDS task label of the recording's audio file"},
-    "task_family": {"Description": "The task label without its trailing item numbers (e.g. harvard-sentences-list)"},
-}
+# Column descriptions live in b2aiprep (prepare/resources/<table>.json); deidentify writes them. This script
+# checks them instead: every column described, and the triage.json wording of Satra's columns unchanged.
+RESOURCES = Path(__file__).resolve().parents[2] / "src" / "b2aiprep" / "prepare" / "resources"
+OWN_COLUMNS = {"participant_id", "session_id", "recording_id", "task_name", "task_family"}  # not triage.json's
+# consensus_transcripts.parquet: one row per consensus word, from summary.json
+# evidence.consensus_transcript_tokens. Left out: variants (the two readings), sources (which readings are
+# filled), onset/offset_spread_s and temporal_uncertainty_s (from the two timings), entity_id, provenance.
+RECOGNISERS = {"asr_crisperwhisper": "crisperwhisper", "asr_qwen": "qwen"}
+TRANSCRIPT_COLUMNS = [
+    "participant_id", "session_id", "recording_id", "task_name", "word_index", "text", "bracketed",
+    "start_s", "end_s", "outcome", "agreement",
+    *(f"{prefix}_{field}" for prefix in RECOGNISERS.values() for field in ("text", "start_s", "end_s")),
+]
 
 
 def fail(problems, what):
@@ -75,6 +90,43 @@ def read_json(path):
 
 def strip_prefix(value, prefix):
     return value[len(prefix):] if value.startswith(prefix) else value
+
+
+def lowercase_keys(entry):
+    """triage.json entries use Description/Units/Levels; the b2aiprep column descriptions are lowercase."""
+    return {k.lower(): v for k, v in entry.items()}
+
+
+def description_problems(table, columns, triage_info=None):
+    """Differences between a table's columns and its b2aiprep description file; with *triage_info*, also
+    Satra's columns whose triage.json entry no longer matches the packaged wording."""
+    described = json.loads((RESOURCES / f"{table}.json").read_text())
+    problems = [f"{c}: not described" for c in columns if c not in described]
+    problems += [f"{c}: described but not a column" for c in described if c not in columns]
+    if triage_info is not None:
+        problems += [f"{c}: triage.json wording changed" for c in columns
+                     if c not in OWN_COLUMNS and c in described and lowercase_keys(triage_info[c]) != described[c]]
+    return [f"{table}.json: {p}" for p in problems]
+
+
+def transcript_rows(summary_path, keys):
+    """One dict per consensus word of the recording whose summary.json is *summary_path*."""
+    tokens = json.loads(Path(summary_path).read_text())["evidence"]["consensus_transcript_tokens"]
+    rows = []
+    for i, tok in enumerate(tokens):
+        readings, timings = tok.get("readings") or {}, tok.get("timings") or {}
+        unknown = (set(readings) | set(timings)) - set(RECOGNISERS)
+        if unknown:
+            raise ValueError(f"{summary_path}: recogniser(s) {sorted(unknown)} not in {sorted(RECOGNISERS)}")
+        row = {**keys, "word_index": i, "text": tok["text"], "bracketed": bool(tok["bracketed"]),
+               "start_s": tok["timing"]["start_s"], "end_s": tok["timing"]["end_s"],
+               "outcome": tok["outcome"], "agreement": tok["agreement"]}
+        for model, prefix in RECOGNISERS.items():
+            span = timings.get(model) or [None, None]
+            row[f"{prefix}_text"] = readings.get(model)
+            row[f"{prefix}_start_s"], row[f"{prefix}_end_s"] = span[0], span[1]
+        rows.append(row)
+    return rows
 
 
 def main(argv=None):
@@ -127,7 +179,7 @@ def main(argv=None):
     new_task = t["recording_id"].map(lambda rid: target_ids[rid].split("_task-", 1)[1])
     relabelled = int((new_task != t["task"]).sum())
     relabel_pairs = sorted(set(zip(t.loc[new_task != t["task"], "task"], new_task[new_task != t["task"]])))
-    t["task"] = new_task
+    t["task"] = t["task_name"] = new_task
 
     # 3. full precision, task family, release columns. Values are rounded only when written, so the
     # duration and fraction come from unrounded start, end and recording length.
@@ -150,14 +202,27 @@ def main(argv=None):
     t["branch"] = t["task_family"].map(family_branch)
     fail([c for c in RELEASE_COLUMNS if c not in t.columns], "release columns missing from triage.tsv")
 
+    fail(description_problems("audio_quality_annotations", RELEASE_COLUMNS, column_info),
+         "column descriptions to update in b2aiprep")
+    fail(description_problems("consensus_transcripts", TRANSCRIPT_COLUMNS), "column descriptions to update in b2aiprep")
     out = t[RELEASE_COLUMNS]
     out.to_csv(a.outdir / "audio_quality_annotations.tsv", sep="\t", index=False)
-    info = {c: COLUMN_DESCRIPTIONS.get(c) or column_info[c] for c in RELEASE_COLUMNS}
-    (a.outdir / "audio_quality_annotations.json").write_text(json.dumps(info, indent=2, ensure_ascii=False) + "\n")
 
-    # 4. removal candidates (for the removal list; nothing is removed here)
+    # 4. consensus transcripts, one row per word (summary.json sits next to the summary figure)
+    fail(t.loc[t["figure"].eq(""), "stem"].tolist(), "triage rows without a summary figure")
+    jobs = [(a.triage_dir / Path(f).with_suffix(".json"), {"participant_id": p, "session_id": s, "recording_id": r, "task_name": k})
+            for f, p, s, r, k in zip(t["figure"], t["participant_id"], t["session_id"], t["recording_id"], t["task_name"])]
+    with ThreadPoolExecutor(a.workers) as ex:
+        words = [row for rows in ex.map(lambda j: transcript_rows(*j), jobs) for row in rows]
+    tr = pd.DataFrame(words, columns=TRANSCRIPT_COLUMNS).astype({
+        "word_index": "int32", "bracketed": "bool", "agreement": "float64",
+        **{c: "float64" for c in TRANSCRIPT_COLUMNS if c.endswith("start_s") or c.endswith("end_s")},
+    })
+    tr.to_parquet(a.outdir / "consensus_transcripts.parquet", index=False)
+
+    # 5. removal candidates (for the removal list; nothing is removed here)
     remove = [v.strip() for v in a.remove_verdicts.split(",") if v.strip()]
-    cand = t.loc[t["verdict"].isin(remove), ["recording_id", "participant_id", "session_id", "task", "verdict", "release", "reason", "reasons"]]
+    cand = t.loc[t["verdict"].isin(remove), ["recording_id", "participant_id", "session_id", "task_name", "verdict", "release", "reason", "reasons"]]
     cand.to_csv(a.outdir / "removal_candidates.tsv", sep="\t", index=False)
 
     report = {
@@ -166,6 +231,8 @@ def main(argv=None):
         "rows": len(out), "columns": len(RELEASE_COLUMNS), "relabelled_rows": relabelled,
         "relabel_pairs": [list(x) for x in relabel_pairs], "verdicts": t["verdict"].value_counts().to_dict(),
         "removal_candidates": len(cand), "remove_verdicts": remove,
+        "transcript_words": len(tr), "transcript_recordings": int(tr["recording_id"].nunique()),
+        "transcript_outcomes": tr["outcome"].value_counts().to_dict(),
     }
     (a.outdir / "prep_report.json").write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({k: v for k, v in report.items() if k != "relabel_pairs"}, indent=2))

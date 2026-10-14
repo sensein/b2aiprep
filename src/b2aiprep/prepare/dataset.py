@@ -261,6 +261,15 @@ _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE: t.Mapping[str, t.FrozenSet[str]] = {
     "sparc": frozenset({"ema"}),
 }
 
+# Per-recording tables the senselab triage prep (external_scripts/triage) places at the dataset root, by
+# file name. Deidentify keeps the rows of released recordings and the bundle copies them into features/.
+_RECORDING_TABLES: t.Mapping[str, str] = {
+    "audio_quality_annotations": ".tsv",
+    "consensus_transcripts": ".parquet",
+}
+# Text a recording's audio would reveal: released only with the audio, as `transcription` is.
+_AUDIO_ONLY_RECORDING_TABLES: t.FrozenSet[str] = frozenset({"consensus_transcripts"})
+
 
 def _note_entity_collision(
     seen: t.Dict[str, t.Any], entity: str, identifier: t.Any
@@ -4797,6 +4806,16 @@ class BIDSDataset:
         )
         _LOGGER.info("Finished processing quality metrics.")
 
+        # --- per-recording tables (senselab triage), keyed by recording_id ---
+        BIDSDataset._deidentify_recording_tables(
+            self.data_path,
+            outdir,
+            normalized_include_tasks,
+            skip_audio,
+            participant_ids_to_remap,
+            participant_session_id_to_remap,
+        )
+
         # session_id_mapping.json generation is disabled pending a decision on
         # whether to ship it (contains original session UUIDs) and whether the
         # mapping should be generated at ingest rather than deidentify.
@@ -5413,6 +5432,77 @@ class BIDSDataset:
             )
             with qc_json_resource.open() as src, open(outdir / "audio_quality_metrics.json", "w") as dst:
                 dst.write(src.read())
+
+    @staticmethod
+    def _deidentify_recording_tables(
+        data_path: Path,
+        outdir: Path,
+        normalized_include_tasks: TaskMatcher,
+        skip_audio: bool,
+        participant_ids_to_remap: t.Dict[str, str],
+        participant_session_id_to_remap: t.Dict[str, str],
+    ) -> None:
+        """Deidentify the per-recording tables at the dataset root (`_RECORDING_TABLES`) that exist.
+
+        A row is kept when its recording is in the output's phenotype/task/recording.tsv; a table in
+        `_AUDIO_ONLY_RECORDING_TABLES` also needs the recording's audio released (its task in the task
+        list, audio not skipped). Participant and session IDs are remapped. A table whose keys are
+        missing, or that names a recording the dataset does not have, stops the run. Each table's
+        JSON is the package resource of the same name.
+        """
+        present = {
+            name: data_path / f"{name}{ext}"
+            for name, ext in _RECORDING_TABLES.items()
+            if (data_path / f"{name}{ext}").exists()
+        }
+        if not present:
+            _LOGGER.info("No per-recording tables at the dataset root; skipping.")
+            return
+
+        def _recording_ids(root: Path) -> t.Set[str]:
+            path = root / "phenotype" / "task" / "recording.tsv"
+            if not path.exists():
+                raise ValueError(f"{', '.join(p.name for p in present.values())} need {path}, which does not exist.")
+            return set(pd.read_csv(path, sep="\t", dtype=str, usecols=["recording_id"])["recording_id"].dropna())
+
+        known, released = _recording_ids(data_path), _recording_ids(outdir)
+        for name, path in present.items():
+            df = (pd.read_csv(path, sep="\t", dtype=str, keep_default_na=False) if path.suffix == ".tsv"
+                  else pd.read_parquet(path))
+            missing = [c for c in ("participant_id", "session_id", "recording_id", "task_name") if c not in df.columns]
+            if missing:
+                raise ValueError(f"{path.name} is missing column(s): {', '.join(missing)}")
+            unknown = set(df["recording_id"]) - known
+            if unknown:
+                raise ValueError(
+                    f"{path.name} names {len(unknown)} recording(s) not in phenotype/task/recording.tsv, "
+                    f"e.g. {sorted(unknown)[:5]}"
+                )
+            keep = df["recording_id"].isin(released)
+            if name in _AUDIO_ONLY_RECORDING_TABLES:
+                keep &= (not skip_audio) & df["task_name"].map(
+                    lambda task: normalize_task_label(task) in normalized_include_tasks
+                )
+            # A released recording is in a released session; anything else would keep an original ID.
+            keep &= df["session_id"].isin(participant_session_id_to_remap)
+            out = df.loc[keep].copy()
+            out["participant_id"] = out["participant_id"].map(participant_ids_to_remap)
+            if out["participant_id"].isna().any():
+                raise ValueError(f"{path.name}: released rows of participants without a pseudonym")
+            out["session_id"] = out["session_id"].map(participant_session_id_to_remap)
+            order = [c for c in ("participant_id", "session_id", "task_name", "recording_id", "word_index") if c in out]
+            out = out.sort_values(order, kind="stable")
+            if path.suffix == ".tsv":
+                out.to_csv(outdir / path.name, sep="\t", index=False)
+            else:
+                out.to_parquet(outdir / path.name, index=False)
+            _LOGGER.info(
+                "%s: kept %d of %d row(s) (%d recording(s)).",
+                path.name, len(out), len(df), out["recording_id"].nunique(),
+            )
+
+            # The descriptions are b2aiprep's (the triage prep checks the table against them).
+            copy_package_resource("b2aiprep.prepare.resources", f"{name}.json", str(outdir))
 
 
 class VBAIDataset(BIDSDataset):

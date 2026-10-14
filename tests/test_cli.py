@@ -16,6 +16,7 @@ from unittest.mock import patch, MagicMock
 from click.testing import CliRunner
 
 from b2aiprep.commands import (
+    _copy_recording_tables_to_bundle,
     _unreleasable_columns,
     create_subject_splits,
     deidentify_bids_dataset,
@@ -1030,6 +1031,60 @@ def test_validate_bundled_dataset_fails_without_allowlist_or_removal_list(tmp_pa
     result = _validate(_bundle(tmp_path / "bundle"), cfg)
     assert result.exit_code != 0 and "config file not found" in result.output
     assert "participants_to_remove.json" in result.output
+
+
+def _recording_tables(bundle, annotations=None, transcripts=None, quality=None):
+    """Per-recording tables in features/ for the one released recording r1 (005009 / 01 / test).
+    Each argument overrides that table's columns; its JSON describes the default columns."""
+    features = bundle / "features"
+    pd.DataFrame({"recording_id": ["r1"]}).to_csv(bundle / "phenotype" / "task" / "recording.tsv", sep="\t", index=False)
+    keys = {"participant_id": ["005009"], "session_id": ["01"], "task_name": ["test"]}
+    for name, ext, cols, extra in (
+        ("audio_quality_annotations", ".tsv", annotations, {"recording_id": ["r1"], "snr_db": ["20"]}),
+        ("consensus_transcripts", ".parquet", transcripts, {"recording_id": ["r1"], "word_index": [0], "text": ["a"]}),
+        ("audio_quality_metrics", ".tsv", quality, {"snr": ["1"]}),
+    ):
+        df = pd.DataFrame({**keys, **extra})
+        (features / f"{name}.json").write_text(json.dumps({c: {"description": c} for c in df.columns}))
+        df = pd.DataFrame({**keys, **extra, **(cols or {})})
+        df.to_csv(features / f"{name}{ext}", sep="\t", index=False) if ext == ".tsv" else df.to_parquet(features / f"{name}{ext}")
+    (features / "static_features.tsv").write_text("participant_id\tsession_id\ttask_name\n005009\t01\ttest\n")
+    return bundle
+
+
+def test_validate_bundled_dataset_passes_per_recording_tables(tmp_path):
+    result = _validate(_recording_tables(_bundle(tmp_path / "bundle")), _allowlist_config(tmp_path / "cfg"))
+    assert result.exit_code == 0, result.output
+
+
+@pytest.mark.parametrize("tables, message", [
+    ({"annotations": {"participant_id": ["005099"]}}, "should not be released in audio_quality_annotations.tsv"),
+    ({"annotations": {"recording_id": ["r9"]}}, "Recordings in audio_quality_annotations.tsv not in phenotype/task/recording.tsv"),
+    ({"annotations": {"session_id": ["02"]}}, "Sessions in audio_quality_annotations.tsv not found"),
+    ({"annotations": {"extra_column": ["x"]}}, "not described in audio_quality_annotations.json: ['extra_column']"),
+    ({"transcripts": {"task_name": ["free-speech-1"]}}, "unexpected audio tasks in consensus_transcripts.parquet"),
+    ({"transcripts": {"participant_id": ["p1"]}}, "non-remapped) participant IDs in consensus_transcripts.parquet"),
+    ({"quality": {"task_name": ["other-task"]}}, "Rows in audio_quality_metrics.tsv for recordings without released features: 1"),
+], ids=["participant", "recording", "session", "undescribed-column", "sensitive-transcript", "unmapped-id",
+        "quality-metrics-without-features"])
+def test_validate_bundled_dataset_flags_per_recording_tables(tmp_path, tables, message):
+    bundle = _recording_tables(_bundle(tmp_path / "bundle"), **tables)
+    result = _validate(bundle, _allowlist_config(tmp_path / "cfg"))
+    assert result.exit_code != 0
+    assert message in result.output, result.output
+
+
+def test_bundle_copies_per_recording_tables_present(tmp_path):
+    bids, features = tmp_path / "bids", tmp_path / "features"
+    bids.mkdir()
+    features.mkdir()
+    pd.DataFrame({"participant_id": ["005009"], "recording_id": ["r1"], "task_name": ["test"]}).to_parquet(
+        bids / "consensus_transcripts.parquet")
+    (bids / "consensus_transcripts.json").write_text("{}")
+    stats = {}
+    _copy_recording_tables_to_bundle(bids, features, stats)
+    assert sorted(p.name for p in features.iterdir()) == ["consensus_transcripts.json", "consensus_transcripts.parquet"]
+    assert stats["consensus_transcripts.parquet"]["examples"] == 1
 
 
 @pytest.mark.parametrize("column", ["session_started_at", "session_complete", "session_site", "not_a_field",
