@@ -17,7 +17,7 @@ Note that there are implicit assumptions made regarding the structured data and 
 WORKING_DIR=${HOME}/data/bridge2ai/adult   # or .../pediatric: same commands
 
 b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/audio --sanitize_audio_format --date-shift-anchor $DATE_SHIFT_ANCHOR
-b2aiprep-cli generate-audio-features $WORKING_DIR/bids $WORKING_DIR/bids --update
+b2aiprep-cli generate-audio-features $WORKING_DIR/bids $WORKING_DIR/bids -t large-v3-turbo --validate
 b2aiprep-cli run-quality-control-on-audios $WORKING_DIR/bids
 b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/de-identified-bids $WORKING_DIR/release_config
 b2aiprep-cli create-bundled-dataset $WORKING_DIR/de-identified-bids $WORKING_DIR/bundled --skip_audio
@@ -89,8 +89,11 @@ Run the following command to extract features:
 b2aiprep-cli generate-audio-features \
     <path/to/input/bids_folder> \
     <path/to/output/folder> \
-    --is_sequential True
+    -t large-v3-turbo \
+    --validate
 ```
+
+`-t` sets the Whisper model for the transcripts; the default is `tiny`. On a cluster, split the participants with `-S <subject file>` and run one job per file.
 
 Note: Due to the potential size and quantity of the audio files, this may take a while, and we typically run it on a cluster with slurm (sbatch).
 
