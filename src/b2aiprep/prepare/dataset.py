@@ -261,6 +261,15 @@ _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE: t.Mapping[str, t.FrozenSet[str]] = {
     "sparc": frozenset({"ema"}),
 }
 
+# Per-recording tables the senselab triage prep (external_scripts/triage) places at the dataset root, by
+# file name. Deidentify keeps the rows of released recordings and the bundle copies them into features/.
+_RECORDING_TABLES: t.Mapping[str, str] = {
+    "audio_quality_annotations": ".tsv",
+    "consensus_transcripts": ".parquet",
+}
+# Text a recording's audio would reveal: released only with the audio, as `transcription` is.
+_AUDIO_ONLY_RECORDING_TABLES: t.FrozenSet[str] = frozenset({"consensus_transcripts"})
+
 
 def _note_entity_collision(
     seen: t.Dict[str, t.Any], entity: str, identifier: t.Any
@@ -4797,6 +4806,9 @@ class BIDSDataset:
         )
         _LOGGER.info("Finished processing quality metrics.")
 
+        # --- per-recording tables (senselab triage), keyed by recording_id ---
+        BIDSDataset._deidentify_recording_tables(self.data_path, outdir, normalized_include_tasks)
+
         # session_id_mapping.json generation is disabled pending a decision on
         # whether to ship it (contains original session UUIDs) and whether the
         # mapping should be generated at ingest rather than deidentify.
@@ -5413,6 +5425,86 @@ class BIDSDataset:
             )
             with qc_json_resource.open() as src, open(outdir / "audio_quality_metrics.json", "w") as dst:
                 dst.write(src.read())
+
+    @staticmethod
+    def _deidentify_recording_tables(
+        data_path: Path,
+        outdir: Path,
+        normalized_include_tasks: TaskMatcher,
+    ) -> None:
+        """Deidentify the per-recording tables at the dataset root (`_RECORDING_TABLES`) that exist.
+
+        A row is kept when its recording is in the output's phenotype/task/recording.tsv; a table in
+        `_AUDIO_ONLY_RECORDING_TABLES` also needs the recording's audio released (its task in the task
+        list, as for `transcription`). Its participant and session IDs are the output recording.tsv's
+        for the recording. A table whose keys are missing, that names a recording the dataset does not
+        have, or whose participant or session for a recording differs from recording.tsv's stops the run.
+        Each table's JSON is the package resource of the same name.
+        """
+        present = {
+            name: data_path / f"{name}{ext}"
+            for name, ext in _RECORDING_TABLES.items()
+            if (data_path / f"{name}{ext}").exists()
+        }
+        if not present:
+            _LOGGER.info("No per-recording tables at the dataset root; skipping.")
+            return
+
+        def _recordings(root: Path) -> pd.DataFrame:
+            path = root / "phenotype" / "task" / "recording.tsv"
+            if not path.exists():
+                raise ValueError(f"{', '.join(p.name for p in present.values())} need {path}, which does not exist.")
+            return pd.read_csv(
+                path, sep="\t", dtype=str, usecols=["recording_id", "participant_id", "recording_session_id"],
+            ).dropna(subset=["recording_id"]).set_index("recording_id")
+
+        known, released = _recordings(data_path), _recordings(outdir)
+        for name, path in present.items():
+            df = (pd.read_csv(path, sep="\t", dtype=str, keep_default_na=False) if path.suffix == ".tsv"
+                  else pd.read_parquet(path))
+            missing = [c for c in ("participant_id", "session_id", "recording_id", "task_name") if c not in df.columns]
+            if missing:
+                raise ValueError(f"{path.name} is missing column(s): {', '.join(missing)}")
+            if df["recording_id"].isna().any():
+                raise ValueError(f"{path.name}: {int(df['recording_id'].isna().sum())} row(s) without a recording_id")
+            unknown = set(df["recording_id"]) - set(known.index)
+            if unknown:
+                raise ValueError(
+                    f"{path.name} names {len(unknown)} recording(s) not in phenotype/task/recording.tsv, "
+                    f"e.g. {sorted(unknown)[:5]}"
+                )
+            # The table must place each recording where the dataset does (e.g. not prepared against an older tree).
+            source = known.reindex(df["recording_id"])
+            disagree = sorted(set(df["recording_id"][
+                (source["participant_id"].values != df["participant_id"].values)
+                | (source["recording_session_id"].values != df["session_id"].values)
+            ]))
+            if disagree:
+                raise ValueError(
+                    f"{path.name}: participant or session differs from phenotype/task/recording.tsv for "
+                    f"{len(disagree)} recording(s), e.g. {disagree[:5]}"
+                )
+            keep = df["recording_id"].isin(released.index)
+            if name in _AUDIO_ONLY_RECORDING_TABLES:
+                included = {task: normalize_task_label(task) in normalized_include_tasks for task in df["task_name"].unique()}
+                keep &= df["task_name"].map(included)
+            out = df.loc[keep].copy()
+            ids = released.reindex(out["recording_id"])
+            out["participant_id"] = ids["participant_id"].values
+            out["session_id"] = ids["recording_session_id"].values
+            order = [c for c in ("participant_id", "session_id", "task_name", "recording_id", "word_index") if c in out]
+            out = out.sort_values(order, kind="stable")
+            if path.suffix == ".tsv":
+                out.to_csv(outdir / path.name, sep="\t", index=False)
+            else:
+                out.to_parquet(outdir / path.name, index=False)
+            _LOGGER.info(
+                "%s: kept %d of %d row(s) (%d recording(s)).",
+                path.name, len(out), len(df), out["recording_id"].nunique(),
+            )
+
+            # The descriptions are b2aiprep's (the triage prep checks the table against them).
+            copy_package_resource("b2aiprep.prepare.resources", f"{name}.json", str(outdir))
 
 
 class VBAIDataset(BIDSDataset):

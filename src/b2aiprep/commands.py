@@ -14,6 +14,7 @@ import click
 import pandas as pd
 import torch
 from datasets import Dataset
+import pyarrow.parquet as pq
 from pyarrow.parquet import SortingColumn
 from streamlit import config as _config
 from streamlit.web.bootstrap import run
@@ -22,7 +23,10 @@ from tqdm import tqdm
 from b2aiprep.prepare.bids import AUDIO_EXTENSIONS, FLAC_EXTENSION, get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.constants import RepeatInstrument
 from b2aiprep.prepare.redcap import RedCapDataset
-from b2aiprep.prepare.dataset import AccessTier, BIDSDataset, DispositionLevel, SessionLabels, _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
+from b2aiprep.prepare.dataset import (
+    AccessTier, BIDSDataset, DispositionLevel, SessionLabels, _AUDIO_ONLY_RECORDING_TABLES, _RECORDING_TABLES,
+    _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE,
+)
 from b2aiprep.prepare.bundle_data import (
     feature_extraction_generator,
     spectrogram_generator,
@@ -35,10 +39,13 @@ from b2aiprep.prepare.prepare import (
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 
 from b2aiprep.prepare.data_validation import validate_phenotype, validate_no_extra_audio_tasks_present
-from b2aiprep.prepare.utils import TaskMatcher, normalize_task_label, generate_seed, generate_pseudonym, load_lookup_table, build_lookup_table
+from b2aiprep.prepare.utils import TaskMatcher, copy_package_resource, normalize_task_label, generate_seed, generate_pseudonym, load_lookup_table, build_lookup_table
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
+
+# Columns the per-recording table checks read (the rest only need their names).
+_KEY_COLUMNS: t.FrozenSet[str] = frozenset({"participant_id", "session_id", "task_name", "recording_id"})
 
 _SENSITIVE_PARQUET_STEMS: t.FrozenSet[str] = {
         f"{feature_group}_{feature_name}" if feature_group else feature_name
@@ -365,6 +372,8 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     ├── phenotype.json
     ├── static_features.tsv
     ├── static_features.json
+    ├── audio_quality_metrics.tsv, audio_quality_annotations.tsv, consensus_transcripts.parquet
+    │   (each with its .json; copied from the BIDS root when there)
     """
     if not skip_audio:
         _LOGGER.warning("Audio data is currently not supported for bundling. No audio files will be included in the bundle.")
@@ -441,6 +450,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
             "audio_quality_metrics.json found but audio_quality_metrics.tsv is missing; "
             "skipping quality metrics for bundle."
         )
+    _copy_recording_tables_to_bundle(bids_path, features_dir, bundle_output_stats)
 
     _LOGGER.info("Loading audio static features.")
     static_features = []
@@ -651,6 +661,97 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     )
 
 
+def _copy_recording_tables_to_bundle(bids_path: Path, features_dir: Path, bundle_output_stats: dict) -> None:
+    """Copy the deidentified per-recording tables (`_RECORDING_TABLES`) that exist into features/, with
+    their JSON (or the package resource's)."""
+    for name, ext in _RECORDING_TABLES.items():
+        src = bids_path / f"{name}{ext}"
+        if not src.exists():
+            continue
+        shutil.copy(src, features_dir / src.name)
+        json_src = bids_path / f"{name}.json"
+        if json_src.exists():
+            shutil.copy(json_src, features_dir / json_src.name)
+        else:
+            _LOGGER.warning("%s not found in BIDS dataset; copying it from package resources.", json_src.name)
+            copy_package_resource("b2aiprep.prepare.resources", json_src.name, str(features_dir))
+        df = (pd.read_csv(src, sep="\t", dtype=str, usecols=["participant_id", "recording_id", "task_name"])
+              if ext == ".tsv" else pd.read_parquet(src, columns=["participant_id", "recording_id", "task_name"]))
+        bundle_output_stats[src.name] = {
+            "path": (features_dir / src.name).resolve().as_posix(),
+            "examples": df["recording_id"].nunique(),
+            "participants": set(df["participant_id"]),
+            "tasks": set(df["task_name"]),
+            "status": "copied",
+        }
+        _LOGGER.info("Copied %s to bundle.", src.name)
+
+
+def _per_recording_table_issues(features_dir: Path, phenotype_dir: Path, phenotype_sessions: t.Optional[set],
+                                unexpected_participants, original_ids: set, session_keys) -> t.List[str]:
+    """Issues in the per-recording tables in features/ (audio_quality_metrics.tsv and `_RECORDING_TABLES`):
+    participants not to be released or not remapped, sessions or recordings the phenotype does not list,
+    and columns the table's JSON does not describe. audio_quality_metrics has no recording_id, so its rows
+    are matched to static_features.tsv (recordings with released features) instead."""
+    issues: t.List[str] = []
+    recording_tsv = phenotype_dir / "task" / "recording.tsv"
+    recording_ids = (set(pd.read_csv(recording_tsv, sep="\t", dtype=str, usecols=["recording_id"])["recording_id"])
+                     if recording_tsv.exists() else None)
+    static_path = features_dir / "static_features.tsv"
+    static_keys: t.Optional[set] = None
+    for name, ext in {"audio_quality_metrics": ".tsv", **_RECORDING_TABLES}.items():
+        path = features_dir / f"{name}{ext}"
+        if not path.exists():
+            continue
+        try:
+            if ext == ".tsv":
+                df = pd.read_csv(path, sep="\t", dtype=str)
+                columns = list(df.columns)
+            else:  # a transcripts parquet has a row per word: read only the keys
+                columns = pq.read_schema(path).names
+                df = pd.read_parquet(path, columns=[c for c in columns if c in _KEY_COLUMNS])
+        except Exception as e:
+            issues.append(f"Error reading {path.name}: {e}")
+            continue
+        missing = [c for c in ("participant_id", "session_id", "task_name") if c not in df.columns]
+        if missing:
+            issues.append(f"{path.name} missing required column(s) {', '.join(missing)}")
+            continue
+        keys = set(zip(df["participant_id"].astype(str), df["session_id"].astype(str), df["task_name"].astype(str)))
+        if ext == ".tsv":  # parquet files get these checks with the other parquets
+            participants = set(df["participant_id"].dropna().astype(str))
+            if unexpected_participants(participants):
+                issues.append(f"Found participants that should not be released in {path.name}: "
+                              f"{len(unexpected_participants(participants))} participants")
+            if participants & original_ids:
+                issues.append(f"Found original (non-remapped) participant IDs in {path.name}: "
+                              f"{len(participants & original_ids)} participants")
+            if phenotype_sessions is not None and session_keys(df) - phenotype_sessions:
+                issues.append(f"Sessions in {path.name} not found in the phenotype sessions: "
+                              f"{len(session_keys(df) - phenotype_sessions)} sessions")
+        if "recording_id" in df.columns:
+            if recording_ids is None:
+                issues.append(f"{path.name}: no phenotype/task/recording.tsv to check its recording_id against")
+            elif set(df["recording_id"].dropna()) - recording_ids:
+                issues.append(f"Recordings in {path.name} not in phenotype/task/recording.tsv: "
+                              f"{len(set(df['recording_id'].dropna()) - recording_ids)} recordings")
+        elif static_path.exists():
+            if static_keys is None:
+                s = pd.read_csv(static_path, sep="\t", dtype=str, usecols=lambda c: c in _KEY_COLUMNS)
+                static_keys = (set(zip(s["participant_id"], s["session_id"], s["task_name"]))
+                               if {"participant_id", "session_id", "task_name"} <= set(s.columns) else set())
+            if static_keys and keys - static_keys:
+                issues.append(f"Rows in {path.name} for recordings without released features: {len(keys - static_keys)}")
+        json_path = path.with_suffix(".json")
+        if not json_path.exists():
+            issues.append(f"{json_path.name} missing for {path.name}")
+        else:
+            undocumented = set(columns) - set(json.loads(json_path.read_text()))
+            if undocumented:
+                issues.append(f"Columns of {path.name} not described in {json_path.name}: {sorted(undocumented)}")
+    return issues
+
+
 def _unreleasable_columns(tsv_file, columns, field_map, access_tier=AccessTier.REGISTERED,
                           reviewed_columns=frozenset()):
     """Issues for columns a release must not contain: internal, drop, date-shifted, unknown,
@@ -816,7 +917,9 @@ def validate_bundled_dataset(dataset_path, config_dir):
                 if normalize_task_label(task) not in audio_task_to_include_normalized
             }
 
-            if unexpected_tasks_present and parquet_file.stem in _SENSITIVE_PARQUET_STEMS:
+            if unexpected_tasks_present and (
+                parquet_file.stem in _SENSITIVE_PARQUET_STEMS or parquet_file.stem in _AUDIO_ONLY_RECORDING_TABLES
+            ):
                 issues.append(f"Found unexpected audio tasks in {parquet_file.name}: {unexpected_tasks_present}")
                 
             # Check remapping
@@ -905,6 +1008,11 @@ def validate_bundled_dataset(dataset_path, config_dir):
                     )
         except Exception as e:
             issues.append(f"Error reading static_features.tsv: {e}")
+
+    # 5c. Per-recording tables: released participants and sessions, known recordings, documented columns.
+    issues.extend(_per_recording_table_issues(
+        features_dir, phenotype_dir, phenotype_sessions, _unexpected_participants, original_ids, _session_keys,
+    ))
 
     # 6. Verify no extra audio feautures make it through
     issues.extend(

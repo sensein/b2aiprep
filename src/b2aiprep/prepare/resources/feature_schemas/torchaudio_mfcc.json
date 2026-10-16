@@ -8,7 +8,7 @@
     {
       "name": "session_id",
       "type": "string",
-      "description": "Unique identifier for each session."
+      "description": "Ordinal index of the session within the participant, numbered in session order (e.g., 01, 02)."
     },
     {
       "name": "task_name",
@@ -30,6 +30,8 @@
           "ndim": 2,
           "dims": ["mfcc_coeff", "time"],
           "shape": [60, null],
+
+          "units": "dimensionless (cepstral coefficients of the dB-scaled Mel spectrogram)",
 
           "config": {
             "sample_rate": 16000,
