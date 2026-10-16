@@ -236,7 +236,7 @@ b2aiprep 4.0.0 produced adult dataset v4.0.0 and pediatric dataset v2.0.0.
 
 Some files in the published trees are produced outside the b2aiprep commands above. They need their own step in each release, and a rerun of the b2aiprep steps does not recreate them:
 
-- **`data_explorer.html`** (top level of each published tree): a summary of every phenotype field, built from the finished tree by a separate field-profile tool. Rebuild it after any change to a phenotype table. It is not kept in `release_docs/`.
+- **`data_explorer.html`** (top level of each published tree): a summary of every phenotype field, built from the finished tree with `external_scripts/data_explorer/` (see its `README.md`). Rebuild it after any change to a phenotype table. It is not kept in `release_docs/`.
 - **`audio_quality_annotations.tsv` and `consensus_transcripts.parquet`** (adult only in 4.0.0): made from senselab's triage output (`derivatives/senselab-triage/`) by `external_scripts/triage/prep_audio_quality_annotations.py`, then copied to the root of the BIDS tree before deidentification. b2aiprep keeps the rows of released recordings, gives them the released participant and session IDs, writes the column descriptions (package resources) and copies both files into the bundle. See `external_scripts/triage/README.md`.
 
 Record for each of these where it came from (tool, version or commit, date) in the release notes.
