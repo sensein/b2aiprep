@@ -1,0 +1,1235 @@
+schema_name	column	new_description	new_name	source
+confounders	age_started_using_nicotine_products	Age (years) first started regularly using nicotine		workbook:correction (composed)
+confounders	age_stopped_using_nicotine_products	Age (years) when stopped using nicotine		workbook:correction (composed)
+confounders	average_number_of_uses_each_day	Average number of nicotine uses per day, over the entire time used	nicotine_uses_per_day_lifetime_average	workbook:correction (composed)
+confounders	currently_pregnant	Which trimester of pregnancy are you in?	pregnancy_trimester	workbook:rename (description kept faithful)
+confounders	menstruate_no	Reason for no or irregular menstrual periods		workbook:correction
+confounders	number_of_uses_per_day_now	Number of nicotine uses per day, currently	nicotine_uses_per_day_current	workbook:correction (composed)
+confounders	number_years_used_nicotine	Number of years nicotine was used		workbook:correction (composed)
+confounders	ph_concentrating	In the past 30 days, how much difficulty did you have in: Concentrating on doing something for ten minutes?		workbook:full on-screen prompt
+confounders	ph_day_to_day_work	In the past 30 days, how much difficulty did you have in: Your day-to-day work?		workbook:full on-screen prompt
+confounders	ph_dealing_people	In the past 30 days, how much difficulty did you have in: Dealing with people you do not know?		workbook:full on-screen prompt
+confounders	ph_friendship	In the past 30 days, how much difficulty did you have in: Maintaining a friendship?		workbook:full on-screen prompt
+confounders	ph_get_dressed	In the past 30 days, how much difficulty did you have in: Getting dressed?		workbook:full on-screen prompt
+confounders	ph_health_problem	How much have you been emotionally affected by your health problems? (over the past 30 days)		workbook:full on-screen prompt
+confounders	ph_learn_task	In the past 30 days, how much difficulty did you have in: Learning a new task, for example, learning how to get to a new place?		workbook:full on-screen prompt
+confounders	ph_problem_join	How much of a problem did you have joining in community activities (for example, festivities, religious or other activities) in the same way as anyone else can? (over the past 30 days)		workbook:full on-screen prompt
+confounders	ph_standing	In the past 30 days, how much difficulty did you have in: Standing for long periods such as 30 minutes?		workbook:full on-screen prompt
+confounders	ph_take_care	In the past 30 days, how much difficulty did you have in: Taking care of your household responsibilities?		workbook:full on-screen prompt
+confounders	ph_walking	In the past 30 days, how much difficulty did you have in: Walking a long distance such as a kilometre [or equivalent]?		workbook:full on-screen prompt
+confounders	ph_washing	In the past 30 days, how much difficulty did you have in: Washing your whole body?		workbook:full on-screen prompt
+confounders	unit	Measurement system for height and weight (Metric or US customary)		workbook:correction
+confounders	acid_reflux___current	Acid reflux (e.g. heart burn, GERD, etc.) — Current		workbook:checkbox option
+confounders	acid_reflux___never	Acid reflux (e.g. heart burn, GERD, etc.) — Never		workbook:checkbox option
+confounders	acid_reflux___no_answer	Acid reflux (e.g. heart burn, GERD, etc.) — Prefer Not To Answer		workbook:checkbox option
+confounders	acid_reflux___past	Acid reflux (e.g. heart burn, GERD, etc.) — Past		workbook:checkbox option
+confounders	adhd_med_hist_psychological___current	Attention deficit/hyperactivity disorder (ADHD) — Current		workbook:checkbox option
+confounders	adhd_med_hist_psychological___never	Attention deficit/hyperactivity disorder (ADHD) — Never		workbook:checkbox option
+confounders	adhd_med_hist_psychological___no_answer	Attention deficit/hyperactivity disorder (ADHD) — Prefer Not To Answer		workbook:checkbox option
+confounders	adhd_med_hist_psychological___past	Attention deficit/hyperactivity disorder (ADHD) — Past		workbook:checkbox option
+confounders	airway_stenosis_med_hist_throat___current	Airway stenosis (e.g. glottal, subglottal, tracheal, etc.) — Current		workbook:checkbox option
+confounders	airway_stenosis_med_hist_throat___never	Airway stenosis (e.g. glottal, subglottal, tracheal, etc.) — Never		workbook:checkbox option
+confounders	airway_stenosis_med_hist_throat___no_answer	Airway stenosis (e.g. glottal, subglottal, tracheal, etc.) — Prefer Not To Answer		workbook:checkbox option
+confounders	airway_stenosis_med_hist_throat___past	Airway stenosis (e.g. glottal, subglottal, tracheal, etc.) — Past		workbook:checkbox option
+confounders	anxiety_disorder___current	Anxiety disorder (e.g. generalized or social anxiety disorder) — Current		workbook:checkbox option
+confounders	anxiety_disorder___never	Anxiety disorder (e.g. generalized or social anxiety disorder) — Never		workbook:checkbox option
+confounders	anxiety_disorder___no_answer	Anxiety disorder (e.g. generalized or social anxiety disorder) — Prefer Not To Answer		workbook:checkbox option
+confounders	anxiety_disorder___past	Anxiety disorder (e.g. generalized or social anxiety disorder) — Past		workbook:checkbox option
+confounders	asd_med_hist_psychological___current	Autism spectrum disorder (ASD) — Current		workbook:checkbox option
+confounders	asd_med_hist_psychological___never	Autism spectrum disorder (ASD) — Never		workbook:checkbox option
+confounders	asd_med_hist_psychological___no_answer	Autism spectrum disorder (ASD) — Prefer Not To Answer		workbook:checkbox option
+confounders	asd_med_hist_psychological___past	Autism spectrum disorder (ASD) — Past		workbook:checkbox option
+confounders	bipolar_disorder___current	Bipolar disorder — Current		workbook:checkbox option
+confounders	bipolar_disorder___never	Bipolar disorder — Never		workbook:checkbox option
+confounders	bipolar_disorder___no_answer	Bipolar disorder — Prefer Not To Answer		workbook:checkbox option
+confounders	bipolar_disorder___past	Bipolar disorder — Past		workbook:checkbox option
+confounders	botox_injections___current	Botox injections for laryngeal dystonia — Current		workbook:checkbox option
+confounders	botox_injections___never	Botox injections for laryngeal dystonia — Never		workbook:checkbox option
+confounders	botox_injections___no_answer	Botox injections for laryngeal dystonia — Prefer Not To Answer		workbook:checkbox option
+confounders	botox_injections___past	Botox injections for laryngeal dystonia — Past		workbook:checkbox option
+confounders	bpd_med_hist_psychological___current	Borderline personality disorder (BPD) — Current		workbook:checkbox option
+confounders	bpd_med_hist_psychological___never	Borderline personality disorder (BPD) — Never		workbook:checkbox option
+confounders	bpd_med_hist_psychological___no_answer	Borderline personality disorder (BPD) — Prefer Not To Answer		workbook:checkbox option
+confounders	bpd_med_hist_psychological___past	Borderline personality disorder (BPD) — Past		workbook:checkbox option
+confounders	brain_cancer___current	Brain cancer — Current		workbook:checkbox option
+confounders	brain_cancer___never	Brain cancer — Never		workbook:checkbox option
+confounders	brain_cancer___no_answer	Brain cancer — Prefer Not To Answer		workbook:checkbox option
+confounders	brain_cancer___past	Brain cancer — Past		workbook:checkbox option
+confounders	c_pap___current	C-Pap — Current		workbook:checkbox option
+confounders	c_pap___never	C-Pap — Never		workbook:checkbox option
+confounders	c_pap___no_answer	C-Pap — Prefer Not To Answer		workbook:checkbox option
+confounders	c_pap___past	C-Pap — Past		workbook:checkbox option
+confounders	chemotherapy___current	Chemotherapy — Current		workbook:checkbox option
+confounders	chemotherapy___never	Chemotherapy — Never		workbook:checkbox option
+confounders	chemotherapy___no_answer	Chemotherapy — Prefer Not To Answer		workbook:checkbox option
+confounders	chemotherapy___past	Chemotherapy — Past		workbook:checkbox option
+confounders	chronic_cough_med_hist_throat___current	Chronic cough — Current		workbook:checkbox option
+confounders	chronic_cough_med_hist_throat___never	Chronic cough — Never		workbook:checkbox option
+confounders	chronic_cough_med_hist_throat___no_answer	Chronic cough — Prefer Not To Answer		workbook:checkbox option
+confounders	chronic_cough_med_hist_throat___past	Chronic cough — Past		workbook:checkbox option
+confounders	circulatory_conditions___1	[DEPRECATED] Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply) — Atrial fibrillation		workbook:checkbox option
+confounders	circulatory_conditions___2	[DEPRECATED] Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply) — Cardiac condition		workbook:checkbox option
+confounders	circulatory_conditions___3	[DEPRECATED] Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply) — Chronic pericarditis		workbook:checkbox option
+confounders	circulatory_conditions___4	[DEPRECATED] Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply) — Congestive heart failure		workbook:checkbox option
+confounders	circulatory_conditions___5	[DEPRECATED] Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply) — Coronary heart disease		workbook:checkbox option
+confounders	circulatory_conditions___6	[DEPRECATED] Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply) — Hypertension		workbook:checkbox option
+confounders	circulatory_med_history___1	[DEPRECATED] Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply) — Chronic kidney disease		workbook:checkbox option
+confounders	circulatory_med_history___2	[DEPRECATED] Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply) — Diabetes		workbook:checkbox option
+confounders	circulatory_med_history___3	[DEPRECATED] Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply) — Infectious disease		workbook:checkbox option
+confounders	circulatory_med_history___4	[DEPRECATED] Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply) — Obesity		workbook:checkbox option
+confounders	circulatory_med_history___5	[DEPRECATED] Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply) — Scoliosis		workbook:checkbox option
+confounders	covid___long	[DEPRECATED] Have you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply) — Long COVID (symptoms persisted at least four weeks after initial infection)		workbook:checkbox option
+confounders	covid___past_year	[DEPRECATED] Have you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply) — COVID in the past year		workbook:checkbox option
+confounders	cpap_conditions___1	[DEPRECATED] Are you currently using CPAP or supplemental oxygen? (check all that apply) — Active CPAP use		workbook:checkbox option
+confounders	cpap_conditions___2	[DEPRECATED] Are you currently using CPAP or supplemental oxygen? (check all that apply) — On supplemental oxygen		workbook:checkbox option
+confounders	deep_brain_stimulator___current	Deep brain stimulator — Current		workbook:checkbox option
+confounders	deep_brain_stimulator___never	Deep brain stimulator — Never		workbook:checkbox option
+confounders	deep_brain_stimulator___no_answer	Deep brain stimulator — Prefer Not To Answer		workbook:checkbox option
+confounders	deep_brain_stimulator___past	Deep brain stimulator — Past		workbook:checkbox option
+confounders	depression_major_depressive_disorder___current	Depression or major depressive disorder — Current		workbook:checkbox option
+confounders	depression_major_depressive_disorder___never	Depression or major depressive disorder — Never		workbook:checkbox option
+confounders	depression_major_depressive_disorder___no_answer	Depression or major depressive disorder — Prefer Not To Answer		workbook:checkbox option
+confounders	depression_major_depressive_disorder___past	Depression or major depressive disorder — Past		workbook:checkbox option
+confounders	ear_cancer___current	Ear cancer — Current		workbook:checkbox option
+confounders	ear_cancer___never	Ear cancer — Never		workbook:checkbox option
+confounders	ear_cancer___no_answer	Ear cancer — Prefer Not To Answer		workbook:checkbox option
+confounders	ear_cancer___past	Ear cancer — Past		workbook:checkbox option
+confounders	ear_med_history___1	[DEPRECATED] Ear — Chronic ear infection		workbook:checkbox option
+confounders	ear_med_history___2	[DEPRECATED] Ear — Cochlear implant		workbook:checkbox option
+confounders	ear_med_history___3	[DEPRECATED] Ear — Hearing loss		workbook:checkbox option
+confounders	ear_surgical___1	[DEPRECATED] Ear — Chronic ear surgery (e.g. mastoid)		workbook:checkbox option
+confounders	ear_surgical___2	[DEPRECATED] Ear — Ear tubes		workbook:checkbox option
+confounders	eating_disorder___current	Eating disorder (ED) — Current		workbook:checkbox option
+confounders	eating_disorder___never	Eating disorder (ED) — Never		workbook:checkbox option
+confounders	eating_disorder___no_answer	Eating disorder (ED) — Prefer Not To Answer		workbook:checkbox option
+confounders	eating_disorder___past	Eating disorder (ED) — Past		workbook:checkbox option
+confounders	esophageal_cancer___current	Esophageal cancer — Current		workbook:checkbox option
+confounders	esophageal_cancer___never	Esophageal cancer — Never		workbook:checkbox option
+confounders	esophageal_cancer___no_answer	Esophageal cancer — Prefer Not To Answer		workbook:checkbox option
+confounders	esophageal_cancer___past	Esophageal cancer — Past		workbook:checkbox option
+confounders	ever_used_nicotine_products___cigarette_cigar	Have you ever used any of the following nicotine (tobacco) products? Please check all that apply. — Cigarette or cigar		workbook:checkbox option
+confounders	ever_used_nicotine_products___electronic_nicotine_product	Have you ever used any of the following nicotine (tobacco) products? Please check all that apply. — Electronic nicotine product (e.g. e-cigarettes, vape pens, hookah pens, personal vaporizers, e-cigars, e-pipes, e-hookahs, etc.)		workbook:checkbox option
+confounders	ever_used_nicotine_products___never_used_nicotine_product	Have you ever used any of the following nicotine (tobacco) products? Please check all that apply. — I have never used a nicotine product		workbook:checkbox option
+confounders	ever_used_nicotine_products___nicotine_gum_chew	Have you ever used any of the following nicotine (tobacco) products? Please check all that apply. — Nicotine gum or chew		workbook:checkbox option
+confounders	ever_used_nicotine_products___nicotine_patch	Have you ever used any of the following nicotine (tobacco) products? Please check all that apply. — Nicotine patch		workbook:checkbox option
+confounders	ever_used_nicotine_products___other	Have you ever used any of the following nicotine (tobacco) products? Please check all that apply. — Other		workbook:checkbox option
+confounders	experimental_treatment___current	Experimental treatment / clinical trial — Current		workbook:checkbox option
+confounders	experimental_treatment___never	Experimental treatment / clinical trial — Never		workbook:checkbox option
+confounders	experimental_treatment___no_answer	Experimental treatment / clinical trial — Prefer Not To Answer		workbook:checkbox option
+confounders	experimental_treatment___past	Experimental treatment / clinical trial — Past		workbook:checkbox option
+confounders	glottic_insufficiency_med_hist_throat___current	Glottic insufficiency, presbyphonia — Current		workbook:checkbox option
+confounders	glottic_insufficiency_med_hist_throat___never	Glottic insufficiency, presbyphonia — Never		workbook:checkbox option
+confounders	glottic_insufficiency_med_hist_throat___no_answer	Glottic insufficiency, presbyphonia — Prefer Not To Answer		workbook:checkbox option
+confounders	glottic_insufficiency_med_hist_throat___past	Glottic insufficiency, presbyphonia — Past		workbook:checkbox option
+confounders	head_med_history___1	[DEPRECATED] Head — Radiation around head and neck		workbook:checkbox option
+confounders	head_med_history___2	[DEPRECATED] Head — Seasonal allergies		workbook:checkbox option
+confounders	head_surgical___1	[DEPRECATED] Head — Head/Neck cancer (e.g. oropharyngeal cancer)		workbook:checkbox option
+confounders	head_surgical___2	[DEPRECATED] Head — Sleep surgery		workbook:checkbox option
+confounders	hormone_use___1	[DEPRECATED] Hormone use — Oral contraceptive		workbook:checkbox option
+confounders	hormone_use___2	[DEPRECATED] Hormone use — Hormonal replacement therapy (HRT)		workbook:checkbox option
+confounders	hormone_use___3	[DEPRECATED] Hormone use — Androgenic steroids		workbook:checkbox option
+confounders	hormone_use___4	[DEPRECATED] Hormone use — Other		workbook:checkbox option
+confounders	immunotherapy___current	Immunotherapy — Current		workbook:checkbox option
+confounders	immunotherapy___never	Immunotherapy — Never		workbook:checkbox option
+confounders	immunotherapy___no_answer	Immunotherapy — Prefer Not To Answer		workbook:checkbox option
+confounders	immunotherapy___past	Immunotherapy — Past		workbook:checkbox option
+confounders	injection_implant_to_vocal_folds___current	Injection/implant to the vocal folds — Current		workbook:checkbox option
+confounders	injection_implant_to_vocal_folds___never	Injection/implant to the vocal folds — Never		workbook:checkbox option
+confounders	injection_implant_to_vocal_folds___no_answer	Injection/implant to the vocal folds — Prefer Not To Answer		workbook:checkbox option
+confounders	injection_implant_to_vocal_folds___past	Injection/implant to the vocal folds — Past		workbook:checkbox option
+confounders	laryngeal_cancer___current	Laryngeal cancer (e.g. vocal folds, epiglottis, etc.) — Current		workbook:checkbox option
+confounders	laryngeal_cancer___never	Laryngeal cancer (e.g. vocal folds, epiglottis, etc.) — Never		workbook:checkbox option
+confounders	laryngeal_cancer___no_answer	Laryngeal cancer (e.g. vocal folds, epiglottis, etc.) — Prefer Not To Answer		workbook:checkbox option
+confounders	laryngeal_cancer___past	Laryngeal cancer (e.g. vocal folds, epiglottis, etc.) — Past		workbook:checkbox option
+confounders	laryngitis_med_hist_throat___current	Laryngitis — Current		workbook:checkbox option
+confounders	laryngitis_med_hist_throat___never	Laryngitis — Never		workbook:checkbox option
+confounders	laryngitis_med_hist_throat___no_answer	Laryngitis — Prefer Not To Answer		workbook:checkbox option
+confounders	laryngitis_med_hist_throat___past	Laryngitis — Past		workbook:checkbox option
+confounders	laryngospasm_irritable_larynx___current	Laryngospasm, irritable larynx — Current		workbook:checkbox option
+confounders	laryngospasm_irritable_larynx___never	Laryngospasm, irritable larynx — Never		workbook:checkbox option
+confounders	laryngospasm_irritable_larynx___no_answer	Laryngospasm, irritable larynx — Prefer Not To Answer		workbook:checkbox option
+confounders	laryngospasm_irritable_larynx___past	Laryngospasm, irritable larynx — Past		workbook:checkbox option
+confounders	lesions_vocal_cord___current	Lesions of the vocal cord — Current		workbook:checkbox option
+confounders	lesions_vocal_cord___never	Lesions of the vocal cord — Never		workbook:checkbox option
+confounders	lesions_vocal_cord___no_answer	Lesions of the vocal cord — Prefer Not To Answer		workbook:checkbox option
+confounders	lesions_vocal_cord___past	Lesions of the vocal cord — Past		workbook:checkbox option
+confounders	lung_cancer___current	Lung cancer — Current		workbook:checkbox option
+confounders	lung_cancer___never	Lung cancer — Never		workbook:checkbox option
+confounders	lung_cancer___no_answer	Lung cancer — Prefer Not To Answer		workbook:checkbox option
+confounders	lung_cancer___past	Lung cancer — Past		workbook:checkbox option
+confounders	lung_or_metastatic___1	[DEPRECATED] Cancer (lung or metastatic) — Lung		workbook:checkbox option
+confounders	lung_or_metastatic___2	[DEPRECATED] Cancer (lung or metastatic) — Metastatic		workbook:checkbox option
+confounders	medication_enmt___current	Medication — Current		workbook:checkbox option
+confounders	medication_enmt___never	Medication — Never		workbook:checkbox option
+confounders	medication_enmt___no_answer	Medication — Prefer Not To Answer		workbook:checkbox option
+confounders	medication_enmt___past	Medication — Past		workbook:checkbox option
+confounders	medication_med_hist_cancer___current	Medication — Current		workbook:checkbox option
+confounders	medication_med_hist_cancer___never	Medication — Never		workbook:checkbox option
+confounders	medication_med_hist_cancer___no_answer	Medication — Prefer Not To Answer		workbook:checkbox option
+confounders	medication_med_hist_cancer___past	Medication — Past		workbook:checkbox option
+confounders	medication_med_history_neuro___current	Medication — Current		workbook:checkbox option
+confounders	medication_med_history_neuro___never	Medication — Never		workbook:checkbox option
+confounders	medication_med_history_neuro___no_answer	Medication — Prefer Not To Answer		workbook:checkbox option
+confounders	medication_med_history_neuro___past	Medication — Past		workbook:checkbox option
+confounders	medication_med_history_psychological___current	Medication — Current		workbook:checkbox option
+confounders	medication_med_history_psychological___never	Medication — Never		workbook:checkbox option
+confounders	medication_med_history_psychological___no_answer	Medication — Prefer Not To Answer		workbook:checkbox option
+confounders	medication_med_history_psychological___past	Medication — Past		workbook:checkbox option
+confounders	medications___1	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Antibiotics		workbook:checkbox option
+confounders	medications___10	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Anti-anxiety medications: (ex: Benzodiazepine)		workbook:checkbox option
+confounders	medications___11	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Chronic Pain medication		workbook:checkbox option
+confounders	medications___12	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Psychotropic/antipsychotic medications (ex: Clozapine)		workbook:checkbox option
+confounders	medications___13	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Antidepressants (ex: amitryptiline)		workbook:checkbox option
+confounders	medications___14	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Immune suppressors (ex: Methotrexate)		workbook:checkbox option
+confounders	medications___15	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Reflux medications (ex: Pantoprazole, Nexium)		workbook:checkbox option
+confounders	medications___16	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Anticholinergics (ex: Ventolin)		workbook:checkbox option
+confounders	medications___17	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Anticoagulants (blood thinners)		workbook:checkbox option
+confounders	medications___18	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Antiepileptic (ex: Phenytoin)		workbook:checkbox option
+confounders	medications___2	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Anti-histamines (allergy medications)		workbook:checkbox option
+confounders	medications___3	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Anti-Hypertensive Medications (Blood Pressure Medication)		workbook:checkbox option
+confounders	medications___4	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Diuretics (ex: Lasix)		workbook:checkbox option
+confounders	medications___5	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Decongestants		workbook:checkbox option
+confounders	medications___6	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Muscle relaxants (ex: Baclofen)		workbook:checkbox option
+confounders	medications___7	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Hormone use		workbook:checkbox option
+confounders	medications___8	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Inhaled corticosteroids		workbook:checkbox option
+confounders	medications___9	[DEPRECATED] Do you currently take or use any of these medications or substances? Please check all that apply — Oral steroids		workbook:checkbox option
+confounders	mindfulness_meditation___current	Mindfulness, meditation — Current		workbook:checkbox option
+confounders	mindfulness_meditation___never	Mindfulness, meditation — Never		workbook:checkbox option
+confounders	mindfulness_meditation___no_answer	Mindfulness, meditation — Prefer Not To Answer		workbook:checkbox option
+confounders	mindfulness_meditation___past	Mindfulness, meditation — Past		workbook:checkbox option
+confounders	muscle_tension_dysphonia___current	Muscle tension dysphonia — Current		workbook:checkbox option
+confounders	muscle_tension_dysphonia___never	Muscle tension dysphonia — Never		workbook:checkbox option
+confounders	muscle_tension_dysphonia___no_answer	Muscle tension dysphonia — Prefer Not To Answer		workbook:checkbox option
+confounders	muscle_tension_dysphonia___past	Muscle tension dysphonia — Past		workbook:checkbox option
+confounders	neurological_history___1	[DEPRECATED] Neurological Medical History — Brain tumor		workbook:checkbox option
+confounders	neurological_history___2	[DEPRECATED] Neurological Medical History — Dysarthria		workbook:checkbox option
+confounders	neurological_history___3	[DEPRECATED] Neurological Medical History — Epilepsy		workbook:checkbox option
+confounders	neurological_history___4	[DEPRECATED] Neurological Medical History — Multiple sclerosis		workbook:checkbox option
+confounders	neurological_history___5	[DEPRECATED] Neurological Medical History — Traumatic brain injury		workbook:checkbox option
+confounders	neurological_history___6	[DEPRECATED] Neurological Medical History — Other		workbook:checkbox option
+confounders	non_surgical_treatment_enmt_speech_cond___current	Other non-surgical treatment for an ear, nose, mouth, throat, or speech condition — Current		workbook:checkbox option
+confounders	non_surgical_treatment_enmt_speech_cond___never	Other non-surgical treatment for an ear, nose, mouth, throat, or speech condition — Never		workbook:checkbox option
+confounders	non_surgical_treatment_enmt_speech_cond___no_answer	Other non-surgical treatment for an ear, nose, mouth, throat, or speech condition — Prefer Not To Answer		workbook:checkbox option
+confounders	non_surgical_treatment_enmt_speech_cond___past	Other non-surgical treatment for an ear, nose, mouth, throat, or speech condition — Past		workbook:checkbox option
+confounders	nose_med_history___1	[DEPRECATED] Nose — Frequent sinusitis		workbook:checkbox option
+confounders	nose_surgical___1	[DEPRECATED] Nose — Septoplasty/Rhinoplasty		workbook:checkbox option
+confounders	nose_surgical___2	[DEPRECATED] Nose — Sinus surgery		workbook:checkbox option
+confounders	obsessive_compulsive_disorder___current	Obsessive compulsive disorder (OCD) — Current		workbook:checkbox option
+confounders	obsessive_compulsive_disorder___never	Obsessive compulsive disorder (OCD) — Never		workbook:checkbox option
+confounders	obsessive_compulsive_disorder___no_answer	Obsessive compulsive disorder (OCD) — Prefer Not To Answer		workbook:checkbox option
+confounders	obsessive_compulsive_disorder___past	Obsessive compulsive disorder (OCD) — Past		workbook:checkbox option
+confounders	oral_cancer___current	Oral cancer (e.g. tongue, mouth, gum, tonsil, etc.) — Current		workbook:checkbox option
+confounders	oral_cancer___never	Oral cancer (e.g. tongue, mouth, gum, tonsil, etc.) — Never		workbook:checkbox option
+confounders	oral_cancer___no_answer	Oral cancer (e.g. tongue, mouth, gum, tonsil, etc.) — Prefer Not To Answer		workbook:checkbox option
+confounders	oral_cancer___past	Oral cancer (e.g. tongue, mouth, gum, tonsil, etc.) — Past		workbook:checkbox option
+confounders	other_cancer___current	Other cancer — Current		workbook:checkbox option
+confounders	other_cancer___never	Other cancer — Never		workbook:checkbox option
+confounders	other_cancer___no_answer	Other cancer — Prefer Not To Answer		workbook:checkbox option
+confounders	other_cancer___past	Other cancer — Past		workbook:checkbox option
+confounders	other_cancer_treatment___current	Other cancer treatment — Current		workbook:checkbox option
+confounders	other_cancer_treatment___never	Other cancer treatment — Never		workbook:checkbox option
+confounders	other_cancer_treatment___no_answer	Other cancer treatment — Prefer Not To Answer		workbook:checkbox option
+confounders	other_cancer_treatment___past	Other cancer treatment — Past		workbook:checkbox option
+confounders	other_neurological_treatment___current	Other treatment for a neurological condition — Current		workbook:checkbox option
+confounders	other_neurological_treatment___never	Other treatment for a neurological condition — Never		workbook:checkbox option
+confounders	other_neurological_treatment___no_answer	Other treatment for a neurological condition — Prefer Not To Answer		workbook:checkbox option
+confounders	other_neurological_treatment___past	Other treatment for a neurological condition — Past		workbook:checkbox option
+confounders	other_throat_condition___current	Other throat condition — Current		workbook:checkbox option
+confounders	other_throat_condition___never	Other throat condition — Never		workbook:checkbox option
+confounders	other_throat_condition___no_answer	Other throat condition — Prefer Not To Answer		workbook:checkbox option
+confounders	other_throat_condition___past	Other throat condition — Past		workbook:checkbox option
+confounders	other_treatment_psychological_condition___current	Other treatment for a psychological condition — Current		workbook:checkbox option
+confounders	other_treatment_psychological_condition___never	Other treatment for a psychological condition — Never		workbook:checkbox option
+confounders	other_treatment_psychological_condition___no_answer	Other treatment for a psychological condition — Prefer Not To Answer		workbook:checkbox option
+confounders	other_treatment_psychological_condition___past	Other treatment for a psychological condition — Past		workbook:checkbox option
+confounders	pain_medication___1	[DEPRECATED] Chronic Pain medication — NSAIDs (ex: Ibuprofen/Advil/Cerebrex)		workbook:checkbox option
+confounders	pain_medication___2	[DEPRECATED] Chronic Pain medication — Morphine/Oxycodone		workbook:checkbox option
+confounders	pain_medication___3	[DEPRECATED] Chronic Pain medication — Neuro-modulators (ex: Gabapentin, Lyrica)		workbook:checkbox option
+confounders	panic_disorder___current	Panic disorder — Current		workbook:checkbox option
+confounders	panic_disorder___never	Panic disorder — Never		workbook:checkbox option
+confounders	panic_disorder___no_answer	Panic disorder — Prefer Not To Answer		workbook:checkbox option
+confounders	panic_disorder___past	Panic disorder — Past		workbook:checkbox option
+confounders	psychological_condition_other___current	Other psychological condition — Current		workbook:checkbox option
+confounders	psychological_condition_other___never	Other psychological condition — Never		workbook:checkbox option
+confounders	psychological_condition_other___no_answer	Other psychological condition — Prefer Not To Answer		workbook:checkbox option
+confounders	psychological_condition_other___past	Other psychological condition — Past		workbook:checkbox option
+confounders	ptsd_med_hist_psychological___current	Post-traumatic stress disorder (PTSD) — Current		workbook:checkbox option
+confounders	ptsd_med_hist_psychological___never	Post-traumatic stress disorder (PTSD) — Never		workbook:checkbox option
+confounders	ptsd_med_hist_psychological___no_answer	Post-traumatic stress disorder (PTSD) — Prefer Not To Answer		workbook:checkbox option
+confounders	ptsd_med_hist_psychological___past	Post-traumatic stress disorder (PTSD) — Past		workbook:checkbox option
+confounders	radiation___current	Radiation — Current		workbook:checkbox option
+confounders	radiation___never	Radiation — Never		workbook:checkbox option
+confounders	radiation___no_answer	Radiation — Prefer Not To Answer		workbook:checkbox option
+confounders	radiation___past	Radiation — Past		workbook:checkbox option
+confounders	radiation_to_head_neck___current	Radiation to the head or neck — Current		workbook:checkbox option
+confounders	radiation_to_head_neck___never	Radiation to the head or neck — Never		workbook:checkbox option
+confounders	radiation_to_head_neck___no_answer	Radiation to the head or neck — Prefer Not To Answer		workbook:checkbox option
+confounders	radiation_to_head_neck___past	Radiation to the head or neck — Past		workbook:checkbox option
+confounders	radioactive_iodine___current	Radioactive Iodine — Current		workbook:checkbox option
+confounders	radioactive_iodine___never	Radioactive Iodine — Never		workbook:checkbox option
+confounders	radioactive_iodine___no_answer	Radioactive Iodine — Prefer Not To Answer		workbook:checkbox option
+confounders	radioactive_iodine___past	Radioactive Iodine — Past		workbook:checkbox option
+confounders	resp_medical_history___1	[DEPRECATED] Respiratory medical history — Craniofacial or chest wall trauma		workbook:checkbox option
+confounders	resp_medical_history___2	[DEPRECATED] Respiratory medical history — Previous lobectomy		workbook:checkbox option
+confounders	resp_medical_history___3	[DEPRECATED] Respiratory medical history — Prior chest/airway surgery		workbook:checkbox option
+confounders	resp_medical_history___4	[DEPRECATED] Respiratory medical history — Prolonged intubation (more than a week)		workbook:checkbox option
+confounders	respiratory_conditions___1	[DEPRECATED] Respiratory Conditions — Bronchiectasis		workbook:checkbox option
+confounders	respiratory_conditions___2	[DEPRECATED] Respiratory Conditions — Cancer (lung or metastatic)		workbook:checkbox option
+confounders	respiratory_conditions___3	[DEPRECATED] Respiratory Conditions — Emphysema		workbook:checkbox option
+confounders	respiratory_conditions___4	[DEPRECATED] Respiratory Conditions — Interstitial lung disease (sarcoidosis, pulmonary fibrosis)		workbook:checkbox option
+confounders	respiratory_conditions___5	[DEPRECATED] Respiratory Conditions — Pneumothorax or atelectasis (collapsed lung)		workbook:checkbox option
+confounders	respiratory_conditions___6	[DEPRECATED] Respiratory Conditions — Pulmonary hypertension		workbook:checkbox option
+confounders	respiratory_conditions___7	[DEPRECATED] Respiratory Conditions — Radiation to the chest		workbook:checkbox option
+confounders	respiratory_conditions___8	[DEPRECATED] Respiratory Conditions — Tuberculosis		workbook:checkbox option
+confounders	schizophrenia_med_hist_psychological___current	Schizophrenia — Current		workbook:checkbox option
+confounders	schizophrenia_med_hist_psychological___never	Schizophrenia — Never		workbook:checkbox option
+confounders	schizophrenia_med_hist_psychological___no_answer	Schizophrenia — Prefer Not To Answer		workbook:checkbox option
+confounders	schizophrenia_med_hist_psychological___past	Schizophrenia — Past		workbook:checkbox option
+confounders	seasonal_allergies_options___1	[DEPRECATED] Check all that apply — Nasal congestion or obstruction		workbook:checkbox option
+confounders	seasonal_allergies_options___2	[DEPRECATED] Check all that apply — Cough		workbook:checkbox option
+confounders	seasonal_allergies_options___3	[DEPRECATED] Check all that apply — Scratchy or sore throat		workbook:checkbox option
+confounders	seasonal_allergies_options___4	[DEPRECATED] Check all that apply — Shortness of breath		workbook:checkbox option
+confounders	sinus_cancer___current	Sinus cancer — Current		workbook:checkbox option
+confounders	sinus_cancer___never	Sinus cancer — Never		workbook:checkbox option
+confounders	sinus_cancer___no_answer	Sinus cancer — Prefer Not To Answer		workbook:checkbox option
+confounders	sinus_cancer___past	Sinus cancer — Past		workbook:checkbox option
+confounders	speech_voice_swallowing_therapy___current	Speech, voice, or swallowing therapy — Current		workbook:checkbox option
+confounders	speech_voice_swallowing_therapy___never	Speech, voice, or swallowing therapy — Never		workbook:checkbox option
+confounders	speech_voice_swallowing_therapy___no_answer	Speech, voice, or swallowing therapy — Prefer Not To Answer		workbook:checkbox option
+confounders	speech_voice_swallowing_therapy___past	Speech, voice, or swallowing therapy — Past		workbook:checkbox option
+confounders	surgery___current	Surgery — Current		workbook:checkbox option
+confounders	surgery___never	Surgery — Never		workbook:checkbox option
+confounders	surgery___no_answer	Surgery — Prefer Not To Answer		workbook:checkbox option
+confounders	surgery___past	Surgery — Past		workbook:checkbox option
+confounders	swallowing_disorder___current	Swallowing disorder/dysphagia — Current		workbook:checkbox option
+confounders	swallowing_disorder___never	Swallowing disorder/dysphagia — Never		workbook:checkbox option
+confounders	swallowing_disorder___no_answer	Swallowing disorder/dysphagia — Prefer Not To Answer		workbook:checkbox option
+confounders	swallowing_disorder___past	Swallowing disorder/dysphagia — Past		workbook:checkbox option
+confounders	symptoms___1	[DEPRECATED] There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. — Anxiety or nervousness		workbook:checkbox option
+confounders	symptoms___2	[DEPRECATED] There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. — Confusion		workbook:checkbox option
+confounders	symptoms___3	[DEPRECATED] There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. — Dizziness		workbook:checkbox option
+confounders	symptoms___4	[DEPRECATED] There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. — Frequent or severe headache or migraine		workbook:checkbox option
+confounders	symptoms___5	[DEPRECATED] There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. — Sleep disturbance		workbook:checkbox option
+confounders	symptoms___6	[DEPRECATED] There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. — Speech difficulty		workbook:checkbox option
+confounders	symptoms___7	[DEPRECATED] There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. — Prefer not to answer		workbook:checkbox option
+confounders	talk_therapy_mental_health_prof___current	Talk therapy with a mental health professional (e.g. social worker, psychiatrist, etc.) — Current		workbook:checkbox option
+confounders	talk_therapy_mental_health_prof___never	Talk therapy with a mental health professional (e.g. social worker, psychiatrist, etc.) — Never		workbook:checkbox option
+confounders	talk_therapy_mental_health_prof___no_answer	Talk therapy with a mental health professional (e.g. social worker, psychiatrist, etc.) — Prefer Not To Answer		workbook:checkbox option
+confounders	talk_therapy_mental_health_prof___past	Talk therapy with a mental health professional (e.g. social worker, psychiatrist, etc.) — Past		workbook:checkbox option
+confounders	throat_med_history___1	[DEPRECATED] Throat — Pre-cancerous throat lesion (e.g. laryngeal leukoplakia or keratosis		workbook:checkbox option
+confounders	throat_med_history___10	[DEPRECATED] Throat — Vocal fold polyp, nodule, or cyst		workbook:checkbox option
+confounders	throat_med_history___11	[DEPRECATED] Throat — Vocal hemorrhage or bleed		workbook:checkbox option
+confounders	throat_med_history___12	[DEPRECATED] Throat — Voice/throat disorder		workbook:checkbox option
+confounders	throat_med_history___2	[DEPRECATED] Throat — Reflux (heartburn)		workbook:checkbox option
+confounders	throat_med_history___3	[DEPRECATED] Throat — Reinke's edema, polypoid corditis, or smoker's larynx		workbook:checkbox option
+confounders	throat_med_history___4	[DEPRECATED] Throat — Sjögren's syndrome		workbook:checkbox option
+confounders	throat_med_history___5	[DEPRECATED] Throat — Swallowing disorders (dysphagia)		workbook:checkbox option
+confounders	throat_med_history___6	[DEPRECATED] Throat — Throat cancer		workbook:checkbox option
+confounders	throat_med_history___7	[DEPRECATED] Throat — Thyroid disease		workbook:checkbox option
+confounders	throat_med_history___8	[DEPRECATED] Throat — Velopharyngeal insufficiency		workbook:checkbox option
+confounders	throat_med_history___9	[DEPRECATED] Throat — Vocal fold dysfunction, paradoxical vocal fold motion, or inducible laryngeal obstruction		workbook:checkbox option
+confounders	throat_surgical___1	[DEPRECATED] Throat — Airway surgery		workbook:checkbox option
+confounders	throat_surgical___2	[DEPRECATED] Throat — Throat surgery		workbook:checkbox option
+confounders	throat_surgical___3	[DEPRECATED] Throat — Thyroid surgery		workbook:checkbox option
+confounders	throat_surgical___4	[DEPRECATED] Throat — Tonsillectomy/Adenoidectomy		workbook:checkbox option
+confounders	thyroid_cancer___current	Thyroid cancer — Current		workbook:checkbox option
+confounders	thyroid_cancer___never	Thyroid cancer — Never		workbook:checkbox option
+confounders	thyroid_cancer___no_answer	Thyroid cancer — Prefer Not To Answer		workbook:checkbox option
+confounders	thyroid_cancer___past	Thyroid cancer — Past		workbook:checkbox option
+confounders	thyroid_disease___current	Thyroid disease (e.g. thyroid polyp, Hashimoto's Grave's disease, hypo/hyperthyroidism, etc.) — Current		workbook:checkbox option
+confounders	thyroid_disease___never	Thyroid disease (e.g. thyroid polyp, Hashimoto's Grave's disease, hypo/hyperthyroidism, etc.) — Never		workbook:checkbox option
+confounders	thyroid_disease___no_answer	Thyroid disease (e.g. thyroid polyp, Hashimoto's Grave's disease, hypo/hyperthyroidism, etc.) — Prefer Not To Answer		workbook:checkbox option
+confounders	thyroid_disease___past	Thyroid disease (e.g. thyroid polyp, Hashimoto's Grave's disease, hypo/hyperthyroidism, etc.) — Past		workbook:checkbox option
+confounders	today_consume_caffeinated_products___caffeinated_teas	What type(s) of caffeinated products have you had today? — Caffeinated teas		workbook:checkbox option
+confounders	today_consume_caffeinated_products___carbonated_beverages	What type(s) of caffeinated products have you had today? — Carbonated beverages (e.g. soda, pop. Coke, etc.)		workbook:checkbox option
+confounders	today_consume_caffeinated_products___coffee	What type(s) of caffeinated products have you had today? — Coffee		workbook:checkbox option
+confounders	today_consume_caffeinated_products___energy_drinks	What type(s) of caffeinated products have you had today? — Energy drinks		workbook:checkbox option
+confounders	today_consume_caffeinated_products___espresso	What type(s) of caffeinated products have you had today? — Espresso		workbook:checkbox option
+confounders	today_consume_caffeinated_products___other	What type(s) of caffeinated products have you had today? — Other		workbook:checkbox option
+confounders	typical_day_consume_caffeinated_products___caffeinated_teas	What type(s) of caffeinated products do you typically consume? — Caffeinated teas		workbook:checkbox option
+confounders	typical_day_consume_caffeinated_products___carbonated_beverages	What type(s) of caffeinated products do you typically consume? — Carbonated beverages (e.g. soda, pop. Coke, etc.)		workbook:checkbox option
+confounders	typical_day_consume_caffeinated_products___coffee	What type(s) of caffeinated products do you typically consume? — Coffee		workbook:checkbox option
+confounders	typical_day_consume_caffeinated_products___energy_drinks	What type(s) of caffeinated products do you typically consume? — Energy drinks		workbook:checkbox option
+confounders	typical_day_consume_caffeinated_products___espresso	What type(s) of caffeinated products do you typically consume? — Espresso		workbook:checkbox option
+confounders	typical_day_consume_caffeinated_products___other	What type(s) of caffeinated products do you typically consume? — Other		workbook:checkbox option
+confounders	vagal_nerve_stimulator___current	Vagal nerve stimulator — Current		workbook:checkbox option
+confounders	vagal_nerve_stimulator___never	Vagal nerve stimulator — Never		workbook:checkbox option
+confounders	vagal_nerve_stimulator___no_answer	Vagal nerve stimulator — Prefer Not To Answer		workbook:checkbox option
+confounders	vagal_nerve_stimulator___past	Vagal nerve stimulator — Past		workbook:checkbox option
+confounders	vfp_bilateral___current	Vocal fold paralysis (bilateral) — Current		workbook:checkbox option
+confounders	vfp_bilateral___never	Vocal fold paralysis (bilateral) — Never		workbook:checkbox option
+confounders	vfp_bilateral___no_answer	Vocal fold paralysis (bilateral) — Prefer Not To Answer		workbook:checkbox option
+confounders	vfp_bilateral___past	Vocal fold paralysis (bilateral) — Past		workbook:checkbox option
+confounders	vfp_unilateral___current	Vocal fold paralysis (unilateral) — Current		workbook:checkbox option
+confounders	vfp_unilateral___never	Vocal fold paralysis (unilateral) — Never		workbook:checkbox option
+confounders	vfp_unilateral___no_answer	Vocal fold paralysis (unilateral) — Prefer Not To Answer		workbook:checkbox option
+confounders	vfp_unilateral___past	Vocal fold paralysis (unilateral) — Past		workbook:checkbox option
+confounders	vocal_cord_dysfunction___current	Vocal cord dysfunction/paradoxical vocal fold motion — Current		workbook:checkbox option
+confounders	vocal_cord_dysfunction___never	Vocal cord dysfunction/paradoxical vocal fold motion — Never		workbook:checkbox option
+confounders	vocal_cord_dysfunction___no_answer	Vocal cord dysfunction/paradoxical vocal fold motion — Prefer Not To Answer		workbook:checkbox option
+confounders	vocal_cord_dysfunction___past	Vocal cord dysfunction/paradoxical vocal fold motion — Past		workbook:checkbox option
+confounders	vocal_fold_hemorrhage___current	Vocal fold hemorrhage or bleed — Current		workbook:checkbox option
+confounders	vocal_fold_hemorrhage___never	Vocal fold hemorrhage or bleed — Never		workbook:checkbox option
+confounders	vocal_fold_hemorrhage___no_answer	Vocal fold hemorrhage or bleed — Prefer Not To Answer		workbook:checkbox option
+confounders	vocal_fold_hemorrhage___past	Vocal fold hemorrhage or bleed — Past		workbook:checkbox option
+confounders	voice_activity___2	[DEPRECATED] Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — Waiter, receptionist		workbook:checkbox option
+confounders	voice_activity___3	[DEPRECATED] Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — Speaking (secretary, call center, attorney, salesperson)		workbook:checkbox option
+confounders	voice_activity___4	[DEPRECATED] Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — Teacher		workbook:checkbox option
+confounders	voice_activity___5	[DEPRECATED] Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — Singer		workbook:checkbox option
+confounders	voice_activity___7	[DEPRECATED] Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — Other		workbook:checkbox option
+confounders	voice_activity_v2___administrative_assistant	Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — Administrative assistant		workbook:checkbox option
+confounders	voice_activity_v2___none	Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — NONE OF THE ABOVE		workbook:checkbox option
+confounders	voice_activity_v2___other	Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — Other		workbook:checkbox option
+confounders	voice_activity_v2___parent_guardian_caregiver	Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — Parent, guardian, or caregiver		workbook:checkbox option
+confounders	voice_activity_v2___public_speaker	Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — Public Speaker		workbook:checkbox option
+confounders	voice_activity_v2___salesperson	Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — Salesperson		workbook:checkbox option
+confounders	voice_activity_v2___singer	Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — Singer		workbook:checkbox option
+confounders	voice_activity_v2___teacher	Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply — Teacher		workbook:checkbox option
+demographics	state_province	State or province of residence (two-letter code)		workbook:correction
+demographics	age	Age in years (text; 90+ exported as '90 and above')		workbook:correction
+demographics	employ_status___1	What is your employment status? Choose all that apply — Employed, freelance		workbook:checkbox option
+demographics	employ_status___10	What is your employment status? Choose all that apply — Stay-at-home parent or guardian		workbook:checkbox option
+demographics	employ_status___11	What is your employment status? Choose all that apply — Caregiver		workbook:checkbox option
+demographics	employ_status___12	What is your employment status? Choose all that apply — Disabled		workbook:checkbox option
+demographics	employ_status___13	What is your employment status? Choose all that apply — Between jobs		workbook:checkbox option
+demographics	employ_status___2	What is your employment status? Choose all that apply — Employed, full time		workbook:checkbox option
+demographics	employ_status___3	What is your employment status? Choose all that apply — Employed, part time		workbook:checkbox option
+demographics	employ_status___4	What is your employment status? Choose all that apply — Employed, multiple part time jobs		workbook:checkbox option
+demographics	employ_status___5	What is your employment status? Choose all that apply — Student		workbook:checkbox option
+demographics	employ_status___6	What is your employment status? Choose all that apply — Self-employed		workbook:checkbox option
+demographics	employ_status___7	What is your employment status? Choose all that apply — Retired		workbook:checkbox option
+demographics	employ_status___8	What is your employment status? Choose all that apply — Unemployed		workbook:checkbox option
+demographics	employ_status___9	What is your employment status? Choose all that apply — Other		workbook:checkbox option
+demographics	race___1	Which race category best describes you? Choose all that apply — American Indian or Alaska Native		workbook:checkbox option
+demographics	race___2	Which race category best describes you? Choose all that apply — Asian		workbook:checkbox option
+demographics	race___3	Which race category best describes you? Choose all that apply — Black or African American		workbook:checkbox option
+demographics	race___4	Which race category best describes you? Choose all that apply — Native Hawaiian or other Pacific Islander		workbook:checkbox option
+demographics	race___5	Which race category best describes you? Choose all that apply — White		workbook:checkbox option
+demographics	race___6	Which race category best describes you? Choose all that apply — Canadian Indigenous or Aboriginal		workbook:checkbox option
+demographics	race___7	Which race category best describes you? Choose all that apply — Other		workbook:checkbox option
+demographics	race___8	Which race category best describes you? Choose all that apply — Prefer not to answer		workbook:checkbox option
+airway_stenosis	diagnosis_as_gold_standard_diagnosis_yes___bronchoscopy	Confirmed by — Confirmed by bronchoscopy or laryngoscopy		workbook:checkbox option
+airway_stenosis	diagnosis_as_gold_standard_diagnosis_yes___ct	Confirmed by — Confirmed by CT imaging		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment___in_office_treatment	What treatment has the participant undergone for their stenosis? — In-office treatment		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment___no_treatment	What treatment has the participant undergone for their stenosis? — No treatment		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment___surgery	What treatment has the participant undergone for their stenosis? — Surgery		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment_in_office___dilation	In-office/awake treatment options — In-office or awake dilation		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment_in_office___laser	In-office/awake treatment options — In-office or awake laser		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment_in_office___steroid_injections_adjunct	In-office/awake treatment options — Awake Steroid injection(s) as adjunct treatment		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment_in_office___steroid_injections_sole	In-office/awake treatment options — Awake Steroid injection(s) as sole treatment		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment_surgery___endoscopic_excision	Surgery options — Endoscopic laser wedge excision with balloon dilation and steroid injection		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment_surgery___endoscopic_intervention	Surgery options — Endoscopic intervention with Laser and Balloon dilation and steroid injection		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment_surgery___laryngotracheal_reconstruction	Surgery options — Open Laryngotracheal reconstruction		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment_surgery___laryngotracheoplasty	Surgery options — Laryngotracheoplasty (Maddern procedure)		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment_surgery___other	Surgery options — Other		workbook:checkbox option
+airway_stenosis	diagnosis_as_treatment_surgery___tracheostomy	Surgery options — Tracheostomy		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_gold_standard_diagnosis_calculation	Calculated flag: meets ALS diagnostic criteria (Yes/No)		workbook:correction
+amyotrophic_lateral_sclerosis	diagnosis_als_cp___bulbar_symptoms	Describe the clinical features and symptoms of ALS in the participant — Bulbar Symptoms (e.g., dysarthria, dysphagia)		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_cp___lower_motor_neuron	Describe the clinical features and symptoms of ALS in the participant — Lower Motor Neuron Signs (e.g., muscle weakness, atrophy, fasciculations)		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_cp___respiratory_involvement	Describe the clinical features and symptoms of ALS in the participant — Respiratory Involvement		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_cp___upper_motor_neuron	Describe the clinical features and symptoms of ALS in the participant — Upper Motor Neuron Signs (e.g., spasticity, hyperreflexia)		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_etiology___environmental_factors	What is the suspected or known etiology of ALS in the participant? — Environmental factors		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_etiology___genetic_factors	What is the suspected or known etiology of ALS in the participant? — Genetic factors		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_etiology_genetic_factors___c9orf72	Genetic Factors — C9orf72 mutation		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_etiology_genetic_factors___other	Genetic Factors — Other genetic factors		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_etiology_genetic_factors___sod1	Genetic Factors — SOD1 mutation		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_gold_standard_diagnosis_confirmation_method___investigations_excluding_disease_processes	How was this diagnosis confirmed? (Check all that apply) — Investigations excluding other disease processes		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_gold_standard_diagnosis_confirmation_method___presence_of_umn_lmn_signs	How was this diagnosis confirmed? (Check all that apply) — Presence of UMN and LMN signs in at least 1 body region (with UMN and LMN dysfunction noted in the same body region if only one body region is involved) or LMN dysfunction in at least 2 body regions		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_gold_standard_diagnosis_confirmation_method___progressive_motor_impairment	How was this diagnosis confirmed? (Check all that apply) — Progressive motor impairment documented by history or repeated clinical assessment, preceded by normal motor function		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes___medications	Treatment and Management — Medications		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes___supportive_care	Treatment and Management — Supportive Care		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_medications___edaravone	Medications (if applicable) — Edaravone		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_medications___other	Medications (if applicable) — Other		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_medications___riluzole	Medications (if applicable) — Riluzole		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_medications___sodium	Medications (if applicable) — Sodium phenylbutyrate/taurursodiol		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_medications___symptomatic_treatment	Medications (if applicable) — Symptomatic treatment (e.g., for spasticity, pain)		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_medications___tofersen	Medications (if applicable) — Tofersen		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_supportive_care___nutrition_support	Supportive Care — Nutrition and swallowing support		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_supportive_care___occupational_therapy	Supportive Care — Occupational therapy		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_supportive_care___other	Supportive Care — Other		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_supportive_care___physical_therapy	Supportive Care — Physical therapy		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_supportive_care___psychotherapy	Supportive Care — Psychotherapy		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_supportive_care___respiratory_support	Supportive Care — Respiratory support (e.g., non-invasive ventilation)		workbook:checkbox option
+amyotrophic_lateral_sclerosis	diagnosis_als_treatment_and_management_yes_supportive_care___speech_therapy	Supportive Care — Speech therapy		workbook:checkbox option
+anxiety	diagnosis_ad_gold_standard_diagnosis	Gold-standard clinician diagnosis of an anxiety disorder (Yes/No)		workbook:correction
+anxiety	diagnosis_ad_active_psy_med_problems___adhd	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — ADHD		workbook:checkbox option
+anxiety	diagnosis_ad_active_psy_med_problems___anxiety	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Anxiety		workbook:checkbox option
+anxiety	diagnosis_ad_active_psy_med_problems___epilepsy	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Epilepsy		workbook:checkbox option
+anxiety	diagnosis_ad_active_psy_med_problems___laryngeal_cancer	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Laryngeal cancer		workbook:checkbox option
+anxiety	diagnosis_ad_active_psy_med_problems___ocd	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — OCD		workbook:checkbox option
+anxiety	diagnosis_ad_active_psy_med_problems___other	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Other		workbook:checkbox option
+anxiety	diagnosis_ad_active_psy_med_problems___seasonal_allergies	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Seasonal allergies		workbook:checkbox option
+anxiety	diagnosis_ad_active_psy_med_problems___stroke	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Stroke		workbook:checkbox option
+anxiety	diagnosis_ad_hist_psy_med_problems___adhd	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — ADHD		workbook:checkbox option
+anxiety	diagnosis_ad_hist_psy_med_problems___anxiety	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Anxiety		workbook:checkbox option
+anxiety	diagnosis_ad_hist_psy_med_problems___epilepsy	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Epilepsy		workbook:checkbox option
+anxiety	diagnosis_ad_hist_psy_med_problems___laryngeal_cancer	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Laryngeal cancer		workbook:checkbox option
+anxiety	diagnosis_ad_hist_psy_med_problems___ocd	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — OCD		workbook:checkbox option
+anxiety	diagnosis_ad_hist_psy_med_problems___other	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Other		workbook:checkbox option
+anxiety	diagnosis_ad_hist_psy_med_problems___seasonal_allergies	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Seasonal allergies		workbook:checkbox option
+anxiety	diagnosis_ad_hist_psy_med_problems___stroke	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Stroke		workbook:checkbox option
+ataxia	ataxia_clinical_presentation___changes_in_speech	Clinical presentation (select all that apply) — Changes in speech (e.g. dysarthria)		workbook:checkbox option
+ataxia	ataxia_clinical_presentation___dysphagia	Clinical presentation (select all that apply) — Dysphagia		workbook:checkbox option
+ataxia	ataxia_clinical_presentation___gait_imbalance_or_wide_based_gait	Clinical presentation (select all that apply) — Gait imbalance or wide-based gait		workbook:checkbox option
+ataxia	ataxia_clinical_presentation___limb_incoordination	Clinical presentation (select all that apply) — Limb incoordination (e.g. dysmetria on target testing, dysdiadochokinesia)		workbook:checkbox option
+ataxia	ataxia_clinical_presentation___oculomotor_abnormalities	Clinical presentation (select all that apply) — Oculomotor abnormalities (nystagmus, abnormal pursuit, saccadic dysmetria)		workbook:checkbox option
+ataxia	ataxia_clinical_presentation___other	Clinical presentation (select all that apply) — Other		workbook:checkbox option
+ataxia	ataxia_clinical_presentation___prominent_sensory_loss_or_proprioceptive_impairment	Clinical presentation (select all that apply) — Prominent sensory loss or proprioceptive impairment		workbook:checkbox option
+ataxia	ataxia_clinical_presentation___prominent_vertigo_or_dizziness	Clinical presentation (select all that apply) — Prominent vertigo or dizziness		workbook:checkbox option
+ataxia	ataxia_clinical_presentation___truncal_instability	Clinical presentation (select all that apply) — Truncal instability		workbook:checkbox option
+ataxia	ataxia_clinical_presentation___unknown	Clinical presentation (select all that apply) — Unknown		workbook:checkbox option
+ataxia	ataxia_emg_or_ncs_specify_test	Which EMG or NCS test was performed		workbook:correction (specify)
+ataxia	ataxia_etiology___autoimmune_or_paraneoplastic	What is the etiology? Select all that apply. — Autoimmune or paraneoplastic		workbook:checkbox option
+ataxia	ataxia_etiology___degenerative_non_hereditary	What is the etiology? Select all that apply. — Degenerative, non-hereditary		workbook:checkbox option
+ataxia	ataxia_etiology___genetic_or_hereditary	What is the etiology? Select all that apply. — Genetic or hereditary		workbook:checkbox option
+ataxia	ataxia_etiology___infectious_or_post_infectious	What is the etiology? Select all that apply. — Infectious or post-infectious		workbook:checkbox option
+ataxia	ataxia_etiology___metabolic_or_nutritional	What is the etiology? Select all that apply. — Metabolic or nutritional		workbook:checkbox option
+ataxia	ataxia_etiology___other	What is the etiology? Select all that apply. — Other		workbook:checkbox option
+ataxia	ataxia_etiology___sporadic_onset_ataxia	What is the etiology? Select all that apply. — Sporadic onset ataxia		workbook:checkbox option
+ataxia	ataxia_etiology___structural_lesion	What is the etiology? Select all that apply. — Structural lesion (example: tumor or malformation)		workbook:checkbox option
+ataxia	ataxia_etiology___toxic_medication_induced_or_alcohol_related	What is the etiology? Select all that apply. — Toxic, medication-induced, or alcohol-related		workbook:checkbox option
+ataxia	ataxia_etiology___unknown	What is the etiology? Select all that apply. — Unknown		workbook:checkbox option
+ataxia	ataxia_etiology___vascular	What is the etiology? Select all that apply. — Vascular (example: stroke or hemorrhage)		workbook:checkbox option
+ataxia	ataxia_present_episodic_chronic___chronic	Does ataxia present as episodic or chronic? (Choose all that apply) — Chronic		workbook:checkbox option
+ataxia	ataxia_present_episodic_chronic___episodic	Does ataxia present as episodic or chronic? (Choose all that apply) — Episodic		workbook:checkbox option
+ataxia	ataxia_present_episodic_chronic___no	Does ataxia present as episodic or chronic? (Choose all that apply) — No		workbook:checkbox option
+ataxia	ataxia_present_episodic_chronic___unknown	Does ataxia present as episodic or chronic? (Choose all that apply) — Unknown		workbook:checkbox option
+ataxia	ataxia_relevant_labs_selection___autoimmune	Relevant labs (select all that apply) — Autoimmune		workbook:checkbox option
+ataxia	ataxia_relevant_labs_selection___blood	Relevant labs (select all that apply) — Blood		workbook:checkbox option
+ataxia	ataxia_relevant_labs_selection___csf	Relevant labs (select all that apply) — CSF		workbook:checkbox option
+ataxia	ataxia_relevant_labs_selection___metabolic	Relevant labs (select all that apply) — Metabolic		workbook:checkbox option
+ataxia	ataxia_relevant_labs_selection___nutritional	Relevant labs (select all that apply) — Nutritional		workbook:checkbox option
+ataxia	ataxia_relevant_labs_selection___other	Relevant labs (select all that apply) — Other		workbook:checkbox option
+ataxia	ataxia_relevant_labs_selection___serum	Relevant labs (select all that apply) — Serum		workbook:checkbox option
+ataxia	ataxia_scores_standardized_scales___fars_score	Please provide scores or results from standardized ataxia scales (select all that apply). — FARS score available		workbook:checkbox option
+ataxia	ataxia_scores_standardized_scales___functional_mobility_stage	Please provide scores or results from standardized ataxia scales (select all that apply). — Functional mobility stage available		workbook:checkbox option
+ataxia	ataxia_scores_standardized_scales___icars_score	Please provide scores or results from standardized ataxia scales (select all that apply). — ICARS score available		workbook:checkbox option
+ataxia	ataxia_scores_standardized_scales___not_available	Please provide scores or results from standardized ataxia scales (select all that apply). — Not available		workbook:checkbox option
+ataxia	ataxia_scores_standardized_scales___other_scale	Please provide scores or results from standardized ataxia scales (select all that apply). — Other scale		workbook:checkbox option
+ataxia	ataxia_scores_standardized_scales___sara_score	Please provide scores or results from standardized ataxia scales (select all that apply). — SARA score available		workbook:checkbox option
+ataxia	ataxia_supported_confirmed___history_or_repeated_exam_documents_gait_truncal_limb_incoordination	How was ataxia supported or confirmed? Select all that apply. — History or repeated exam documents gait, truncal, or limb incoordination		workbook:checkbox option
+ataxia	ataxia_supported_confirmed___neurological_exam_shows_signs_consistent_with_ataxia	How was ataxia supported or confirmed? Select all that apply. — Objective neurological exam signs are consistent with ataxia (examples: dysmetria, dysdiadochokinesia, dysarthria, nystagmus)		workbook:checkbox option
+ataxia	ataxia_supported_confirmed___reasonable_evaluation_exclude_major_alternative_explanations	How was ataxia supported or confirmed? Select all that apply. — Reasonable evaluation was done to exclude major alternative explanations (examples: sensory loss, weakness or spasticity, intoxication or medication effect) or to classify the type with supporting findings		workbook:checkbox option
+ataxia	ataxia_supported_confirmed___severity_standardized_ataxia_scale	How was ataxia supported or confirmed? Select all that apply. — Severity quantified using a standardized ataxia scale (examples: SARA, ICARS, or FARS)		workbook:checkbox option
+ataxia	ataxia_supported_confirmed___supporting_testing_performed	How was ataxia supported or confirmed? Select all that apply. — Supporting testing performed (examples: MRI findings consistent with cerebellar pathology, or relevant labs or genetic testing depending on suspected cause)		workbook:checkbox option
+ataxia	ataxia_supported_confirmed___unknown	How was ataxia supported or confirmed? Select all that apply. — Unknown		workbook:checkbox option
+ataxia	ataxia_tests_performed___acquired_ataxia_workup	Tests performed (select all that apply) — Acquired ataxia workup		workbook:checkbox option
+ataxia	ataxia_tests_performed___brain_mri	Tests performed (select all that apply) — Brain MRI		workbook:checkbox option
+ataxia	ataxia_tests_performed___genetic_testing	Tests performed (select all that apply) — Genetic testing		workbook:checkbox option
+ataxia	ataxia_tests_performed___other_testing	Tests performed (select all that apply) — Other testing		workbook:checkbox option
+ataxia	ataxia_tests_performed___relevant_labs_performed	Tests performed (select all that apply) — Relevant labs performed (metabolic, nutritional, autoimmune, blood, CSF, or serum)		workbook:checkbox option
+ataxia	ataxia_treatment_types_selection___assistive_devices	Treatment — Assistive devices (cane, walker, wheelchair)		workbook:checkbox option
+ataxia	ataxia_treatment_types_selection___etiology_targeted_treatment	Treatment — Etiology-targeted treatment (if applicable)		workbook:checkbox option
+ataxia	ataxia_treatment_types_selection___other	Treatment — Other		workbook:checkbox option
+ataxia	ataxia_treatment_types_selection___rehabilitation_therapies	Treatment — Rehabilitation therapies (PT, OT, speech therapy)		workbook:checkbox option
+ataxia	diagnosis_ataxia_gold_standard_diagnosis_confirmation_method___hospital_discharge_summary	How was this diagnosis confirmed? Select all that apply. — Hospital discharge summary		workbook:checkbox option
+ataxia	diagnosis_ataxia_gold_standard_diagnosis_confirmation_method___movement_disorders_specialist	How was this diagnosis confirmed? Select all that apply. — Movement disorders specialist		workbook:checkbox option
+ataxia	diagnosis_ataxia_gold_standard_diagnosis_confirmation_method___neurologist	How was this diagnosis confirmed? Select all that apply. — Neurologist		workbook:checkbox option
+ataxia	diagnosis_ataxia_gold_standard_diagnosis_confirmation_method___other_specialist	How was this diagnosis confirmed? Select all that apply. — Other specialist		workbook:checkbox option
+ataxia	diagnosis_ataxia_gold_standard_diagnosis_confirmation_method___participant_self_report	How was this diagnosis confirmed? Select all that apply. — Participant self-report		workbook:checkbox option
+ataxia	diagnosis_ataxia_gold_standard_diagnosis_confirmation_method___problem_list_or_icd_code	How was this diagnosis confirmed? Select all that apply. — Problem list or ICD code		workbook:checkbox option
+ataxia	diagnosis_ataxia_gold_standard_diagnosis_confirmation_method___unknown	How was this diagnosis confirmed? Select all that apply. — Unknown		workbook:checkbox option
+benign_lesions	diagnois_bl_gold_standard_diagnosis	Does the participant have a benign lesion confirmed by laryngoscopy/stroboscopy?	diagnosis_bl_gold_standard_diagnosis	workbook:rename (typo fix)
+benign_lesions	diagnosis_bl_degree_b_1	Breathiness severity (0-100; mildly to severely deviant)	diagnosis_bl_degree_b_severity	workbook:capev severity
+benign_lesions	diagnosis_bl_degree_b_2	Breathiness consistency (consistent or intermittent)	diagnosis_bl_degree_b_consistency	workbook:capev consistency
+benign_lesions	diagnosis_bl_degree_l_1	Loudness severity (0-100; mildly to severely deviant)	diagnosis_bl_degree_l_severity	workbook:capev severity
+benign_lesions	diagnosis_bl_degree_l_2	Loudness consistency (consistent or intermittent)	diagnosis_bl_degree_l_consistency	workbook:capev consistency
+benign_lesions	diagnosis_bl_degree_os_1	Overall severity (0-100; mildly to severely deviant)	diagnosis_bl_degree_os_severity	workbook:capev severity
+benign_lesions	diagnosis_bl_degree_os_2	Overall severity consistency (consistent or intermittent)	diagnosis_bl_degree_os_consistency	workbook:capev consistency
+benign_lesions	diagnosis_bl_degree_p_1	Pitch severity (0-100; mildly to severely deviant)	diagnosis_bl_degree_p_severity	workbook:capev severity
+benign_lesions	diagnosis_bl_degree_p_2	Pitch consistency (consistent or intermittent)	diagnosis_bl_degree_p_consistency	workbook:capev consistency
+benign_lesions	diagnosis_bl_degree_r_1	Roughness severity (0-100; mildly to severely deviant)	diagnosis_bl_degree_r_severity	workbook:capev severity
+benign_lesions	diagnosis_bl_degree_r_2	Roughness consistency (consistent or intermittent)	diagnosis_bl_degree_r_consistency	workbook:capev consistency
+benign_lesions	diagnosis_bl_degree_s_1	Strain severity (0-100; mildly to severely deviant)	diagnosis_bl_degree_s_severity	workbook:capev severity
+benign_lesions	diagnosis_bl_degree_s_2	Strain consistency (consistent or intermittent)	diagnosis_bl_degree_s_consistency	workbook:capev consistency
+benign_lesions	diagnosis_bl_ds_other	Other benign lesion diagnosis		workbook:correction (specify)
+benign_lesions	diagnosis_bl_etiology_other	Other benign lesion etiology		workbook:correction (specify)
+benign_lesions	diagnosis_bl_treatment_other	Other benign lesion treatment		workbook:correction (specify)
+benign_lesions	diagnosis_bl_treatment_select___laryngeal_microsurgery	Treatment obtained — Laryngeal microsurgery		workbook:checkbox option
+benign_lesions	diagnosis_bl_treatment_select___other	Treatment obtained — Other		workbook:checkbox option
+benign_lesions	diagnosis_bl_treatment_select___voice_or_speech_therapy	Treatment obtained — Voice/speech therapy		workbook:checkbox option
+benign_lesions	diagnosis_bl_treatment_select___voice_rest	Treatment obtained — Voice rest		workbook:checkbox option
+bipolar_disorder	diagnosis_mbd_gold_standard_diagnosis	Gold-standard clinician diagnosis of bipolar disorder (Yes/No)		workbook:correction
+bipolar_disorder	mbd_active_psy_med_problems___adhd	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — ADHD		workbook:checkbox option
+bipolar_disorder	mbd_active_psy_med_problems___anxiety	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Anxiety		workbook:checkbox option
+bipolar_disorder	mbd_active_psy_med_problems___epilepsy	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Epilepsy		workbook:checkbox option
+bipolar_disorder	mbd_active_psy_med_problems___laryngeal_cancer	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Laryngeal cancer		workbook:checkbox option
+bipolar_disorder	mbd_active_psy_med_problems___ocd	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — OCD		workbook:checkbox option
+bipolar_disorder	mbd_active_psy_med_problems___other	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Other		workbook:checkbox option
+bipolar_disorder	mbd_active_psy_med_problems___seasonal_allergies	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Seasonal allergies		workbook:checkbox option
+bipolar_disorder	mbd_active_psy_med_problems___stroke	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Stroke		workbook:checkbox option
+bipolar_disorder	mbd_hist_psy_med_problems___adhd	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — ADHD		workbook:checkbox option
+bipolar_disorder	mbd_hist_psy_med_problems___anxiety	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Anxiety		workbook:checkbox option
+bipolar_disorder	mbd_hist_psy_med_problems___epilepsy	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Epilepsy		workbook:checkbox option
+bipolar_disorder	mbd_hist_psy_med_problems___laryngeal_cancer	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Laryngeal cancer		workbook:checkbox option
+bipolar_disorder	mbd_hist_psy_med_problems___ocd	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — OCD		workbook:checkbox option
+bipolar_disorder	mbd_hist_psy_med_problems___other	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Other		workbook:checkbox option
+bipolar_disorder	mbd_hist_psy_med_problems___seasonal_allergies	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Seasonal allergies		workbook:checkbox option
+bipolar_disorder	mbd_hist_psy_med_problems___stroke	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Stroke		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_ds___cdr	What is the current stage/severity of cognitive impairment or dementia in the participant? — Clinical dementia rating (CDR) staging		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_ds___mci	What is the current stage/severity of cognitive impairment or dementia in the participant? — Mild cognitive impairment (MCI)		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_etiology___age_related_changes	What is the suspected or known etiology in the participant? — Age-related changes		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_etiology___genetic_factors	What is the suspected or known etiology in the participant? — Genetic factors		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_etiology___other	What is the suspected or known etiology in the participant? — Other		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_etiology___other_medical_conditions	What is the suspected or known etiology in the participant? — Other medical conditions (e.g., vascular factors, traumatic brain injury)		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_etiology___substance_related	What is the suspected or known etiology in the participant? — Substance-related (e.g., alcohol-induced cognitive impairment)		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_etiology_gf___apolipoprotein_e	Genetic Factors Subcategory — Apolipoprotein E (APOE) ε4 allele		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_etiology_gf___familial_alzheimers_disease	Genetic Factors Subcategory — Familial Alzheimer's disease (e.g., mutations in APP, PSEN1, PSEN2 genes)		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_etiology_gf___other_genetic_factors	Genetic Factors Subcategory — Other genetic factors		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_gold_standard_diagnosis_confirmation_method___blood_biomarkers	How was this diagnosis confirmed? (Check all that apply) — Blood Biomarkers		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_gold_standard_diagnosis_confirmation_method___clinical_history	How was this diagnosis confirmed? (Check all that apply) — Clinical History		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_gold_standard_diagnosis_confirmation_method___cognitive_testing	How was this diagnosis confirmed? (Check all that apply) — Cognitive Testing		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_gold_standard_diagnosis_confirmation_method___functional_inventory	How was this diagnosis confirmed? (Check all that apply) — Functional Inventory		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_gold_standard_diagnosis_confirmation_method___other	How was this diagnosis confirmed? (Check all that apply) — Other		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_treatment_obtained_yes___medications	Treatment Obtained — Medications		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_treatment_obtained_yes___npi	Treatment Obtained — Non-pharmacological interventions		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___cholinesterase_inhibitors	Medications — Cholinesterase inhibitors (e.g., Donepezil, Rivastigmine, Galantamine)		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___nmda_receptor_antagonist	Medications — NMDA receptor antagonist (e.g., Memantine)		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___other	Medications — Other		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___cognitive_simulation_therapy	Non-pharmacological interventions — Cognitive stimulation therapy		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___day_program	Non-pharmacological interventions — Day program		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___dietary_modifications	Non-pharmacological interventions — Dietary modifications		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___other	Non-pharmacological interventions — Other		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___physical_exercise_program	Non-pharmacological interventions — Physical exercise program		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___reality_orientation_therapy	Non-pharmacological interventions — Reality orientation therapy		workbook:checkbox option
+cognitive_impairment	diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___reminiscence_therapy	Non-pharmacological interventions — Reminiscence therapy		workbook:checkbox option
+control	clinical_global_impression_voice_affecting_condition_specified	Condition affecting speech or voice, specified		workbook:correction (specify)
+copd_and_asthma	diagnosis_ca_asthma_subtype___allergic	Disease Subtype — Allergic		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_asthma_subtype___eosinophilic	Disease Subtype — Eosinophilic		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_asthma_subtype___obese	Disease Subtype — Obese		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_asthma_subtype___other	Disease Subtype — Other		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_asthma_subtype___type_2_low	Disease Subtype — Type 2 low		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_copd_subtype___aatd	Disease Subtype — Alpha-1 AntitrypsinDeficiency (AATD)		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_copd_subtype___chronic_bronchitis	Disease Subtype — Chronic bronchitis		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_copd_subtype___emphysema	Disease Subtype — Emphysema		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_copd_subtype___eosinophilic	Disease Subtype — Eosinophilic (Type2high COPD)		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___antibiotics	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — Antibiotics		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___biologics	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — Biologics		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___ics	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — ICS		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___laba	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — LABA		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___lama	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — LAMA		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___leukotriene_inhibitors	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — Leukotriene Inhibitors		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___methylxanthines	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — Methylxanthines		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___mucolytics	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — Mucolytics		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___others	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — Others		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___pde3	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — PDE 3 and Inhibitor		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___pde4	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — PDE 4 inhibitor		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___saba	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — SABA		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___sama	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — SAMA		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pharmacologic_treatment___systemic_steroids	What pharmacologic treatment is the participant currently receiving? (Select all that apply) — Systemic steroids		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pulmonary_symptoms___chronic_cough	Does the participant have any of the following pulmonary symptoms? (Check all that apply) — Chronic Cough		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pulmonary_symptoms___dyspnea	Does the participant have any of the following pulmonary symptoms? (Check all that apply) — Dyspnea		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pulmonary_symptoms___sputum_production	Does the participant have any of the following pulmonary symptoms? (Check all that apply) — Sputum production		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_pulmonary_symptoms___wheezing	Does the participant have any of the following pulmonary symptoms? (Check all that apply) — Wheezing		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_significant_inhalation_exposure_history_explanation___biomass_fuels	Current symptoms and participant history — Biomass fuels		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_significant_inhalation_exposure_history_explanation___other	Current symptoms and participant history — Other		workbook:checkbox option
+copd_and_asthma	diagnosis_ca_significant_inhalation_exposure_history_explanation___secondhand_smoke	Current symptoms and participant history — Secondhand smoke		workbook:checkbox option
+copd_and_asthma	part_copd___chest_ct	Current symptoms and participant history — Chest CT - with emphysema changes, air trapping, or bronchiectasis		workbook:checkbox option
+copd_and_asthma	part_copd___chrf	Current symptoms and participant history — Chronic hypercapnic respiratory failure		workbook:checkbox option
+copd_and_asthma	part_copd___cxr	Current symptoms and participant history — CXR: with hyperlucency or hyperinflation or flattened diaphragms		workbook:checkbox option
+copd_and_asthma	part_copd___hypoxia	Current symptoms and participant history — Pulse oximetry with hypoxia/oxygen dependent		workbook:checkbox option
+copd_and_asthma	part_copd___ild	Current symptoms and participant history — Interstitial Lung Disease		workbook:checkbox option
+copd_and_asthma	part_copd___pleural_effusion	Current symptoms and participant history — Pleural effusion within the last 12 months		workbook:checkbox option
+copd_and_asthma	part_copd___pneumonia	Current symptoms and participant history — Pneumonia within the last 12 months		workbook:checkbox option
+copd_and_asthma	part_copd___pneumothorax	Current symptoms and participant history — Pneumothorax within the last 12 months		workbook:checkbox option
+copd_and_asthma	part_copd___prior_history	Current symptoms and participant history — Prior history of thoracic or pleural space surgery (example: lobectomy, pleurodesis, etc)		workbook:checkbox option
+copd_and_asthma	part_copd___pulmonary_hypertension	Current symptoms and participant history — Pulmonary Hypertension		workbook:checkbox option
+copd_and_asthma	part_copd___resp_failure_intubation	Current symptoms and participant history — Respiratory failure requiring intubation within the last 12 months		workbook:checkbox option
+copd_and_asthma	part_copd___resp_failure_nippv	Current symptoms and participant history — Respiratory failure requiring NIPPV within the last 12 months		workbook:checkbox option
+depression	diagnosis_dmdd_gold_standard_diagnosis	Gold-standard clinician diagnosis of a depressive disorder (Yes/No)		workbook:correction
+depression	dmdd_active_psy_med_problems___adhd	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — ADHD		workbook:checkbox option
+depression	dmdd_active_psy_med_problems___anxiety	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Anxiety		workbook:checkbox option
+depression	dmdd_active_psy_med_problems___epilepsy	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Epilepsy		workbook:checkbox option
+depression	dmdd_active_psy_med_problems___laryngeal_cancer	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Laryngeal cancer		workbook:checkbox option
+depression	dmdd_active_psy_med_problems___ocd	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — OCD		workbook:checkbox option
+depression	dmdd_active_psy_med_problems___other	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Other		workbook:checkbox option
+depression	dmdd_active_psy_med_problems___seasonal_allergies	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Seasonal allergies		workbook:checkbox option
+depression	dmdd_active_psy_med_problems___stroke	[DEPRECATED] Please select any active psychiatric problems and medical problems (select all that apply) — Stroke		workbook:checkbox option
+depression	dmdd_hist_psy_med_problems___adhd	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — ADHD		workbook:checkbox option
+depression	dmdd_hist_psy_med_problems___anxiety	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Anxiety		workbook:checkbox option
+depression	dmdd_hist_psy_med_problems___epilepsy	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Epilepsy		workbook:checkbox option
+depression	dmdd_hist_psy_med_problems___laryngeal_cancer	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Laryngeal cancer		workbook:checkbox option
+depression	dmdd_hist_psy_med_problems___ocd	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — OCD		workbook:checkbox option
+depression	dmdd_hist_psy_med_problems___other	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Other		workbook:checkbox option
+depression	dmdd_hist_psy_med_problems___seasonal_allergies	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Seasonal allergies		workbook:checkbox option
+depression	dmdd_hist_psy_med_problems___stroke	[DEPRECATED] Please select any historical psychiatric problems and medical problems (select all that apply) — Stroke		workbook:checkbox option
+essential_tremor	diagnosis_et_gold_standard_diagnosis_confirmation_method___diagnostic_testing	How was this diagnosis confirmed? Select all that apply. — Diagnostic testing		workbook:checkbox option
+essential_tremor	diagnosis_et_gold_standard_diagnosis_confirmation_method___hospital_discharge_summary	How was this diagnosis confirmed? Select all that apply. — Hospital discharge summary		workbook:checkbox option
+essential_tremor	diagnosis_et_gold_standard_diagnosis_confirmation_method___movement_disorders_specialist	How was this diagnosis confirmed? Select all that apply. — Movement disorders specialist		workbook:checkbox option
+essential_tremor	diagnosis_et_gold_standard_diagnosis_confirmation_method___neurologist	How was this diagnosis confirmed? Select all that apply. — Neurologist		workbook:checkbox option
+essential_tremor	diagnosis_et_gold_standard_diagnosis_confirmation_method___other_specialist	How was this diagnosis confirmed? Select all that apply. — Other specialist		workbook:checkbox option
+essential_tremor	diagnosis_et_gold_standard_diagnosis_confirmation_method___participant_self_report	How was this diagnosis confirmed? Select all that apply. — Participant self-report		workbook:checkbox option
+essential_tremor	diagnosis_et_gold_standard_diagnosis_confirmation_method___problem_list_or_icd_code	How was this diagnosis confirmed? Select all that apply. — Problem list or ICD code		workbook:checkbox option
+essential_tremor	diagnosis_et_gold_standard_diagnosis_confirmation_method___unknown	How was this diagnosis confirmed? Select all that apply. — Unknown		workbook:checkbox option
+essential_tremor	et_medications_selection___benzodiazepines	Medications (select all that apply) — Benzodiazepines (i.e. clonazepam)		workbook:checkbox option
+essential_tremor	et_medications_selection___botulinum_toxin	Medications (select all that apply) — Botulinum toxin		workbook:checkbox option
+essential_tremor	et_medications_selection___gabapentin	Medications (select all that apply) — Gabapentin		workbook:checkbox option
+essential_tremor	et_medications_selection___other	Medications (select all that apply) — Other		workbook:checkbox option
+essential_tremor	et_medications_selection___primidone	Medications (select all that apply) — Primidone		workbook:checkbox option
+essential_tremor	et_medications_selection___propranolol	Medications (select all that apply) — Propranolol		workbook:checkbox option
+essential_tremor	et_medications_selection___topiramate	Medications (select all that apply) — Topiramate		workbook:checkbox option
+essential_tremor	et_non_pharmacological_interventions_selection___deep_brain_stimulation	Non-pharmacological interventions (select all that apply) — Deep Brain Stimulation (DBS)		workbook:checkbox option
+essential_tremor	et_non_pharmacological_interventions_selection___focused_ultrasound	Non-pharmacological interventions (select all that apply) — Focused ultrasound		workbook:checkbox option
+essential_tremor	et_non_pharmacological_interventions_selection___occupational_therapy	Non-pharmacological interventions (select all that apply) — Occupational therapy		workbook:checkbox option
+essential_tremor	et_non_pharmacological_interventions_selection___other	Non-pharmacological interventions (select all that apply) — Other		workbook:checkbox option
+essential_tremor	et_non_pharmacological_interventions_selection___physical_therapy	Non-pharmacological interventions (select all that apply) — Physical therapy		workbook:checkbox option
+essential_tremor	et_non_pharmacological_interventions_selection___speech_therapy	Non-pharmacological interventions (select all that apply) — Speech therapy		workbook:checkbox option
+essential_tremor	et_participant_have_any_other_condition___ataxia_or_dysmetria	Does the participant have signs of any other condition? (select all that apply) — Ataxia or dysmetria		workbook:checkbox option
+essential_tremor	et_participant_have_any_other_condition___cerebellar_signs	Does the participant have signs of any other condition? (select all that apply) — Cerebellar signs		workbook:checkbox option
+essential_tremor	et_participant_have_any_other_condition___dystonia	Does the participant have signs of any other condition? (select all that apply) — Dystonia		workbook:checkbox option
+essential_tremor	et_participant_have_any_other_condition___functional_tremor	Does the participant have signs of any other condition? (select all that apply) — Functional tremor		workbook:checkbox option
+essential_tremor	et_participant_have_any_other_condition___medication_or_substance_related_tremor	Does the participant have signs of any other condition? (select all that apply) — Medication or substance-related tremor		workbook:checkbox option
+essential_tremor	et_participant_have_any_other_condition___not_evaluated_or_documented	Does the participant have signs of any other condition? (select all that apply) — Not evaluated or documented		workbook:checkbox option
+essential_tremor	et_participant_have_any_other_condition___parkinsonism	Does the participant have signs of any other condition? (select all that apply) — Parkinsonism		workbook:checkbox option
+essential_tremor	et_participant_have_any_other_condition___thyroid_or_metabolic_condition	Does the participant have signs of any other condition? (select all that apply) — Thyroid or metabolic condition		workbook:checkbox option
+essential_tremor	et_past_intervention_selection___deep_brain_stimulation	Past intervention (select all that apply) — Deep Brain Stimulation		workbook:checkbox option
+essential_tremor	et_past_intervention_selection___focused_ultrasound	Past intervention (select all that apply) — Focused ultrasound		workbook:checkbox option
+essential_tremor	et_past_intervention_selection___surgery	Past intervention (select all that apply) — Surgery		workbook:checkbox option
+essential_tremor	et_relevant_labs_selection___autoimmune	Relevant labs (select all that apply) — Autoimmune		workbook:checkbox option
+essential_tremor	et_relevant_labs_selection___blood	Relevant labs (select all that apply) — Blood		workbook:checkbox option
+essential_tremor	et_relevant_labs_selection___csf	Relevant labs (select all that apply) — CSF		workbook:checkbox option
+essential_tremor	et_relevant_labs_selection___metabolic	Relevant labs (select all that apply) — Metabolic		workbook:checkbox option
+essential_tremor	et_relevant_labs_selection___nutritional	Relevant labs (select all that apply) — Nutritional		workbook:checkbox option
+essential_tremor	et_relevant_labs_selection___other	Relevant labs (select all that apply) — Other		workbook:checkbox option
+essential_tremor	et_relevant_labs_selection___serum	Relevant labs (select all that apply) — Serum		workbook:checkbox option
+essential_tremor	et_scores_or_results_tremor_assessment_scales___adl_score	Please provide scores or results from tremor rating assessment scales (select all that apply). — ADL score available		workbook:checkbox option
+essential_tremor	et_scores_or_results_tremor_assessment_scales___ftmtrs_total_score	Please provide scores or results from tremor rating assessment scales (select all that apply). — Fahn-Tolosa-Marin (FTMTRS) total score available		workbook:checkbox option
+essential_tremor	et_scores_or_results_tremor_assessment_scales___other_scale	Please provide scores or results from tremor rating assessment scales (select all that apply). — Other scale		workbook:checkbox option
+essential_tremor	et_scores_or_results_tremor_assessment_scales___tetras_performance_score	Please provide scores or results from tremor rating assessment scales (select all that apply). — TETRAS performance score available		workbook:checkbox option
+essential_tremor	et_supportive_clinical_features___difficulty_eating_drinking_writing_dressing_due_to_tremor	Supportive clinical features (select all that apply) — Difficulty eating, drinking, writing, or dressing due to tremor		workbook:checkbox option
+essential_tremor	et_supportive_clinical_features___family_history_of_tremor	Supportive clinical features (select all that apply) — Family history of tremor		workbook:checkbox option
+essential_tremor	et_supportive_clinical_features___handwriting_or_spiral_abnormality_documented	Supportive clinical features (select all that apply) — Handwriting or spiral abnormality documented		workbook:checkbox option
+essential_tremor	et_supportive_clinical_features___social_or_quality_of_life_impact_documented	Supportive clinical features (select all that apply) — Social or quality-of-life impact documented		workbook:checkbox option
+essential_tremor	et_supportive_clinical_features___tetras_performance_adl_ftmtrs_scores_available	Supportive clinical features (select all that apply) — TETRAS performance, ADL, or Fahn-Tolosa-Marin scores available		workbook:checkbox option
+essential_tremor	et_supportive_clinical_features___tremor_improves_with_alcohol	Supportive clinical features (select all that apply) — Tremor improves with alcohol		workbook:checkbox option
+essential_tremor	et_supportive_clinical_features___unknown_or_not_documented	Supportive clinical features (select all that apply) — Unknown or not documented		workbook:checkbox option
+essential_tremor	et_tests_analyses_performed___brain_mri	Tests and analyses performed (select all that apply). — Brain MRI		workbook:checkbox option
+essential_tremor	et_tests_analyses_performed___datscan_or_dopaminergic_evaluation	Tests and analyses performed (select all that apply). — DaTscan or dopaminergic evaluation performed		workbook:checkbox option
+essential_tremor	et_tests_analyses_performed___electrophysiologic_tremor_analysis	Tests and analyses performed (select all that apply). — Electrophysiologic tremor analysis performed		workbook:checkbox option
+essential_tremor	et_tests_analyses_performed___other_testing	Tests and analyses performed (select all that apply). — Other testing		workbook:checkbox option
+essential_tremor	et_tests_analyses_performed___relevant_labs	Tests and analyses performed (select all that apply). — Relevant labs performed (metabolic, nutritional, autoimmune, blood, CSF, or serum)		workbook:checkbox option
+essential_tremor	et_treatment_types_selection___medications	Treatment obtained — Medications		workbook:checkbox option
+essential_tremor	et_treatment_types_selection___non_pharmacological_interventions	Treatment obtained — Non-pharmacological interventions		workbook:checkbox option
+essential_tremor	et_tremor_distribution___head	Tremor distribution (select all that apply) — Head		workbook:checkbox option
+essential_tremor	et_tremor_distribution___jaw	Tremor distribution (select all that apply) — Jaw		workbook:checkbox option
+essential_tremor	et_tremor_distribution___lower_limbs	Tremor distribution (select all that apply) — Lower limbs		workbook:checkbox option
+essential_tremor	et_tremor_distribution___none_of_the_above	Tremor distribution (select all that apply) — None of the above		workbook:checkbox option
+essential_tremor	et_tremor_distribution___unknown	Tremor distribution (select all that apply) — Unknown		workbook:checkbox option
+essential_tremor	et_tremor_distribution___voice	Tremor distribution (select all that apply) — Voice		workbook:checkbox option
+glottic_insufficiency	diagnosis_gi_degree_b_1	Breathiness severity (0-100; mildly to severely deviant)	diagnosis_gi_degree_b_severity	workbook:capev severity
+glottic_insufficiency	diagnosis_gi_degree_b_2	Breathiness consistency (consistent or intermittent)	diagnosis_gi_degree_b_consistency	workbook:capev consistency
+glottic_insufficiency	diagnosis_gi_degree_l_1	Loudness severity (0-100; mildly to severely deviant)	diagnosis_gi_degree_l_severity	workbook:capev severity
+glottic_insufficiency	diagnosis_gi_degree_l_2	Loudness consistency (consistent or intermittent)	diagnosis_gi_degree_l_consistency	workbook:capev consistency
+glottic_insufficiency	diagnosis_gi_degree_os_1	Overall severity (0-100; mildly to severely deviant)	diagnosis_gi_degree_os_severity	workbook:capev severity
+glottic_insufficiency	diagnosis_gi_degree_os_2	Overall severity consistency (consistent or intermittent)	diagnosis_gi_degree_os_consistency	workbook:capev consistency
+glottic_insufficiency	diagnosis_gi_degree_p_1	Pitch severity (0-100; mildly to severely deviant)	diagnosis_gi_degree_p_severity	workbook:capev severity
+glottic_insufficiency	diagnosis_gi_degree_p_2	Pitch consistency (consistent or intermittent)	diagnosis_gi_degree_p_consistency	workbook:capev consistency
+glottic_insufficiency	diagnosis_gi_degree_r_1	Roughness severity (0-100; mildly to severely deviant)	diagnosis_gi_degree_r_severity	workbook:capev severity
+glottic_insufficiency	diagnosis_gi_degree_r_2	Roughness consistency (consistent or intermittent)	diagnosis_gi_degree_r_consistency	workbook:capev consistency
+glottic_insufficiency	diagnosis_gi_degree_s_1	Strain severity (0-100; mildly to severely deviant)	diagnosis_gi_degree_s_severity	workbook:capev severity
+glottic_insufficiency	diagnosis_gi_degree_s_2	Strain consistency (consistent or intermittent)	diagnosis_gi_degree_s_consistency	workbook:capev consistency
+glottic_insufficiency	diagnosis_gi_slogg___anterior_glottic_gap	Please assess shape/location of glottic gap. Choose all that apply. — Anterior Glottic gap		workbook:checkbox option
+glottic_insufficiency	diagnosis_gi_slogg___asymmetric	Please assess shape/location of glottic gap. Choose all that apply. — Asymmetric		workbook:checkbox option
+glottic_insufficiency	diagnosis_gi_slogg___posterior_glottic_gap	Please assess shape/location of glottic gap. Choose all that apply. — Posterior glottic gap		workbook:checkbox option
+glottic_insufficiency	diagnosis_gi_slogg___spindle_shaped	Please assess shape/location of glottic gap. Choose all that apply. — Spindle shaped		workbook:checkbox option
+glottic_insufficiency	diagnosis_gi_treatment_select___bilateral_medialization_thyroplasty	Treatment obtained — Bilateral medialization thyroplasty		workbook:checkbox option
+glottic_insufficiency	diagnosis_gi_treatment_select___injection_laryngoplasty	Treatment obtained — Injection laryngoplasty		workbook:checkbox option
+glottic_insufficiency	diagnosis_gi_treatment_select___other	Treatment obtained — Other		workbook:checkbox option
+glottic_insufficiency	diagnosis_gi_treatment_select___voice_or_speech_therapy	Treatment obtained — Voice/speech therapy		workbook:checkbox option
+huntingtons_disease	hd_total	UHDRS Total Functional Capacity score (0-13; higher = better function)		workbook:correction
+huntingtons_disease	diagnosis_hd_gold_standard_diagnosis_confirmation_method___consistent_clinical_presentation	How was this confirmed? Check all that apply — Consistent clinical presentation with genetically confirmed family history		workbook:checkbox option
+huntingtons_disease	diagnosis_hd_gold_standard_diagnosis_confirmation_method___genetic_testing	How was this confirmed? Check all that apply — Genetic Testing		workbook:checkbox option
+huntingtons_disease	hd_medications_selection___antidepressant	Treatment obtained — Antidepressant		workbook:checkbox option
+huntingtons_disease	hd_medications_selection___benzodiazepine	Treatment obtained — Benzodiazepine		workbook:checkbox option
+huntingtons_disease	hd_medications_selection___neuroleptic	Treatment obtained — Neuroleptic		workbook:checkbox option
+huntingtons_disease	hd_medications_selection___vmat2_inhibitor	Treatment obtained — VMAT2 inhibitor		workbook:checkbox option
+huntingtons_disease	hd_slp_therapy_selection___current	Prior or current SLP therapy selected. Please select all that apply — Current		workbook:checkbox option
+huntingtons_disease	hd_slp_therapy_selection___prior	Prior or current SLP therapy selected. Please select all that apply — Prior		workbook:checkbox option
+huntingtons_disease	hd_type_of_treatment___medications	Please select the type of treatment — Medications		workbook:checkbox option
+huntingtons_disease	hd_type_of_treatment___slp_therapy	Please select the type of treatment — Prior or current SLP therapy		workbook:checkbox option
+laryngeal_cancer	diagnois_lc_gold_standard_diagnosis_sll	[DEPRECATED] Did the participant get a laryngoscopy/stroboscopy confirming the presence of a suspicious laryngeal lesion?	diagnosis_lc_gold_standard_diagnosis_sll	workbook:rename (typo fix)
+laryngeal_cancer	diagnosis_lc_degree_b_1	Breathiness severity (0-100; mildly to severely deviant)	diagnosis_lc_degree_b_severity	workbook:capev severity
+laryngeal_cancer	diagnosis_lc_degree_b_2	Breathiness consistency (consistent or intermittent)	diagnosis_lc_degree_b_consistency	workbook:capev consistency
+laryngeal_cancer	diagnosis_lc_degree_l_1	Loudness severity (0-100; mildly to severely deviant)	diagnosis_lc_degree_l_severity	workbook:capev severity
+laryngeal_cancer	diagnosis_lc_degree_l_2	Loudness consistency (consistent or intermittent)	diagnosis_lc_degree_l_consistency	workbook:capev consistency
+laryngeal_cancer	diagnosis_lc_degree_os_1	Overall severity (0-100; mildly to severely deviant)	diagnosis_lc_degree_os_severity	workbook:capev severity
+laryngeal_cancer	diagnosis_lc_degree_os_2	Overall severity consistency (consistent or intermittent)	diagnosis_lc_degree_os_consistency	workbook:capev consistency
+laryngeal_cancer	diagnosis_lc_degree_p_1	Pitch severity (0-100; mildly to severely deviant)	diagnosis_lc_degree_p_severity	workbook:capev severity
+laryngeal_cancer	diagnosis_lc_degree_p_2	Pitch consistency (consistent or intermittent)	diagnosis_lc_degree_p_consistency	workbook:capev consistency
+laryngeal_cancer	diagnosis_lc_degree_r_1	Roughness severity (0-100; mildly to severely deviant)	diagnosis_lc_degree_r_severity	workbook:capev severity
+laryngeal_cancer	diagnosis_lc_degree_r_2	Roughness consistency (consistent or intermittent)	diagnosis_lc_degree_r_consistency	workbook:capev consistency
+laryngeal_cancer	diagnosis_lc_degree_s_1	Strain severity (0-100; mildly to severely deviant)	diagnosis_lc_degree_s_severity	workbook:capev severity
+laryngeal_cancer	diagnosis_lc_degree_s_2	Strain consistency (consistent or intermittent)	diagnosis_lc_degree_s_consistency	workbook:capev consistency
+laryngeal_cancer	diagnosis_lc_ds___anterior_commissure	Which laryngeal structures are/were involved? (Select all that apply). — Anterior commissure		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_ds___both_vocal_folds	Which laryngeal structures are/were involved? (Select all that apply). — Both vocal folds		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_ds___left_vocal_fold	Which laryngeal structures are/were involved? (Select all that apply). — Left vocal fold		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_ds___right_vocal_fold	Which laryngeal structures are/were involved? (Select all that apply). — Right vocal fold		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_ds___subglottal_areas	Which laryngeal structures are/were involved? (Select all that apply). — Subglottal areas		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_ds___ventricular_folds	Which laryngeal structures are/were involved? (Select all that apply). — Ventricular folds (right or left)		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_etiology___alcohol	Check any risk factors of this participant in relation to their laryngeal cancer. (Select all that apply). — Alcohol		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_etiology___exposure_other_harmful_substances	Check any risk factors of this participant in relation to their laryngeal cancer. (Select all that apply). — Exposure to other harmful substances		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_etiology___family_history	Check any risk factors of this participant in relation to their laryngeal cancer. (Select all that apply). — Family history		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_etiology___hpv	Check any risk factors of this participant in relation to their laryngeal cancer. (Select all that apply). — Human Papilloma Virus (HPV)		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_etiology___smoking	Check any risk factors of this participant in relation to their laryngeal cancer. (Select all that apply). — Smoking		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_gold_standard_diagnosis_confirmation_method___biopsy_pathology	How was this confirmed? Check all that apply — Biopsy/Pathology Report		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_gold_standard_diagnosis_confirmation_method___laryngoscopy_stroboscopy	How was this confirmed? Check all that apply — Laryngoscopy/Stroboscopy		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_gold_standard_diagnosis_uots___ct_chest	Did the participant undergo other types of scans? (Select all that apply). — CT of the chest		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_gold_standard_diagnosis_uots___ct_neck	Did the participant undergo other types of scans? (Select all that apply). — CT of the neck		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_gold_standard_diagnosis_uots___mri_neck	Did the participant undergo other types of scans? (Select all that apply). — MRI of the neck		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_gold_standard_diagnosis_uots___pet_ct	Did the participant undergo other types of scans? (Select all that apply). — PET-CT		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_gold_standard_diagnosis_uots___ultrasound_neck	Did the participant undergo other types of scans? (Select all that apply). — Ultrasound of the neck		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_treatment_s___endoscopic_laser	Surgery — Endoscopic laser		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_treatment_s___partial_laryngectomy	Surgery — Partial laryngectomy		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_treatment_select___chemotherapy	Treatment obtained — Chemotherapy		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_treatment_select___immunotherapy	Treatment obtained — Immunotherapy		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_treatment_select___other	Treatment obtained — Other		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_treatment_select___radiation	Treatment obtained — Radiation		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_treatment_select___surgery	Treatment obtained — Surgery		workbook:checkbox option
+laryngeal_cancer	diagnosis_lc_treatment_select___voice_or_speech_therapy	Treatment obtained — Voice/Speech therapy		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_degree_b_1	Breathiness severity (0-100; mildly to severely deviant)	diagnosis_ld_degree_b_severity	workbook:capev severity
+laryngeal_dystonia	diagnosis_ld_degree_b_2	Breathiness consistency (consistent or intermittent)	diagnosis_ld_degree_b_consistency	workbook:capev consistency
+laryngeal_dystonia	diagnosis_ld_degree_l_1	Loudness severity (0-100; mildly to severely deviant)	diagnosis_ld_degree_l_severity	workbook:capev severity
+laryngeal_dystonia	diagnosis_ld_degree_l_2	Loudness consistency (consistent or intermittent)	diagnosis_ld_degree_l_consistency	workbook:capev consistency
+laryngeal_dystonia	diagnosis_ld_degree_os_1	Overall severity (0-100; mildly to severely deviant)	diagnosis_ld_degree_os_severity	workbook:capev severity
+laryngeal_dystonia	diagnosis_ld_degree_os_2	Overall severity consistency (consistent or intermittent)	diagnosis_ld_degree_os_consistency	workbook:capev consistency
+laryngeal_dystonia	diagnosis_ld_degree_p_1	Pitch severity (0-100; mildly to severely deviant)	diagnosis_ld_degree_p_severity	workbook:capev severity
+laryngeal_dystonia	diagnosis_ld_degree_p_2	Pitch consistency (consistent or intermittent)	diagnosis_ld_degree_p_consistency	workbook:capev consistency
+laryngeal_dystonia	diagnosis_ld_degree_r_1	Roughness severity (0-100; mildly to severely deviant)	diagnosis_ld_degree_r_severity	workbook:capev severity
+laryngeal_dystonia	diagnosis_ld_degree_r_2	Roughness consistency (consistent or intermittent)	diagnosis_ld_degree_r_consistency	workbook:capev consistency
+laryngeal_dystonia	diagnosis_ld_degree_s_1	Strain severity (0-100; mildly to severely deviant)	diagnosis_ld_degree_s_severity	workbook:capev severity
+laryngeal_dystonia	diagnosis_ld_degree_s_2	Strain consistency (consistent or intermittent)	diagnosis_ld_degree_s_consistency	workbook:capev consistency
+laryngeal_dystonia	diagnosis_ld_assessment___aural_perceptual_evaluation	Did the participant have the following assessment? (Select all that apply). — Aural-perceptual evaluation		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_assessment___laryngoscopy_or_stroboscopy	Did the participant have the following assessment? (Select all that apply). — Laryngoscopy or stroboscopy		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_assessment___neurological_evaluation	Did the participant have the following assessment? (Select all that apply). — Neurological evaluation		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_ds___abld	Disease Subtypes: (Select all that apply) — Abductor laryngeal dystonia (ABLD)		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_ds___adld	Disease Subtypes: (Select all that apply) — Adductor laryngeal dystonia (ADLD)		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_ds___arld	Disease Subtypes: (Select all that apply) — Adductor laryngeal spasms during inspiration (ARLD)		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_ds___mixed_laryngeal_dystonia	Disease Subtypes: (Select all that apply) — Mixed laryngeal dystonia		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_ds___sld	Disease Subtypes: (Select all that apply) — Singer's laryngeal dystonia (SLD)		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_ds___vocal_tremor	Disease Subtypes: (Select all that apply) — Vocal Tremor		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_etiology_cc___dystonia_of_the_head_and_neck	Does the participant have any of the following concomitant conditions? (Select all that apply). — Dystonia of the head and neck		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_etiology_cc___essential_tremor_of_the_hands	Does the participant have any of the following concomitant conditions? (Select all that apply). — Essential Tremor of the hands		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_etiology_cc___essential_tremor_of_the_head	Does the participant have any of the following concomitant conditions? (Select all that apply). — Essential tremor of the head		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_etiology_cc___jaw_tremor	Does the participant have any of the following concomitant conditions? (Select all that apply). — Jaw tremor		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_etiology_cc___other_type_of_dystonia	Does the participant have any of the following concomitant conditions? (Select all that apply). — Other type of dystonia		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_qete___laryngologist	[DEPRECATED] Does the participant have laryngeal dystonia as determined by qualitative expert team evaluation? (Select all that apply). — Laryngologist		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_qete___neurologist_specializing_disorders	[DEPRECATED] Does the participant have laryngeal dystonia as determined by qualitative expert team evaluation? (Select all that apply). — Neurologist specializing in movement disorders		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_qete___speech_language_pathology	[DEPRECATED] Does the participant have laryngeal dystonia as determined by qualitative expert team evaluation? (Select all that apply). — Speech-Language Pathology		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_treatment_select___botox_injections	What treatments did the participant undergo? (Select all that apply) — Botox injections		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_treatment_select___deep_brain_stimulation	What treatments did the participant undergo? (Select all that apply) — Deep brain stimulation		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_treatment_select___mrgfus	What treatments did the participant undergo? (Select all that apply) — Magnetic resonance imaging-guided focused ultrasound (MRgFUS)		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_treatment_select___other	What treatments did the participant undergo? (Select all that apply) — Other		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_treatment_select___vibrotactile_stimulation	What treatments did the participant undergo? (Select all that apply) — Vibrotactile stimulation		workbook:checkbox option
+laryngeal_dystonia	diagnosis_ld_treatment_select___voice_or_speech_therapy	What treatments did the participant undergo? (Select all that apply) — Voice/speech therapy		workbook:checkbox option
+laryngitis	diagnosis_l_degree_b_1	Breathiness severity (0-100; mildly to severely deviant)	diagnosis_l_degree_b_severity	workbook:capev severity
+laryngitis	diagnosis_l_degree_b_2	Breathiness consistency (consistent or intermittent)	diagnosis_l_degree_b_consistency	workbook:capev consistency
+laryngitis	diagnosis_l_degree_l_1	Loudness severity (0-100; mildly to severely deviant)	diagnosis_l_degree_l_severity	workbook:capev severity
+laryngitis	diagnosis_l_degree_l_2	Loudness consistency (consistent or intermittent)	diagnosis_l_degree_l_consistency	workbook:capev consistency
+laryngitis	diagnosis_l_degree_os_1	Overall severity (0-100; mildly to severely deviant)	diagnosis_l_degree_os_severity	workbook:capev severity
+laryngitis	diagnosis_l_degree_os_2	Overall severity consistency (consistent or intermittent)	diagnosis_l_degree_os_consistency	workbook:capev consistency
+laryngitis	diagnosis_l_degree_p_1	Pitch severity (0-100; mildly to severely deviant)	diagnosis_l_degree_p_severity	workbook:capev severity
+laryngitis	diagnosis_l_degree_p_2	Pitch consistency (consistent or intermittent)	diagnosis_l_degree_p_consistency	workbook:capev consistency
+laryngitis	diagnosis_l_degree_r_1	Roughness severity (0-100; mildly to severely deviant)	diagnosis_l_degree_r_severity	workbook:capev severity
+laryngitis	diagnosis_l_degree_r_2	Roughness consistency (consistent or intermittent)	diagnosis_l_degree_r_consistency	workbook:capev consistency
+laryngitis	diagnosis_l_degree_s_1	Strain severity (0-100; mildly to severely deviant)	diagnosis_l_degree_s_severity	workbook:capev severity
+laryngitis	diagnosis_l_degree_s_2	Strain consistency (consistent or intermittent)	diagnosis_l_degree_s_consistency	workbook:capev consistency
+laryngitis	diagnosis_l_determined_by___laryngologist	Determined by (Select all that apply) — Laryngologist		workbook:checkbox option
+laryngitis	diagnosis_l_determined_by___other	Determined by (Select all that apply) — Other		workbook:checkbox option
+laryngitis	diagnosis_l_determined_by___otolaryngologist	Determined by (Select all that apply) — Otolaryngologist		workbook:checkbox option
+laryngitis	diagnosis_l_etiology___environmental_irritants	What is the etiology? — Environmental irritants		workbook:checkbox option
+laryngitis	diagnosis_l_etiology___infection	What is the etiology? — Infection		workbook:checkbox option
+laryngitis	diagnosis_l_etiology___other	What is the etiology? — Other		workbook:checkbox option
+laryngitis	diagnosis_l_etiology___vocal_misuse_and_abuse	What is the etiology? — Vocal misuse and abuse		workbook:checkbox option
+laryngitis	diagnosis_l_etiology_ei___other_inhaled	Environmental irritants: (Select all that apply). — Other inhaled irritants		workbook:checkbox option
+laryngitis	diagnosis_l_etiology_ei___smoker	Environmental irritants: (Select all that apply). — Smoker's laryngitis		workbook:checkbox option
+laryngitis	diagnosis_l_etiology_infection___bacterial	Infection: (Select all that apply). — Bacterial		workbook:checkbox option
+laryngitis	diagnosis_l_etiology_infection___fungal	Infection: (Select all that apply). — Fungal		workbook:checkbox option
+laryngitis	diagnosis_l_etiology_infection___unknown	Infection: (Select all that apply). — Unknown		workbook:checkbox option
+laryngitis	diagnosis_l_etiology_infection___viral	Infection: (Select all that apply). — Viral		workbook:checkbox option
+laryngitis	diagnosis_l_treatment_mt___antibiotics	Medical treatment (Select all that apply) — Antibiotics		workbook:checkbox option
+laryngitis	diagnosis_l_treatment_mt___antifungals	Medical treatment (Select all that apply) — Antifungals		workbook:checkbox option
+laryngitis	diagnosis_l_treatment_mt___inhaled_steroids	Medical treatment (Select all that apply) — Inhaled steroids		workbook:checkbox option
+laryngitis	diagnosis_l_treatment_mt___other	Medical treatment (Select all that apply) — Other		workbook:checkbox option
+laryngitis	diagnosis_l_treatment_mt___steroids_po	Medical treatment (Select all that apply) — Steroids PO		workbook:checkbox option
+laryngitis	diagnosis_l_treatment_select___medical_treatment	Treatment obtained — Medical treatment		workbook:checkbox option
+laryngitis	diagnosis_l_treatment_select___vocal_hygiene_and_patient_education	Treatment obtained — Vocal hygiene and patient education		workbook:checkbox option
+laryngitis	diagnosis_l_treatment_select___voice_or_speech_therapy	Treatment obtained — Voice/Speech therapy		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_degree_b_1	Breathiness severity (0-100; mildly to severely deviant)	diagnosis_mtd_degree_b_severity	workbook:capev severity
+muscle_tension_dysphonia	diagnosis_mtd_degree_b_2	Breathiness consistency (consistent or intermittent)	diagnosis_mtd_degree_b_consistency	workbook:capev consistency
+muscle_tension_dysphonia	diagnosis_mtd_degree_comments_other	Other resonance comment, muscle tension dysphonia assessment		workbook:correction (specify)
+muscle_tension_dysphonia	diagnosis_mtd_degree_l_1	Loudness severity (0-100; mildly to severely deviant)	diagnosis_mtd_degree_l_severity	workbook:capev severity
+muscle_tension_dysphonia	diagnosis_mtd_degree_l_2	Loudness consistency (consistent or intermittent)	diagnosis_mtd_degree_l_consistency	workbook:capev consistency
+muscle_tension_dysphonia	diagnosis_mtd_degree_os_1	Overall severity (0-100; mildly to severely deviant)	diagnosis_mtd_degree_os_severity	workbook:capev severity
+muscle_tension_dysphonia	diagnosis_mtd_degree_os_2	Overall severity consistency (consistent or intermittent)	diagnosis_mtd_degree_os_consistency	workbook:capev consistency
+muscle_tension_dysphonia	diagnosis_mtd_degree_p_1	Pitch severity (0-100; mildly to severely deviant)	diagnosis_mtd_degree_p_severity	workbook:capev severity
+muscle_tension_dysphonia	diagnosis_mtd_degree_p_2	Pitch consistency (consistent or intermittent)	diagnosis_mtd_degree_p_consistency	workbook:capev consistency
+muscle_tension_dysphonia	diagnosis_mtd_degree_r_1	Roughness severity (0-100; mildly to severely deviant)	diagnosis_mtd_degree_r_severity	workbook:capev severity
+muscle_tension_dysphonia	diagnosis_mtd_degree_r_2	Roughness consistency (consistent or intermittent)	diagnosis_mtd_degree_r_consistency	workbook:capev consistency
+muscle_tension_dysphonia	diagnosis_mtd_degree_s_1	Strain severity (0-100; mildly to severely deviant)	diagnosis_mtd_degree_s_severity	workbook:capev severity
+muscle_tension_dysphonia	diagnosis_mtd_degree_s_2	Strain consistency (consistent or intermittent)	diagnosis_mtd_degree_s_consistency	workbook:capev consistency
+muscle_tension_dysphonia	diagnosis_mtd_ds	Muscle tension dysphonia subtype (primary vs secondary)		workbook:correction
+muscle_tension_dysphonia	diagnosis_mtd_etiology_other	Other muscle tension dysphonia etiology		workbook:correction (specify)
+muscle_tension_dysphonia	diagnosis_mtd_treatment_other	Other muscle tension dysphonia medical treatment		workbook:correction (specify)
+muscle_tension_dysphonia	diagnosis_mtd_etiology___compensation_underlying_disease	What is the etiology? (Select all that apply) — Compensation for underlying disease		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_etiology___environmental_irritants	What is the etiology? (Select all that apply) — Environmental irritants		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_etiology___other	What is the etiology? (Select all that apply) — Other		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_etiology___psychological_personality_factors	What is the etiology? (Select all that apply) — Psychological and/or personality factors		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_etiology___vocal_misuse_abuse	What is the etiology? (Select all that apply) — Vocal misuse and abuse		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_gold_standard_diagnosis_assessments___aural_perceptual_evaluation	Did the participant have any of the following assessments? (Select all that apply) — Aural-perceptual evaluation		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_gold_standard_diagnosis_assessments___detailed_case_history	Did the participant have any of the following assessments? (Select all that apply) — Detailed case history		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_gold_standard_diagnosis_assessments___flexible_rigid_laryngoscopy	Did the participant have any of the following assessments? (Select all that apply) — Flexible/Rigid laryngoscopy		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_gold_standard_diagnosis_assessments___voice_speech_evaluation	Did the participant have any of the following assessments? (Select all that apply) — Voice/speech evaluation		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_gold_standard_diagnosis_evaluations_2___laryngoscopy_stroboscopy	How was this confirmed? Select all that apply — Laryngoscopy/Stroboscopy		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_gold_standard_diagnosis_evaluations_2___voice_evaluation	How was this confirmed? Select all that apply — Voice Evaluation		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_gold_standard_diagnosis_evaluations___laryngologist	[DEPRECATED] Determined by (Select all that apply) — Laryngologist		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_gold_standard_diagnosis_evaluations___speech_language_pathology	[DEPRECATED] Determined by (Select all that apply) — Speech-Language Pathology		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_treatment_select___circumlaryngeal_manual_therapy	Treatment obtained — Circumlaryngeal manual therapy		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_treatment_select___other	Treatment obtained — Other medical treatment		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_treatment_select___surgery_for_secondary_organic_lesions	Treatment obtained — Surgery for secondary organic lesions		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_treatment_select___vocal_hygiene_and_patient_education	Treatment obtained — Vocal hygiene and patient education		workbook:checkbox option
+muscle_tension_dysphonia	diagnosis_mtd_treatment_select___voice_or_speech_therapy	Treatment obtained — Voice/speech therapy		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_calculation	Calculated flag: meets PD diagnostic criteria (Yes/No)		workbook:correction
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_1_calculation	Calculated flag: PD Category 1 (parkinsonism) criteria met (Yes/No)		workbook:correction
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_2_calculation	Calculated flag: no PD exclusion criteria present (Yes/No)		workbook:correction
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_3_calculation	Calculated flag: PD Category 3 supportive criteria met (Yes/No)		workbook:correction
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes___medications	Treatment Obtained — Medications		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes___npi	Treatment Obtained — Non-pharmacological interventions		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_medications___amantadine	Medications — Amantadine		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_medications___dopamine_agonists	Medications — Dopamine agonists		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_medications___levodopa	Medications — Levodopa		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_medications___mao_b	Medications — MAO-B inhibitors		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_medications___other	Medications — Other		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_npi___dbs	Non-pharmacological interventions — Deep Brain Stimulation (DBS) therapy		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_npi___focused_ultrasound	Non-pharmacological interventions — Focused ultrasound		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_npi___occupational_therapy	Non-pharmacological interventions — Occupational therapy		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_npi___other	Non-pharmacological interventions — Other		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_npi___physical_therapy	Non-pharmacological interventions — Physical therapy		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_npi___speech_therapy	Non-pharmacological interventions — Speech therapy		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs___left_gpi	What targets? — Left GPI (globus pallidus internus)		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs___left_stn	What targets? — Left STN (sub-thalamic nucleus)		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs___other	What targets? — Other		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs___right_gpi	What targets? — Right GPI (globus pallidus internus)		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs___right_stn	What targets? — Right STN (sub-thalamic nucleus)		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_1___bradykinesia	Category 1 - Parkinsonism — Bradykinesia		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_1___rigidity	Category 1 - Parkinsonism — Rigidity		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_1___tremor	Category 1 - Parkinsonism — Tremor		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_2___absence_of_response	Category 2 - Exclusion criteria — Absence of a response to high-dose levodopa despite at least moderate disease severity		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_2___alternative_condition	Category 2 - Exclusion criteria — Diagnosis of alternative condition causing parkinsonism which could be causing the symptoms		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_2___bvf_ftd_ppa	Category 2 - Exclusion criteria — Diagnosis of behavioral variant of frontotemporal dementia or primary progressive aphasia within 5 years of disease onset		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_2___cerebellar_abnormalities	Category 2 - Exclusion criteria — Cerebellar abnormalities		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_2___cortical_sensory_loss	Category 2 - Exclusion criteria — Cortical sensory loss, clear limb ideomotor apraxia, or progressive aphasia		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_2___dat_scan	"Category 2 - Exclusion criteria — Normal functional imaging of the dopaminergic system (""DAT scan"")"		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_2___dopamine_treatment	Category 2 - Exclusion criteria — Treatment with a dopamine receptor blocker or dopamine depleting agent consistent with drug-induced parkinsonism		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_2___lower_limbs	Category 2 - Exclusion criteria — Parkinsonian features restricted to the lower limbs for more than 3 years		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_2___supranuclear_gaze_palsy	Category 2 - Exclusion criteria — Supranuclear gaze palsy		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_3___levodopa_induced_dyskinesia	Category 3 - Supportive criteria — Presence of levodopa-induced dyskinesia		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_3___mibg	Category 3 - Supportive criteria — The presence of either olfactory loss or cardiac sympathetic denervation on MIBG scintigraphy (although the latter is rarely done in current practice)		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_3___response_dopaminergic_therapy	Category 3 - Supportive criteria — Clear beneficial response to dopaminergic therapy		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_gold_standard_diagnosis_category_3___rest_tremor	Category 3 - Supportive criteria — Rest tremor of a limb		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_ma___other	Please provide scores or results from validated cognitive assessment tools — Other motor assessment tool		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_ma___updrs	Please provide scores or results from validated cognitive assessment tools — Unified Parkinson's Disease Rating Scale (UPDRS)		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_treatment_obtained_yes___medications	[DEPRECATED] Yes — Medications		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_treatment_obtained_yes___npi	[DEPRECATED] Yes — Non-pharmacological interventions		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_treatment_obtained_yes_medications___amantadine	[DEPRECATED] Medications — Amantadine		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_treatment_obtained_yes_medications___dopamine_agonists	[DEPRECATED] Medications — Dopamine agonists		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_treatment_obtained_yes_medications___levodopa	[DEPRECATED] Medications — Levodopa		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_treatment_obtained_yes_medications___mao_b	[DEPRECATED] Medications — MAO-B inhibitors		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_treatment_obtained_yes_medications___other	[DEPRECATED] Medications — Other		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_treatment_obtained_yes_npi___dbs	[DEPRECATED] Non-pharmacological interventions — Deep Brain Stimulation (DBS) therapy		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_treatment_obtained_yes_npi___occupational_therapy	[DEPRECATED] Non-pharmacological interventions — Occupational therapy		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_treatment_obtained_yes_npi___other	[DEPRECATED] Non-pharmacological interventions — Other		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_treatment_obtained_yes_npi___physical_therapy	[DEPRECATED] Non-pharmacological interventions — Physical therapy		workbook:checkbox option
+parkinsons_disease	diagnosis_parkinsons_treatment_obtained_yes_npi___speech_therapy	[DEPRECATED] Non-pharmacological interventions — Speech therapy		workbook:checkbox option
+precancerous_lesions	diagnois_pl_gold_standard_diagnosis_bp	[DEPRECATED] Does the participant have a precancerous vocal fold lesion confirmed by biopsy/pathology?	diagnosis_pl_gold_standard_diagnosis_bp	workbook:rename (typo fix)
+precancerous_lesions	diagnois_pl_gold_standard_diagnosis_ls	[DEPRECATED] Does the participant have a precancerous vocal fold lesion confirmed by laryngoscopy/stroboscopy?	diagnosis_pl_gold_standard_diagnosis_ls	workbook:rename (typo fix)
+precancerous_lesions	diagnosis_pl_degree_b_1	Breathiness severity (0-100; mildly to severely deviant)	diagnosis_pl_degree_b_severity	workbook:capev severity
+precancerous_lesions	diagnosis_pl_degree_b_2	Breathiness consistency (consistent or intermittent)	diagnosis_pl_degree_b_consistency	workbook:capev consistency
+precancerous_lesions	diagnosis_pl_degree_l_1	Loudness severity (0-100; mildly to severely deviant)	diagnosis_pl_degree_l_severity	workbook:capev severity
+precancerous_lesions	diagnosis_pl_degree_l_2	Loudness consistency (consistent or intermittent)	diagnosis_pl_degree_l_consistency	workbook:capev consistency
+precancerous_lesions	diagnosis_pl_degree_os_1	Overall severity (0-100; mildly to severely deviant)	diagnosis_pl_degree_os_severity	workbook:capev severity
+precancerous_lesions	diagnosis_pl_degree_os_2	Overall severity consistency (consistent or intermittent)	diagnosis_pl_degree_os_consistency	workbook:capev consistency
+precancerous_lesions	diagnosis_pl_degree_p_1	Pitch severity (0-100; mildly to severely deviant)	diagnosis_pl_degree_p_severity	workbook:capev severity
+precancerous_lesions	diagnosis_pl_degree_p_2	Pitch consistency (consistent or intermittent)	diagnosis_pl_degree_p_consistency	workbook:capev consistency
+precancerous_lesions	diagnosis_pl_degree_r_1	Roughness severity (0-100; mildly to severely deviant)	diagnosis_pl_degree_r_severity	workbook:capev severity
+precancerous_lesions	diagnosis_pl_degree_r_2	Roughness consistency (consistent or intermittent)	diagnosis_pl_degree_r_consistency	workbook:capev consistency
+precancerous_lesions	diagnosis_pl_degree_s_1	Strain severity (0-100; mildly to severely deviant)	diagnosis_pl_degree_s_severity	workbook:capev severity
+precancerous_lesions	diagnosis_pl_degree_s_2	Strain consistency (consistent or intermittent)	diagnosis_pl_degree_s_consistency	workbook:capev consistency
+precancerous_lesions	diagnosis_pl_ds___erythroplakia	What is the diagnosis? (Select all that apply). — Erythroplakia		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_ds___keratosis	What is the diagnosis? (Select all that apply). — Keratosis		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_ds___leukoplakia	What is the diagnosis? (Select all that apply). — Leukoplakia		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_ds___other	What is the diagnosis? (Select all that apply). — Other		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_ds_ll___both_vocal_folds	Location of lesion(s) (Select all that apply). — Both vocal folds		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_ds_ll___left_vocal_fold	Location of lesion(s) (Select all that apply). — Left vocal fold		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_ds_ll___right_vocal_fold	Location of lesion(s) (Select all that apply). — Right vocal fold		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_ds_ll___subglottal_areas	Location of lesion(s) (Select all that apply). — Subglottal areas		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_ds_ll___ventricular_folds	Location of lesion(s) (Select all that apply). — Ventricular folds (right or left)		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_etiology___laryngopharyngeal_reflux	Does the participant have the following risk factors? (Select all that apply). — Laryngopharyngeal reflux		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_etiology___other_irritants	Does the participant have the following risk factors? (Select all that apply). — Other irritants		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_etiology___past_or_present_smoking	Does the participant have the following risk factors? (Select all that apply). — Past or present smoking		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_gold_standard_diagnosis_confirmation_method___biopsy_pathology	How was this confirmed? Select all that apply — Biopsy/Pathology Report		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_gold_standard_diagnosis_confirmation_method___laryngoscopy_stroboscopy	How was this confirmed? Select all that apply — Laryngoscopy/Stroboscopy		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_treatment_select___laser_ablation	What treatments did the participant undergo? (Select all that apply) — Laser ablation		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_treatment_select___laser_resection	What treatments did the participant undergo? (Select all that apply) — Laser resection		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_treatment_select___microlaryngeal_surgery_without_laser	What treatments did the participant undergo? (Select all that apply) — Microlaryngeal surgery without laser		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_treatment_select___other	What treatments did the participant undergo? (Select all that apply) — Other		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_treatment_select___radiotherapy_persistent_or_recurrent_lesions	What treatments did the participant undergo? (Select all that apply) — Radiotherapy for persistent or recurrent lesions		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_treatment_select___surveillance_only	What treatments did the participant undergo? (Select all that apply) — Surveillance only (previous diagnosis)		workbook:checkbox option
+precancerous_lesions	diagnosis_pl_treatment_select___voice_or_speech_therapy	What treatments did the participant undergo? (Select all that apply) — Voice/speech therapy		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_at_s___multimodality_speech_pathology_therapy	Treatment obtained — Therapeutic trial of multimodality speech pathology therapy		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_at_s___neuromodulator	Treatment obtained — Therapeutic trial of gabapentin/amitriptyline or other neuromodulator		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_at_s___other	Treatment obtained — Other		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_at_s___superior_laryngeal_nerve_block	Treatment obtained — Unilateral or bilateral superior laryngeal nerve block		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_atot___egd_or_tne	How was it investigated? (Select all that apply) — EGD/TNE		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_atot___other	How was it investigated? (Select all that apply) — Other (H2-blocker, lifestyle change, alginates)		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_atot___phimpedance_probe_or_bravo_probe	How was it investigated? (Select all that apply) — pH-impedance probe or Bravo probe		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_atot___trial_of_proton_pump_inhibitor	How was it investigated? (Select all that apply) — Trial of proton pump inhibitor		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_cxcob___bronchoscopy	Initial screening criteria — Bronchoscopy		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_cxcob___chest_xray	Initial screening criteria — Chest X-ray		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_cxcob___ct_chest	Initial screening criteria — CT Chest		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_hspd___asthma	Does the participant have a history of pulmonary disease? (Select all that apply) — Asthma		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_hspd___bronchiectasis	Does the participant have a history of pulmonary disease? (Select all that apply) — Bronchiectasis		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_hspd___copd	Does the participant have a history of pulmonary disease? (Select all that apply) — COPD		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_hspd___idiopathic_pulmonary_fibrosis	Does the participant have a history of pulmonary disease? (Select all that apply) — Idiopathic pulmonary fibrosis		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_hspd___lung_cancer	Does the participant have a history of pulmonary disease? (Select all that apply) — Lung cancer		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_hspd___other	Does the participant have a history of pulmonary disease? (Select all that apply) — Other		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_hspd___pulmonary_granuloma	Does the participant have a history of pulmonary disease? (Select all that apply) — Pulmonary granuloma		workbook:checkbox option
+unexplained_chronic_cough	diagnosis_ucc_hspd___tb_infection	Does the participant have a history of pulmonary disease? (Select all that apply) — TB infection		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_degree_b_2	Breathiness consistency (consistent or intermittent)	diagnosis_uvfp_degree_b_consistency	workbook:capev consistency
+unilateral_vocal_fold_paralysis	diagnosis_degree_comments_other	Other resonance comment, unilateral vocal fold paralysis assessment	diagnosis_uvfp_degree_comments_other	workbook:correction (specify)
+unilateral_vocal_fold_paralysis	diagnosis_degree_l_2	Loudness consistency (consistent or intermittent)	diagnosis_uvfp_degree_l_consistency	workbook:capev consistency
+unilateral_vocal_fold_paralysis	diagnosis_degree_os_2	Overall severity consistency (consistent or intermittent)	diagnosis_uvfp_degree_os_consistency	workbook:capev consistency
+unilateral_vocal_fold_paralysis	diagnosis_degree_p_2	Pitch consistency (consistent or intermittent)	diagnosis_uvfp_degree_p_consistency	workbook:capev consistency
+unilateral_vocal_fold_paralysis	diagnosis_degree_r_2	Roughness consistency (consistent or intermittent)	diagnosis_uvfp_degree_r_consistency	workbook:capev consistency
+unilateral_vocal_fold_paralysis	diagnosis_degree_s_2	Strain consistency (consistent or intermittent)	diagnosis_uvfp_degree_s_consistency	workbook:capev consistency
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_select___other	What treatments did the participant undergo? (Select all that apply) — Other		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_select___speech_therapy	What treatments did the participant undergo? (Select all that apply) — Speech therapy		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_select___surgery	What treatments did the participant undergo? (Select all that apply) — Surgery / Procedure		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_surgery___arytenoid_adduction	Surgery / Procedure — Arytenoid adduction		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_surgery___other	Surgery / Procedure — Other		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_surgery___thyroplasty	Surgery / Procedure — Thyroplasty		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_surgery___vocal_fold_injection_augmentation	Surgery / Procedure — Vocal fold injection augmentation		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_surgery_thyroplasty___goretex	Thyroplasty - Subcategory — Gore-Tex		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_surgery_thyroplasty___silastic	Thyroplasty - Subcategory — Silastic		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_surgery_vfia___caha	Vocal fold injection augmentation - Subcategory — CaHA		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_surgery_vfia___fat_injection	Vocal fold injection augmentation - Subcategory — Fat injection		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_surgery_vfia___gel	Vocal fold injection augmentation - Subcategory — Gel		workbook:checkbox option
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_treatment_surgery_vfia___hyaluronic_acid_augmentation	Vocal fold injection augmentation - Subcategory — Hyaluronic acid augmentation		workbook:checkbox option
+enrollment_form	ef_fluent_languages___2	Do you speak any additional language(s) fluently (similar to a native speaker)? — English		workbook:checkbox option
+enrollment_form	ef_fluent_languages___3	Do you speak any additional language(s) fluently (similar to a native speaker)? — French		workbook:checkbox option
+enrollment_form	ef_fluent_languages___4	Do you speak any additional language(s) fluently (similar to a native speaker)? — Spanish		workbook:checkbox option
+enrollment_form	ef_fluent_languages___5	Do you speak any additional language(s) fluently (similar to a native speaker)? — Other (please specify below)		workbook:checkbox option
+adhd_adult	avoidance	When you have a task that requires a lot of thought, how often do you avoid or delay getting started? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	careless	How often do you make careless mistakes when you have to work on a boring or difficult project? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	difficulty_attention	How often do you have difficulty keeping your attention when you are doing boring or repetitive work? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	difficulty_concentrating	How often do you have difficulty concentrating on what people say to you, even when they are speaking to you directly? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	difficulty_unwinding	How often do you have difficulty unwinding and relaxing when you have time to yourself? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	difficulty_waiting	How often do you have difficulty waiting your turn in situations when turn taking is required? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	distracted	How often are you distracted by activity or noise around you? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	fidget	How often do you fidget or squirm with your hands or feet when you have to sit down for a long time? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	finish_other_sent	When you're in a conversation, how often do you find yourself finishing the sentences of the people you are talking to, before they can finish them themselves? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	interrupt_others	How often do you interrupt others when they are busy? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	misplace	How often do you misplace or have difficulty finding things at home or at work? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	overly_active	How often do you feel overly active and compelled to do things, like you were driven by a motor? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	remain_seated	How often do you leave your seat in meetings or other situations in which you are expected to remain seated? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	remembering_appt	How often do you have problems remembering appointments or obligations? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	restless	How often do you feel restless or fidgety? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	talking_too_much	How often do you find yourself talking too much when you are in social situations? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	things_in_order	How often do you have difficulty getting things in order when you have to do a task that requires organization? (over the past 6 months)		workbook:full on-screen prompt
+adhd_adult	wrapping_up	How often do you have trouble wrapping up the final details of a project, once the challenging parts have been done? (over the past 6 months)		workbook:full on-screen prompt
+dsm5_adult	q1_happy	ASRM mania item: elevated or cheerful mood (past week)		workbook:correction
+dsm5_adult	q2_self_confident	ASRM mania item: heightened self-confidence (past week)		workbook:correction
+dsm5_adult	q3_sleep	ASRM mania item: reduced need for sleep (past week)		workbook:correction
+dsm5_adult	q4_talk	ASRM mania item: increased talkativeness (past week)		workbook:correction
+dsm5_adult	q5_active	ASRM mania item: increased activity level (past week)		workbook:correction
+dsm5_adult	social_phobia_1	felt moments of sudden terror, fear, or fright in social situations (past 7 days)		workbook:full on-screen prompt
+dsm5_adult	social_phobia_10	needed help to cope with social situations (e.g., alcohol or medications, superstitious objects) (past 7 days)		workbook:full on-screen prompt
+dsm5_adult	social_phobia_2	felt anxious, worried, or nervous about social situations (past 7 days)		workbook:full on-screen prompt
+dsm5_adult	social_phobia_3	had thoughts of being rejected, humiliated, embarrassed, ridiculed, or offending others (past 7 days)		workbook:full on-screen prompt
+dsm5_adult	social_phobia_4	felt a racing heart, sweaty, trouble breathing, faint, or shaky in social situations (past 7 days)		workbook:full on-screen prompt
+dsm5_adult	social_phobia_5	felt tense muscles, felt on edge or restless, or had trouble relaxing in social situations (past 7 days)		workbook:full on-screen prompt
+dsm5_adult	social_phobia_6	avoided, or did not approach or enter, social situations (past 7 days)		workbook:full on-screen prompt
+dsm5_adult	social_phobia_7	left social situations early or participated only minimally (e.g., said little, avoided eye contact) (past 7 days)		workbook:full on-screen prompt
+dsm5_adult	social_phobia_8	spent a lot of time preparing what to say or how to act in social situations (past 7 days)		workbook:full on-screen prompt
+dsm5_adult	social_phobia_9	distracted myself to avoid thinking about social situations (past 7 days)		workbook:full on-screen prompt
+gad7_anxiety	afraid_of_things	Over the last two weeks, how often have you been bothered by the following problems? Feeling afraid, as if something awful might happen.		workbook:full on-screen prompt
+gad7_anxiety	cant_control_worry	Over the last two weeks, how often have you been bothered by the following problems? Not being able to stop or control worrying.		workbook:full on-screen prompt
+gad7_anxiety	easily_agitated	Over the last two weeks, how often have you been bothered by the following problems? Becoming easily annoyed or irritable.		workbook:full on-screen prompt
+gad7_anxiety	hard_to_sit_still	Over the last two weeks, how often have you been bothered by the following problems? Being so restless that it is hard to sit still.		workbook:full on-screen prompt
+gad7_anxiety	nervous_anxious	Over the last two weeks, how often have you been bothered by the following problems? Feeling nervous, anxious, or on edge.		workbook:full on-screen prompt
+gad7_anxiety	trouble_relaxing	Over the last two weeks, how often have you been bothered by the following problems? Trouble relaxing.		workbook:full on-screen prompt
+gad7_anxiety	worry_too_much	Over the last two weeks, how often have you been bothered by the following problems? Worrying too much about different things.		workbook:full on-screen prompt
+phq9	feeling_bad_self	Over the last 2 weeks, how often have you been bothered by any of the following problems? Feeling bad about yourself - or that you are a failure or have let yourself or your family down.		workbook:full on-screen prompt
+phq9	feeling_depressed	Over the last 2 weeks, how often have you been bothered by any of the following problems? Feeling down, depressed, or hopeless.		workbook:full on-screen prompt
+phq9	move_speak_slow	Over the last 2 weeks, how often have you been bothered by any of the following problems? Moving or speaking so slowly that other people could have noticed? Or the opposite - being so fidgety or restless that you have been moving around a lot more than usual.		workbook:full on-screen prompt
+phq9	no_appetite	Over the last 2 weeks, how often have you been bothered by any of the following problems? Poor appetite or overeating.		workbook:full on-screen prompt
+phq9	no_energy	Over the last 2 weeks, how often have you been bothered by any of the following problems? Feeling tired or having little energy.		workbook:full on-screen prompt
+phq9	no_interest	Over the last 2 weeks, how often have you been bothered by any of the following problems? Little interest or pleasure in doing things.		workbook:full on-screen prompt
+phq9	thoughts_death	Over the last 2 weeks, how often have you been bothered by any of the following problems? Thoughts that you would be better off dead or of hurting yourself in some way.		workbook:full on-screen prompt
+phq9	trouble_concentrate	Over the last 2 weeks, how often have you been bothered by any of the following problems? Trouble concentrating on things, such as reading the newspaper or watching television.		workbook:full on-screen prompt
+phq9	trouble_sleeping	Over the last 2 weeks, how often have you been bothered by any of the following problems? Trouble falling or staying asleep, or sleeping too much.		workbook:full on-screen prompt
+stroop	stroop_item_color_1	Stroop item: ink color the word was printed in		workbook:correction
+stroop	stroop_item_stimulus_1	Stroop item: printed word shown (a color word or neutral 'oooo')		workbook:correction
+enrollment_form	ef_fluent_languages___2	Do you speak any additional language(s) fluently (similar to a native speaker)? — English		workbook:checkbox option
+enrollment_form	ef_fluent_languages___3	Do you speak any additional language(s) fluently (similar to a native speaker)? — French		workbook:checkbox option
+enrollment_form	ef_fluent_languages___4	Do you speak any additional language(s) fluently (similar to a native speaker)? — Spanish		workbook:checkbox option
+enrollment_form	ef_fluent_languages___5	Do you speak any additional language(s) fluently (similar to a native speaker)? — Other (please specify below)		workbook:checkbox option
+pediatric_demographics	peds_state_province	State or province of residence (two-letter code)		workbook:correction
+pediatric_demographics	age	Age in years		workbook:correction
+pediatric_demographics	peds_race___1	Which race category best describes you? Choose all that apply — American Indian or Alaska Native		workbook:checkbox option
+pediatric_demographics	peds_race___2	Which race category best describes you? Choose all that apply — Asian		workbook:checkbox option
+pediatric_demographics	peds_race___3	Which race category best describes you? Choose all that apply — Black or African American		workbook:checkbox option
+pediatric_demographics	peds_race___4	Which race category best describes you? Choose all that apply — Native Hawaiian or other Pacific Islander		workbook:checkbox option
+pediatric_demographics	peds_race___5	Which race category best describes you? Choose all that apply — White		workbook:checkbox option
+pediatric_demographics	peds_race___6	Which race category best describes you? Choose all that apply — Canadian Indigenous or Aboriginal		workbook:checkbox option
+pediatric_demographics	peds_race___7	Which race category best describes you? Choose all that apply — Other		workbook:checkbox option
+pediatric_demographics	peds_race___8	Which race category best describes you? Choose all that apply — Prefer not to answer		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_neck_mass_branchial_cleft_cyst_surgery	Branchial cleft cyst — Have they had a surgery for this?		workbook:correction
+pediatric_medical_conditions	peds_mc_neck_mass_dermoid_cyst_surgery	Dermoid cyst — Have they had a surgery for this?		workbook:correction
+pediatric_medical_conditions	peds_mc_neck_mass_enlarged_lymph_node_surgery	Enlarged lymph node — Have they had a surgery for this?		workbook:correction
+pediatric_medical_conditions	peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery	Thyroid nodule or cancer — Have they had a surgery for this?		workbook:correction
+pediatric_medical_conditions	peds_mc_neck_mass_thyroglossal_duct_cyst_surgery	Thyroglossal duct cyst — Have they had a surgery for this?		workbook:correction
+pediatric_medical_conditions	peds_mc_no_surgeries	Has your child ever had any neurological or orthopedic surgeries that could affect breathing or speech?	peds_mc_neuroortho_surgery	workbook:rename (description kept faithful)
+pediatric_medical_conditions	peds_mc_breathing_conditions___airway_surgery	Does your child have a history of a breathing or airway conditions? (Select all that apply) — Airway Surgery		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_breathing_conditions___asthma	Does your child have a history of a breathing or airway conditions? (Select all that apply) — Asthma		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_breathing_conditions___bronchiolitis	Does your child have a history of a breathing or airway conditions? (Select all that apply) — Bronchiolitis		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_breathing_conditions___chronic_cough	Does your child have a history of a breathing or airway conditions? (Select all that apply) — Chronic Cough		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_breathing_conditions___intubated	Does your child have a history of a breathing or airway conditions? (Select all that apply) — Has your child ever been intubated?		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_breathing_conditions___recurrent_croup	Does your child have a history of a breathing or airway conditions? (Select all that apply) — Recurrent Croup (>3 episodes per year)		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_breathing_conditions___rsv	Does your child have a history of a breathing or airway conditions? (Select all that apply) — RSV		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_breathing_conditions___subglottic_stenosis	Does your child have a history of a breathing or airway conditions? (Select all that apply) — Subglottic Stenosis		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_breathing_conditions___tracheostomy	Does your child have a history of a breathing or airway conditions? (Select all that apply) — Does your child have a tracheostomy?		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_breathing_conditions___vocal_cord_webs	Does your child have a history of a breathing or airway conditions? (Select all that apply) — Vocal Cord Webs		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_conditions___congenital_heart_disease	Does your child have any of the following conditions? (Select all that apply) — Congenital heart disease		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_conditions___cystic_fibrosis	Does your child have any of the following conditions? (Select all that apply) — Cystic fibrosis		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_conditions___esophageal_atresia	Does your child have any of the following conditions? (Select all that apply) — Esophageal atresia		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_conditions___granulomatosis_with_polyangitis	Does your child have any of the following conditions? (Select all that apply) — Granulomatosis with polyangitis		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_conditions___mucopolysaccharidosis	Does your child have any of the following conditions? (Select all that apply) — Mucopolysaccharidosis		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_conditions___osteogenesis_imperfecta	Does your child have any of the following conditions? (Select all that apply) — Osteogenesis imperfecta		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_conditions___other	Does your child have any of the following conditions? (Select all that apply) — Other		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_conditions___prematurity	Does your child have any of the following conditions? (Select all that apply) — Prematurity		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_conditions___rheumatoid_arthritis	Does your child have any of the following conditions? (Select all that apply) — Rheumatoid arthritis		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_conditions___tracheoesophageal_fistula	Does your child have any of the following conditions? (Select all that apply) — Tracheoesophageal fistula		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_conditions___trisomy21	Does your child have any of the following conditions? (Select all that apply) — Trisomy 21 (Down's Syndrome)		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_hearing_loss___cholesteatoma	Does your child have a history of hearing loss or associated conditions? (Select all that apply) — Cholesteatoma		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_hearing_loss___cmv	Does your child have a history of hearing loss or associated conditions? (Select all that apply) — CMV (cytomegalovirus)		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_hearing_loss___cochlear_implantation_bilateral	Does your child have a history of hearing loss or associated conditions? (Select all that apply) — Cochlear implantation (Bilateral)		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_hearing_loss___cochlear_implantation_unilateral	Does your child have a history of hearing loss or associated conditions? (Select all that apply) — Cochlear implantation (Unilateral)		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_hearing_loss___deafness	Does your child have a history of hearing loss or associated conditions? (Select all that apply) — Deafness		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_hearing_loss___ear_tubes	Does your child have a history of hearing loss or associated conditions? (Select all that apply) — Ear tubes		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_hearing_loss___hearing_loss	Does your child have a history of hearing loss or associated conditions? (Select all that apply) — Hearing loss		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_hearing_loss___mild_hearing_loss	Does your child have a history of hearing loss or associated conditions? (Select all that apply) — Mild Hearing loss		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_hearing_loss___tympanic_membrane_perforation	Does your child have a history of hearing loss or associated conditions? (Select all that apply) — Tympanic Membrane Perforation		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_hearing_loss___vocal_cord_webs	Does your child have a history of hearing loss or associated conditions? (Select all that apply) — Vocal cord webs		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_l2w___croup	Has your child had any of the following in the 2 weeks? (Select all that apply) — Croup		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_l2w___dry_cough	Has your child had any of the following in the 2 weeks? (Select all that apply) — Dry cough		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_l2w___ear_infection	Has your child had any of the following in the 2 weeks? (Select all that apply) — Ear infection		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_l2w___nasal_congestion	Has your child had any of the following in the 2 weeks? (Select all that apply) — Nasal congestion		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_l2w___sneezing	Has your child had any of the following in the 2 weeks? (Select all that apply) — Sneezing		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_l2w___sorethroat_or_tonsillitis	Has your child had any of the following in the 2 weeks? (Select all that apply) — Sorethroat/tonsillitis		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_l2w___stridor	Has your child had any of the following in the 2 weeks? (Select all that apply) — Stridor		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_l2w___wet_productive_cough	Has your child had any of the following in the 2 weeks? (Select all that apply) — Wet, productive cough		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_l2w___wheezing_or_trouble_breathing	Has your child had any of the following in the 2 weeks? (Select all that apply) — Wheezing or trouble breathing		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_neck_mass___branchial_cleft_cyst	Does your child have a history of a neck mass? (Select all that apply) — Branchial Cleft Cyst		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_neck_mass___dermoid_cyst	Does your child have a history of a neck mass? (Select all that apply) — Dermoid cyst		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_neck_mass___enlarged_lymph_node	Does your child have a history of a neck mass? (Select all that apply) — Enlarged lymph node		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_neck_mass___other	Does your child have a history of a neck mass? (Select all that apply) — Other		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_neck_mass___thyroglossal_duct_cyst	Does your child have a history of a neck mass? (Select all that apply) — Thyroglossal duct cyst		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_neck_mass___thyroid_nodule_or_cancer	Does your child have a history of a neck mass? (Select all that apply) — Thyroid nodule or cancer		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_psych_disorders___adhd	Does your child have a history of a psychological disorders or mood problems? (Select all that apply) — ADHD		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_psych_disorders___anxiety_disorder	Does your child have a history of a psychological disorders or mood problems? (Select all that apply) — Anxiety disorder		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_psych_disorders___asd	Does your child have a history of a psychological disorders or mood problems? (Select all that apply) — Autism Spectrum Disorder (ASD)		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_psych_disorders___depression	Does your child have a history of a psychological disorders or mood problems? (Select all that apply) — Depression or Major Depressive Disorder		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_psych_disorders___eating_disorder	Does your child have a history of a psychological disorders or mood problems? (Select all that apply) — Eating Disorder (ED)		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_psych_disorders___insomnia_or_sleep_disorder	Does your child have a history of a psychological disorders or mood problems? (Select all that apply) — Insomnia/sleep Disorder		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_psych_disorders___ocd	Does your child have a history of a psychological disorders or mood problems? (Select all that apply) — Obsessive-Compulsive Disorder (OCD)		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_psych_disorders___other	Does your child have a history of a psychological disorders or mood problems? (Select all that apply) — Other psychiatric disorders		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_psych_disorders___panic	Does your child have a history of a psychological disorders or mood problems? (Select all that apply) — Panic Disorder		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_psych_disorders___social_anxiety_disorder	Does your child have a history of a psychological disorders or mood problems? (Select all that apply) — Social Anxiety Disorder		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_snoring_apnea___gasping	Does your child have a history of a snoring or obstructive sleep apnea? (Select all that apply) — Gasping for air at night		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_snoring_apnea___had_sleep_study	Does your child have a history of a snoring or obstructive sleep apnea? (Select all that apply) — Has your child had a sleep study?		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_snoring_apnea___obstructive_sleep_apnea	Does your child have a history of a snoring or obstructive sleep apnea? (Select all that apply) — Obstructive Sleep apnea (diagnosed on a sleep study)		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_snoring_apnea___snoring	Does your child have a history of a snoring or obstructive sleep apnea? (Select all that apply) — Snoring		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_voice_disorders___acid_reflux_disease	Does your child have a history of a voice disorder? (Select all that apply) — Acid reflux disease (GERD)		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_voice_disorders___airway_stenosis	Does your child have a history of a voice disorder? (Select all that apply) — Airway stenosis (bilateral vocal fold paralysis laryngeal stenosis)		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_voice_disorders___bilateral_vocal_cord_paralysis	Does your child have a history of a voice disorder? (Select all that apply) — Bilateral vocal cord paralysis		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_voice_disorders___scarring	Does your child have a history of a voice disorder? (Select all that apply) — Scarring of the larynx or vocal cords from disease or previous surgery		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_voice_disorders___unilateral_vocal_cord_paralysis	Does your child have a history of a voice disorder? (Select all that apply) — Unilateral vocal cord paralysis		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_voice_disorders___vocal_cord_webs	Does your child have a history of a voice disorder? (Select all that apply) — Vocal cord webs		workbook:checkbox option
+pediatric_medical_conditions	peds_mc_voice_disorders___vocal_nodules_or_polyps	Does your child have a history of a voice disorder? (Select all that apply) — Vocal nodules or polyps		workbook:checkbox option
+pediatric_hqa	peds_phqa_feeling_bad_self	Feeling bad about yourself - or feeling that you are a failure, or that you have let yourself or your family down? (past two weeks)		workbook:full on-screen prompt
+pediatric_hqa	peds_phqa_feeling_depressed	Feeling down, depressed, irritable, or hopeless? (past two weeks)		workbook:full on-screen prompt
+pediatric_hqa	peds_phqa_move_speak_slow	Moving or speaking so slowly that other people could have noticed? Or the opposite - being so fidgety or restless that you were moving around a lot more than usual? (past two weeks)		workbook:full on-screen prompt
+pediatric_hqa	peds_phqa_no_appetite	Poor appetite, weight loss, or overeating? (past two weeks)		workbook:full on-screen prompt
+pediatric_hqa	peds_phqa_no_energy	Feeling tired, or having little energy? (past two weeks)		workbook:full on-screen prompt
+pediatric_hqa	peds_phqa_no_interest	Little interest or pleasure in doing things? (past two weeks)		workbook:full on-screen prompt
+pediatric_hqa	peds_phqa_thoughts_death	Thoughts that you would be better off dead, or of hurting yourself in some way? (past two weeks)		workbook:full on-screen prompt
+pediatric_hqa	peds_phqa_trouble_concentrate	Trouble concentrating on things like school work, reading, or watching TV? (past two weeks)		workbook:full on-screen prompt
+pediatric_hqa	peds_phqa_trouble_sleeping	Trouble falling asleep, staying asleep, or sleeping too much? (past two weeks)		workbook:full on-screen prompt
+pediatric_voice_related_qol_survey	peds_qol_anxious_frustrated	My child/ I is sometimes anxious or frustrated (because of their voice). (over the last 2 weeks)		workbook:full on-screen prompt
+pediatric_voice_related_qol_survey	peds_qol_come_out_speaking	My child/ I sometimes does not know what will come out when they begin speaking. (over the last 2 weeks)		workbook:full on-screen prompt
+pediatric_voice_related_qol_survey	peds_qol_depressed	My child/ I is sometimes depressed (because of their voice). (over the last 2 weeks)		workbook:full on-screen prompt
+pediatric_voice_related_qol_survey	peds_qol_less_outgoing	My child has become less outgoing (because of their voice). (over the last 2 weeks)		workbook:full on-screen prompt
+pediatric_voice_related_qol_survey	peds_qol_out_of_air	My child/ I runs out of air and needs to take frequent breaths when talking. (over the last 2 weeks)		workbook:full on-screen prompt
+pediatric_voice_related_qol_survey	peds_qol_repeat_understood	My child/ I has to repeat themselves to be understood. (over the last 2 weeks)		workbook:full on-screen prompt
+pediatric_voice_related_qol_survey	peds_qol_trouble_doing_schoolwork	My child/ I has trouble doing their schoolwork or job (because of their voice). (over the last 2 weeks)		workbook:full on-screen prompt
+pediatric_voice_related_qol_survey	peds_qol_trouble_phone_speaking	My child/ I has trouble using the phone or speaking with friends in person. (over the last 2 weeks)		workbook:full on-screen prompt
+pediatric_voice_related_qol_survey	peds_qol_trouble_speaking_heard	My child/ I has trouble speaking loudly or being heard in noisy situations. (over the last 2 weeks)		workbook:full on-screen prompt
+airway_stenosis	diagnosis_as_ds_bvfi_gs_other	Other bilateral vocal fold immobility or glottic stenosis subtype		freetext-review-tier
+airway_stenosis	diagnosis_as_etiology_other	Other airway stenosis etiology		freetext-review-tier
+cognitive_impairment	diagnosis_alz_dementia_mci_gold_standard_diagnosis_confirmation_method_other	Other cognitive impairment diagnosis confirmation method		freetext-review-tier
+benign_lesions	diagnosis_bl_degree_comments_other	Other resonance comment, benign lesion assessment		freetext-review-tier
+bipolar_disorder	diagnosis_mbd_other	Other or unspecified bipolar disorder diagnosis		freetext-review-tier
+confounders	ever_used_nicotine_products_specify	Other nicotine (tobacco) product used		freetext-review-tier
+confounders	today_consume_other_specify	Other caffeinated product consumed today		freetext-review-tier
+confounders	typical_day_consume_other_specify	Other caffeinated product typically consumed		freetext-review-tier
+copd_and_asthma	diagnosis_ca_asthma_subtype_other	Other asthma subtype		freetext-review-tier
+copd_and_asthma	diagnosis_ca_significant_inhalation_exposure_history_explanation_other	Other significant inhalation exposure history		freetext-review-tier
+data_dissemination	exclude_reason_other	Other exclusion reason		freetext-review-tier
+pediatric_medical_conditions	peds_mc_a_therapy_specified	Speech therapy for articulation or voice issues, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_allergies_specified	Known allergies, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_chronic_medical_condition_specified	Chronic medical condition, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_conditions_other_specified	Other condition, pediatric medical history		freetext-review-tier
+pediatric_medical_conditions	peds_mc_dif_swallowing_specified	Difficulty swallowing liquids or solids, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_ear_inf_ant_py_specified	Ear infections requiring antibiotics in past year, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_eval_voice_swal_c_specified	ENT or speech-language pathologist evaluation, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_fr_inf_tons_specified	Frequent throat infections or tonsillitis, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_fr_v_f_specified	Frequent vocal strain or voice fatigue, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_ft_specified	Feeding tube use, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_genetic_syndromes_specified	Genetic syndrome, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_hl_specified	Hearing loss or hearing aid use, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_hospitalized_specified	Hospitalization for a medical condition, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_hw_voice_2_w_specified	Hoarse or weak voice over two weeks, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_meds_specified	Medications affecting voice, breathing, or swallowing, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_neck_mass_other	Other neck mass history, pediatric		freetext-review-tier
+pediatric_medical_conditions	peds_mc_neurological_disorders_specified	Neurological disorder history, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_ox_sup_specified	Oxygen support, intubation, ventilator, or tracheostomy, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_psych_disorders_other	Other psychiatric disorder, pediatric		freetext-review-tier
+pediatric_medical_conditions	peds_mc_reflux_specified	Reflux (GERD) diagnosis or medication, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_stridor_specified	Noisy breathing (stridor) or difficulty breathing, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_surgery_t_vc_a_specified	Surgery involving throat, vocal cords, or airway, specified		freetext-review-tier
+pediatric_medical_conditions	peds_mc_v_dis_specified	Voice disorder or speech delay, specified		freetext-review-tier
+glottic_insufficiency	diagnosis_gi_d_aoc_other	Other cause of vocal fold atrophy, glottic insufficiency		freetext-review-tier
+glottic_insufficiency	diagnosis_gi_d_other	Other glottic insufficiency diagnosis		freetext-review-tier
+glottic_insufficiency	diagnosis_gi_degree_comments_other	Other resonance comment, glottic insufficiency assessment		freetext-review-tier
+glottic_insufficiency	diagnosis_gi_treatment_other	Other glottic insufficiency treatment		freetext-review-tier
+laryngeal_cancer	diagnosis_lc_degree_comments_other	Other resonance comment, laryngeal cancer assessment		freetext-review-tier
+laryngeal_cancer	diagnosis_lc_etiology_other	Other harmful substance exposure, laryngeal cancer risk factor		freetext-review-tier
+laryngeal_cancer	diagnosis_lc_treatment_other	Other laryngeal cancer treatment		freetext-review-tier
+laryngeal_dystonia	diagnosis_ld_degree_comments_other	Other resonance comment, laryngeal dystonia assessment		freetext-review-tier
+laryngeal_dystonia	diagnosis_ld_etiology_other	Other laryngeal dystonia etiology		freetext-review-tier
+laryngeal_dystonia	diagnosis_ld_treatment_other	Other laryngeal dystonia treatment		freetext-review-tier
+laryngitis	diagnosis_l_degree_comments_other	Other resonance comment, laryngitis assessment		freetext-review-tier
+laryngitis	diagnosis_l_determined_by_other	Other provider who determined the laryngitis diagnosis		freetext-review-tier
+laryngitis	diagnosis_l_etiology_other	Other laryngitis etiology		freetext-review-tier
+laryngitis	diagnosis_l_treatment_mt_other	Other laryngitis medical treatment		freetext-review-tier
+precancerous_lesions	diagnosis_pl_degree_comments_other	Other resonance comment, precancerous lesion assessment		freetext-review-tier
+precancerous_lesions	diagnosis_pl_ds_other	Other precancerous lesion diagnosis		freetext-review-tier
+precancerous_lesions	diagnosis_pl_treatment_other	Other precancerous lesion treatment		freetext-review-tier
+unexplained_chronic_cough	diagnosis_ucc_at_s_other	Other unexplained chronic cough treatment obtained		freetext-review-tier
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_etiology_other	Other unilateral vocal fold paralysis etiology		freetext-review-tier
+unilateral_vocal_fold_paralysis	diagnosis_uvfp_latrogenic_other	Other iatrogenic (surgery/intubation) subcategory, vocal fold paralysis		freetext-review-tier
+ataxia	ataxia_clinical_presentation_other	Other ataxia clinical presentation		freetext-review-tier
+ataxia	ataxia_etiology_other_specify	Other ataxia etiology		freetext-review-tier
+ataxia	ataxia_type_other	Other predominant ataxia type		freetext-review-tier
+essential_tremor	et_medications_other_specify	Other essential tremor medication		freetext-review-tier
+essential_tremor	et_non_pharmacological_interventions_other_specify	Other essential tremor non-pharmacological intervention		freetext-review-tier

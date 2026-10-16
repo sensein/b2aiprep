@@ -8,7 +8,8 @@ import shutil
 import subprocess
 import time
 import wave
-from typing import Any, Dict, List
+from functools import lru_cache
+from typing import Any, Dict, List, Mapping, Optional
 import re
 import hmac
 import hashlib
@@ -32,6 +33,52 @@ def normalize_task_label(task_label: Any) -> str:
     return value.strip("-")
 
 
+class TaskMatcher:
+    """Match task labels against a config list of exact labels, globs and regexes.
+
+    Entries are compared with labels after :func:`normalize_task_label`:
+
+    * exact: ``"Noisy-Sounds-1"`` matches ``noisy-sounds-1``.
+    * glob: ``*`` / ``?`` wildcards, e.g. ``"identifying-pictures-*"``. The literal parts are
+      normalized the same way as labels, so ``"Identifying Pictures *"`` works too.
+    * regex: prefix ``re:``, matched in full against the normalized label, case-insensitive,
+      e.g. ``"re:repeating-words-[a-z]+"``.
+
+    ``label in matcher`` normalizes *label* first, so raw and normalized labels both work.
+    """
+
+    def __init__(self, entries: Any = ()):
+        self.exact: set = set()
+        self.patterns: List[re.Pattern] = []
+        for entry in entries or ():
+            text = str(entry).strip()
+            if not text:
+                continue
+            if text.startswith("re:"):
+                self.patterns.append(re.compile(text[3:], re.IGNORECASE))
+            elif "*" in text or "?" in text:
+                regex = []
+                for part in re.split(r"([*?])", text):
+                    if part == "*":
+                        regex.append(".*")
+                    elif part == "?":
+                        regex.append(".")
+                    elif part:
+                        # Same normalization as labels, but edge separators are kept so that
+                        # "identifying-pictures-*" requires the "-" before the wildcard.
+                        regex.append(re.escape(_TASK_LABEL_NORMALIZATION_RE.sub("-", part.lower())))
+                self.patterns.append(re.compile("".join(regex)))
+            else:
+                self.exact.add(normalize_task_label(text))
+
+    def __contains__(self, label: Any) -> bool:
+        value = normalize_task_label(label)
+        return value in self.exact or any(p.fullmatch(value) for p in self.patterns)
+
+    def __bool__(self) -> bool:
+        return bool(self.exact or self.patterns)
+
+
 _TASK_ENTITY_RE = re.compile(r"(task-)([^_]+)")
 
 
@@ -47,6 +94,89 @@ def sanitize_task_entity_in_bids_stem(stem: str) -> str:
         return f"{prefix}{normalize_task_label(raw_label)}"
 
     return _TASK_ENTITY_RE.sub(_repl, stem)
+
+
+_RECORDING_NAME_ALIASES = ("prepare", "resources", "task_registry", "recording_name_aliases.json")
+
+
+@lru_cache(maxsize=None)
+def load_recording_name_aliases() -> Dict[str, str]:
+    """Curated map of *normalized* recording-name variants to the canonical normalized label.
+
+    RedCap recording names carry spelling/ordering variants of the same task (e.g.
+    ``Cape V sentences-1 (v2)`` next to ``Cape V sentences (v2)-1``). Case and punctuation
+    variants collapse under :func:`normalize_task_label`; anything else is declared here.
+    Keys and values must already be normalized. The file is curated by hand and kept apart
+    from ``task_registry/registry.json``, which is generated and would drop hand edits.
+    Keys beginning with ``_`` are documentation and ignored.
+    """
+    resource = files("b2aiprep").joinpath(*_RECORDING_NAME_ALIASES)
+    if not resource.is_file():
+        # The file is packaged (pyproject.toml ships prepare/resources/task_registry/**/*),
+        # so absence means a broken install. Returning {} instead would silently name files
+        # differently than a correct install -- a difference no downstream check would catch.
+        raise FileNotFoundError(
+            f"Missing packaged resource {'/'.join(_RECORDING_NAME_ALIASES)}; "
+            "b2aiprep cannot derive BIDS task entities without it."
+        )
+    data = json.loads(resource.read_text(encoding="utf-8"))
+    aliases = {k: v for k, v in data.items() if not k.startswith("_")}
+    malformed = sorted(
+        k for k, v in aliases.items()
+        if normalize_task_label(k) != k or normalize_task_label(v) != v or v in aliases
+    )
+    if malformed:
+        raise ValueError(
+            "recording_name_aliases.json entries must be normalized labels whose target is "
+            f"not itself an alias: {malformed}"
+        )
+    return aliases
+
+
+# The microphone check that opens every session. It is collection apparatus, not research
+# data: it is deliberately absent from the task registry, it is stripped again at deidentify,
+# and no published release has ever contained it. Measured on the v4 exports it is 7,970 of
+# 70,520 adult recordings (11%) and 1,383 of 99,724 pediatric.
+AUDIO_CHECK_LABEL = "audio-check"
+
+
+def is_audio_check(name: Any) -> bool:
+    """True when `name` denotes the session's microphone check, in any spelling.
+
+    The single definition of "this is an audio check" for the whole pipeline. Matching is
+    on the normalized label, so every collected variant resolves the same way:
+    ``Audio Check``, ``Audio Check (v2)-5``, ``audio-check-v2-3`` and so on all reduce to a
+    label containing ``audio-check``.
+
+    Substring, not equality, because the numbered and versioned forms are the common case --
+    a session records several audio checks and they arrive as ``Audio Check-1`` through
+    ``Audio Check-5``. Accepts anything name-like (including NaN) so callers can pass a raw
+    RedCap cell without guarding first.
+    """
+    if name is None:
+        return False
+    text = str(name).strip().lower()
+    if text in ("", "nan", "none"):
+        # `utils` is a leaf module -- fhir_utils._is_present() imports from here, so it
+        # cannot be imported back. This is the same emptiness test, inlined.
+        return False
+    return AUDIO_CHECK_LABEL in normalize_task_label(name)
+
+
+def canonical_task_entity(recording_name: Any, aliases: Optional[Mapping[str, str]] = None) -> str:
+    """The BIDS ``task-`` entity for a RedCap recording (or acoustic task) name.
+
+    Normalizes the name (lowercase; runs of non-alphanumerics become a single ``-``) and then
+    applies the curated aliases, so ``Audio Check (v2)-1`` -> ``audio-check-v2-1`` and
+    ``Cape V sentences-1 (v2)`` -> ``cape-v-sentences-v2-1``. Idempotent: applying it to its
+    own output returns the same label, which is what lets ``deidentify`` verify rather than
+    rename. This is the single place file names derive their task entity from; the raw
+    RedCap name stays in the phenotype tables and sidecar contents.
+    """
+    label = normalize_task_label(recording_name)
+    if aliases is None:
+        aliases = load_recording_name_aliases()
+    return aliases.get(label, label)
 
 
 def get_commit_sha(submodule_root: Path) -> str:

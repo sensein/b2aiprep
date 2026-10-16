@@ -47,6 +47,26 @@ def _build_raw_url(commit_sha: str, relative_path: Path) -> str:
     return f"{_RAW_BASE_URL}/{commit_sha}/{relative_path.as_posix()}"
 
 
+def _describe_slider(element_payload: Dict, item_json: Dict) -> None:
+    """Describe a slider item as the integer position it records.
+
+    A ReproSchema slider with ``minValue``/``maxValue`` records a whole number in that range; its
+    ``choices`` are the anchor labels (RedCap's "MI | MO | SE"), not the allowed answers, as the
+    reference reproschema-ui reads them. Copied without the item's ``inputType`` the element would
+    read as a three-choice field, so it keeps ``inputType`` and the labels move to ``sliderLabels``.
+    The items' ``valueType`` is inferred from the labels by redcap2reproschema (``xsd:string`` for
+    text labels) and is replaced by the integer RedCap records.
+    """
+    choices = element_payload.get("choices") or []
+    labels = [c.get("name", {}).get("en", c.get("value")) for c in choices]
+    element_payload["inputType"] = "slider"
+    element_payload["choices"] = None
+    element_payload["valueType"] = ["xsd:integer"]
+    element_payload["datatype"] = ["xsd:integer"]
+    if labels:
+        element_payload["sliderLabels"] = labels
+
+
 def _build_data_elements(
     activity_json: Dict,
     activity_path: Path,
@@ -98,6 +118,9 @@ def _build_data_elements(
             if key in {"choices", "valueType", "datatype"}:
                 continue
             element_payload[key] = value
+
+        if (item_json.get("ui") or {}).get("inputType") == "slider":
+            _describe_slider(element_payload, item_json)
 
         data_elements[element_id] = element_payload
 

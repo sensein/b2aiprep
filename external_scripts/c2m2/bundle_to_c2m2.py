@@ -292,8 +292,8 @@ def generate_file_describes_biosample(bundle_path: Path, all_files_df: pd.DataFr
 
     Only task-related files are linked to biosamples:
       - features/*.parquet and features/*.tsv: have task_name column
-      - metadata/metadata.tsv (or legacy metadata.parquet): has task_name column
-      - phenotype/task/recording.tsv: recording_name -> exact task_name slug
+      - metadata/metadata.tsv (or legacy metadata.parquet), in bundles before v4: has task_name column
+      - phenotype/task/recording.tsv: task_name (v4 on), else recording_name -> exact task_name slug
       - phenotype/task/acoustic_task.tsv: acoustic_task_name prefix per (participant, session)
       - phenotype/task/stroop.tsv: exact 'word-color-stroop'
       - phenotype/task/harvard_sentences.tsv: prefix 'harvard-sentences'
@@ -371,13 +371,15 @@ def generate_file_describes_biosample(bundle_path: Path, all_files_df: pd.DataFr
             fname = rel.stem
             try:
                 if fname == 'recording':
+                    # task_name from v4; older bundles have only recording_name
+                    name_col = ('task_name' if 'task_name' in pd.read_csv(abs_path, sep='\t', nrows=0).columns
+                                else 'recording_name')
                     df = pd.read_csv(abs_path, sep='\t', dtype=str,
-                                     usecols=['participant_id', 'recording_session_id',
-                                              'recording_name'])
+                                     usecols=['participant_id', 'recording_session_id', name_col])
                     df = df.merge(id_map_cols,
                                   left_on=['participant_id', 'recording_session_id'],
                                   right_on=['participant_id', 'session_id'], how='inner')
-                    df['task_name'] = df['recording_name'].apply(_recording_name_to_task_name)
+                    df['task_name'] = df[name_col].apply(_recording_name_to_task_name)
                     df['bid'] = df['anon_id'] + '_' + df['task_name']
                     for bid in df.loc[df['bid'].isin(valid_biosample_ids), 'bid'].unique():
                         rows.add((file_local_id, bid))

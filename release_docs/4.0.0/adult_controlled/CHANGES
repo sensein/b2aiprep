@@ -1,0 +1,46 @@
+4.0.0 2026-10
+  - Participants: 1,304 in total: 748 from v3.1, with the same participant_id, and 556 new. 19 v3.1
+    participants are not in this version, because of changes to their eligibility, consent or data-sharing
+    status, or because none of their recordings passed the new quality review. Ages are now whole numbers
+    (v3.1 wrote them with one decimal place).
+  - Recordings: 43,007 (v3.1: 27,408). To improve data quality, recordings flagged by the new automated
+    recording review were excluded, including 4,641 recordings that were released in v3.1.
+  - Audio files are now FLAC (lossless) instead of WAV, still 16-bit PCM, 16 kHz, mono. Where resampling
+    pushed a waveform past full scale, the recording is now scaled down to its original peak instead of
+    being clipped.
+  - Spanish-language data: 23 participants, 744 recordings with language es-419.
+  - Sessions: session_id is now the session number within the participant (ses-01, ses-02, ...) instead of
+    an 8-character identifier. Each participant folder adds sub-<participant_id>_sessions.tsv.
+  - Audio sidecars: added language, speech_type and the stimulus fields (stimulus_text, stimulus_source,
+    stimulus_asset, stimulus_asset_n_images); prompts is replaced by the stimulus fields.
+  - phenotype/task/recording.tsv grows from 11 to 31 columns, adding the task name, language, instructions,
+    stimulus, speech type, recording order and timing, audio sample rate and channel count, and the device,
+    platform and browser used.
+  - Task names: the task_name in each audio sidecar now matches the task label in the file name (for
+    example cape-v-sentences-(v2)-1 -> cape-v-sentences-v2-1). The labels of 11 recordings changed:
+    high-to-low -> glides-high-to-low (3), rainbowpassage -> rainbow-passage (4), and 4 recordings labelled
+    maximum-phonation-time-v2-3, -4 or -5 in v3.1 that are the second maximum phonation time (v2) recording
+    of their session and are now maximum-phonation-time-v2-2. recording_id is unchanged, so v3.1 recordings
+    can be matched to v4.0.0 by joining the two versions' phenotype/task/recording.tsv on recording_id.
+  - phenotype/enrollment/participant.tsv adds site (a pseudonymous site label) and
+    some_data_collected_remotely.
+  - New tables: diagnosis/ataxia, diagnosis/essential_tremor and diagnosis/huntingtons_disease.
+    productive_vocabulary moved from questionnaire/ to task/.
+  - Column renames: CAPE-V ratings _1 -> _severity and _2 -> _consistency (the unilateral vocal fold
+    paralysis _2 ratings become diagnosis_uvfp_degree_*_consistency; its severity ratings keep their v3.1
+    names); diagnois_bl_* -> diagnosis_bl_*; diagnosis_c_ac ->
+    clinical_global_impression_voice_affecting_condition.
+  - Free text: free-text answers new in this version were reviewed before release, and identifying details
+    are replaced by [REDACTED].
+  - Some answer options chosen by very few participants were combined.
+  - Some fields are released only in this controlled-access dataset (48 columns in 6 tables; see README).
+  - Phenotype JSON files now describe each table and give each column's description, question and choices.
+  - New files: audio_quality_annotations.tsv and consensus_transcripts.parquet (an automated review of each
+    recording and a consensus transcript), data_explorer.html, LICENSE and this CHANGES file. The README was
+    rewritten.
+
+3.1.0 2026-06
+  - Released on Synapse (doi:10.7303/syn74341293.2).
+
+3.0.0 2026-04
+  - Released on Synapse (doi:10.7303/syn74341293.1).

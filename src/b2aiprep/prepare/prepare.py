@@ -78,7 +78,7 @@ from b2aiprep.prepare.constants import (
 
 from b2aiprep.prepare.bids import get_audio_paths
 from b2aiprep.prepare.constants import SPEECH_TASKS
-from b2aiprep.prepare.utils import retry
+from b2aiprep.prepare.utils import normalize_task_label, retry
 
 SUBJECT_ID = "sub"
 SESSION_ID = "ses"
@@ -107,6 +107,23 @@ def remap_id(
         return original_id
 
 #@python.define
+def transcription_language(wav_path: str | os.PathLike) -> str:
+    """Language to transcribe a recording in: the ``language`` of its sidecar
+    (``<stem>_recording-metadata.json``, BCP-47 from RedCap ``selected_language``, e.g.
+    ``es-419``) reduced to the ISO 639 code Whisper takes (``es``). English when the sidecar or
+    its ``language`` is missing, as before this was read (#325)."""
+    wav_path = Path(wav_path)
+    sidecar = wav_path.with_name(f"{wav_path.stem}_recording-metadata.json")
+    try:
+        language = json.loads(sidecar.read_text()).get("language")
+    except (OSError, ValueError):
+        _logger.warning(f"No readable sidecar {sidecar}; transcribing {wav_path.name} as English.")
+        return "en"
+    if not language:
+        return "en"
+    return str(language).split("-")[0].strip().lower()
+
+
 def extract_single(
     wav_path: str | os.PathLike,
     transcription_model_size: str,
@@ -166,7 +183,11 @@ def extract_single(
     win_length = 25
     hop_length = 10
 
-    is_speech_task = any([v.replace(" ", "-") in wav_path.name for v in SPEECH_TASKS])
+    # Compare normalized forms on both sides. SPEECH_TASKS is Title Case with spaces
+    # ("Free Speech"), while the BIDS task entity is lowercase and hyphenated
+    # ("task-free-speech-1"), so a raw substring test matches nothing.
+    _normalized_stem = normalize_task_label(wav_path.stem)
+    is_speech_task = any(normalize_task_label(v) in _normalized_stem for v in SPEECH_TASKS)
 
     opensmile = True
     torchaudio_squim = True
@@ -290,7 +311,7 @@ def extract_single(
         features["torch_config"] = torch_config
         features["is_speech_task"] = is_speech_task
         features["sample_rate"] = audio_16k.sampling_rate
-        features["duration"] = len(audio_16k.waveform) / audio_16k.sampling_rate
+        features["duration"] = audio_16k.waveform.shape[-1] / audio_16k.sampling_rate
         features["sensitive_features"] = None
 
     try:
@@ -339,7 +360,7 @@ def extract_single(
             speech_to_text_model = HFModel(
                 path_or_uri=f"openai/whisper-{transcription_model_size}", revision="main"
             )
-            language = Language.model_validate({"language_code": "en"})
+            language = Language.model_validate({"language_code": transcription_language(wav_path)})
             transcription = retry(transcribe_audios)(
                 [audio_16k], model=speech_to_text_model, device=device, language=language,return_timestamps=None
             )

@@ -1,0 +1,36 @@
+2.0.0 2026-10
+  - Participants: 656 in total: 299 from v1.1, with the same participant_id, and 357 new. One v1.1
+    participant was withheld because their answers were judged to carry a high risk of re-identification.
+  - Recordings: 41,831 (v1.1: 23,533). 198 recordings released in v1.1 are not linked to a record in the
+    REDCap project and are not included in this version. A further 78 v1.1 recordings belonged to the
+    withheld participant.
+  - Data source: the pediatric data were imported into the study's REDCap project, and this version is built
+    from a REDCap export rather than directly from the reproschema-ui data used for v1.1.
+  - Audio files are now FLAC (lossless) instead of WAV, still 16-bit PCM, 16 kHz, mono. Where resampling
+    pushed a waveform past full scale, the recording is now scaled down to its original peak instead of
+    being clipped.
+  - Task names: in v1.1 the number in a task name such as picture-12 counted recordings in the order they
+    were made. Each task name now identifies one item, for example identifying-pictures-12,
+    reading-passage-3 or repeating-words-pond, and task families were renamed (for example picture ->
+    identifying-pictures, sentence -> repeating-sentences). recording_id is unchanged, so v1.1 recordings can
+    be matched to v2.0.0 by joining the two versions' phenotype/task/recording.tsv on recording_id.
+  - Sessions: session_id is now the session number within the participant (ses-01) instead of an
+    8-character identifier. Each participant folder adds sub-<participant_id>_sessions.tsv.
+  - Audio sidecars: added language, speech_type and the stimulus fields (stimulus_text, stimulus_source,
+    stimulus_asset); prompts is replaced by the stimulus fields.
+  - phenotype/task/recording.tsv grows from 11 to 31 columns, adding the task name, language, instructions,
+    stimulus, speech type, recording order and timing, and audio sample rate and channel count. The device,
+    platform and browser columns are present but empty for this cohort.
+  - New phenotype/enrollment folder: participant.tsv (site, whether any data were collected remotely,
+    selected language), eligibility.tsv and enrollment_form.tsv.
+  - Demographics: race is now one column per option. State or province and form duration were added.
+  - Medical conditions: multi-select answers are now one column per option, and the number of days from each
+    surgery or procedure to the participant's first session was added.
+  - Phenotype JSON files now describe each table and give each column's description, question and choices.
+  - New files: data_explorer.html, LICENSE and this CHANGES file. The README was rewritten.
+
+1.1.0 2026-06
+  - Released on Synapse (doi:10.7303/syn74341287.2).
+
+1.0.0 2026-04
+  - Released on Synapse (doi:10.7303/syn74341287.1).

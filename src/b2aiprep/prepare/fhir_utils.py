@@ -10,6 +10,8 @@ from functools import lru_cache
 from importlib.resources import files
 from urllib.parse import quote
 import logging
+
+from b2aiprep.prepare.utils import canonical_task_entity
 _logger = logging.getLogger(__name__)
 
 
@@ -375,7 +377,13 @@ def _resolve_task_registry(task_name: str, population=None):
     reg = _load_registry()
     if not reg:
         return None
-    n = _norm(task_name)
+    # Resolve through the curated recording-name aliases first, so a variant spelling finds
+    # the same task as its canonical form. Only aliased names are affected: for every other
+    # name canonical_task_entity() differs from _norm() by punctuation that _norm() already
+    # strips. Measured over all 949 task names in the v4 exports, exactly one resolution
+    # changes -- the bare "High to Low", the Glides pair's second half, which resolved to
+    # nothing and now resolves to adult.glides.
+    n = _norm(canonical_task_entity(task_name))
     best_tid, best_len = None, -1
     for na, na_len, tid in _alias_items():
         if na == n:
@@ -958,7 +966,10 @@ def convert_response_to_bids_metadata( participant: dict,
         elif metadata_field in ("acoustic_task_name", "recording_name") and metadata_field is not None:
             if isinstance(metadata_value, str):
                 task_name = metadata_value.replace(" ", "-").lower()
-            metadata_file[metadata_field] = task_name
+            # The sidecar records the BIDS task entity, the same label as the file name and
+            # acoustic_task.tsv; the raw name (task_name) is kept for the lookups below, which
+            # read markers such as "(v2)".
+            metadata_file[metadata_field] = canonical_task_entity(metadata_value) if task_name else task_name
         elif metadata_file is not None and metadata_field is not None:
             metadata_file[metadata_field] = metadata_value
     
@@ -1013,7 +1024,7 @@ def convert_response_to_bids_metadata( participant: dict,
             # recall, cinderella) carry their reference text via the flat fallback,
             # so the registry leaves stimulus_source unset. Tag it doc-text: the
             # reference is redcap/hand-entered plain text (any accompanying image is
-            # illustrative, not the reading target), matching metadata.json.
+            # illustrative, not the reading target), as the field map describes stimulus_source.
             if stim_source is None and stim_text and reg["speech_type"] in ("read", "recall"):
                 stim_source = "doc-text"
             resolved = {
