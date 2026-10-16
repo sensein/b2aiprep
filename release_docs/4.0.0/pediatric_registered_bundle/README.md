@@ -50,6 +50,20 @@ Checkbox columns (`<question>___<option>`, one per option of a select-all-that-a
 
 `task/recording.tsv` has one row per recording, with the task, instructions, stimulus and audio format. It joins to the feature files on participant, session (`recording_session_id`) and `task_name`.
 
+`enrollment/participant.tsv` lists every participant in this release, one row each. The other tables only hold rows for these participants, and only when the participant has data on that form. A participant can therefore have no row in a table: `pediatric/pediatric_medical_conditions.tsv` has no row for 3 participants and `pediatric_questionnaire/pediatric_vhi10.tsv` none for 1, because nothing was recorded on those forms for them. `task/acoustic_task.tsv` and `task/recording.tsv` have one row per task and per recording. The other tables with a session column have one row per session in which the form was filled in. Every participant in this version has one session, so they have at most one row per participant; later versions may have more.
+
+`enrollment/eligibility.tsv` comes from the study-eligibility form: whether the participant was enrolled as a control, and the answers to "Do you have any of these conditions, diagnosed by a clinician?". `enrollment/enrollment_form.tsv` comes from the enrollment survey: language, accessibility needs and how long the survey took.
+
+The enrollment, eligibility, session and recording forms are shared with the adult study, so these tables have the same columns in both datasets. Some columns have no values in this version:
+
+- Recorded only by the study app. All data in this version were collected before the app was used, so these columns are empty:
+  - `enrollment/eligibility.tsv`: `self_reported_autism`, `self_reported_speech_delay`. Autism is recorded in `peds_mc_psych_disorders___asd`, and voice disorder or speech delay in `peds_mc_v_dis`, both in `pediatric/pediatric_medical_conditions.tsv`.
+  - `enrollment/enrollment_form.tsv`: `ef_duration`, `ef_any_cognitive_challeges`, `ef_any_hearing_related_req`, `ef_any_physical_challenges`, `ef_any_vision_related_req`.
+  - `task/session.tsv`: `session_assigned_tasks`.
+  - `task/recording.tsv`: `recording_input_gain`, `recording_microphone`, `recording_profile_name`, `recording_profile_version`, `recording_device_info`, `recording_device_type`, `recording_platform`, `recording_platform_version`, `recording_screen_resolution`, `recording_window_resolution`.
+- Recorded only for adult participants: `ef_fluent_languages___1` to `ef_fluent_languages___5` in `enrollment/enrollment_form.tsv`, and `recording_browser` in `task/recording.tsv`.
+- `stimulus_asset_n_images` in `task/recording.tsv` applies only to stimuli made of several images, and no pediatric task uses one.
+
 ## features
 
 The features folder contains derivations from the raw audio. The files contained in the features folder are:
