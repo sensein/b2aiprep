@@ -1,0 +1,108 @@
+Summary scripts - usage
+=======================
+
+All three scripts are in /orcd/data/satra/002/datasets/b2aivoice/4.0-release/
+Scripts 1 and 2 use only the Python standard library; script 3 needs pyarrow.
+All run entirely on the cluster.
+
+
+1. bids_participant_summary.py
+------------------------------
+
+Participant, control, recording and hours metrics for adult and/or peds BIDS
+folders, plus the gold-standard diagnosis column for each adult diagnosis.
+
+Run from the 4.0-release folder:
+
+    cd /orcd/data/satra/002/datasets/b2aivoice/4.0-release
+    python3 bids_participant_summary.py \
+      --adult adult/bids_adult_2026_09_04 \
+      --peds pediatric/bids_pediatric_2026_09_16 \
+      -o adult_peds_participant_summary.tsv
+
+Options:
+    --adult   adult BIDS folder (contains phenotype/ and sub-*/)
+    --peds    peds BIDS folder
+              Either --adult or --peds can be left out.
+    -o        main output file path
+              Default: bids_participant_summary.tsv in the current directory.
+    --help    list the options
+
+Output files:
+    <-o file>                  e.g. adult_peds_participant_summary.tsv
+                               One row per metric, one column per cohort:
+                                 participants_in_phenotype
+                                 control_participants_diagnosis_file
+                                 control_participants_enrollment_flag
+                                 participant_folders
+                                 participants_with_recordings
+                                 total_recordings
+                                 avg_recordings_per_participant
+                                 avg_recordings_per_participant_with_recordings
+                                 recording_hours
+                                 unreadable_audio_files
+
+    <-o name>_diagnoses.tsv    e.g. adult_peds_participant_summary_diagnoses.tsv
+                               Adult only (written when --adult is given).
+                               One row per diagnosis file:
+                                 diagnosis, gs_column, source_file, description
+
+How the metrics are computed:
+    participants   unique participant_id across every TSV in <bids>/phenotype
+    controls       two counts, because they disagree and it is unclear which
+                   is the source of truth:
+                     _diagnosis_file: unique participant_id in
+                       <bids>/phenotype/diagnosis/control.tsv
+                     _enrollment_flag: unique participant_id with
+                       is_control_participant = Yes in
+                       <bids>/phenotype/enrollment/eligibility.tsv
+                   Blank if the file or column does not exist (peds has no
+                   control.tsv).
+    recordings     .wav and .flac files under each <bids>/sub-*/ folder
+    hours          summed audio length from each file's header
+                   (samples / sample rate)
+    averages       rounded to the nearest whole number
+    diagnoses      in each diagnosis TSV, the gold-standard column, chosen by
+                   name (*gold_standard_diagnosis, then gold_standard, then
+                   _gs), then by "gold standard" in the JSON description.
+                   Checkbox sub-columns (containing "___") are skipped.
+
+Run time: about 4 minutes for both folders, almost all of it reading the
+audio file headers.
+
+
+2. tsv_duration_totals.py
+-------------------------
+
+Total extend_time and recording hours from a single TSV.
+
+    python3 tsv_duration_totals.py <path.tsv> -o <output.tsv>
+
+    extend_time      sum of task_duration_s
+    recording_hours  sum of recording_duration_s
+
+Without -o, writes <input_name>_duration_totals.tsv next to the input file.
+
+Output columns: metric, seconds, hours, source_column, rows_skipped
+(rows_skipped = rows where the value was blank or not a number).
+
+
+3. parquet_row_counts.py
+------------------------
+
+Row counts for every .parquet file under a folder (searched recursively),
+or for a single .parquet file. Counts come from each file's footer
+metadata, so no data is loaded.
+
+    python parquet_row_counts.py <path> -o <output.tsv>
+
+Without -o, writes parquet_row_counts.tsv in the current directory.
+
+Output columns: path, name, n
+    path   file path relative to <path>
+    name   file name
+    n      number of rows (NA if the file could not be read; a warning
+           is printed)
+
+Requires pyarrow, which the system python3 does not have. Run it from a
+conda/miniforge environment that has pyarrow installed.
