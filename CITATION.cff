@@ -4,12 +4,12 @@ authors:
 - family-names: "Johnson"
   given-names: "Alistair"
   orcid: "https://orcid.org/0000-0002-8735-3014"
-- family-names: "Bevers"
-  given-names: "Isaac"
-  orcid: "https://orcid.org/0009-0002-0074-0087"
 - family-names: "Ng"
   given-names: "Evan"
   orcid: "https://orcid.org/0009-0006-8554-5414"
+- family-names: "Bevers"
+  given-names: "Isaac"
+  orcid: "https://orcid.org/0009-0002-0074-0087"
 - family-names: "Wilke"
   given-names: "Jordan"
 - family-names: "Brito"
@@ -25,6 +25,6 @@ authors:
   given-names: "Satrajit"
   orcid: "https://orcid.org/0000-0002-5312-6729"
 title: "Bridge2AI Data Processing Library"
-version: 3.0.0
-date-released: 2025-12-15
+version: 4.0.0
+date-released: 2026-10-16
 url: "https://github.com/sensein/b2aiprep"

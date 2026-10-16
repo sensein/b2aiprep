@@ -1,0 +1,37 @@
+Bridge2AI-Voice: An ethically-sourced, diverse voice dataset linked to health information - Raw Audio Adult Dataset
+Version 4.0.0
+
+Access to and use of this dataset are governed by the Bridge2AI-Voice Data Transfer and Use Agreement (DTUA)
+between the University of South Florida Board of Trustees and the recipient institution, approved through
+the Synapse access requirement:
+
+    https://www.synapse.org/AccessRequirement:AR_ID=9606868
+
+The signed DTUA is the authoritative text. The summary below does not replace or change it. Section numbers
+refer to the DTUA.
+
+  - Purpose: commercial or non-commercial research, for the project approved under your agreement.
+    Commercialization of the data is not permitted (section 2).
+  - Use the data only for the approved project, and only by the personnel listed in Attachment 3.
+    Collaborators at other organizations, and other research teams at the same organization, must apply
+    and sign their own DTUA (section 3).
+  - Do not disclose, release, sell, rent, lease, loan or otherwise give access to the data to any third
+    party; keep administrative, technical and physical safeguards (section 4; Attachment 2, sections 6 and 9).
+  - Acknowledge the provider as the source of the data in publications and other public disclosures
+    (section 7).
+  - The data are personally identifiable information and are covered by a Certificate of Confidentiality
+    (Attachment 2, section 1).
+  - Do not use the data, alone or with other information, to contact participants without IRB approval,
+    the provider's written approval and, where required, the participant's informed consent (Attachment 2,
+    section 5). Report any unauthorized use or disclosure within five business days of discovery
+    (Attachment 2, section 4).
+  - When the agreement ends (two years after its start date, when the project ends, on termination, or when
+    its ethics approval expires, whichever comes first), destroy the data as the provider instructs and
+    certify the destruction in writing within 30 days (Attachment 1, section 4). One copy may be kept where
+    records-retention or research-integrity requirements need it, under the same restrictions (section 8).
+
+Questions about data access: B2AI-Voice DACO, daco@b2ai-voice.org
+Technical help with Synapse: Synapse Access & Compliance Team, act@sagebase.org
+
+The feature-only release of this dataset on PhysioNet is available under a separate agreement, shown on its
+PhysioNet page.

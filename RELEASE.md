@@ -17,7 +17,7 @@ Note that there are implicit assumptions made regarding the structured data and 
 WORKING_DIR=${HOME}/data/bridge2ai/adult   # or .../pediatric: same commands
 
 b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/audio --sanitize_audio_format --date-shift-anchor $DATE_SHIFT_ANCHOR
-b2aiprep-cli generate-audio-features $WORKING_DIR/bids $WORKING_DIR/bids --update
+b2aiprep-cli generate-audio-features $WORKING_DIR/bids $WORKING_DIR/bids -t large-v3-turbo --validate
 b2aiprep-cli run-quality-control-on-audios $WORKING_DIR/bids
 b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/de-identified-bids $WORKING_DIR/release_config
 b2aiprep-cli create-bundled-dataset $WORKING_DIR/de-identified-bids $WORKING_DIR/bundled --skip_audio
@@ -89,8 +89,11 @@ Run the following command to extract features:
 b2aiprep-cli generate-audio-features \
     <path/to/input/bids_folder> \
     <path/to/output/folder> \
-    --is_sequential True
+    -t large-v3-turbo \
+    --validate
 ```
+
+`-t` sets the Whisper model for the transcripts; the default is `tiny`. On a cluster, split the participants with `-S <subject file>` and run one job per file.
 
 Note: Due to the potential size and quantity of the audio files, this may take a while, and we typically run it on a cluster with slurm (sbatch).
 
@@ -218,3 +221,32 @@ b2aiprep-cli create-bundled-dataset <path/to/input/bids_folder> <path/to/output/
 ```
 
 Once this command is done, you will have a dataset ready to release! Congratulations!
+
+### 6. Hand-edited release documents
+
+Some files at the top level of each published tree are written by hand for each release; the pipeline does not produce them:
+
+- `README.md` of each registered bundle (published on PhysioNet);
+- `README.md`, `LICENSE`, `CHANGES` and `dataset_description.json` of each controlled tree (published on Synapse).
+
+The deidentify and bundle steps copy the generic files in `src/b2aiprep/template/`, which cannot tell the cohorts or access tiers apart. After bundling, replace them in each tree with the hand-edited versions. The adult and pediatric versions differ: dataset version, counts, licence and cohort-specific notes.
+
+The versions published with each release are kept in `release_docs/<b2aiprep version>/<published folder>/`. The folders are named after the published datasets: `adult_registered_bundle`, `adult_controlled`, `pediatric_registered_bundle` and `pediatric_controlled`. For the next release, start from the previous release's copies and update the versions, counts and changes. These copies record what was published. Nothing checks them against the code, so they may contain errors that were published as is.
+
+b2aiprep 4.0.0 produced adult dataset v4.0.0 and pediatric dataset v2.0.0.
+
+#### Files made by other tools
+
+Some files in the published trees are produced outside the b2aiprep commands above. They need their own step in each release, and a rerun of the b2aiprep steps does not recreate them:
+
+- **`data_explorer.html`** (top level of each published tree): a summary of every phenotype field, built from the finished tree with `external_scripts/data_explorer/` (see its `README.md`). Rebuild it after any change to a phenotype table. It is not kept in `release_docs/`.
+- **`audio_quality_annotations.tsv` and `consensus_transcripts.parquet`** (adult only in 4.0.0): made from senselab's triage output (`derivatives/senselab-triage/`) by `external_scripts/triage/prep_audio_quality_annotations.py`, then copied to the root of the BIDS tree before deidentification. b2aiprep keeps the rows of released recordings, gives them the released participant and session IDs, writes the column descriptions (package resources) and copies both files into the bundle. See `external_scripts/triage/README.md`.
+
+Record for each of these where it came from (tool, version or commit, date) in the release notes.
+
+### 7. Software release
+
+Tag the b2aiprep version that produced the published trees:
+
+1. In `CITATION.cff`, set `version` and `date-released` (the tag date). Authors are listed roughly by contribution and kept in the same order between releases unless the maintainers decide otherwise.
+2. Merge the release branch into `main` with a merge commit (not a squash), so the commits that built the data stay in `main`'s history. The pull request needs the `release` label and a version label (`major`, `minor` or `patch`). On merge, `auto` creates the tag, the GitHub release and the `CHANGELOG.md` entry; the GitHub release then publishes the package to PyPI. Do not tag or edit `CHANGELOG.md` by hand.

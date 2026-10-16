@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Explorer — __TITLE__</title>
+<style>
+:root{
+  color-scheme: light;
+  --plane:#f9f9f7; --surface:#fcfcfb; --surface-2:#f4f3ef;
+  --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,.10);
+  --series-1:#2a78d6; --track:#e8e7e1;
+  --good:#0ca30c; --good-ink:#006300; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
+  --warn-ink:#7a5200; --serious-ink:#8a3b17; --critical-ink:#a02525;
+  --radius:10px;
+  --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --plane:#0d0d0d; --surface:#1a1a19; --surface-2:#222221;
+    --ink:#ffffff; --ink-2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
+    --series-1:#3987e5; --track:#2c2c2a;
+    --warn-ink:#fab219; --serious-ink:#ec835a; --critical-ink:#e07070; --good-ink:#0ca30c;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --plane:#0d0d0d; --surface:#1a1a19; --surface-2:#222221;
+  --ink:#ffffff; --ink-2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
+  --series-1:#3987e5; --track:#2c2c2a;
+  --warn-ink:#fab219; --serious-ink:#ec835a; --critical-ink:#e07070; --good-ink:#0ca30c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);font-family:var(--font);
+     font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--series-1)}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.01em}
+
+/* ---------- top bar ---------- */
+header.top{position:sticky;top:0;z-index:30;background:var(--surface);
+  border-bottom:1px solid var(--border);padding:14px 22px}
+.top-row{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.top h1{font-size:17px}
+.crumb{font-family:var(--mono);font-size:11.5px;color:var(--muted);word-break:break-all}
+.spacer{flex:1}
+button.ghost{background:none;border:1px solid var(--border);color:var(--ink-2);
+  border-radius:8px;padding:5px 11px;font:inherit;font-size:12.5px;cursor:pointer}
+button.ghost:hover{background:var(--surface-2);color:var(--ink)}
+
+/* ---------- filter row ---------- */
+.filters{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.filters input[type=search], .filters select{
+  font:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--border);
+  border-radius:8px;background:var(--surface-2);color:var(--ink)}
+.filters input[type=search]{min-width:260px;flex:1;max-width:420px}
+.chip{border:1px solid var(--border);background:var(--surface-2);color:var(--ink-2);
+  border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.chip:hover{color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--series-1);border-color:var(--series-1);color:#fff}
+.chip .dot{width:8px;height:8px;border-radius:50%;flex:none}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:262px minmax(0,1fr);gap:0;align-items:start}
+@media (max-width:900px){.shell{grid-template-columns:1fr}
+  nav.side{position:static;height:auto;max-height:260px;border-right:0;border-bottom:1px solid var(--border)}}
+nav.side{position:sticky;top:113px;height:calc(100vh - 113px);overflow-y:auto;
+  border-right:1px solid var(--border);padding:14px 10px 40px;background:var(--plane)}
+.nav-group{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);
+  margin:14px 8px 5px;font-weight:600}
+.nav-item{display:flex;align-items:center;gap:7px;padding:5px 9px;border-radius:7px;
+  cursor:pointer;color:var(--ink-2);font-size:13px}
+.nav-item:hover{background:var(--surface-2);color:var(--ink)}
+.nav-item[aria-current="true"]{background:var(--series-1);color:#fff}
+.nav-item .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-item .ct{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.nav-item[aria-current="true"] .ct{color:rgba(255,255,255,.8)}
+.nav-item .flag{width:6px;height:6px;border-radius:50%;background:var(--warning);flex:none}
+main{padding:22px 26px 90px;min-width:0}
+
+/* ---------- stat tiles ---------- */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:22px}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px}
+.tile .v{font-size:25px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.tile .k{font-size:11.5px;color:var(--muted);margin-top:3px}
+.tile .sub{font-size:11px;color:var(--ink-2);margin-top:5px}
+
+/* ---------- table header ---------- */
+.thead{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:15px 17px;margin-bottom:16px}
+.thead h2{font-size:16px;font-family:var(--mono)}
+.thead .meta{font-size:12px;color:var(--muted);margin-top:5px;font-family:var(--mono);word-break:break-all}
+.thead .stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:12.5px;color:var(--ink-2)}
+.thead .stats b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* ---------- field card ---------- */
+.field{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:13px 15px;margin-bottom:9px}
+.field.is-empty{border-left:3px solid var(--critical)}
+.fh{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.fname{font-family:var(--mono);font-size:13.5px;font-weight:600;word-break:break-all}
+.badge{font-size:10.5px;padding:2px 7px;border-radius:5px;background:var(--surface-2);
+  color:var(--ink-2);border:1px solid var(--border);white-space:nowrap}
+.badge.k-numeric{color:var(--series-1);border-color:color-mix(in srgb,var(--series-1) 35%,transparent)}
+.badge.k-empty{color:var(--critical-ink);border-color:color-mix(in srgb,var(--critical) 40%,transparent)}
+.fdesc{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.fsrc{font-size:11.5px;color:var(--muted);font-family:var(--mono);margin-top:3px}
+
+/* missingness meter */
+.miss{display:flex;align-items:center;gap:9px;margin-top:9px;font-size:11.5px;color:var(--ink-2)}
+.miss .track{flex:1;max-width:210px;height:5px;background:var(--track);border-radius:3px;overflow:hidden}
+.miss .fill{display:block;height:100%;border-radius:3px;background:var(--muted)}
+.miss .fill.hi{background:var(--critical)}
+.miss .n{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* distribution rows */
+.dist{margin-top:10px;border-top:1px solid var(--grid);padding-top:9px}
+.row{display:grid;grid-template-columns:minmax(90px,200px) minmax(60px,1fr) auto;
+  gap:10px;align-items:center;padding:2.5px 0;font-size:12.5px}
+.row .lab{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.row .lab.undecl{color:var(--serious-ink)}
+.row .bar{height:9px;background:var(--track);border-radius:3px;position:relative;overflow:hidden}
+.row .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--series-1);
+  border-radius:0 4px 4px 0;display:block}
+.row .num{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:12px;
+  white-space:nowrap;text-align:right;min-width:92px}
+.more{font-size:11.5px;color:var(--muted);margin-top:6px}
+.row.wrap{grid-template-columns:minmax(160px,3fr) minmax(60px,1fr) auto;align-items:start}
+.row.wrap .lab{white-space:pre-wrap;overflow:visible;word-break:break-word;text-overflow:clip}
+.row.wrap .bar{margin-top:4px}
+button.linkbtn{background:none;border:0;padding:0;font:inherit;font-size:11.5px;
+  color:var(--series-1);cursor:pointer;margin-left:6px}
+button.linkbtn:hover{text-decoration:underline}
+.depb{font-size:10.5px;padding:2px 8px;border-radius:5px;white-space:nowrap;font-weight:600;
+  color:var(--muted);background:var(--surface-2);border:1px dashed var(--axis)}
+.field.is-dep{opacity:.72}
+.nav-item.is-dep .nm{text-decoration:line-through;color:var(--muted)}
+
+/* numeric range */
+.range{margin-top:10px;border-top:1px solid var(--grid);padding-top:10px}
+.rstats{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px}
+.rstats div{display:flex;flex-direction:column}
+.rstats .rk{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.rstats .rv{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+.rspan{font-family:var(--mono);font-size:13px;color:var(--ink);margin-bottom:9px}
+.rspan b{color:var(--series-1)}
+.hist{display:flex;align-items:flex-end;gap:2px;height:44px;margin-top:11px}
+.hist i{flex:1;background:var(--series-1);border-radius:3px 3px 0 0;min-height:1px;display:block}
+.hist-ax{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);
+  font-variant-numeric:tabular-nums;margin-top:3px;border-top:1px solid var(--grid);padding-top:3px}
+
+/* notes */
+.note{margin-top:10px;padding:8px 11px;border-radius:8px;font-size:12px;
+  background:var(--surface-2);border:1px solid var(--border)}
+.note .nh{display:flex;align-items:center;gap:6px;font-weight:600;margin-bottom:6px}
+.note.warn .nh{color:var(--warn-ink)}
+.note.serious .nh{color:var(--serious-ink)}
+.note.crit .nh{color:var(--critical-ink)}
+.note .ico{flex:none;font-size:12px}
+.vchips{display:flex;flex-wrap:wrap;gap:5px}
+.vchip{font-family:var(--mono);font-size:11.5px;padding:2px 7px;border-radius:5px;
+  background:var(--surface);border:1px solid var(--border);color:var(--ink-2)}
+.vchip.w{border-color:color-mix(in srgb,var(--warning) 45%,transparent)}
+.vchip.s{border-color:color-mix(in srgb,var(--serious) 45%,transparent)}
+
+.disp{font-size:10.5px;padding:2px 8px;border-radius:5px;white-space:nowrap;
+  font-weight:600;letter-spacing:.02em;display:inline-flex;align-items:center;gap:5px}
+.disp .dot{width:7px;height:7px;border-radius:50%;flex:none}
+.disp.d-release {color:var(--good-ink);   background:color-mix(in srgb,var(--good) 12%,transparent);
+                 border:1px solid color-mix(in srgb,var(--good) 40%,transparent)}
+.disp.d-review  {color:var(--warn-ink);   background:color-mix(in srgb,var(--warning) 14%,transparent);
+                 border:1px solid color-mix(in srgb,var(--warning) 45%,transparent)}
+.disp.d-internal{color:var(--serious-ink);background:color-mix(in srgb,var(--serious) 14%,transparent);
+                 border:1px solid color-mix(in srgb,var(--serious) 45%,transparent)}
+.disp.d-drop    {color:var(--critical-ink);background:color-mix(in srgb,var(--critical) 12%,transparent);
+                 border:1px solid color-mix(in srgb,var(--critical) 45%,transparent)}
+.disp.d-none    {color:var(--muted);background:var(--surface-2);border:1px dashed var(--axis)}
+.prov{font-size:11px;color:var(--muted);margin-top:7px;display:flex;gap:12px;flex-wrap:wrap}
+.prov b{color:var(--ink-2);font-weight:600}
+.doc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:17px 20px;margin-bottom:12px;max-width:none}
+.doc h3{font-size:14px;margin-bottom:8px}
+.doc p{margin:0 0 10px;font-size:13px;color:var(--ink-2);line-height:1.62}
+.doc ul{margin:0 0 10px;padding-left:19px;font-size:13px;color:var(--ink-2);line-height:1.62}
+.doc li{margin-bottom:7px}
+.doc code{font-family:var(--mono);font-size:12px;background:var(--surface-2);
+  padding:1px 5px;border-radius:4px;color:var(--ink)}
+.doc .risk{color:var(--warn-ink);font-weight:600}
+.doc table.gaps{margin:4px 0 12px}
+.empty-state{color:var(--muted);font-size:13px;padding:26px 0}
+.sec-title{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+  margin:26px 0 9px;font-weight:600}
+table.gaps{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+table.gaps th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--grid);font-weight:600}
+table.gaps td{padding:7px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+table.gaps tr:last-child td{border-bottom:0}
+table.gaps td.mono{font-family:var(--mono);font-size:12px;word-break:break-all}
+table.gaps td.n{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.linky{cursor:pointer;color:var(--series-1)}
+.linky:hover{text-decoration:underline}
+.scroller{overflow-x:auto}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-2);margin:9px 0 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:9px;height:9px;border-radius:2px;flex:none}
+.hasids{text-decoration:underline dotted var(--muted);text-underline-offset:3px;cursor:help}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-row">
+    <h1>Data Explorer</h1>
+    <span class="crumb">__ROOT__</span>
+    <span class="spacer"></span>
+    <button class="ghost" id="theme">Theme</button>
+  </div>
+  <div class="filters">
+    <input type="search" id="q" placeholder="Search fields, descriptions, values…" aria-label="Search fields">
+    <select id="kind" aria-label="Filter by field type">
+      <option value="">All types</option>
+      <option value="categorical">categorical</option>
+      <option value="numeric">numeric</option>
+      <option value="numeric_coded">coded numeric</option>
+      <option value="datetime">datetime</option>
+      <option value="text">free text</option>
+      <option value="empty">empty</option>
+    </select>
+    <button class="chip" data-flag="empty" aria-pressed="false">
+      <span class="dot" style="background:var(--critical)"></span>empty fields</button>
+    <button class="chip" data-flag="sparse" aria-pressed="false">
+      <span class="dot" style="background:var(--muted)"></span>≥90% empty</button>
+    <button class="chip" data-flag="unused" aria-pressed="false">
+      <span class="dot" style="background:var(--warning)"></span>options no one chose</button>
+    <button class="chip" data-flag="undecl" aria-pressed="false">
+      <span class="dot" style="background:var(--serious)"></span>values not in dictionary</button>
+    <select id="disp" aria-label="Filter by disposition" hidden>
+      <option value="">All dispositions</option>
+      <option value="release">release</option>
+      <option value="review">review</option>
+      <option value="internal">internal</option>
+      <option value="drop">drop</option>
+      <option value="(unmapped)">not in field map</option>
+    </select>
+    <button class="chip" data-flag="mismatch" aria-pressed="false">
+      <span class="dot" style="background:var(--critical)"></span>type differs from dictionary</button>
+    <button class="ghost" id="clear">Clear</button>
+    <span class="spacer"></span>
+    <button class="chip" id="showdep" aria-pressed="false" title="Deprecated fields and forms are hidden from every view and count unless this is on">
+      <span class="dot" style="background:var(--axis)"></span>show deprecated</button>
+    <button class="chip" id="fulltext" aria-pressed="false" title="List every value of free-text fields and wrap long answers instead of cutting them off">
+      <span class="dot" style="background:var(--series-1)"></span>full free text</button>
+    <button class="chip" id="hidetext" aria-pressed="false" title="Leave free-text fields out of every view and count (identifier columns stay)">
+      <span class="dot" style="background:var(--muted)"></span>hide free text</button>
+  </div>
+</header>
+<div class="shell">
+  <nav class="side" id="nav"></nav>
+  <main id="main"></main>
+</div>
+<script>
+
+const DATA = __DATA__;
+const T = DATA.tables, META = DATA.meta;
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = n => n.toLocaleString('en-US');
+// v2: participant / session / site behind rare values (analyze_v2.py --list-ids-max)
+function idLines(c, v) {
+  const r = c.ids && c.ids[v];
+  if (!r || !r.length) return '';
+  return '\n\n' + r.map(([p, s, site]) => `participant ${p}` + (s ? ` · session ${s}` : '') + (site ? ` · ${site}` : '')).join('\n');
+}
+const idAttr = (c, v, head) => { const l = idLines(c, v); return l ? ` class="hasids" title="${esc(head + l)}"` : ''; };
+const pct = p => (p >= 99.95 ? '100' : p >= 10 ? p.toFixed(0) : p.toFixed(1)) + '%';
+
+const DISP = {
+  release:  {label:'release',  cls:'d-release',  color:'var(--good)'},
+  review:   {label:'review',   cls:'d-review',   color:'var(--warning)'},
+  internal: {label:'internal', cls:'d-internal', color:'var(--serious)'},
+  drop:     {label:'drop',     cls:'d-drop',     color:'var(--critical)'},
+};
+const DISP_NONE = {label:'not in field map', cls:'d-none', color:'var(--muted)'};
+const dispOf = c => (c.disposition && DISP[c.disposition]) || DISP_NONE;
+function dispBadge(c) {
+  const d = dispOf(c);
+  const approx = c.org_match === 'by-column' ? ' title="matched by column name only"' : '';
+  return `<span class="disp ${d.cls}"${approx}><span class="dot" style="background:${d.color}"></span>`
+       + `disposition: ${esc(d.label)}${c.org_match === 'by-column' ? ' *' : ''}</span>`;
+}
+
+const KINDS = {
+  categorical:'categorical', numeric:'numeric', numeric_coded:'coded numeric',
+  datetime:'datetime', text:'free text', empty:'empty'
+};
+
+// ---- derived flags -------------------------------------------------------
+T.forEach((t, ti) => {
+  t.idx = ti;
+  t.columns.forEach(c => {
+    c.f_empty   = c.kind === 'empty';
+    c.f_sparse  = !c.f_empty && c.pct_empty >= 90;
+    c.f_unused  = (c.unused_choices || []).length > 0;
+    c.f_undecl  = (c.undeclared_values || []).length > 0;
+    c.f_sentinel= (c.non_numeric_in_numeric || []).length > 0;
+    c.f_mismatch= !!c.type_mismatch || (c.out_of_declared_range||[]).length > 0;
+    c.f_checkbox= !!c.checkbox;
+    c.f_notrelease = (c.disposition||'') !== 'release';
+    c.f_deprecated = !!c.deprecated;
+    c.f_freetext = c.kind === 'text' && !c.name.endsWith('_id');
+    c.values_more = c.values_more || [];
+    c._tnp = t.n_participants;
+    c._hayd = (c.disposition||'unmapped');
+    c._hay = (c.name + ' ' + (c.description||'') + ' ' + (c.question||'') + ' ' +
+              (c.values||[]).map(v=>v.v).join(' ') + ' ' +
+              c.values_more.map(v=>v[0]).join(' ')).toLowerCase();
+  });
+});
+
+// ---- state ---------------------------------------------------------------
+const S = { view:'overview', table:0, q:'', kind:'', disp:'', flags:new Set(),
+            showDep:true, fullText:false, hideText:false, expanded:new Set() };
+
+// ---- visible set: deprecated fields/forms drop out of every view and count unless shown;
+// free-text fields drop out the same way while "hide free text" is on
+let VT, ALLCOLS, SUM;
+function refresh() {
+  VT = T.filter(t => S.showDep || !t.deprecated);
+  VT.forEach(t => {
+    const depOk = t.columns.filter(c => S.showDep || !c.deprecated);
+    t.cols = depOk.filter(c => !(S.hideText && c.f_freetext));
+    t.n_hid_dep = t.columns.length - depOk.length;
+    t.n_hid_text = depOk.length - t.cols.length;
+    t.n_empty  = t.cols.filter(c=>c.f_empty).length;
+    t.n_unused = t.cols.filter(c=>c.f_unused).length;
+    t.n_undecl = t.cols.filter(c=>c.f_undecl).length;
+    t.n_sparse = t.cols.filter(c=>c.f_sparse).length;
+    t.n_mismatch = t.cols.filter(c=>c.f_mismatch).length;
+    t.disp = {}; t.cols.forEach(c => { const k=c.disposition||'(unmapped)'; t.disp[k]=(t.disp[k]||0)+1; });
+  });
+  ALLCOLS = VT.flatMap(t => t.cols.map(c => ({t, c})));
+  SUM = {
+    n_fields: ALLCOLS.length,
+    n_tables: VT.length,
+    n_files: VT.reduce((a,t)=>a+t.n_files,0),
+    n_rows: VT.reduce((a,t)=>a+t.n_rows,0),
+    depFields: T.reduce((a,t)=>a+t.columns.filter(c=>c.deprecated).length,0),
+    depForms: T.filter(t=>t.deprecated).length,
+    textHidden: VT.reduce((a,t)=>a+t.n_hid_text,0),
+    empty:  ALLCOLS.filter(x=>x.c.f_empty).length,
+    sparse: ALLCOLS.filter(x=>x.c.f_sparse).length,
+    unused: ALLCOLS.filter(x=>x.c.f_unused).length,
+    undecl: ALLCOLS.filter(x=>x.c.f_undecl).length,
+    mismatch: ALLCOLS.filter(x=>x.c.f_mismatch).length,
+    checkbox: ALLCOLS.filter(x=>x.c.f_checkbox).length,
+    byDisp: (() => { const o={}; ALLCOLS.forEach(({c})=>{const k=c.disposition||'(unmapped)';o[k]=(o[k]||0)+1;}); return o; })(),
+    unmapped: ALLCOLS.filter(x=>x.c.org_match==='none').length,
+    approx: ALLCOLS.filter(x=>x.c.org_match==='by-column').length,
+    unusedOpts: ALLCOLS.reduce((a,x)=>a+(x.c.unused_choices||[]).length,0),
+    schemaOnly: VT.reduce((a,t)=>a+t.schema_only_fields.length,0),
+    undoc: VT.reduce((a,t)=>a+t.undocumented_fields.length,0),
+  };
+}
+
+// ---- rendering: one field card ------------------------------------------
+function pcount(np, n) {
+  if (np == null) return fmt(n);
+  return `${fmt(np)} <span style="color:var(--muted)">participants${np === n ? '' : ` · ${fmt(n)} rows`}</span>`;
+}
+function fieldCard(c, tableLabel) {
+  const kcls = c.kind==='empty' ? 'k-empty' : (c.kind==='numeric'||c.kind==='numeric_coded') ? 'k-numeric' : '';
+  let h = `<div class="field${c.f_empty?' is-empty':''}${c.deprecated?' is-dep':''}" id="f-${esc(tableLabel)}-${esc(c.name)}">`;
+  h += `<div class="fh"><span class="fname">${esc(c.name)}</span>`;
+  h += `<span class="badge ${kcls}">${c.checkbox ? 'checkbox' : (KINDS[c.kind]||c.kind)}</span>`;
+  if (c.kind!=='empty' && !c.checkbox) h += `<span class="badge">${fmt(c.n_distinct)} distinct</span>`;
+  if (tableLabel && S.view==='search') h += `<span class="badge">${esc(tableLabel)}</span>`;
+  if (c.deprecated) h += `<span class="depb" title="${esc(c.deprecated)}">deprecated</span>`;
+  h += `</div>`;
+
+  const desc = c.question || c.description;
+  if (desc) h += `<div class="fdesc">${esc(desc)}</div>`;
+  if (c.datatype && c.datatype.length)
+    h += `<div class="fsrc">type: ${esc(c.datatype.join(', '))}</div>`;
+  const o = c.org || {};
+  if (Object.keys(o).length) {
+    const bits = [];
+    if (o.column_type)   bits.push(`<span><b>type</b> ${esc(o.column_type.toLowerCase())}</span>`);
+    if (o.source)        bits.push(`<span><b>source</b> ${esc(o.source)}</span>`);
+    if (o.version_added) bits.push(`<span><b>added</b> ${esc(o.version_added)}</span>`);
+    if (o.group)         bits.push(`<span><b>group</b> ${esc(o.group)}</span>`);
+    if (o.delete === 'YES')    bits.push(`<span style="color:var(--serious-ink)"><b>delete</b> YES</span>`);
+    if (o.date_shift === 'YES')bits.push(`<span><b>date-shifted</b> yes</span>`);
+    if (o.is_redcap_calculation === 'YES') bits.push(`<span><b>redcap calc</b> yes</span>`);
+    if (o.matched_schema) bits.push(`<span style="color:var(--warn-ink)"><b>mapped via</b> ${esc(o.matched_schema)}</span>`);
+    if (bits.length) h += `<div class="prov">${bits.join('')}</div>`;
+  } else {
+  }
+
+  // missingness
+  const hi = c.pct_empty >= 50;
+  h += `<div class="miss"><span class="n"><span${idAttr(c, '', fmt(c.n_empty) + ' blank row(s)')}>${fmt(c.n_empty)}</span> / ${fmt(c.n_rows)} empty</span>`
+    +  `<span class="track"><span class="fill${hi?' hi':''}" style="width:${Math.max(c.pct_empty,c.pct_empty>0?1.5:0)}%"></span></span>`
+    +  `<span class="n">${pct(c.pct_empty)}</span></div>`;
+  if (c.n_participants_filled != null && c._tnp)
+    h += `<div style="margin:2px 0 8px;font-size:12px;color:var(--muted)"><b style="color:var(--ink)">${fmt(c.n_participants_filled)}</b> of ${fmt(c._tnp)} participants have a value</div>`;
+
+  if (c.kind === 'empty') {
+    h += `<div class="note"><div class="nh"><span class="ico">○</span>No values in this release: every row is blank</div>`
+      +  `Column exists in the file but holds no values.`
+      +  ((c.declared_choices||[]).length
+          ? ` None of its ${c.declared_choices.length} option${c.declared_choices.length>1?'s were':' was'} chosen.` : '')
+      +  `</div>`;
+    return h + `</div>`;
+  }
+
+  // checkbox indicator: one column per option, 1 = selected
+  if (c.checkbox) {
+    const cb = c.checkbox;
+    h += `<div class="dist">`;
+    if (cb.option) h += `<div class="fsrc" style="margin:0 0 7px">option: <b style="color:var(--ink)">${esc(cb.option)}</b></div>`;
+    h += `<div class="row"><span class="lab">selected</span>`
+      +  `<span class="bar"><i style="width:${Math.max(cb.pct,cb.selected?1.5:0).toFixed(2)}%"></i></span>`
+      +  `<span class="num">${pcount(cb.selected_participants, cb.selected)} &nbsp;<span style="color:var(--muted)">${pct(cb.pct)}</span></span></div>`
+      +  `<div class="row"><span class="lab" style="color:var(--muted)">not selected / blank</span>`
+      +  `<span class="bar"><i style="width:${(100-cb.pct).toFixed(2)}%;background:var(--track)"></i></span>`
+      +  `<span class="num">${fmt(c.n_rows-cb.selected)} &nbsp;<span style="color:var(--muted)">${pct(100-cb.pct)}</span></span></div>`;
+    h += `<div class="more">Checkbox expansion — the column records whether this one option was ticked.</div></div>`;
+    return h + `</div>`;
+  }
+
+  // numeric range
+  if (c.numeric && (c.kind==='numeric' || c.kind==='numeric_coded')) {
+    const n = c.numeric;
+    h += `<div class="range"><div class="rspan">range &nbsp;<b${idAttr(c, '__min__', 'minimum ' + n.min)}>${esc(n.min)}</b> &nbsp;→&nbsp; <b${idAttr(c, '__max__', 'maximum ' + n.max)}>${esc(n.max)}</b></div>`;
+    h += `<div class="rstats">`
+      + [['median',n.median],['mean',n.mean],['q1',n.q1],['q3',n.q3],['n values',fmt(n.n)]]
+        .map(([k,v])=>`<div><span class="rk">${k}</span><span class="rv">${esc(v)}</span></div>`).join('')
+      + `</div>`;
+    if (c.anchor_choices)
+      h += `<div class="fsrc" style="margin-top:7px">declared bounds: ${esc(c.anchor_choices.min)} – ${esc(c.anchor_choices.max)}</div>`;
+    if (c.hist && c.hist.length > 1) {
+      const mx = Math.max(...c.hist.map(b=>b.n));
+      h += `<div class="hist" role="img" aria-label="distribution histogram">`
+        + c.hist.map(b=>`<i style="height:${(b.n/mx*100).toFixed(1)}%" title="${esc(b.lo.toPrecision(4))} – ${esc(b.hi.toPrecision(4))}: ${fmt(b.n)}"></i>`).join('')
+        + `</div><div class="hist-ax"><span>${esc(n.min)}</span><span>${esc(n.max)}</span></div>`;
+    }
+    h += `</div>`;
+  }
+
+  if (c.kind === 'datetime' && c.numeric) {
+    h += `<div class="range"><div class="rspan">range &nbsp;<b>${esc(c.numeric.min)}</b> &nbsp;→&nbsp; <b>${esc(c.numeric.max)}</b></div>`
+      +  `<div class="rstats"><div><span class="rk">n values</span><span class="rv">${fmt(c.numeric.n)}</span></div>`
+      +  `<div><span class="rk">distinct</span><span class="rv">${fmt(c.n_distinct)}</span></div></div></div>`;
+  }
+
+  // value distribution
+  if (c.values && c.values.length) {
+    const key = tableLabel + '.' + c.name;
+    const canExpand = c.values_more.length > 0;
+    const open = canExpand && (S.fullText || S.expanded.has(key));
+    const rows = open ? c.values.concat(c.values_more.map(([v,n,np]) =>
+                   ({v, n, np, pct:100*n/c.n_filled, declared:false, na:false}))) : c.values;
+    const wrap = S.fullText || open;
+    const mx = Math.max(...c.values.map(v=>v.n));
+    const title = open ? `all ${fmt(rows.length)} values` : c.kind==='text' && c.truncated ? 'most frequent values' : 'values';
+    h += `<div class="dist"><div class="fsrc" style="margin:0 0 6px">${title}</div>`;
+    h += rows.map(v => {
+      const lab = v.v === '' ? '(blank)' : v.v;
+      const un  = (c.declared_choices||[]).length && !v.declared;
+      const il = idLines(c, v.v);
+      return `<div class="row${wrap?' wrap':''}"><span class="lab${un?' undecl':''}${il?' hasids':''}" title="${esc(lab + il)}">${esc(lab)}${un?' ◆':''}</span>`
+        + `<span class="bar"><i style="width:${(v.n/mx*100).toFixed(2)}%"></i></span>`
+        + `<span class="num">${pcount(v.np, v.n)} &nbsp;<span style="color:var(--muted)">${pct(v.pct)}</span></span></div>`;
+    }).join('');
+    if (c.truncated && !open)
+      h += `<div class="more">+ ${fmt(c.truncated)} more distinct value${c.truncated>1?'s':''} not shown`
+        + (canExpand ? `<button class="linkbtn" data-expand="${esc(key)}">show all ${fmt(c.n_distinct)}</button>`
+                     : c.name.endsWith('_id') ? ' (identifier column)' : '')
+        + `</div>`;
+    else if (open && !S.fullText)
+      h += `<div class="more"><button class="linkbtn" style="margin:0" data-expand="${esc(key)}">show top ${c.values.length} only</button></div>`;
+    h += `</div>`;
+  }
+
+  // sentinels inside a numeric column
+  if (c.f_sentinel) {
+    h += `<div class="note"><div class="nh"><span class="ico">◆</span>Non-numeric values in a numeric field</div>`
+      + `<div class="vchips">` + c.non_numeric_in_numeric.map(s =>
+          `<span class="vchip s"${idAttr(c, s.v, s.v).replace('class="hasids"', 'style="cursor:help"')}>${esc(s.v)} &nbsp;×${fmt(s.n)}</span>`).join('')
+      + `</div><div style="margin-top:6px;color:var(--muted)">Excluded from the range above.</div></div>`;
+  }
+
+  if (c.type_mismatch) {
+    h += `<div class="note"><div class="nh"><span class="ico">◆</span>Type differs from the data dictionary</div>`
+      + `${esc(c.type_mismatch)} — options in the data dictionary: `
+      + `<span class="vchips" style="display:inline-flex">${c.declared_choices.map(o=>`<span class="vchip">${esc(o.label!==null&&o.label!==''?o.label:o.value)}</span>`).join('')}</span></div>`;
+  }
+  if ((c.out_of_declared_range||[]).length) {
+    h += `<div class="note"><div class="nh"><span class="ico">◆</span>Values outside the data dictionary's range</div>`
+      + `<div class="vchips">${c.out_of_declared_range.map(v=>`<span class="vchip s"${idAttr(c, v, v).replace('class="hasids"', 'style="cursor:help"')}>${esc(v)}</span>`).join('')}</div></div>`;
+  }
+
+  // declared-but-unused options  == "missing options"
+  if (c.f_unused) {
+    h += `<div class="note"><div class="nh"><span class="ico">○</span>`
+      + `${c.unused_choices.length} of ${c.declared_choices.length} option`
+      + `${c.unused_choices.length>1?'s':''} not chosen by anyone in this release</div><div class="vchips">`
+      + c.unused_choices.map(o => `<span class="vchip w">${esc(o.label!==null&&o.label!==''?o.label:o.value)}</span>`).join('')
+      + `</div></div>`;
+  }
+
+  // observed values absent from the schema
+  if (c.f_undecl) {
+    h += `<div class="note"><div class="nh"><span class="ico">◆</span>`
+      + `Value${c.undeclared_values.length>1?'s':''} not among the data dictionary's options</div><div class="vchips">`
+      + c.undeclared_values.map(v => `<span class="vchip s">${esc(v)}</span>`).join('')
+      + `</div></div>`;
+  }
+  return h + `</div>`;
+}
+
+// ---- views ---------------------------------------------------------------
+function matches(t, c) {
+  if (S.kind && c.kind !== S.kind) return false;
+  if (S.disp && (c.disposition || '(unmapped)') !== S.disp) return false;
+  for (const f of S.flags) if (!c['f_' + f]) return false;
+  if (S.q && !c._hay.includes(S.q) && !t.label.toLowerCase().includes(S.q)) return false;
+  return true;
+}
+
+function renderOverview() {
+  const kindCount = {};
+  ALLCOLS.forEach(x => kindCount[x.c.kind] = (kindCount[x.c.kind]||0)+1);
+  const order = ['categorical','numeric_coded','numeric','datetime','text','empty'];
+  const mx = Math.max(...order.map(k=>kindCount[k]||0));
+
+  let h = `<p style="margin:0 0 14px;max-width:70ch;color:var(--muted)">The distribution of every field in the <code>phenotype</code> folder.
+    Search above, filter by type, or pick a table on the left. “About this explorer” explains how the counts were made.</p>
+    <div class="tiles">
+    ${META.n_participants != null ? `<div class="tile"><div class="v">${fmt(META.n_participants)}</div><div class="k">participants</div>
+      <div class="sub">with at least one row in the phenotype tables</div></div>` : ''}
+    <div class="tile"><div class="v">${fmt(SUM.n_fields)}</div><div class="k">fields</div>
+      <div class="sub">across ${fmt(SUM.n_tables)} tables${S.hideText ? ` · ${fmt(SUM.textHidden)} free-text hidden` : ''}</div></div>
+    ${SUM.depFields ? `<div class="tile"><div class="v">${fmt(SUM.depFields)}</div><div class="k">deprecated fields</div>
+      <div class="sub">${S.showDep ? 'shown, badged “deprecated”' : 'hidden from all views and counts'}${SUM.depForms?` · ${fmt(SUM.depForms)} deprecated form${SUM.depForms>1?'s':''}`:''}</div></div>` : ''}
+    <div class="tile"><div class="v">${fmt(SUM.empty)}</div><div class="k">fields with no values</div>
+      <div class="sub">${pct(100*SUM.empty/SUM.n_fields)} of all fields</div></div>
+    <div class="tile"><div class="v">${fmt(SUM.sparse)}</div><div class="k">fields ≥90% empty</div>
+      <div class="sub">values in fewer than 1 row in 10</div></div>
+    <div class="tile"><div class="v">${fmt(SUM.unused)}</div><div class="k">fields with options no one chose</div>
+      <div class="sub">${fmt(SUM.unusedOpts)} options not chosen</div></div>
+    <div class="tile"><div class="v">${fmt(SUM.undecl)}</div><div class="k">fields with values not in the dictionary</div>
+      <div class="sub">values outside the listed options</div></div>
+    ${SUM.mismatch ? `<div class="tile"><div class="v">${fmt(SUM.mismatch)}</div><div class="k">fields whose type differs from the dictionary</div>
+      <div class="sub">declared type or range disagrees with the values</div></div>` : ''}
+  </div>`;
+
+
+  h += `<div class="sec-title">Fields by type</div>
+    <div class="field">` + order.map(k => `
+      <div class="row"><span class="lab">${KINDS[k]}</span>
+      <span class="bar"><i style="width:${((kindCount[k]||0)/mx*100).toFixed(1)}%"></i></span>
+      <span class="num">${fmt(kindCount[k]||0)}</span></div>`).join('') +
+    `<div class="legend"><span><span class="sw" style="background:var(--series-1)"></span>field count</span></div></div>`;
+
+  if (SUM.schemaOnly || SUM.undoc || VT.some(t=>!t.has_schema)) h += `<div class="sec-title">Data dictionary coverage</div><div class="field">
+    <div class="row"><span class="lab">Columns in a data dictionary but not in its table</span>
+      <span class="bar"><i style="width:${SUM.schemaOnly?100:0}%"></i></span><span class="num">${fmt(SUM.schemaOnly)}</span></div>
+    <div class="row"><span class="lab">Columns in a table but not in its data dictionary</span>
+      <span class="bar"><i style="width:${SUM.undoc?100:0}%"></i></span><span class="num">${fmt(SUM.undoc)}</span></div>
+    <div class="row"><span class="lab">Tables with no data dictionary</span>
+      <span class="bar"><i style="width:${VT.filter(t=>!t.has_schema).length?100:0}%"></i></span>
+      <span class="num">${fmt(VT.filter(t=>!t.has_schema).length)}</span></div>
+    </div>`;
+
+  h += `<div class="sec-title">Per-table summary</div><div class="scroller"><table class="gaps">
+    <thead><tr><th>table</th><th>location</th><th class="n">participants</th><th class="n">rows</th><th class="n">fields</th>
+    <th class="n">empty</th><th class="n">options no one chose</th><th class="n">values not in dictionary</th><th class="n">type differs</th></tr></thead><tbody>`
+    + VT.map(t => `<tr>
+        <td class="mono"><span class="linky" data-goto="${t.idx}">${esc(t.label)}</span></td>
+        <td class="mono" style="color:var(--muted)">${esc(t.group)}</td>
+        <td class="n">${t.n_participants == null ? '—' : fmt(t.n_participants)}</td><td class="n">${fmt(t.n_rows)}</td><td class="n">${fmt(t.cols.length)}</td>
+        <td class="n"${t.n_empty?' style="color:var(--critical-ink);font-weight:600"':''}>${fmt(t.n_empty)}</td>
+        <td class="n"${t.n_unused?' style="color:var(--warn-ink)"':''}>${fmt(t.n_unused)}</td>
+        <td class="n"${t.n_undecl?' style="color:var(--serious-ink)"':''}>${fmt(t.n_undecl)}</td>
+        <td class="n"${t.n_mismatch?' style="color:var(--critical-ink);font-weight:600"':''}>${fmt(t.n_mismatch)}</td></tr>`).join('')
+    + `</tbody></table></div>`;
+  return h;
+}
+
+function renderGaps() {
+  const emptyByTable = VT.filter(t=>t.n_empty).map(t => ({t, cols:t.cols.filter(c=>c.f_empty)}));
+  let h = `<div class="thead"><h2>Empty and sparse fields</h2>
+    <div class="meta">fields with no or few values, and answer options no one chose</div>
+    <div class="stats"><span><b>${fmt(SUM.empty)}</b> entirely empty</span>
+      <span><b>${fmt(SUM.sparse)}</b> ≥90% empty</span>
+      <span><b>${fmt(SUM.unusedOpts)}</b> options no one chose</span>
+      <span><b>${fmt(SUM.undecl)}</b> fields with values not in the dictionary</span></div></div>`;
+
+  h += `<div class="sec-title">Entirely empty fields (${fmt(SUM.empty)})</div>`;
+  h += emptyByTable.length ? `<div class="scroller"><table class="gaps"><thead><tr>
+      <th>table</th><th class="n">empty fields</th><th>field names</th></tr></thead><tbody>`
+    + emptyByTable.map(({t,cols}) => `<tr><td class="mono"><span class="linky" data-goto="${t.idx}">${esc(t.label)}</span></td>
+        <td class="n">${fmt(cols.length)}</td>
+        <td><div class="vchips">${cols.map(c=>`<span class="vchip">${esc(c.name)}</span>`).join('')}</div></td></tr>`).join('')
+    + `</tbody></table></div>` : `<div class="empty-state">None.</div>`;
+
+  const sparse = ALLCOLS.filter(x=>x.c.f_sparse)
+    .sort((a,b)=>b.c.pct_empty-a.c.pct_empty);
+  h += `<div class="sec-title">Sparse fields — 90%+ empty but not blank (${fmt(sparse.length)})</div>`;
+  h += `<div class="scroller"><table class="gaps"><thead><tr><th>table</th><th>field</th>
+      <th class="n">filled</th><th class="n">empty</th></tr></thead><tbody>`
+    + sparse.slice(0,400).map(({t,c}) => `<tr><td class="mono">${esc(t.label)}</td>
+        <td class="mono">${esc(c.name)}</td><td class="n">${fmt(c.n_filled)}</td>
+        <td class="n">${pct(c.pct_empty)}</td></tr>`).join('')
+    + `</tbody></table></div>`
+    + (sparse.length>400?`<div class="more">Showing the 400 emptiest of ${fmt(sparse.length)}.</div>`:'');
+
+  const mism = ALLCOLS.filter(x=>x.c.f_mismatch);
+  h += `<div class="sec-title">Values that differ from the data dictionary (${fmt(mism.length)})</div>`;
+  h += mism.length ? `<div class="scroller"><table class="gaps"><thead><tr><th>table</th><th>field</th>
+      <th>options in the dictionary</th><th>values in the data</th></tr></thead><tbody>`
+    + mism.map(({t,c}) => `<tr><td class="mono">${esc(t.label)}</td><td class="mono">${esc(c.name)}</td>
+        <td><div class="vchips">${c.declared_choices.slice(0,8).map(o=>`<span class="vchip">${esc(o.label!==null&&o.label!==''?o.label:o.value)}</span>`).join('')}</div></td>
+        <td><div class="vchips">${(c.undeclared_values.length?c.undeclared_values:c.out_of_declared_range).slice(0,8).map(v=>`<span class="vchip s">${esc(v)}</span>`).join('')}</div></td></tr>`).join('')
+    + `</tbody></table></div>` : `<div class="empty-state">None.</div>`;
+
+  const unused = ALLCOLS.filter(x=>x.c.f_unused)
+    .sort((a,b)=>b.c.unused_choices.length-a.c.unused_choices.length);
+  h += `<div class="sec-title">Options no one chose (${fmt(SUM.unusedOpts)} options across ${fmt(unused.length)} fields)</div>`;
+  h += `<div class="scroller"><table class="gaps"><thead><tr><th>table</th><th>field</th>
+      <th class="n">not chosen / listed</th><th>options not chosen</th></tr></thead><tbody>`
+    + unused.slice(0,400).map(({t,c}) => `<tr><td class="mono">${esc(t.label)}</td>
+        <td class="mono">${esc(c.name)}</td>
+        <td class="n">${c.unused_choices.length} / ${c.declared_choices.length}</td>
+        <td><div class="vchips">${c.unused_choices.slice(0,14).map(o=>`<span class="vchip w">${esc(o.label!==null&&o.label!==''?o.label:o.value)}</span>`).join('')}
+        ${c.unused_choices.length>14?`<span class="vchip">+${c.unused_choices.length-14} more</span>`:''}</div></td></tr>`).join('')
+    + `</tbody></table></div>`
+    + (unused.length>400?`<div class="more">Showing 400 of ${fmt(unused.length)} fields — use the “unused options” filter to browse them all.</div>`:'');
+  return h;
+}
+
+function renderTable(ti) {
+  const t = T[ti];
+  const cols = t.cols.filter(c => matches(t, c));
+  let h = `<div class="thead"><h2>${esc(t.label)}.tsv</h2>
+    <div class="meta">${esc(t.n_files>1 ? t.files[0].replace(/sub-\d+/g,'sub-*') + `  (${fmt(t.n_files)} files, merged)` : t.files[0])}</div>
+    <div class="stats">
+      ${t.n_participants != null ? `<span><b>${fmt(t.n_participants)}</b> participants</span>` : ''}
+      <span><b>${fmt(t.n_rows)}</b> rows</span>
+      <span><b>${fmt(t.cols.length)}</b> fields${(() => {
+        const hid = [t.n_hid_dep ? `${fmt(t.n_hid_dep)} deprecated` : '', t.n_hid_text ? `${fmt(t.n_hid_text)} free text` : ''].filter(Boolean);
+        return hid.length ? ` <span style="color:var(--muted)">(${hid.join(', ')} hidden)</span>` : '';
+      })()}</span>
+      <span><b>${fmt(t.n_empty)}</b> empty</span>
+      <span><b>${fmt(t.n_unused)}</b> with unused options</span>
+      <span><b>${fmt(t.n_undecl)}</b> with values not in the dictionary</span>
+      <span>${t.has_schema ? 'data dictionary: <b>yes</b>' : 'data dictionary: <b>none</b>'}</span>
+    </div></div>`;
+  if (t.deprecated)
+    h += `<div class="note"><div class="nh"><span class="ico">⊘</span>Deprecated form</div>${esc(t.deprecated)}.</div>`;
+
+  if (t.schema_only_fields.length)
+    h += `<div class="note warn"><div class="nh"><span class="ico">⚠</span>In the data dictionary but not in the table (${t.schema_only_fields.length})</div>
+      <div class="vchips">${t.schema_only_fields.map(f=>`<span class="vchip w">${esc(f)}</span>`).join('')}</div></div>`;
+  if (t.undocumented_fields.length)
+    h += `<div class="note serious"><div class="nh"><span class="ico">◆</span>In the table but not in the data dictionary (${t.undocumented_fields.length})</div>
+      <div class="vchips">${t.undocumented_fields.map(f=>`<span class="vchip s">${esc(f)}</span>`).join('')}</div></div>`;
+
+  if (!cols.length) return h + `<div class="empty-state">No fields in this table match the current filters.</div>`;
+  if (cols.length !== t.cols.length) h += `<div class="more" style="margin:0 0 10px">Showing ${fmt(cols.length)} of ${fmt(t.cols.length)} fields (filtered).</div>`;
+  return h + cols.map(c => fieldCard(c, t.label)).join('');
+}
+
+function renderSearch() {
+  const hits = ALLCOLS.filter(({t,c}) => matches(t,c));
+  let h = `<div class="thead"><h2>${fmt(hits.length)} matching field${hits.length===1?'':'s'}</h2>
+    <div class="meta">${S.q?`query “${esc(S.q)}” · `:''}across all ${fmt(SUM.n_tables)} tables</div></div>`;
+  if (!hits.length) return h + `<div class="empty-state">Nothing matches. Try clearing a filter.</div>`;
+  const cap = 250;
+  h += hits.slice(0,cap).map(({t,c}) => fieldCard(c, t.label)).join('');
+  if (hits.length > cap) h += `<div class="more">Showing the first ${cap} of ${fmt(hits.length)} matches — narrow the query to see the rest.</div>`;
+  return h;
+}
+
+function renderDocs() {
+  let h = `<div class="thead"><h2>About this explorer</h2>
+    <div class="meta">what this page shows and how the numbers were counted</div></div>`;
+  h += `<div class="doc"><h3>What it shows</h3>
+    <p>Every column of every table in the <code>phenotype</code> folder, profiled from the released <code>.tsv</code> files:
+    how many rows are blank, the distribution of answers for categorical fields, and the range of numeric fields.
+    Field descriptions, declared types and response options come from each table's <code>.json</code> data dictionary.</p></div>`;
+  h += `<div class="doc"><h3>Counting</h3>
+    <p>Most tables have one row per participant and session, so a participant seen at two sessions has two rows; participant-level tables have one row per participant.
+    Each table therefore shows both its number of participants (distinct participant IDs) and its number of rows, and each field says how many participants have a value.
+    Next to each answer is the number of participants who gave it; where that differs from the number of rows, the row count is shown too.
+    Percentages and bars are shares of rows. A blank cell counts as missing. Checkbox questions are stored as one column per option.</p></div>`;
+  h += `<div class="doc"><h3>Flags</h3>
+    <p><b>empty fields</b>: no value in any row. <b>≥90% empty</b>: values in fewer than one row in ten.
+    <b>options no one chose</b>: answer options in the data dictionary that no row uses. This is common for rare answers and is not an error.
+    <b>values not in dictionary</b>: values that are not among the data dictionary's options.
+    <b>type differs from dictionary</b>: the declared type or range disagrees with the values.</p></div>`;
+  if (META.list_ids_max) h += `<div class="doc"><h3>Rare values</h3>
+    <p>Values held by at most <b>${fmt(META.list_ids_max)}</b> rows are underlined with dots. Hover over one to see the participant and session of those rows.</p></div>`;
+  return h;
+}
+
+function renderNav() {
+  let h = `<div class="nav-item" data-view="overview" aria-current="${S.view==='overview'}">
+      <span class="nm">Overview</span></div>
+    <div class="nav-item" data-view="gaps" aria-current="${S.view==='gaps'}">
+      <span class="nm">Empty and sparse fields</span><span class="ct">${fmt(SUM.empty)}</span></div>
+    <div class="nav-item" data-view="docs" aria-current="${S.view==='docs'}">
+      <span class="nm">About this explorer</span></div>`;
+  let grp = null;
+  VT.forEach(t => {
+    if (t.group !== grp) { grp = t.group; h += `<div class="nav-group">${esc(grp)}</div>`; }
+    h += `<div class="nav-item${t.deprecated?' is-dep':''}" data-table="${t.idx}" aria-current="${S.view==='table'&&S.table===t.idx}">
+        ${t.n_empty?'<span class="flag" title="has empty fields" style="background:var(--critical)"></span>':''}
+        <span class="nm">${esc(t.label)}</span><span class="ct">${fmt(t.cols.length)}</span></div>`;
+  });
+  $('#nav').innerHTML = h;
+}
+
+function render(keepScroll) {
+  refresh();
+  if (S.view==='table' && !VT.includes(T[S.table])) S.view = 'overview';
+  const y = window.scrollY;
+  const m = $('#main');
+  m.innerHTML = S.view==='overview' ? renderOverview()
+              : S.view==='gaps'     ? renderGaps()
+              : S.view==='docs'     ? renderDocs()
+              : S.view==='search'   ? renderSearch()
+              : renderTable(S.table);
+  renderNav();
+  if (keepScroll) { window.scrollTo(0, y); return; }
+  m.scrollIntoView({block:'start'});
+  window.scrollTo(0, 0);
+}
+
+// ---- events --------------------------------------------------------------
+function activeFilters(){ return S.q || S.kind || S.disp || S.flags.size; }
+
+document.addEventListener('click', e => {
+  const nav = e.target.closest('.nav-item');
+  if (nav) {
+    if (nav.dataset.view) { S.view = nav.dataset.view; }
+    else { S.view = 'table'; S.table = +nav.dataset.table; }
+    render(); return;
+  }
+  const ex = e.target.closest('[data-expand]');
+  if (ex) {
+    const k = ex.dataset.expand;
+    S.expanded.has(k) ? S.expanded.delete(k) : S.expanded.add(k);
+    render(true); return;
+  }
+  const goto = e.target.closest('[data-goto]');
+  if (goto) { S.view='table'; S.table = +goto.dataset.goto; render(); return; }
+  const chip = e.target.closest('.chip[data-flag]');
+  if (chip) {
+    const f = chip.dataset.flag;
+    S.flags.has(f) ? S.flags.delete(f) : S.flags.add(f);
+    chip.setAttribute('aria-pressed', S.flags.has(f));
+    if (activeFilters() && S.view!=='table') S.view = 'search';
+    render(); return;
+  }
+});
+
+let deb;
+$('#q').addEventListener('input', e => {
+  clearTimeout(deb);
+  deb = setTimeout(() => {
+    S.q = e.target.value.trim().toLowerCase();
+    if (S.q && S.view!=='table') S.view = 'search';
+    if (!activeFilters() && S.view==='search') S.view = 'overview';
+    render();
+  }, 180);
+});
+$('#disp').addEventListener('change', e => {
+  S.disp = e.target.value;
+  if (activeFilters() && S.view!=='table') S.view='search';
+  if (!activeFilters() && S.view==='search') S.view='overview';
+  render();
+});
+$('#kind').addEventListener('change', e => {
+  S.kind = e.target.value;
+  if (activeFilters() && S.view!=='table') S.view='search';
+  if (!activeFilters() && S.view==='search') S.view='overview';
+  render();
+});
+$('#clear').addEventListener('click', () => {
+  S.q=''; S.kind=''; S.disp=''; S.flags.clear();
+  $('#q').value=''; $('#kind').value=''; $('#disp').value='';
+  document.querySelectorAll('.chip[data-flag]').forEach(c=>c.setAttribute('aria-pressed','false'));
+  render();
+});
+$('#showdep').addEventListener('click', e => {
+  S.showDep = !S.showDep;
+  e.currentTarget.setAttribute('aria-pressed', S.showDep);
+  render(true);
+});
+$('#fulltext').addEventListener('click', e => {
+  S.fullText = !S.fullText;
+  e.currentTarget.setAttribute('aria-pressed', S.fullText);
+  render(true);
+});
+$('#hidetext').addEventListener('click', e => {
+  S.hideText = !S.hideText;
+  e.currentTarget.setAttribute('aria-pressed', S.hideText);
+  render(true);
+});
+$('#theme').addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : cur === 'light' ? 'dark'
+             : (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark');
+  document.documentElement.setAttribute('data-theme', next);
+});
+
+render();
+
+</script>
+</body>
+</html>
