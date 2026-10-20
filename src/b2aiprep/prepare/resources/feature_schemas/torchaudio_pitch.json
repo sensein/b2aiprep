@@ -8,7 +8,7 @@
     {
       "name": "session_id",
       "type": "string",
-      "description": "Unique identifier for each session."
+      "description": "Ordinal index of the session within the participant, numbered in session order (e.g., 01, 02)."
     },
     {
       "name": "task_name",
@@ -30,6 +30,13 @@
           "ndim": 1,
           "dims": ["time"],
           "shape": [null],
+
+          "axis": {
+            "time": {
+              "sampling_rate_hz": 100,
+              "description": "10 ms frames (160 samples at 16 kHz). n_frames is about 15 fewer than duration x 100 because edge frames are dropped by the median-smoothing window."
+            }
+          },
 
           "units": "Hz",
 

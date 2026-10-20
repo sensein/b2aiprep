@@ -1,0 +1,11 @@
+{
+  "_comment": "Normalized RedCap recording-name variants -> canonical normalized task entity. Applied by b2aiprep.prepare.utils.canonical_task_entity() when redcap2bids names files. Keys and values must be normalize_task_label() output; case/punctuation variants need no entry. Kept apart from registry.json, which is generated from bridge2ai-redcap.",
+  "_source": "CAPE-V v2: the export carries both 'Cape V sentences (v2)-N' (dominant; the form 3.x published as cape-v-sentences-v2-N) and 'Cape V sentences-N (v2)'. Glides: 43 adult recordings are named 'High to Low', the Glides pair's second half recorded without its 'Glides-' prefix; every one of those sessions also carries 'Glides-Low to High' and none carries 'Glides-High to Low', and the bare name resolves to no task in the registry (the prefixed names resolve to adult.glides).",
+  "high-to-low": "glides-high-to-low",
+  "cape-v-sentences-1-v2": "cape-v-sentences-v2-1",
+  "cape-v-sentences-2-v2": "cape-v-sentences-v2-2",
+  "cape-v-sentences-3-v2": "cape-v-sentences-v2-3",
+  "cape-v-sentences-4-v2": "cape-v-sentences-v2-4",
+  "cape-v-sentences-5-v2": "cape-v-sentences-v2-5",
+  "cape-v-sentences-6-v2": "cape-v-sentences-v2-6"
+}

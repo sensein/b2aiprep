@@ -8,7 +8,7 @@ adult/pediatric × registered/controlled access.
 ```
 voice
 ├── adult                 (owns adult subjects + biosamples; tier-neutral)
-│   ├── adult_registered  (registered-access adult files: features/metadata/phenotype)
+│   ├── adult_registered  (registered-access adult files: features/phenotype; bundles before v4 also metadata/)
 │   └── adult_controlled  (controlled-access adult files: raw audio)
 └── peds                  (owns pediatric subjects + biosamples; tier-neutral)
     ├── peds_registered   (registered-access pediatric files)

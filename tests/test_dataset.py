@@ -732,3 +732,89 @@ def test_drop_columns_basic():
 
     # Check phenotype
     assert list(result_phenotype.keys()) == ["keep_col1", "keep_col2"]
+
+
+def test_exclusion_matches_across_the_naming_change():
+    """A removal entry written against a pre-normalization tree still matches.
+
+    The list is keyed on file stems, so an entry naming "task-Animal-fluency" has to
+    match the "task-animal-fluency" that redcap2bids now writes -- otherwise a file
+    marked for removal is silently published.
+    """
+    new_style = Path("sub-x/ses-y/audio/sub-x_ses-y_task-animal-fluency.wav")
+    kept = BIDSDataset._apply_exclusion_list_to_filepaths(
+        [new_style],
+        exclusion_list=["sub-x_ses-y_task-Animal-fluency"],
+        exclusion_type="filename",
+    )
+    assert kept == []
+    # a different participant with the same task is untouched: only the task entity
+    # is normalized, never the subject or session
+    other = Path("sub-z/ses-y/audio/sub-z_ses-y_task-animal-fluency.wav")
+    assert BIDSDataset._apply_exclusion_list_to_filepaths(
+        [other],
+        exclusion_list=["sub-x_ses-y_task-Animal-fluency"],
+        exclusion_type="filename",
+    ) == [other]
+
+
+def test_unmatched_exclusion_entries_are_reported(caplog):
+    """An exclusion list that matches nothing must say so, not report "removed 0"."""
+    with caplog.at_level("WARNING"):
+        BIDSDataset._apply_exclusion_list_to_filepaths(
+            [Path("sub-x/ses-y/audio/sub-x_ses-y_task-animal-fluency.wav")],
+            exclusion_list=["sub-gone_ses-gone_task-passage-10"],
+            exclusion_type="filename",
+        )
+    assert "matched no file" in caplog.text
+
+
+def test_order_phenotype_output_places_session_second_and_sorts_rows():
+    """participant_id, then <form>_session_id, then the rest; rows sorted participant-then-session."""
+    df = pd.DataFrame(
+        {
+            "participant_id": ["002", "001", "001"],
+            "children": ["No", "Yes", "No"],
+            "confounders_session_id": ["01", "02", "01"],
+            "age": ["30", "41", "40"],
+        }
+    )
+    data_elements = {
+        "participant_id": {"d": "p"},
+        "children": {"d": "c"},
+        "confounders_session_id": {"d": "s"},
+        "age": {"d": "a"},
+    }
+    out, out_elements = BIDSDataset._order_phenotype_output(df, data_elements)
+
+    # session_id is now the second column; other columns keep their relative order
+    assert list(out.columns) == ["participant_id", "confounders_session_id", "children", "age"]
+    # rows sorted by participant_id then session_id (001/01, 001/02, 002/01)
+    assert list(zip(out["participant_id"], out["confounders_session_id"])) == [
+        ("001", "01"),
+        ("001", "02"),
+        ("002", "01"),
+    ]
+    # sidecar data_elements reordered to match the columns
+    assert list(out_elements) == [
+        "participant_id",
+        "confounders_session_id",
+        "children",
+        "age",
+    ]
+    # pure reshape: no cell added, dropped or changed (compare with columns aligned)
+    assert out.shape == df.shape
+    aligned = df[list(out.columns)]
+    assert sorted(map(tuple, out.itertuples(index=False, name=None))) == sorted(
+        map(tuple, aligned.itertuples(index=False, name=None))
+    )
+
+
+def test_order_phenotype_output_without_participant_id_is_untouched():
+    """A table lacking participant_id (e.g. a bookkeeping table) is returned unchanged."""
+    df = pd.DataFrame({"recording_id": ["r2", "r1"], "value": ["b", "a"]})
+    data_elements = {"recording_id": {}, "value": {}}
+    out, out_elements = BIDSDataset._order_phenotype_output(df, data_elements)
+    assert list(out.columns) == ["recording_id", "value"]
+    assert list(out["recording_id"]) == ["r2", "r1"]  # rows not reordered
+    assert list(out_elements) == ["recording_id", "value"]

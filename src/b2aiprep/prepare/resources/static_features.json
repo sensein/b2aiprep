@@ -3,7 +3,7 @@
       "description": "Unique identifier for each participant."
     },
     "session_id": {
-      "description": "Unique identifier for each session."
+      "description": "Ordinal index of the session within the participant, numbered in session order (e.g., 01, 02)."
     },
     "task_name": {
       "description": "The audio task conducted for the recording."

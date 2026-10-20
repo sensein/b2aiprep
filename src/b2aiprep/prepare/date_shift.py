@@ -1,0 +1,487 @@
+"""Per-participant date shifting at ingest.
+
+Every date the field map marks ``date_shift=YES`` is moved by a whole number of weeks chosen per
+participant, so that the participant's earliest session lands within three days of an anchor date
+supplied at run time. The anchor itself is not secret -- it can be read off any shifted table,
+since every first session sits within three days of it. What protects the real dates is each
+participant's offset, which depends on their real first-session date and is never stored.
+
+Shifted timestamps keep the participant's local wall-clock time and the UTC offset that was in
+force at the *real* moment, e.g. ``2100-01-05T13:34:41-05:00``. Local time of day and elapsed
+intervals are therefore exact, including across daylight-saving changes. The offset reveals the
+season of the real date, which is acceptable because every shifted column is
+``disposition=internal`` and stripped at deidentification.
+
+Each timestamp is localized in the time zone where its session happened. A session a data
+collector ran happened at the participant's site: ``enrollment_institution``, recorded once per
+participant (it agrees with every populated ``session_site`` in the 2026-09-04 exports and is
+complete where ``session_site`` is not). A self-administered session (any row of it with
+``<prefix>_via == "Participant"``) happened wherever the participant was, taken from their
+postal code, else their state or province when that region has a single zone, else the site
+(with a warning). The postal and region tables are built by
+``scripts/build_postal_code_timezones.py`` (sources and licences there).
+
+Values that cannot be parsed, and every date of a participant with no session start time or no
+resolvable time zone, are blanked. A real date never passes through unshifted.
+"""
+
+import csv
+import datetime
+import functools
+import logging
+import re
+import typing as t
+from collections import Counter
+from importlib.resources import files
+from zoneinfo import ZoneInfo
+
+import pandas as pd
+
+_LOGGER = logging.getLogger(__name__)
+
+SITE_TIMEZONES = {
+    "MIT": "America/New_York",
+    "USF": "America/New_York",
+    "WCM": "America/New_York",
+    "VUMC": "America/Chicago",
+    "Mt. Sinai": "America/Toronto",
+    "SickKids": "America/Toronto",
+}
+
+SESSION_INSTRUMENT = "Session"
+SITE_COLUMN = "enrollment_institution"
+SELF_ADMINISTERED = "Participant"
+
+# Participant location columns; adult and pediatric exports name them differently.
+POSTAL_CODE_COLUMNS = ("zipcode", "peds_zipcode")
+REGION_COLUMNS = ("state_province", "peds_state_province")
+
+_US_ZIP = re.compile(r"^(\d{5})(-?\d{4})?$")
+# An anchor closer than this to any participant's real first session is warned about.
+ANCHOR_MIN_DISTANCE_YEARS = 10
+_CA_POSTAL = re.compile(r"^([A-Z]\d[A-Z])\s*(\d[A-Z]\d)?$")
+
+# Values RedCap writes into timestamp columns that mean "no value".
+_EMPTY_MARKERS = {"", "[not completed]"}
+
+_DATE_ONLY = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+# Every timestamp format seen in the 2026-09-04 adult and pediatric exports. All are UTC:
+# the ones without a trailing Z were checked against the same session's Z-suffixed acoustic
+# task times.
+_UTC_FORMATS = (
+    "%Y-%m-%dT%H:%M:%SZ",
+    "%Y-%m-%dT%H:%M:%S.%fZ",
+    "%Y-%m-%d-T%H:%M:%SZ",  # stray hyphen, 2 values in ef_*
+    "%Y%m%dT%H:%M:%S.%fZ",  # pediatric records converted from ReproSchema
+    "%Y%m%d%H:%M:%S.%f",  # pediatric session times converted from ReproSchema
+    "%m/%d/%Y %H:%M:%S",  # 38 adult session_started_at values
+    "%m/%d/%Y %I:%M:%S %p",
+)
+
+
+def parse_utc_timestamp(value: t.Any) -> t.Optional[datetime.datetime]:
+    """Parse a RedCap timestamp into an aware UTC datetime, or None if it is not one."""
+    if not isinstance(value, str):
+        return None
+    text = value.strip()
+    for fmt in _UTC_FORMATS:
+        try:
+            return datetime.datetime.strptime(text, fmt).replace(tzinfo=datetime.timezone.utc)
+        except ValueError:
+            continue
+    return None
+
+
+def parse_date(value: t.Any) -> t.Optional[datetime.date]:
+    """Parse a ``YYYY-MM-DD`` date, or None if it is not one."""
+    if not isinstance(value, str) or not _DATE_ONLY.match(value.strip()):
+        return None
+    try:
+        return datetime.date.fromisoformat(value.strip())
+    except ValueError:
+        return None
+
+
+def offset_weeks(anchor: datetime.date, first_local_date: datetime.date) -> int:
+    """Whole weeks that move *first_local_date* to within three days of *anchor*.
+
+    Rounding to the nearest week keeps the day of the week.
+    """
+    return round((anchor - first_local_date).days / 7)
+
+
+def shift_timestamp(real_utc: datetime.datetime, tz: ZoneInfo, weeks: int) -> str:
+    """Shift by *weeks* in local wall-clock time, keeping the real moment's UTC offset."""
+    local = real_utc.astimezone(tz)
+    shifted = local.replace(tzinfo=None) + datetime.timedelta(weeks=weeks)
+    # Keep sub-second precision when the source had it, so intervals stay exact.
+    timespec = "milliseconds" if shifted.microsecond else "seconds"
+    return shifted.replace(tzinfo=datetime.timezone(local.utcoffset())).isoformat(timespec=timespec)
+
+
+def _column(df: pd.DataFrame, name: str) -> pd.Series:
+    """*name* from *df*, or an all-missing column when the export does not have it."""
+    return df[name] if name in df.columns else pd.Series(None, index=df.index, dtype=object)
+
+
+def _is_empty(value: t.Any) -> bool:
+    return value is None or (not isinstance(value, str) and pd.isna(value)) or (
+        isinstance(value, str) and value.strip() in _EMPTY_MARKERS
+    )
+
+
+@functools.lru_cache(maxsize=1)
+def _postal_timezones() -> t.Dict[t.Tuple[str, str], str]:
+    path = files("b2aiprep").joinpath("prepare", "resources", "postal_code_timezones.csv")
+    with path.open("r", encoding="utf-8") as fp:
+        return {(r["country"], r["postal_code"]): r["timezone"] for r in csv.DictReader(fp)}
+
+
+@functools.lru_cache(maxsize=1)
+def _region_timezones() -> t.Dict[str, str]:
+    path = files("b2aiprep").joinpath("prepare", "resources", "region_timezones.csv")
+    with path.open("r", encoding="utf-8") as fp:
+        return {r["region"]: r["timezone"] for r in csv.DictReader(fp)}
+
+
+def postal_key(value: t.Any) -> t.Optional[t.Tuple[str, str]]:
+    """("US", 5-digit ZIP) or ("CA", forward sortation area) for a reported postal code, else None."""
+    if isinstance(value, (int, float)) and not isinstance(value, bool) and not pd.isna(value):
+        value = str(int(value))  # a column of US-only ZIPs is read as numbers
+    if not isinstance(value, str):
+        return None
+    text = value.strip().upper()
+    if text.isdigit() and 3 <= len(text) < 5:
+        text = text.zfill(5)  # leading zeros lost to a numeric read
+    us = _US_ZIP.match(text)
+    if us:
+        return ("US", us.group(1))
+    ca = _CA_POSTAL.match(text)
+    if ca:
+        return ("CA", ca.group(1))
+    return None
+
+
+def postal_code_timezone(value: t.Any) -> t.Optional[str]:
+    """Zone for a US ZIP (5 digits, optional +4) or Canadian postal code / FSA."""
+    key = postal_key(value)
+    return _postal_timezones().get(key) if key else None
+
+
+@functools.lru_cache(maxsize=1)
+def _postal_regions() -> t.Dict[t.Tuple[str, str], str]:
+    path = files("b2aiprep").joinpath("prepare", "resources", "postal_code_regions.csv")
+    with path.open("r", encoding="utf-8") as fp:
+        return {(r["country"], r["postal_code_prefix"]): r["region"] for r in csv.DictReader(fp)}
+
+
+def postal_code_region(value: t.Any) -> t.Optional[str]:
+    """Two-letter US state or Canadian province code for a reported postal code.
+
+    The table holds a region per 3-digit ZIP prefix and per first letter of a Canadian postal code,
+    with the full codes that differ from their prefix; the most specific match wins.
+    """
+    key = postal_key(value)
+    if not key:
+        return None
+    country, code = key
+    table = _postal_regions()
+    for prefix in (code, code[:3], code[:1]):
+        if (country, prefix) in table:
+            return table[(country, prefix)]
+    return None
+
+
+# States and provinces by two-letter code, for reading a stated state or province.
+US_STATES = {
+    "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California", "CO": "Colorado",
+    "CT": "Connecticut", "DE": "Delaware", "DC": "District of Columbia", "FL": "Florida", "GA": "Georgia",
+    "HI": "Hawaii", "ID": "Idaho", "IL": "Illinois", "IN": "Indiana", "IA": "Iowa", "KS": "Kansas",
+    "KY": "Kentucky", "LA": "Louisiana", "ME": "Maine", "MD": "Maryland", "MA": "Massachusetts",
+    "MI": "Michigan", "MN": "Minnesota", "MS": "Mississippi", "MO": "Missouri", "MT": "Montana",
+    "NE": "Nebraska", "NV": "Nevada", "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico",
+    "NY": "New York", "NC": "North Carolina", "ND": "North Dakota", "OH": "Ohio", "OK": "Oklahoma",
+    "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina", "SD": "South Dakota",
+    "TN": "Tennessee", "TX": "Texas", "UT": "Utah", "VT": "Vermont", "VA": "Virginia", "WA": "Washington",
+    "WV": "West Virginia", "WI": "Wisconsin", "WY": "Wyoming", "PR": "Puerto Rico",
+}
+CA_PROVINCES = {
+    "AB": "Alberta", "BC": "British Columbia", "MB": "Manitoba", "NB": "New Brunswick",
+    "NL": "Newfoundland and Labrador", "NS": "Nova Scotia", "NT": "Northwest Territories", "NU": "Nunavut",
+    "ON": "Ontario", "PE": "Prince Edward Island", "QC": "Quebec", "SK": "Saskatchewan", "YT": "Yukon",
+}
+
+def region_code(value: t.Any) -> t.Optional[str]:
+    """Two-letter code for a stated state or province, given as a code or a name."""
+    if not isinstance(value, str) or not value.strip():
+        return None
+    text = re.sub(r"[^a-z ]", "", value.strip().lower())
+    names = {**US_STATES, **CA_PROVINCES}
+    if text.upper() in names:
+        return text.upper()
+    by_name = {n.lower(): c for c, n in names.items()}
+    by_name.update({"quebec": "QC", "qubec": "QC", "newfoundland": "NL", "washington dc": "DC"})
+    return by_name.get(text)
+
+
+def region_timezone(value: t.Any) -> t.Optional[str]:
+    """Zone for a state or province (code or name), only when the whole region is one zone."""
+    code = region_code(value)
+    return _region_timezones().get(code) if code else None
+
+
+def home_timezones(df: pd.DataFrame) -> t.Dict[str, t.Tuple[str, str]]:
+    """Participant -> (zone, source) from their reported postal code, else state/province."""
+    out: t.Dict[str, t.Tuple[str, str]] = {}
+    for columns, resolve, source in (
+        (POSTAL_CODE_COLUMNS, postal_code_timezone, "postal_code"),
+        (REGION_COLUMNS, region_timezone, "region"),
+    ):
+        for col in columns:
+            if col not in df.columns:
+                continue
+            for record_id, value in df.loc[df[col].notna(), ["record_id", col]].itertuples(index=False):
+                if record_id in out:
+                    continue
+                zone = resolve(value)
+                if zone:
+                    out[record_id] = (zone, source)
+    return out
+
+
+def _session_links(df: pd.DataFrame) -> t.Tuple[pd.Series, t.Set[str]]:
+    """Session id of every row, and the sessions with any self-administered row.
+
+    A row names its session in ``session_id`` (Session rows) or ``<prefix>_session_id``, and who
+    administered it in the matching ``<prefix>_via``.
+    """
+    row_session = pd.Series(None, index=df.index, dtype=object)
+    self_administered: t.Set[str] = set()
+    for col in df.columns:
+        if not col.endswith("session_id"):
+            continue
+        present = df[col].notna() & row_session.isna()
+        if col == "session_id":
+            present &= df["redcap_repeat_instrument"] == SESSION_INSTRUMENT
+        row_session[present] = df.loc[present, col]
+        via = col[: -len("session_id")] + "via"
+        if via in df.columns:
+            self_administered |= set(df.loc[df[via] == SELF_ADMINISTERED, col].dropna())
+    return row_session, self_administered
+
+
+def row_sessions(df: pd.DataFrame) -> pd.Series:
+    """The session each row belongs to (``session_id`` or its form's ``<prefix>_session_id``)."""
+    return _session_links(df)[0]
+
+
+def self_administered_sessions(df: pd.DataFrame) -> t.Set[str]:
+    """Sessions with any row the participant completed themselves (``*_via`` = Participant)."""
+    return _session_links(df)[1]
+
+
+def session_timezones(
+    df: pd.DataFrame, also_self_administered: t.Iterable[str] = (),
+) -> t.Tuple[t.Dict[str, ZoneInfo], Counter, t.Dict[str, str]]:
+    """Session -> zone where it happened, counts by source, and sessions left without a zone.
+
+    *also_self_administered* adds sessions known to be self-administered from rows no longer in
+    *df* (the microphone check, dropped before ingest).
+    """
+    sessions = df.loc[df["redcap_repeat_instrument"] == SESSION_INSTRUMENT]
+    self_administered = _session_links(df)[1] | set(also_self_administered)
+    homes = home_timezones(df)
+    site_of = (
+        df.loc[_column(df, SITE_COLUMN).notna(), ["record_id", SITE_COLUMN]]
+        .drop_duplicates("record_id")
+        .set_index("record_id")[SITE_COLUMN]
+        .to_dict()
+        if SITE_COLUMN in df.columns
+        else {}
+    )
+    zones: t.Dict[str, ZoneInfo] = {}
+    sources: Counter = Counter()
+    unresolved: t.Dict[str, str] = {}
+    site_fallback: t.List[str] = []  # record/session IDs, for QA; the log stays outside the BIDS tree
+    for record_id, session_id in zip(sessions["record_id"], _column(sessions, "session_id")):
+        site = site_of.get(record_id)
+        site_zone = SITE_TIMEZONES.get(site) if isinstance(site, str) else None
+        if session_id in self_administered:
+            home = homes.get(record_id)
+            if home:
+                zones[session_id] = ZoneInfo(home[0])
+                sources[f"self_administered_{home[1]}"] += 1
+            elif site_zone:
+                zones[session_id] = ZoneInfo(site_zone)
+                sources["self_administered_site_fallback"] += 1
+                site_fallback.append(f"{record_id}/{session_id}")
+            else:
+                unresolved[session_id] = "self-administered, no location and no known site"
+        elif site_zone:
+            zones[session_id] = ZoneInfo(site_zone)
+            sources["site"] += 1
+        else:
+            unresolved[session_id] = f"no known site ({site!r})"
+    if sources["self_administered_site_fallback"]:
+        _LOGGER.warning(
+            "%d self-administered session(s) have no usable participant location; used the "
+            "site's time zone, which may not be where the participant was: %s",
+            sources["self_administered_site_fallback"], ", ".join(site_fallback),
+        )
+    return zones, sources, unresolved
+
+
+def participant_offsets(
+    df: pd.DataFrame, anchor: datetime.date, zones: t.Dict[str, ZoneInfo]
+) -> t.Tuple[t.Dict[str, int], t.Dict[str, str]]:
+    """Offset in weeks per participant, and the reason for each one left out.
+
+    Anchored on the participant's earliest session start, in that session's local time.
+    """
+    sessions = df.loc[
+        df["redcap_repeat_instrument"] == SESSION_INSTRUMENT,
+        [c for c in ("record_id", "session_id", "session_started_at") if c in df.columns],
+    ]
+    offsets: t.Dict[str, int] = {}
+    skipped: t.Dict[str, str] = {}
+    firsts: t.List[datetime.date] = []
+    for record_id, rows in sessions.groupby("record_id"):
+        starts = []
+        for session_id, value in zip(_column(rows, "session_id"), _column(rows, "session_started_at")):
+            ts = parse_utc_timestamp(value)
+            if ts is not None and session_id in zones:
+                starts.append((ts, zones[session_id]))
+        if not starts:
+            skipped[record_id] = "no session with a parseable start time and a time zone"
+            continue
+        first, zone = min(starts, key=lambda pair: pair[0])
+        first_local = first.astimezone(zone).date()
+        firsts.append(first_local)
+        offsets[record_id] = offset_weeks(anchor, first_local)
+    check_anchor(anchor, offsets, firsts)
+    return offsets, skipped
+
+
+def check_anchor(anchor: datetime.date, offsets: t.Dict[str, int], firsts: t.List[datetime.date]) -> None:
+    """Refuse an anchor that leaves anyone's dates unshifted; warn when it is close to real dates.
+
+    A participant whose first session is within three days of the anchor gets a zero-week offset,
+    i.e. their real dates. Anchors far outside the study period (e.g. 2100) avoid that entirely.
+    """
+    zero = sorted(r for r, w in offsets.items() if w == 0)
+    if zero:
+        raise ValueError(
+            f"Date-shift anchor {anchor} is within three days of the real first session of "
+            f"{len(zero)} participant(s), whose dates would not be shifted: {zero}. "
+            "Choose an anchor far from the study period."
+        )
+    if firsts:
+        nearest = min(abs((anchor - d).days) for d in firsts) / 365.25
+        if nearest < ANCHOR_MIN_DISTANCE_YEARS:
+            _LOGGER.warning(
+                "Date-shift anchor %s is only %.1f years from the nearest real first session; "
+                "an anchor at least %d years away keeps shifted dates clearly distinct from real ones.",
+                anchor, nearest, ANCHOR_MIN_DISTANCE_YEARS,
+            )
+
+
+def shift_dates(
+    df: pd.DataFrame,
+    date_columns: t.Iterable[str],
+    anchor: t.Optional[datetime.date],
+    also_self_administered: t.Iterable[str] = (),
+) -> t.Tuple[pd.DataFrame, dict]:
+    """Return a copy of *df* with every *date_columns* value shifted or blanked, and a report.
+
+    With no *anchor*, every value is blanked: the caller asked for no dates.
+    *also_self_administered*: see :func:`session_timezones`.
+    """
+    df = df.copy()
+    columns = [c for c in date_columns if c in df.columns]
+    zone_sources: Counter = Counter()
+    unresolved: t.Dict[str, str] = {}
+    if anchor is None:
+        offsets, skipped, zones = {}, {}, {}
+    else:
+        zones, zone_sources, unresolved = session_timezones(df, also_self_administered)
+        offsets, skipped = participant_offsets(df, anchor, zones)
+
+    # A row is localized in its own session's zone; rows tied to no session (the participant's
+    # base row) use the zone of the participant's first session.
+    row_session, _ = _session_links(df)
+    sessions = df.loc[df["redcap_repeat_instrument"] == SESSION_INSTRUMENT]
+    first_zone: t.Dict[str, t.Tuple[datetime.datetime, ZoneInfo]] = {}
+    for record_id, session_id, value in zip(
+        sessions["record_id"], _column(sessions, "session_id"), _column(sessions, "session_started_at")
+    ):
+        ts = parse_utc_timestamp(value)
+        if ts is None or session_id not in zones:
+            continue
+        best = first_zone.get(record_id)
+        if best is None or ts < best[0]:
+            first_zone[record_id] = (ts, zones[session_id])
+    row_zone = [
+        zones[sid] if isinstance(sid, str) and sid in zones
+        else (first_zone[rid][1] if rid in first_zone else None)
+        for rid, sid in zip(df["record_id"], row_session)
+    ]
+
+    all_ids = set(df["record_id"].dropna())
+    no_offset = all_ids - set(offsets)
+    stats: t.Dict[str, Counter] = {}
+    for col in columns:
+        counts = Counter()
+        out = []
+        for record_id, zone, value in zip(df["record_id"], row_zone, df[col]):
+            if _is_empty(value):
+                out.append(None)
+                continue
+            weeks = offsets.get(record_id)
+            if weeks is None:
+                counts["blanked_no_offset"] += 1
+                out.append(None)
+                continue
+            ts = parse_utc_timestamp(value)
+            if ts is not None:
+                if zone is None:
+                    counts["blanked_no_timezone"] += 1
+                    out.append(None)
+                    continue
+                out.append(shift_timestamp(ts, zone, weeks))
+                counts["shifted_timestamp"] += 1
+                continue
+            day = parse_date(value)
+            if day is not None:
+                out.append((day + datetime.timedelta(weeks=weeks)).isoformat())
+                counts["shifted_date"] += 1
+                continue
+            counts["blanked_unparseable"] += 1
+            out.append(None)
+        df[col] = pd.Series(out, index=df.index, dtype=object)
+        stats[col] = counts
+
+    unparseable = {c: n["blanked_unparseable"] for c, n in stats.items() if n["blanked_unparseable"]}
+    if unparseable:
+        _LOGGER.warning("Blanked unparseable date values (column: count): %s", unparseable)
+    if anchor is None and columns:
+        _LOGGER.warning("No date-shift anchor given; blanked all %d date columns.", len(columns))
+    elif no_offset:
+        _LOGGER.warning(
+            "%d participant(s) have no date offset; their dates were blanked. Reasons: %s",
+            len(no_offset),
+            dict(Counter(skipped.get(r, "no Session row") for r in no_offset)),
+        )
+
+    report = {
+        "anchor_given": anchor is not None,
+        "participants": len(all_ids),
+        "participants_shifted": len(set(offsets) & all_ids),
+        "participants_without_offset": {
+            r: skipped.get(r, "no Session row") for r in sorted(no_offset)
+        },
+        "session_timezone_sources": dict(zone_sources),
+        "sessions_without_timezone": unresolved,
+        "columns": {c: dict(n) for c, n in stats.items()},
+    }
+    return df, report

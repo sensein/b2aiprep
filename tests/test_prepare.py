@@ -1,3 +1,4 @@
+import json
 import logging
 import pandas as pd
 import os
@@ -8,6 +9,7 @@ import wave
 from pathlib import Path
 import pytest
 import torch
+from senselab.utils.data_structures import Language
 
 from b2aiprep.prepare.prepare import (
     extract_features_workflow,
@@ -18,6 +20,7 @@ from b2aiprep.prepare.prepare import (
     reduce_length_of_id,
     get_value_from_metadata,
     update_metadata_record_and_session_id,
+    transcription_language,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -238,6 +241,19 @@ def test_update_metadata_record_and_session_id():
     participant_session_id_to_remap = {"5d9e34a7-2c90-44bf-8b53-1bde7a67e3f2": "1"}
     update_metadata_record_and_session_id(metadata=metadata, ids_to_remap=ids_to_remap, session_id_to_remap=participant_session_id_to_remap)
     assert metadata == expected_metadata 
+
+
+@pytest.mark.parametrize("sidecar, expected", [
+    ({"language": "es-419"}, "es"), ({"language": "fr-CA"}, "fr"), ({"language": "en"}, "en"),
+    ({"language": None}, "en"), ({}, "en"), (None, "en")])
+def test_transcription_language_comes_from_the_recording_sidecar(tmp_path, sidecar, expected):
+    """Whisper is told the recording's language (#325); English when the sidecar does not say."""
+    wav = tmp_path / "sub-p_ses-s_task-rainbow-passage.wav"
+    if sidecar is not None:
+        (tmp_path / "sub-p_ses-s_task-rainbow-passage_recording-metadata.json").write_text(json.dumps(sidecar))
+    assert transcription_language(wav) == expected
+    Language.model_validate({"language_code": expected})  # a code senselab accepts
+
 
 
 @pytest.mark.skipif(
