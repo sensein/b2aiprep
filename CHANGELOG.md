@@ -1,3 +1,68 @@
+# 4.0.0 (Tue Oct 20 2026)
+
+#### 💥 Breaking Change
+
+- Release v4.0.0 [#360](https://github.com/sensein/b2aiprep/pull/360) ([@wilke0818](https://github.com/wilke0818) [@Evan8456](https://github.com/Evan8456))
+
+#### 🐛 Bug Fix
+
+- docs(release): v4.0.0 citation, published release docs, hand-edited files note [#359](https://github.com/sensein/b2aiprep/pull/359) ([@wilke0818](https://github.com/wilke0818))
+- Release senselab triage tables: audio quality annotations and consensus transcripts [#358](https://github.com/sensein/b2aiprep/pull/358) ([@wilke0818](https://github.com/wilke0818))
+- feat(bids_metrics): add release summary scripts [#356](https://github.com/sensein/b2aiprep/pull/356) ([@Evan8456](https://github.com/Evan8456))
+- Describe deprecated and retired-form columns; table descriptions [#357](https://github.com/sensein/b2aiprep/pull/357) ([@wilke0818](https://github.com/wilke0818))
+- recording.tsv carries the per-recording sidecar fields; drop metadata/metadata.tsv [#355](https://github.com/sensein/b2aiprep/pull/355) ([@wilke0818](https://github.com/wilke0818))
+- fix: v4.0.0 reviewer feedback — checkbox choice values, sex_at_birth, descriptions, legacy_delete [#354](https://github.com/sensein/b2aiprep/pull/354) ([@wilke0818](https://github.com/wilke0818))
+- fix(deidentify): remove rows of recordings the task list leaves out, and report them [#353](https://github.com/sensein/b2aiprep/pull/353) ([@wilke0818](https://github.com/wilke0818))
+- Order phenotype tables: participant_id, then session_id, then the rest; rows sorted [#350](https://github.com/sensein/b2aiprep/pull/350) ([@wilke0818](https://github.com/wilke0818))
+- Feat(audio): Write Bids audio to FLAC [#351](https://github.com/sensein/b2aiprep/pull/351) ([@Evan8456](https://github.com/Evan8456) [@wilke0818](https://github.com/wilke0818))
+- fix(field-map): correct v4 descriptions from v3.1-informed accuracy review [#352](https://github.com/sensein/b2aiprep/pull/352) ([@wilke0818](https://github.com/wilke0818))
+- field-map: v4 descriptions, renames, and controlled-tier medication fields [#349](https://github.com/sensein/b2aiprep/pull/349) ([@wilke0818](https://github.com/wilke0818))
+- Misc v4 follow-ups: exclusion log lists record IDs [#346](https://github.com/sensein/b2aiprep/pull/346) ([@wilke0818](https://github.com/wilke0818))
+- Value review verdicts: redacted text, per-session matching, reviewed-answer check [#344](https://github.com/sensein/b2aiprep/pull/344) ([@wilke0818](https://github.com/wilke0818))
+- chore(template): update dataset_description authors from v4 consortiu… [#347](https://github.com/sensein/b2aiprep/pull/347) ([@Evan8456](https://github.com/Evan8456))
+- feat: v4 date shifting, derived fields, dispositions and deidentify settings [#343](https://github.com/sensein/b2aiprep/pull/343) ([@wilke0818](https://github.com/wilke0818))
+- fix(field-map): date, identifier and descriptive-field dispositions [#341](https://github.com/sensein/b2aiprep/pull/341) ([@wilke0818](https://github.com/wilke0818))
+- fix(redcap2bids): filter acoustic_task.tsv orphan rows [#335](https://github.com/sensein/b2aiprep/pull/335) ([@wilke0818](https://github.com/wilke0818))
+- Remove per-task acoustictask sidecars, catalog pipeline-computed fields [#340](https://github.com/sensein/b2aiprep/pull/340) ([@wilke0818](https://github.com/wilke0818))
+- fix(redcap2bids): exclude calculated fields and require diagnosis form completion [#339](https://github.com/sensein/b2aiprep/pull/339) ([@wilke0818](https://github.com/wilke0818))
+- feat(deidentify): column value review manifest, phenotype parallelization, sensitive-columns migration [#337](https://github.com/sensein/b2aiprep/pull/337) ([@wilke0818](https://github.com/wilke0818))
+- feat(deidentify): rework to per-participant parallelization with allowlist [#336](https://github.com/sensein/b2aiprep/pull/336) ([@wilke0818](https://github.com/wilke0818))
+- feat(redcap2bids): field map v4, audio-check removal, participant filtering [#334](https://github.com/sensein/b2aiprep/pull/334) ([@wilke0818](https://github.com/wilke0818))
+- fix(redcap2bids): normalize the BIDS task entity at ingest [#333](https://github.com/sensein/b2aiprep/pull/333) ([@wilke0818](https://github.com/wilke0818))
+- Update files for redcap2rs-4.10.0-20260827162604 [#331](https://github.com/sensein/b2aiprep/pull/331) ([@github-actions[bot]](https://github.com/github-actions[bot]) [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot]))
+- Flag bridge2ai-redcap docs/stimulus-asset drift in the redcap2rs auto-PR [#332](https://github.com/sensein/b2aiprep/pull/332) ([@wilke0818](https://github.com/wilke0818))
+- Capture printed-on-card and multi-image stimulus metadata (Identifying Pictures, Sounds, Story Recall v2) [#330](https://github.com/sensein/b2aiprep/pull/330) ([@wilke0818](https://github.com/wilke0818))
+- Make acoustic_task_id a deterministic UUID keyed by session and task [#328](https://github.com/sensein/b2aiprep/pull/328) ([@Evan8456](https://github.com/Evan8456))
+- Guard resample overshoot before 16-bit save (stop silent clipping) [#327](https://github.com/sensein/b2aiprep/pull/327) ([@wilke0818](https://github.com/wilke0818))
+- Language-aware task metadata: record session language + Spanish (es-419) instructions & stimulus [#326](https://github.com/sensein/b2aiprep/pull/326) ([@wilke0818](https://github.com/wilke0818))
+- Fix two feature data dictionaries; add opt-in strict verify; commit prepare_doi.py and verify_c2m2.py [#324](https://github.com/sensein/b2aiprep/pull/324) ([@wilke0818](https://github.com/wilke0818))
+- Task registry: generated registry-first resolver + doc-faithful curation (Phase 2) [#321](https://github.com/sensein/b2aiprep/pull/321) ([@wilke0818](https://github.com/wilke0818))
+- Redcap import [#307](https://github.com/sensein/b2aiprep/pull/307) ([@Evan8456](https://github.com/Evan8456) [@wilke0818](https://github.com/wilke0818))
+- Update files for redcap2rs-4.9.1-20260721162303 [#316](https://github.com/sensein/b2aiprep/pull/316) ([@github-actions[bot]](https://github.com/github-actions[bot]) [@wilke0818](https://github.com/wilke0818) [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot]))
+- Map redcap 4.9.1 fields into bids_field_organization.csv [#317](https://github.com/sensein/b2aiprep/pull/317) ([@wilke0818](https://github.com/wilke0818))
+- Delete obsolete code [#314](https://github.com/sensein/b2aiprep/pull/314) ([@alistairewj](https://github.com/alistairewj))
+
+#### ⚠️ Pushed to `main`
+
+- Address review: random-item stimulus, questionnaire-join guards, data dict ([@wilke0818](https://github.com/wilke0818))
+- Merge remote-tracking branch 'origin/main' into fix/audio-task-descriptions-matcher ([@wilke0818](https://github.com/wilke0818))
+- refactor(audio-tasks): rename prompted_text -> stimulus_text ([@wilke0818](https://github.com/wilke0818))
+- feat(audio-tasks): questionnaire-join for vocab/random/stroop prompted_text ([@wilke0818](https://github.com/wilke0818))
+- feat(audio-tasks): scalar prompted_text + speech_type (replace prompts array) ([@wilke0818](https://github.com/wilke0818))
+- feat(audio-tasks): alias_of layer + close 4 unmatched export names ([@wilke0818](https://github.com/wilke0818))
+- feat(audio-tasks): resolve Repeating-Words to per-word stimulus via a bank ([@wilke0818](https://github.com/wilke0818))
+- fix(audio-tasks): robust description matcher + CAPE-V/loudness/random corrections ([@wilke0818](https://github.com/wilke0818))
+
+#### Authors: 5
+
+- [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot])
+- [@github-actions[bot]](https://github.com/github-actions[bot])
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+- Jordan Wilke ([@wilke0818](https://github.com/wilke0818))
+
+---
+
 # 3.3.3 (Wed Jun 03 2026)
 
 #### 🐛 Bug Fix
