@@ -7,6 +7,8 @@ Paired with senselab `specs/20261022-triage-dataset-profile/design.md` (branch
 Bridge2AI-Voice moves into a dataset profile that the caller supplies. This document is b2aiprep's half:
 it holds the B2AI profile and runs triage as a step of the release.
 
+This work lands on `release/v4.1.0`, the branch that collects the v4.1 changes before they merge into `main`.
+
 ## Where things stand (4.0.0)
 
 - **Triage ran outside b2aiprep.** It was run with senselab's triage workflow on the adult WAV tree
