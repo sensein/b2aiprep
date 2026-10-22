@@ -96,12 +96,16 @@ A command, for example `b2aiprep run-triage BIDS_DIR --profile adult --outdir ..
 
 ## Acceptance
 
-- **The profile reproduces 4.0.0.** Run from this package on the 4.0.0 adult source, it reproduces the 4.0.0
-  verdicts for a fixed sample, compared with senselab's `replay_diff`.
-- **The step reproduces the 4.0.0 tables.** Its tables match the 4.0.0 `audio_quality_annotations.tsv` and
-  `consensus_transcripts.parquet` row for row. The exception is recordings that were triaged on WAV and
-  whose FLAC differs; 4.0.0's own check found such differences only where the audio clipped.
-- **The removal candidates match 4.0.0.** They equal the 4.0.0 review and discard lists after lower-casing.
+Each check compares against 4.0.0. Every difference is explained, and the reviewer accepts it case by case:
+some are expected, such as recordings now triaged on FLAC rather than WAV, or names that b2aiprep cleans up.
+An unexplained difference blocks the change.
+
+- **Verdicts:** run from this package on the 4.0.0 adult source, the profile gives verdicts for a fixed
+  sample that are compared with 4.0.0's using senselab's `replay_diff`.
+- **Tables:** the step's tables are compared row for row with the 4.0.0 `audio_quality_annotations.tsv` and
+  `consensus_transcripts.parquet`. 4.0.0's own check found WAV and FLAC differing only where the audio
+  clipped.
+- **Removal candidates:** they are compared with the 4.0.0 review and discard lists after lower-casing.
 
 ## Decided (2026-10-22)
 
