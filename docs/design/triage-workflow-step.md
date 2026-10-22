@@ -38,8 +38,8 @@ it holds the B2AI profile and runs triage as a step of the release.
      guidance.
    - `profile.yaml` holds name, version and provenance.
 
-   Proposed location: `src/b2aiprep/prepare/resources/triage_profile/adult/`. A pediatric profile follows
-   as `pediatric/`.
+   Location (decided 2026-10-22): in this package, at `src/b2aiprep/prepare/resources/triage_profile/adult/`.
+   A pediatric profile is the planned next extension, as `pediatric/`.
 2. **The hint builder.** senselab's `b2ai_hints.py` and `task_registry.py` move here. They read this
    package's own registry, so senselab's copy goes away.
 3. **The prep script.** `external_scripts/triage/prep_audio_quality_annotations.py` moves into `src` as
@@ -76,9 +76,15 @@ A command, for example `b2aiprep run-triage BIDS_DIR --profile adult --outdir ..
 
 ## Dependencies and order
 
-- **senselab version.** `pyproject.toml` pins `senselab[articulatory]~=1.3.0` (line 24), and triage exists
-  only on senselab `alpha`. The step needs a senselab release that includes triage and the profile loader
-  (senselab steps 1–3).
+- **senselab version.** `pyproject.toml` pins `senselab[articulatory]~=1.3.0` (line 24), but triage exists
+  only on senselab `alpha`.
+  - senselab publishes its alphas to PyPI. 1.4.0a7 (2026-10-21) is `origin/alpha`, triage included.
+  - The plan is to point b2aiprep at it: `senselab[articulatory]>=1.4.0a7,<1.4.1`, then `~=1.4.0` once
+    1.4.0 is released. 1.4.0 satisfies `>=1.4.0a7`.
+  - The `<1.4.1` bound matters: a requirement that names a pre-release lets pip pick later
+    pre-releases too.
+  - PyPI does not accept git-URL dependencies, so a git pin is not an option.
+  - The base pin has to move, because an optional extra cannot loosen it.
 - **Heavy models.** Put them behind an optional extra, for example `b2aiprep[triage]`, so the base install
   and CI do not pull in the triage models.
 - **Order of changes:**
@@ -97,12 +103,18 @@ A command, for example `b2aiprep run-triage BIDS_DIR --profile adult --outdir ..
   whose FLAC differs; 4.0.0's own check found such differences only where the audio clipped.
 - **The removal candidates match 4.0.0.** They equal the 4.0.0 review and discard lists after lower-casing.
 
+## Decided (2026-10-22)
+
+- **The profile lives in this package.**
+- **Fitted values belong to whoever runs triage.** For B2AI that is the release's triage runner, and any
+  change goes through a reviewed PR. Fitting values programmatically for a new dataset is a follow-up
+  issue after the senselab refactor. It needs train/test split support that senselab does not have yet.
+- **Who does the work.** The first attempt is by Jordan Wilke (with Claude Code). The senselab triage
+  owner reviews and changes as needed.
+- **Pediatric** is the planned next extension.
+
 ## Open questions
 
-1. **Profile location:** in this package's resources, or a separate data package that b2aiprep depends on.
-2. **Owner of the fitted values.** They come from triage runs and listening sessions (r8 to r37). Who
-   updates them, and how a refit is reviewed.
-3. **Re-running and re-using.** Whether a release re-runs triage or replays earlier verdicts. Replaying
-   saves GPU time, but is valid only when the audio and profile hash are unchanged.
-4. **Pediatric:** it has no triage today, and its tasks are not in the triage task rows. A pediatric profile
-   is the first real test of the senselab generalization.
+1. **Re-running and re-using.** Does a release re-run triage, or replay earlier verdicts? Replaying saves
+   GPU time, but is valid only when the audio and the profile hash are unchanged.
+2. **Who promotes the candidate removal lists, and with what review.** In 4.0.0 this was done by hand.
