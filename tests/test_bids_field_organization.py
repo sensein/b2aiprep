@@ -239,6 +239,16 @@ def test_enrollment_form_repeats_of_eligible_studies_are_dropped(reorg_rows):
     assert not kept, f"Enrollment Form repeats of Eligible Studies not dropped: {kept}"
 
 
+def test_pediatric_eligible_studies_fields_with_no_pediatric_meaning_are_dropped(reorg_rows):
+    """Pediatrics has no control arm, and autism/speech_delay are filled only for app-collected
+    children (always Unchecked); pediatric ASD is recorded in peds_mc_psych_disorders___asd."""
+    rows = {r["column_name_source"]: r for r in reorg_rows
+            if r["cohort"] == "pediatric" and r["schema_name_source"] == "subjectparticipant_eligible_studies_schema"}
+    assert {f: rows[f]["disposition"] for f in ("is_control_participant", "autism", "speech_delay")} == {
+        "is_control_participant": "drop", "autism": "drop", "speech_delay": "drop"}
+    assert {r["schema_name"] for r in rows.values() if r["disposition"] != "drop"} == {"pediatric_eligibility"}
+
+
 def test_pediatric_enrollment_form_table_is_prefixed(reorg_rows):
     tables = {(r["cohort"], r["schema_name"]) for r in reorg_rows if r["schema_name"]}
     assert ("pediatric", "enrollment_form") not in tables

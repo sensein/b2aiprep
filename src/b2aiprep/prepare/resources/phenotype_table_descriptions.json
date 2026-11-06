@@ -33,6 +33,7 @@
     "panas": "PANAS questionnaire (REDCap form `q_mood_panas`).",
     "parkinsons_disease": "Parkinson's Disease diagnosis form (REDCap form `d_neuro_parkinsons_disease`).",
     "participant": "Basic Information, and Prolific information (REDCap forms `subjectparticipant_basic_information`, `prolific_information`).",
+    "pediatric_eligibility": "Eligible Studies (REDCap form `subjectparticipant_eligible_studies`).",
     "pediatric_enrollment_form": "Enrollment form (REDCap form `enrollment_form`).",
     "pediatric_demographics": "Pediatric Demographics (REDCap form `pediatric_q_generic_demographics`).",
     "pediatric_hqa": "Pediatric PHQ-A (REDCap form `pediatric_q_generic_phqa`).",
