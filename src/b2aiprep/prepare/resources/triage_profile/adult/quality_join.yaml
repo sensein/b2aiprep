@@ -1,0 +1,10 @@
+# QUALITY's join: interference, faults, stream agreement and capture, read against each task span
+# by time overlap (quality_join.py). The derivation of every value is in
+# specs/20261007-task-events-in-background/design.md ("Unit C step 2"); values marked UNFITTED are
+# to be fitted jointly on the owner's labels.
+version: 3
+faults:                           # a capture fault touching a task span reviews; elsewhere it is an annotation
+  dropout:
+    decides: true
+  clip:
+    decides: true
