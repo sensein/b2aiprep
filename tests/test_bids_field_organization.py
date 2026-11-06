@@ -217,6 +217,35 @@ def test_a_source_column_has_at_most_one_row_per_cohort_and_table(reorg_rows):
     assert not repeated, "repeated (cohort, source, table) rows: " + "; ".join(repeated)
 
 
+def test_drop_rows_name_no_table(reorg_rows):
+    """A dropped field is never written, so its row names no table, output column or group."""
+    placed = [(r["cohort"], r["column_name_source"]) for r in reorg_rows
+              if r["disposition"] == "drop" and (r["schema_name"] or r["column_name"] or r["group"])]
+    assert not placed, f"drop rows with a table, name or group: {placed}"
+
+
+def test_enrollment_form_repeats_of_eligible_studies_are_dropped(reorg_rows):
+    """The Enrollment Form asks the Eligible Studies checklist, study arms and control flag again;
+    the released copies come from Eligible Studies, and the raw answers stay in REDCap."""
+    import re
+    repeats = re.compile(r"^ef_(eligible_studies(___.+)?|is_control_participant)$")
+    checklist = {r["column_name_source"] for r in reorg_rows
+                 if r["schema_name_source"] == "subjectparticipant_eligible_studies_schema"}
+    kept = sorted(
+        (r["cohort"], r["column_name_source"]) for r in reorg_rows
+        if r["schema_name_source"] == "enrollment_form_schema" and r["disposition"] != "drop"
+        and (repeats.match(r["column_name_source"]) or r["column_name_source"].removeprefix("ef_") in checklist)
+    )
+    assert not kept, f"Enrollment Form repeats of Eligible Studies not dropped: {kept}"
+
+
+def test_pediatric_enrollment_form_table_is_prefixed(reorg_rows):
+    tables = {(r["cohort"], r["schema_name"]) for r in reorg_rows if r["schema_name"]}
+    assert ("pediatric", "enrollment_form") not in tables
+    assert ("pediatric", "pediatric_enrollment_form") in tables and ("adult", "enrollment_form") in tables
+    assert not any(t == "enrollment" for _, t in tables)
+
+
 def test_output_column_names_are_unique_per_schema(reorg_rows):
     """Duplicate output names collapse columns; the writer raises on this."""
     seen = {}

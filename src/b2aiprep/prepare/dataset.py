@@ -2069,8 +2069,8 @@ class BIDSDataset:
         outside the controlled tier; see ``_names_to_drop_at_level``).
 
         With *schema_name* (a phenotype table), only that table's field-map rows are consulted:
-        output names are unique within a table but not across tables (e.g. ``self_reported_*`` is
-        released in ``eligibility`` and internal in ``enrollment``).
+        output names are unique within a table but not across tables, so the same name can be
+        released in one table and internal in another.
 
         With *keep_date_shifted*, ``date_shift=YES`` columns are kept whatever the level: for
         builds that show the shifted dates alongside a release-like tree.
