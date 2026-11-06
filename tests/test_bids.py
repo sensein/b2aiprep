@@ -310,7 +310,7 @@ def test_redcap_to_bids():
         output_dir = Path(tmp_dir) / "bids_output"
 
         # Convert to BIDS format using the new class method
-        bids_dataset = BIDSDataset.from_redcap(redcap_dataset, output_dir, audiodir=None)
+        bids_dataset = BIDSDataset.from_redcap(redcap_dataset, output_dir, audiodir=None, cohort="adult")
         
         # Check if the expected output files exist in the temporary directory
         if not any(output_dir.iterdir()):
@@ -318,6 +318,8 @@ def test_redcap_to_bids():
         
         # Verify that the returned object is a BIDSDataset
         assert isinstance(bids_dataset, BIDSDataset), "redcap_to_bids should return a BIDSDataset instance"
+        # The tree records its cohort, for deidentify to check.
+        assert json.loads((output_dir / "dataset_description.json").read_text())["Cohort"] == "adult"
         
         # Verify that the BIDSDataset points to the correct directory
         assert bids_dataset.data_path == output_dir.resolve(), "BIDSDataset should point to the output directory"

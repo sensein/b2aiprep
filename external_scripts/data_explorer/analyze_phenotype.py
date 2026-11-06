@@ -22,7 +22,7 @@ value np (distinct participants holding it; values_more entries become [value, r
 a checkbox selected_participants, and meta.n_participants (distinct participants across all tables).
 
 Usage:
-  python3 analyze_phenotype.py ROOT OUT.json [--org bids_field_organization.csv] [--list-ids-max 10] [--sites participant.tsv]
+  python3 analyze_phenotype.py ROOT OUT.json [--org bids_field_organization.csv --cohort adult|pediatric] [--list-ids-max 10] [--sites participant.tsv]
 Python 3.6 compatible (the cluster's /usr/bin/python3).
 """
 import argparse
@@ -167,10 +167,19 @@ def deprecation(name, elements, org):
 
 
 # ---------------------------------------------------------------- field map
-def load_org(path):
+def load_org(path, cohort):
+    """The field map's rows for *cohort* (it holds one row per cohort, table and column)."""
     by_key, by_col = {}, collections.defaultdict(list)
     with open(path, newline='', encoding='utf-8') as fh:
-        for r in csv.DictReader(fh):
+        reader = csv.DictReader(fh)
+        if 'cohort' not in (reader.fieldnames or []):
+            sys.exit('%s has no cohort column (a field map older than v4.1); use the field map the tree was built with' % path)
+        for r in reader:
+            row_cohort = r['cohort'].strip()
+            if row_cohort not in ('adult', 'pediatric'):
+                sys.exit('%s: cohort must be adult or pediatric; got %r' % (path, r['cohort']))
+            if row_cohort != cohort:
+                continue
             by_key[(r['schema_name'], r['column_name'])] = r
             by_col[r['column_name']].append(r)
     return by_key, by_col
@@ -459,6 +468,7 @@ def main():
     ap.add_argument('root')
     ap.add_argument('out')
     ap.add_argument('--org', help='bids_field_organization.csv; adds disposition/provenance')
+    ap.add_argument('--cohort', choices=['adult', 'pediatric'], help="the tree's cohort; required with --org")
     ap.add_argument('--list-ids-max', type=int, default=10,
                     help='list participant/session/site for values held by at most this many rows (0 = off)')
     ap.add_argument('--sites', help='TSV with participant_id and enrollment_institution')
@@ -469,7 +479,9 @@ def main():
             for r in csv.DictReader(fh, delimiter='\t'):
                 sites[r['participant_id']] = r.get('enrollment_institution') or ''
     root = os.path.abspath(a.root)
-    org = load_org(a.org) if a.org else None
+    if a.org and not a.cohort:
+        ap.error('--org needs --cohort')
+    org = load_org(a.org, a.cohort) if a.org else None
 
     tables = []
     for p in sorted(glob.glob(os.path.join(root, 'phenotype', '*', '*.tsv'))):

@@ -158,7 +158,7 @@ class TestBIDSDatasetDeidentification:
         dataset = BIDSDataset(temp_bids_dir)
 
         deidentified_dataset = dataset.deidentify(
-            outdir=output_dir, deidentify_config_dir=setup_publish_config
+            cohort="adult", outdir=output_dir, deidentify_config_dir=setup_publish_config
         )
 
         # Check that output directory was created
@@ -173,7 +173,7 @@ class TestBIDSDatasetDeidentification:
 
         # Test deidentification with skip_audio=True
         deidentified_dataset = dataset.deidentify(
-            outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=True
+            cohort="adult", outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=True
         )
 
         # Check that no audio files were copied
@@ -186,7 +186,7 @@ class TestBIDSDatasetDeidentification:
 
         # Test deidentification with audio
         _ = dataset.deidentify(
-            outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
+            cohort="adult", outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
         )
 
         # Check that audio files were copied (should be processed by filter)
@@ -234,7 +234,7 @@ class TestBIDSDatasetDeidentification:
         dataset = BIDSDataset(temp_bids_dir)
 
         # Test deidentification
-        dataset.deidentify(outdir=output_dir, deidentify_config_dir=setup_publish_config)
+        dataset.deidentify(cohort="adult", outdir=output_dir, deidentify_config_dir=setup_publish_config)
 
         # Check that phenotype directory was created
         phenotype_dir = output_dir / "phenotype"
@@ -251,7 +251,7 @@ class TestBIDSDatasetDeidentification:
         dataset = BIDSDataset(temp_bids_dir)
 
         # Test deidentification
-        dataset.deidentify(outdir=output_dir, deidentify_config_dir=setup_publish_config)
+        dataset.deidentify(cohort="adult", outdir=output_dir, deidentify_config_dir=setup_publish_config)
 
         # Check that template files were copied
         assert (output_dir / "README.md").exists()
@@ -267,7 +267,7 @@ class TestBIDSDatasetDeidentification:
 
         # Should raise FileExistsError
         with pytest.raises(FileExistsError):
-            dataset.deidentify(outdir=output_dir, deidentify_config_dir=setup_publish_config)
+            dataset.deidentify(cohort="adult", outdir=output_dir, deidentify_config_dir=setup_publish_config)
 
     def test_participant_removal(self, temp_bids_dir, output_dir, setup_publish_config):
         """Test that participants on the removal list are excluded."""
@@ -279,7 +279,7 @@ class TestBIDSDatasetDeidentification:
 
         # Test deidentification
         dataset.deidentify(
-            outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
+            cohort="adult", outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
         )
 
         # Check that participant001 files are not in output
@@ -292,7 +292,7 @@ class TestBIDSDatasetDeidentification:
 
         # Test deidentification
         dataset.deidentify(
-            outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
+            cohort="adult", outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
         )
 
         # Check that audio files and sidecars were written
@@ -307,7 +307,7 @@ class TestBIDSDatasetDeidentification:
 
         with caplog.at_level(logging.INFO):
             dataset.deidentify(
-                outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=True
+                cohort="adult", outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=True
             )
 
         # Check for expected log messages
@@ -979,7 +979,7 @@ class TestEndToEndAllowlistFiltering:
         (bids / "dataset_description.json").write_text(json.dumps({"Name": "test"}))
 
         dataset = BIDSDataset(bids)
-        dataset.deidentify(outdir=out, deidentify_config_dir=config)
+        dataset.deidentify(cohort="adult", outdir=out, deidentify_config_dir=config)
 
         # p3 should be excluded
         assert not (out / "sub-p3").exists()
@@ -993,7 +993,7 @@ class TestEndToEndAllowlistFiltering:
     def test_allowlisted_participant_without_a_pseudonym_is_refused(self, tmp_path, make_deid_tree):
         bids, config = make_deid_tree({"p1": [("s1", "rainbow-passage")]}, pseudonyms={})
         with pytest.raises(ValueError, match="1 allowlisted participant.*no pseudonym.*p1"):
-            BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
+            BIDSDataset(bids).deidentify(cohort="adult", outdir=tmp_path / "out", deidentify_config_dir=config)
         assert list((tmp_path / "out").iterdir()) == []
 
 
@@ -1035,7 +1035,7 @@ class TestReleasedSessions:
                                         questionnaire_label):
         bids, config = _released_sessions_tree(make_deid_tree, tmp_path)
         out, session_map = tmp_path / "out", tmp_path / "internal" / "map.json"
-        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config, session_labels=mode,
+        BIDSDataset(bids).deidentify(cohort="adult", outdir=out, deidentify_config_dir=config, session_labels=mode,
                                      session_id_map=session_map)
         assert [d.name for d in (out / "sub-900001").glob("ses-*")] == [audio_dir]
         ses = pd.read_csv(out / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
@@ -1057,7 +1057,7 @@ class TestReleasedSessions:
         """Checked before anything is read or written."""
         (tmp_path / "bids").mkdir()
         with pytest.raises(ValueError, match="outside the output"):
-            BIDSDataset(tmp_path / "bids").deidentify(outdir=tmp_path / "out", deidentify_config_dir=tmp_path,
+            BIDSDataset(tmp_path / "bids").deidentify(cohort="adult", outdir=tmp_path / "out", deidentify_config_dir=tmp_path,
                                                       session_id_map=tmp_path / "out" / "map.json")
         assert not (tmp_path / "out").exists()
 
@@ -1068,7 +1068,7 @@ class TestSessionLabelCrosswalk:
     def _maps(self, tmp_path, make_deid_tree):
         for name, mode in (("index", SessionLabels.INDEX), ("ordinal", SessionLabels.ORDINAL)):
             bids, config = _released_sessions_tree(make_deid_tree, tmp_path / name)
-            BIDSDataset(bids).deidentify(outdir=tmp_path / name / "out", deidentify_config_dir=config,
+            BIDSDataset(bids).deidentify(cohort="adult", outdir=tmp_path / name / "out", deidentify_config_dir=config,
                                          session_labels=mode, session_id_map=tmp_path / f"{name}.json")
         return tmp_path / "index.json", tmp_path / "ordinal.json"
 
@@ -1131,7 +1131,7 @@ class TestParticipantFailureStopsRun:
             # no session_index for p2, so ordinal labelling fails for p2 only
             sessions={"p2": pd.DataFrame({"record_id": ["p2"], "session_id": ["s1"]})})
         with pytest.raises(RuntimeError, match=r"failed for 1 participant.*p2"):
-            BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
+            BIDSDataset(bids).deidentify(cohort="adult", outdir=tmp_path / "out", deidentify_config_dir=config)
 
 
 class TestLabelsSharedAcrossTiers:
@@ -1177,7 +1177,7 @@ class TestLabelsSharedAcrossTiers:
                 tables={"confounders/confounders": pd.DataFrame(
                     {"participant_id": ["p1"], "confounders_session_id": ["s2"], column: [value]})})
             out = tmp_path / name / "out"
-            BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+            BIDSDataset(bids).deidentify(cohort="adult", outdir=out, deidentify_config_dir=config)
             (sessions,) = list((out / "sub-900000").glob("*sessions.tsv"))
             labels[name] = list(BIDSDataset._read_tsv_as_written(sessions)["session_id"])
         assert labels == {"narrow": ["01", "03"], "wide": ["01", "02", "03"]}
@@ -1191,7 +1191,7 @@ class TestSidecarDispositions:
         bids, config = make_deid_tree({"p1": [("s1", "rainbow-passage", {
             "recording_duration": 1.5, "recording_microphone": "Built-in", "task_name": "rainbow-passage",
             "not_a_sidecar_key": "x"})]}, root=root, pseudonyms={"p1": "p1"})
-        BIDSDataset(bids).deidentify(outdir=root / "out", deidentify_config_dir=config, **kwargs)
+        BIDSDataset(bids).deidentify(cohort="adult", outdir=root / "out", deidentify_config_dir=config, **kwargs)
         (sidecar,) = (root / "out" / "sub-p1").rglob("*.json")
         return json.loads(sidecar.read_text())
 
@@ -1208,6 +1208,7 @@ class TestSidecarDispositions:
         fm.loc[(fm.schema_name == "audio_sidecar") & (fm.column_name == "recording_microphone"),
                "disposition"] = "internal"
         monkeypatch.setattr(BIDSDataset, "_cached_field_map_df", fm)
+        monkeypatch.setattr(BIDSDataset, "_cached_field_map_cohort", "adult")
         assert "recording_microphone" not in self._deidentify(tmp_path / "a", make_deid_tree)
         assert "recording_microphone" in self._deidentify(
             tmp_path / "b", make_deid_tree, disposition_level=DispositionLevel.INTERNAL)
@@ -1309,7 +1310,7 @@ class TestRemovedRecordings:
                         "participant_id": ["p1", "p1"], "random_recording_acoustic_task_id": ["T1", "t2"],
                         "random_duration": ["10", "20"]})})
         out = tmp_path / "out"
-        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+        BIDSDataset(bids).deidentify(cohort="adult", outdir=out, deidentify_config_dir=config)
         assert list(BIDSDataset._read_tsv_as_written(out / "phenotype/task/recording.tsv")["recording_id"]) == ["r1"]
         assert list(BIDSDataset._read_tsv_as_written(
             out / "phenotype/task/acoustic_task.tsv")["acoustic_task_id"]) == ["t1"]
@@ -1337,7 +1338,7 @@ class TestRemovedRecordings:
                       "task_name": ["rainbow-passage", "free-speech-1"], "snr": ["1", "2"]},
                      ).to_csv(bids / "audio_quality_metrics.tsv", sep="\t", index=False)
         out = tmp_path / "out"
-        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config,
+        BIDSDataset(bids).deidentify(cohort="adult", outdir=out, deidentify_config_dir=config,
                                      skip_audio_features=skip_audio_features)
         read = BIDSDataset._read_tsv_as_written
         assert list(read(out / "phenotype/task/recording.tsv")["recording_id"]) == [f"r{k}" for k in kept]
@@ -1362,7 +1363,7 @@ class TestRemovedRecordings:
                         "participant_id": ["p1"], "stroop_session_id": ["s2"],
                         "stroop_recording_acoustic_task_id": ["t2"], "stroop_duration": ["30"]})})
         out = tmp_path / "out"
-        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+        BIDSDataset(bids).deidentify(cohort="adult", outdir=out, deidentify_config_dir=config)
         sessions = pd.read_csv(next((out / "sub-900000").glob("*sessions.tsv")), sep="\t", dtype=str)
         assert len(sessions) == 1
         stroop = out / "phenotype/task/stroop.tsv"
@@ -1373,7 +1374,7 @@ class TestRemovedRecordings:
             {"p1": [("s1", "rainbow-passage", {"recording_id": "r1"}), ("s1", "free-speech-1")]},
             tasks=["rainbow-passage"])
         with caplog.at_level(logging.WARNING):
-            BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config,
+            BIDSDataset(bids).deidentify(cohort="adult", outdir=tmp_path / "out", deidentify_config_dir=config,
                                          skip_audio_features=True)
         assert any("No recording_id in" in r.getMessage() for r in caplog.records)
 
@@ -1732,7 +1733,7 @@ class TestApplyColumnValueReviews:
                 "other": "voice_activity_v2___other", "specify": "other_voice_activity", "min_participants": 10}}}},
             config_files={"column_value_reviews.json": {"verdicts": [
                 {"participant_id": "p2", "column_name": "other_voice_activity", "verdict": "safe"}]}})
-        BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
+        BIDSDataset(bids).deidentify(cohort="adult", outdir=tmp_path / "out", deidentify_config_dir=config)
         df = BIDSDataset._read_tsv_as_written(tmp_path / "out" / "phenotype" / "confounders" / "confounders.tsv")
         by_id = df.set_index("participant_id")
         assert "voice_activity_v2___attorney" not in df.columns
@@ -1900,7 +1901,7 @@ def test_relabelled_answers_and_their_choices_reach_the_released_json(tmp_path, 
                                                          "ph_walking": ["None", "Mild"]})},
         choices={"confounders/confounders": {"ph_walking": ["None", "Mild", "Extreme"]}},
         settings={"relabel": {"confounders": {"ph_walking": {"None": "No difficulty"}}}})
-    BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
+    BIDSDataset(bids).deidentify(cohort="adult", outdir=tmp_path / "out", deidentify_config_dir=config)
     released = tmp_path / "out" / "phenotype" / "confounders"
     assert sorted(BIDSDataset._read_tsv_as_written(released / "confounders.tsv")["ph_walking"]) == [
         "Mild", "No difficulty"]
@@ -1913,7 +1914,7 @@ def test_relabelled_answers_and_their_choices_reach_the_released_json(tmp_path, 
 def test_exclude_participants_removes_a_participant_by_one_answer(tmp_path, make_deid_tree, caplog):
     bids, config = _pediatric_tree(make_deid_tree, GENDER_RULE)
     with caplog.at_level(logging.INFO):
-        BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
+        BIDSDataset(bids).deidentify(cohort="pediatric", outdir=tmp_path / "out", deidentify_config_dir=config)
     assert sorted(p.name for p in (tmp_path / "out").glob("sub-*")) == ["sub-900000"]
     # the internal run log names the excluded record, so the exclusion can be checked
     line = next(r.message for r in caplog.records if r.message.startswith("exclude_participants:"))
@@ -1930,4 +1931,4 @@ def test_exclude_participants_removes_a_participant_by_one_answer(tmp_path, make
 def test_exclude_participants_refuses_a_rule_that_would_match_nothing(tmp_path, make_deid_tree, typo, match):
     bids, config = _pediatric_tree(make_deid_tree, {**GENDER_RULE, **typo})
     with pytest.raises(ValueError, match=match):
-        BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
+        BIDSDataset(bids).deidentify(cohort="pediatric", outdir=tmp_path / "out", deidentify_config_dir=config)
