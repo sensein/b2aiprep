@@ -7,16 +7,15 @@ from typing import Iterator
 
 import pytest
 
-pytest.importorskip(
-    "senselab.audio.workflows.triage.task_catalogue",
-    reason="needs senselab with the triage refactor",
-)
+# No skip on an older senselab: these modules exist only with senselab's triage refactor, so a run against an
+# older senselab must fail here, not pass by skipping every test.
+import senselab.audio.workflows.triage.task_catalogue  # noqa: F401
 
 from senselab.audio.workflows.triage.identity import FROM_STEM
 from senselab.audio.workflows.triage.routing_analysis.families import UNKNOWN_TASK, task_family
 from senselab.audio.workflows.triage.run import entity_subdir
 
-from b2aiprep.prepare.triage_hints import identity_from_name, task_id_of
+from b2aiprep.prepare.triage_hints import b2ai_task, identity_from_name, task_id_of
 
 ADULT_PROFILE = (
     Path(__file__).resolve().parents[1] / "src/b2aiprep/prepare/resources/triage_profile/adult"
@@ -50,7 +49,7 @@ class TestFromTheStem:
         identity = identity_from_name(STEM)
         assert (identity.participant, identity.session) == ("sub-a", "ses-b")
         assert identity.task_id == "respiration-and-cough-fivebreaths-2"
-        assert identity.task_family == "respiration-and-cough-fivebreaths"
+        assert task_family(identity.task_id) == "respiration-and-cough-fivebreaths"
         assert set(identity.sources.values()) == {FROM_STEM}
 
     def test_each_entity_is_read_on_its_own(self) -> None:
@@ -68,7 +67,7 @@ class TestFromTheStem:
             identity = identity_from_name(stem)
             assert (identity.participant, identity.session) == expected
             assert identity.task_id == task_id_of(stem)
-            assert identity.task_family == task_family(task_id_of(stem))
+            assert task_family(identity.task_id) == task_family(task_id_of(stem))
         assert identity_from_name("sub-a_task-x").session_key is None
 
     def test_a_stem_with_no_task_entity_declares_none(self) -> None:
@@ -98,3 +97,54 @@ def test_task_id_reads_the_bids_entity() -> None:
 def test_the_name_readers_entities_place_the_run(stem: str, expected: tuple[str, ...]) -> None:
     """The reader's participant and session place a run: a label may contain hyphens, an empty one is none."""
     assert entity_subdir(identity_from_name(stem)) == (Path(*expected) if expected else Path("."))
+
+
+class TestTheTaskAHintDeclares:
+    """``b2ai_task``: the task, variant, take and route a B2AI task id declares."""
+
+    @pytest.mark.parametrize(
+        ("take", "route"), [(1, "nose"), (2, "mouth"), (3, "nose"), (4, "mouth")]
+    )
+    def test_a_five_breaths_take_names_its_route(self, take: int, route: str) -> None:
+        """A task whose route is declared per recording takes its route from the take."""
+        task, variant, declared_take = b2ai_task(f"respiration-and-cough-fivebreaths-{take}")
+        assert task == "respiration-and-cough-fivebreaths"
+        assert variant == {"index": str(take), "route": route}
+        assert declared_take == take
+
+    def test_a_take_outside_the_protocol_names_no_route(self) -> None:
+        """A fifth take is still a take, but the protocol names no route for it."""
+        task, variant, take = b2ai_task("respiration-and-cough-fivebreaths-5")
+        assert (task, variant, take) == ("respiration-and-cough-fivebreaths", {"index": "5"}, 5)
+
+    def test_a_task_without_a_per_recording_route_has_an_index_but_no_take(self) -> None:
+        """Another task's trailing number is kept as its index; it is not a take and names no route."""
+        task, variant, take = b2ai_task("free-speech-2")
+        assert task == "free-speech"
+        assert variant == {"index": "2"}
+        assert take is None
+
+    def test_a_task_with_no_index_has_no_variant(self) -> None:
+        """A task id with no trailing number declares the task alone."""
+        assert b2ai_task("rainbow-passage") == ("rainbow-passage", {}, None)
+
+    def test_an_unknown_task_declares_nothing(self) -> None:
+        """The parsers' placeholder declares no task, variant or take."""
+        assert b2ai_task(UNKNOWN_TASK) == (None, {}, None)
+
+
+def test_the_installed_package_carries_a_profile_that_passes_the_start_check() -> None:
+    """The profile is read through the package's resources and passes senselab's start check as packaged."""
+    from importlib.resources import files
+
+    from senselab.audio.workflows.triage.config import load_triage_config
+    from senselab.audio.workflows.triage.dataset_profile import (
+        deactivate_profile,
+        missing_dataset_values,
+    )
+
+    packaged = Path(str(files("b2aiprep") / "prepare/resources/triage_profile/adult"))
+    assert (packaged / "profile.yaml").is_file()
+    deactivate_profile()
+    config = load_triage_config(profile=packaged)
+    assert missing_dataset_values(config.values) == []

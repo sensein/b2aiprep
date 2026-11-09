@@ -8,10 +8,9 @@ from typing import Iterator
 
 import pytest
 
-pytest.importorskip(
-    "senselab.audio.workflows.triage.task_catalogue",
-    reason="needs senselab with the triage refactor",
-)
+# No skip on an older senselab: these modules exist only with senselab's triage refactor, so a run against an
+# older senselab must fail here, not pass by skipping every test.
+import senselab.audio.workflows.triage.task_catalogue  # noqa: F401
 
 from b2aiprep.prepare.triage_hints import build_hint
 from b2aiprep.prepare.triage_task_registry import (
@@ -69,6 +68,19 @@ def test_an_alias_two_versions_share_is_resolved_by_the_name() -> None:
     """``story-recall`` is v1's alias and v2's; the registry's own index picks v2, the recording is v1."""
     assert registry_task("story-recall") == ("adult.story-recall.v1", "")
     assert registry_task("story-recall-v2") == ("adult.story-recall.v2", "")
+
+
+def test_the_task_is_the_one_the_release_descriptions_resolve() -> None:
+    """Triage and the release's task descriptions read a name as one task, curated aliases included."""
+    from b2aiprep.prepare.fhir_utils import _resolve_task_registry
+
+    for name in ("glides-high-to-low", "high-to-low", "story-recall-v2", "diadochokinesis-pa"):
+        resolved = _resolve_task_registry(name, "adult")
+        assert resolved is not None
+        assert registry_task(name)[0] == resolved[0]["task_id"]
+    assert registry_task("high-to-low") == ("adult.glides", "high-to-low")
+    assert registry_task("glides-high-to-low") == ("adult.glides", "high-to-low")
+    assert registry_task("not-a-task-anywhere") == (None, None)
 
 
 def test_a_per_recording_correction_is_found_by_its_recording_key() -> None:

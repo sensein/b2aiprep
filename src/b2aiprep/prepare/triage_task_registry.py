@@ -68,51 +68,47 @@ def _curated() -> dict[str, dict[str, Any]]:
     )
 
 
-def _version_of(name: str) -> str:
-    return "v2" if "-v2" in description_key(name) else "v1"
-
-
 def registry_task(name: str, population: str = "adult") -> tuple[str | None, str | None]:
     """The registry task a recording's task name belongs to, and its recording key within it.
 
-    An alias several task versions share (``story-recall`` is v1's and v2's) is resolved by the name
-    itself: a name carrying ``-v2`` is the v2 task, any other the unversioned or v1 one. The
-    registry's own ``alias_index`` maps such an alias to the current version, which is not what a
-    recording named for the retired one was.
+    The task is the one the release's own task descriptions resolve the name to
+    (:func:`b2aiprep.prepare.fhir_utils._resolve_task_registry`: the curated recording-name aliases, the
+    registry's alias index, then the version and population the name indicates), so triage and the
+    release never disagree on a recording's task. The recording key is the part of the name after the
+    task's longest matching alias, read off the name as given, else off its canonical task entity
+    (:func:`b2aiprep.prepare.utils.canonical_task_entity`), which is how a curated alias such as a bare
+    ``high-to-low`` still finds its key.
 
     Args:
         name: The recording's task name.
         population: ``adult`` or ``pediatric``.
 
     Returns:
-        ``(task id, recording key)``; the key is the part of the name after the matched alias, empty
-        where the whole name is the alias; ``(None, None)`` where no alias matches.
+        ``(task id, recording key)``; the key is empty where the whole name is the alias and None where
+        no alias of the task prefixes the name; ``(None, None)`` where the name resolves to no task of
+        ``population``.
     """
-    key = description_key(name)
-    wanted = _version_of(name)
-    candidates: list[tuple[int, str, str]] = []
-    for task_id, task in (_registry().get("tasks") or {}).items():
-        if not str(task_id).startswith(f"{population}."):
-            continue
-        for alias in task.get("aliases") or ():
-            alias_key = description_key(str(alias))
-            if key == alias_key:
-                candidates.append((len(alias_key), str(task_id), ""))
-            elif key.startswith(alias_key + "-"):
-                candidates.append((len(alias_key), str(task_id), key[len(alias_key) + 1 :]))
-    if not candidates:
+    from b2aiprep.prepare.fhir_utils import _resolve_task_registry
+    from b2aiprep.prepare.utils import canonical_task_entity
+
+    resolved = _resolve_task_registry(str(name or ""), population)
+    if resolved is None:
         return None, None
-    longest = max(length for length, _, _ in candidates)
-    best = [(task_id, rest) for length, task_id, rest in candidates if length == longest]
-    if len(best) > 1:
-        versioned = [(task_id, rest) for task_id, rest in best if task_id.endswith(f".{wanted}")]
-        unversioned = [
-            (task_id, rest)
-            for task_id, rest in best
-            if not task_id.rsplit(".", 1)[-1].startswith("v")
-        ]
-        best = versioned or unversioned or best
-    return best[0]
+    task_id = str(resolved[0].get("task_id") or "")
+    if not task_id.startswith(f"{population}."):
+        return None, None
+    aliases = sorted(
+        {description_key(str(alias)) for alias in resolved[0].get("aliases") or ()},
+        key=len,
+        reverse=True,
+    )
+    for key in (description_key(name), description_key(canonical_task_entity(name))):
+        for alias_key in aliases:
+            if key == alias_key:
+                return task_id, ""
+            if key.startswith(alias_key + "-"):
+                return task_id, key[len(alias_key) + 1 :]
+    return task_id, None
 
 
 @dataclass(frozen=True)

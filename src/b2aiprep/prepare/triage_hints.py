@@ -167,7 +167,12 @@ def b2ai_task(task_id: str) -> tuple[str | None, dict[str, str], int | None]:
 
 
 CATEGORY_LINE = re.compile(r"Category:\s*([^.\n]+)")
-"""Where B2AI's instructions speak a per-recording category: ``Category: Country names.``"""
+"""Where B2AI's instructions speak a per-recording category: ``Category: Country names.``
+
+English only, on purpose: a Spanish recording's ``Categoría:`` line is not read, so its category
+is the one the questionnaire records (:func:`recording_category`'s fallback), the same value an
+English recording of that item gets. Reading the Spanish line would declare the Spanish wording
+as the category instead."""
 
 ITEM_CATEGORY_KEY = "item_category"
 """The hint ``metadata`` key the questionnaire's category is kept under."""
