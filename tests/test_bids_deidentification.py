@@ -1911,6 +1911,21 @@ def test_relabelled_answers_and_their_choices_reach_the_released_json(tmp_path, 
                                   {"name": {"en": "Extreme"}, "value": "extreme"}]
 
 
+def test_redcap_field_reaches_the_released_data_dictionary(tmp_path, make_deid_tree):
+    """deidentify keeps each column's redcapField in the released JSON (ph_walking is released)."""
+    bids, config = make_deid_tree(
+        {"p1": [("s1", "rainbow-passage")]},
+        tables={"confounders/confounders": pd.DataFrame({"participant_id": ["p1"], "ph_walking": ["Mild"]})},
+        choices={"confounders/confounders": {"ph_walking": ["None", "Mild"]}})
+    sidecar = bids / "phenotype" / "confounders" / "confounders.json"
+    written = json.loads(sidecar.read_text())
+    written["confounders"]["data_elements"]["ph_walking"]["redcapField"] = "ph_walking"
+    sidecar.write_text(json.dumps(written))
+    BIDSDataset(bids).deidentify(cohort="adult", outdir=tmp_path / "out", deidentify_config_dir=config)
+    released = json.loads((tmp_path / "out" / "phenotype" / "confounders" / "confounders.json").read_text())
+    assert released["confounders"]["data_elements"]["ph_walking"]["redcapField"] == "ph_walking"
+
+
 def test_exclude_participants_removes_a_participant_by_one_answer(tmp_path, make_deid_tree, caplog):
     bids, config = _pediatric_tree(make_deid_tree, GENDER_RULE)
     with caplog.at_level(logging.INFO):
