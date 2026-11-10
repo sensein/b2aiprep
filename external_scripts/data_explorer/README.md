@@ -21,5 +21,5 @@ Run it once per published tree, with that tree's label, for example "Bridge2AI-V
 
 - **Rebuild after any phenotype change.** The page holds counts, not the data, so it goes stale when a table changes.
 - **`--list-ids-max N`** lists, for each value held by at most N rows, the participant and session of those rows; the page shows them on hover. On a deidentified tree these are its pseudonyms. Use `--list-ids-max 0` to leave them out.
-- **Not for released pages:** `--sites` (real site names) and `--org` (field-map dispositions) are for internal QA. On an internal tree the listed IDs and values would link participants to their answers.
+- **Not for released pages:** `--sites` (real site names) and `--org` (field-map dispositions; give the tree's `--cohort` with it) are for internal QA. On an internal tree the listed IDs and values would link participants to their answers.
 - **Counts:** both participants (distinct `participant_id`) and rows are counted. Percentages and bars are shares of rows.
