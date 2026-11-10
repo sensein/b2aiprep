@@ -15,9 +15,30 @@ set -uo pipefail
 
 export SENSELAB_RUN_ID="triage-${SLURM_ARRAY_JOB_ID:-${SLURM_JOB_ID:-local}}"
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-2} OPENBLAS_NUM_THREADS=${SLURM_CPUS_PER_TASK:-2} MKL_NUM_THREADS=${SLURM_CPUS_PER_TASK:-2}
-GPU_STAGES=" review opinion "
+GPU_STAGES=" review opinion review_opinion "
 [[ "$GPU_STAGES" == *" $STAGE "* ]] || export CUDA_VISIBLE_DEVICES=""
 slice=(--slice-index "$I" --slice-count "$N")
+
+run_review() {  # REVIEW through a pinned vLLM server over this task's rows with words
+  if [ -n "${CUDA_MODULE:-}" ]; then
+    module load "$CUDA_MODULE" 2>/dev/null && export CUDA_HOME="$(dirname "$(dirname "$(command -v nvcc)")")"
+  fi
+  export VLLM_CACHE_ROOT=$WORK/cache/vllm TRITON_CACHE_DIR=$WORK/cache/triton
+  export TORCHINDUCTOR_CACHE_DIR=$WORK/cache/inductor FLASHINFER_WORKSPACE_BASE=$WORK/cache/flashinfer
+  export SENSELAB_VLLM_LOG_DIR=$LOGS/review/vllm-$I
+  # vLLM binds a ZMQ socket under TMPDIR, and a socket path may not exceed 107 characters: a long WORK path makes
+  # `vllm serve` exit before it is healthy (every row then errors). The sockets are tiny, so use node-local /tmp.
+  if [ ${#TMPDIR} -gt 60 ]; then TMPDIR=$(mktemp -d /tmp/triage-vllm-XXXXXX) && export TMPDIR; fi
+  drive extend_llm_review "$REVIEW_ROWS/rows_words.jsonl" "${slice[@]}" --config "$REVIEW_CONFIG" --hints "$HINTS" \
+    --log-dir "$LOGS/review" --no-refold --profile "$PROFILE"
+}
+
+run_opinion() {  # SECOND_OPINION through the pinned Ollama server over the same rows (it reads REVIEW's readings)
+  export OLLAMA_VULKAN=0
+  drive extend_second_opinion "$REVIEW_ROWS/rows_words.jsonl" "${slice[@]}" --config "$OPINION_CONFIG" --hints "$HINTS" \
+    --log-dir "$LOGS/review/opinion" --ollama-binary "$OLLAMA_BINARY" --ollama-models "$OLLAMA_MODELS" \
+    --verified-dir "$OLLAMA_VERIFIED" --profile "$PROFILE"
+}
 profile=(--profile "$PROFILE")
 log "stage $STAGE slice $I/$N host $(hostname) commit $COMMIT profile $PROFILE"
 
@@ -65,20 +86,16 @@ nowords) # REVIEW and SECOND_OPINION recorded without a model for rows with no w
   exit $(( rc_review != 0 || rc_opinion != 0 ))
   ;;
 review)  # REVIEW through a pinned vLLM server, one GPU per task
-  if [ -n "${CUDA_MODULE:-}" ]; then
-    module load "$CUDA_MODULE" 2>/dev/null && export CUDA_HOME="$(dirname "$(dirname "$(command -v nvcc)")")"
-  fi
-  export VLLM_CACHE_ROOT=$WORK/cache/vllm TRITON_CACHE_DIR=$WORK/cache/triton
-  export TORCHINDUCTOR_CACHE_DIR=$WORK/cache/inductor FLASHINFER_WORKSPACE_BASE=$WORK/cache/flashinfer
-  export SENSELAB_VLLM_LOG_DIR=$LOGS/review/vllm-$I
-  drive extend_llm_review "$REVIEW_ROWS/rows_words.jsonl" "${slice[@]}" --config "$REVIEW_CONFIG" --hints "$HINTS" \
-    --log-dir "$LOGS/review" --no-refold "${profile[@]}"
+  run_review
   ;;
 opinion) # SECOND_OPINION through the pinned Ollama server, one GPU per task
-  export OLLAMA_VULKAN=0
-  drive extend_second_opinion "$REVIEW_ROWS/rows_words.jsonl" "${slice[@]}" --config "$OPINION_CONFIG" --hints "$HINTS" \
-    --log-dir "$LOGS/review/opinion" --ollama-binary "$OLLAMA_BINARY" --ollama-models "$OLLAMA_MODELS" \
-    --verified-dir "$OLLAMA_VERIFIED" "${profile[@]}"
+  run_opinion
+  ;;
+review_opinion)  # both on one GPU, one after the other over the same rows: the vLLM server ends before Ollama starts
+  run_review
+  rc_review=$?
+  [ "$rc_review" -eq 0 ] || { log "review_opinion: review exit $rc_review; the second opinion is not asked"; exit "$rc_review"; }
+  run_opinion
   ;;
 cohort_collect)    # COHORT's corpus facts per recording (nothing is written into a store)
   drive extend_cohort collect "$MANIFEST" "${slice[@]}" --log-dir "$COHORT" "${profile[@]}"

@@ -41,8 +41,7 @@ and small slice counts.
 | `replay` | re-decide from TAXONOMY with the session floors (exit 3 = some reviewer readings to redo, a result) | `extend_replay_decisions` | profile | |
 | `review_rows` | every row the replay did not read (`--all-unread`: the fresh runs were never reviewed), split into words / no words | `triage_review_rows rereads`, `split` | | |
 | `nowords` | REVIEW and SECOND_OPINION recorded without a model for rows with no words | `extend_llm_review`, `extend_second_opinion` | `release_run_config.yaml` | |
-| `review` | REVIEW through a pinned vLLM server | `extend_llm_review` | `review_vllm.yaml` | yes |
-| `opinion` | SECOND_OPINION through the pinned Ollama server | `extend_second_opinion` | `second_opinion.yaml` | yes |
+| `review_opinion` | REVIEW through a pinned vLLM server, then SECOND_OPINION through the pinned Ollama server, over the same rows on the same GPU (the opinion reads the review's readings) | `extend_llm_review`, then `extend_second_opinion` | `review_vllm.yaml`, `second_opinion.yaml` | yes |
 | `cohort_collect`, `cohort_quantiles` | COHORT's corpus facts, then the corpus quantiles | `extend_cohort collect`, `quantiles` | profile | |
 | `cohort_apply`, `cohort_consistency` | speaker enrollment and COHORT readings per participant, then the consistency report | `extend_cohort apply`, `consistency` | `release_run_config.yaml` | |
 | `refold` | VERDICT again over every reading | `extend_refold` | `release_run_config.yaml` | |
@@ -55,6 +54,9 @@ and small slice counts.
 Every pass gets `--profile` (b2aiprep's adult profile). The configs in `chain/configs/` are the released run's:
 `release_run_config.yaml` turns on the reviewer and second opinion settings and `verdict.llm_redaction_withholds:
 true` (the released decisions were folded with it on; the profile has it on too since 2026-11-10).
+
+`review` and `opinion` are the same two steps as separate stages (`review` → `opinion` → `cohort_collect`), as the
+released run had them; submit `review` by hand to use them.
 
 Not in the chain (run by hand when needed): the review pages (`triage_review_page`, `free_speech_review_page`,
 `triage_review_serve`), `fit_profile`, `check_identity`, `triage_replay_diff`, the repair passes
