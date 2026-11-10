@@ -6,7 +6,7 @@
 # hints.py, which senselab's drivers load (b2aiprep.prepare.triage_hints).
 name: bridge2ai-voice-adult
 extends: senselab:adult_clinical_speech   # the detector and model tuning it shares with any adult clinical speech dataset
-version: "2026-11-06"   # the task list declares each syllable task's carrier (review fixes)
+version: "2026-11-10"   # llm_redaction_withholds on, as the v4.0.0 release ran
 provenance:
   dataset: Bridge2AI-Voice adult release, bids_adult_2026_09_04 (62,550 recordings)
   extracted_from: senselab alpha 98c8048b6

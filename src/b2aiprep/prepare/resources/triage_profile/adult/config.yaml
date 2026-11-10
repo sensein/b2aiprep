@@ -15,7 +15,7 @@ verdict:
   llm_instructions_spoken_flags: true    # owner, 2026-10-01: a reading quoting the task's instructions spoken in the recording flags for review
   uncomputed_reading_flags: true         # owner, 2026-09-29: a conformance reading that should exist and does not flags for review
   second_opinion_disagreement_flags: true  # owner, 2026-10-01: a confident second-opinion disagreement with the reviewer flags for review
-  llm_redaction_withholds: false         # a reading of residue does not withhold a recording REDACT passed (unfitted)
+  llm_redaction_withholds: true          # user, 2026-11-10: as the v4.0.0 release ran (r31-r37 run config): a reviewer reading that names residue withholds a recording REDACT passed
   gates:
     by_family:                           # per-task gate bounds, r8
       rainbow-passage:
