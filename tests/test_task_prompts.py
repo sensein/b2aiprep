@@ -6,6 +6,7 @@ questionnaire-join that surfaces per-participant stimulus (vocab/random/stroop).
 """
 
 import collections
+import logging
 import json
 from importlib.resources import files
 
@@ -28,7 +29,7 @@ def descriptions():
 
 
 def _resolve(descriptions, recording_name, questionnaire_lookup=None, acoustic_task_id="AT-1",
-             population=None):
+             population=None, cohort=None, language=None):
     """Run the recording-metadata resolver for a given recording name."""
     recording = {
         "recording_name": recording_name,
@@ -45,7 +46,53 @@ def _resolve(descriptions, recording_name, questionnaire_lookup=None, acoustic_t
         audio_task_descriptions=descriptions,
         questionnaire_lookup=questionnaire_lookup,
         population=population,
+        cohort=cohort,
+        language=language,
     )
+
+
+def _registry_instructions(task_id, language="en"):
+    from b2aiprep.prepare.fhir_utils import _load_registry
+    instructions = _load_registry()["tasks"][task_id]["instructions"]
+    return instructions.get(language) if isinstance(instructions, dict) else instructions
+
+
+def test_voice_cohort_free_speech_gets_its_own_instructions(descriptions, caplog):
+    """The voice cohort's unnumbered "Free Speech" is the Free Speech (Voice) task, not v1.
+
+    The registry supplies the text (the task is curated): the flat file's own "free-speech" entry
+    is removed here, so the result cannot come from it."""
+    without_flat = {k: v for k, v in descriptions.items() if k != "free-speech"}
+    voice = _resolve(without_flat, "Free Speech", population="adult", cohort="voice")
+    assert voice["instructions"] == _registry_instructions("adult.free-speech-voice")
+    assert voice["instructions"] != _registry_instructions("adult.free-speech.v1")
+    # REDCap documents the retired Free Speech (Voice) task in English only, so a Spanish session
+    # gets the English text of its own task rather than the Spanish text of another task, and the
+    # run log names the recording's acoustic task.
+    with caplog.at_level(logging.INFO):
+        spanish = _resolve(without_flat, "Free Speech", population="adult", cohort="voice",
+                           language="es-419", acoustic_task_id="AT-ES")
+    assert spanish["instructions"] == voice["instructions"]
+    assert any("adult.free-speech-voice" in r.getMessage() and "AT-ES" in r.getMessage() for r in caplog.records)
+
+
+@pytest.mark.parametrize("name, cohort, task_id", [
+    ("Free Speech", "generic", "adult.free-speech.v1"),       # no variant for this cohort
+    ("Free Speech", None, "adult.free-speech.v1"),            # cohort unknown
+    ("Free Speech", float("nan"), "adult.free-speech.v1"),    # blank cell read by pandas
+    ("Free speech-1", "voice", "adult.free-speech.v1"),       # numbered: every adult's task
+    ("Free speech (v2)-2", "voice", "adult.free-speech.v2"),
+])
+def test_cohort_variant_needs_the_exact_name_and_cohort(descriptions, name, cohort, task_id):
+    m = _resolve(descriptions, name, population="adult", cohort=cohort)
+    assert m["instructions"] == _registry_instructions(task_id)
+
+
+def test_spanish_free_speech_instructions_carry_no_stray_symbols():
+    from importlib.resources import files
+    text = json.loads(files("b2aiprep.prepare.resources").joinpath(
+        "task_registry", "task_instructions_es_419.json").read_text(encoding="utf-8"))
+    assert not any(ch in json.dumps(text, ensure_ascii=False) for ch in "\u26a0\ufe0f")
 
 
 def test_population_aware_picture_description(descriptions):

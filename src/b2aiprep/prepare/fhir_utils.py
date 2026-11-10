@@ -368,10 +368,32 @@ def _select_population(reg, task, population):
     return reg["tasks"][tid] if tid else task
 
 
-def _resolve_task_registry(task_name: str, population=None):
+def _select_cohort_variant(reg, task, name: str, cohort):
+    """The registry task a cohort gives its own version of *name*, else *task*.
+
+    A cohort-specific task is listed in the alias_index as ``<name>-<cohort>`` and names the
+    cohort in its ``age_or_cohort``: the voice cohort's unnumbered "Free Speech" is
+    ``adult.free-speech-voice`` (alias ``free-speech-voice``, age_or_cohort ``["Voice"]``), a
+    different task from the numbered "Free speech-1..3" every adult records. Only an exact
+    alias is used, so numbered recordings ("free-speech-1") never route to the variant."""
+    if not _is_present(cohort):  # blank, None, or NaN from a pandas cell
+        return task
+    wanted = _norm(f"{name}-{cohort}")
+    for na, _, tid in _alias_items():
+        if na == wanted:
+            variant = reg["tasks"][tid]
+            cohorts = {str(c).strip().lower() for c in variant.get("age_or_cohort") or []}
+            if str(cohort).strip().lower() in cohorts:
+                return variant
+            return task
+    return task
+
+
+def _resolve_task_registry(task_name: str, population=None, cohort=None):
     """Resolve a (granular) task name to (task_entry, recording_entry|None) using
     the registry alias_index (exact, else longest normalized-substring), corrected
-    to the version the name indicates, then the nested recording whose
+    to the version the name indicates, then to the variant the acoustic task's *cohort*
+    has of it (``_select_cohort_variant``), then the nested recording whose
     recording_id equals the normalized task name. Returns None when the registry
     is absent or nothing matches."""
     reg = _load_registry()
@@ -395,6 +417,7 @@ def _resolve_task_registry(task_name: str, population=None):
         return None
     task = _select_version(reg, reg["tasks"][best_tid], task_name)
     task = _select_population(reg, task, population)
+    task = _select_cohort_variant(reg, task, n, cohort)
     rec = None
     for candidate in task.get("recordings", []):
         if _norm(candidate.get("recording_id", "")) == n:
@@ -647,6 +670,13 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
     else:
         instructions = task.get("instructions", "") or ""
         instructions_authoritative = task.get("instructions_source") == "curated"
+    if language and language != "en" and not lang_instr and instructions_authoritative and instructions:
+        # Not an error (Free Speech (Voice), for one, is documented in English only), but the
+        # sidecar's instructions are not in the session's language: name the recording for QA.
+        _logger.info(
+            "No %s instructions for task %s; the sidecar of recording acoustic task %s gets the English text.",
+            language, task.get("task_id"), join_id,
+        )
     speech_type = task.get("speech_type") or "elicited"
     prompt_ref = task.get("prompt_ref") or {}
     ptype = prompt_ref.get("type")
@@ -910,8 +940,12 @@ def convert_response_to_bids_metadata( participant: dict,
     questionnaire_lookup: t.Optional[dict] = None,
     population: t.Optional[str] = None,
     language: t.Optional[str] = None,
+    cohort: t.Optional[str] = None,
 ) -> dict:
     """Converts a participant's response to a metadata json file.
+
+    *cohort* is the acoustic task's ``acoustic_task_cohort``; a cohort with its own version of
+    a task (the voice cohort's Free Speech) gets that task's instructions.
 
     Given a dictionary of individual data, the function:
     1. identifies the audio task, recording id, duration, and task instructions
@@ -996,7 +1030,7 @@ def convert_response_to_bids_metadata( participant: dict,
         flat = _flat_bids_fields(
             task_name_lower, audio_task_descriptions, join_id, questionnaire_lookup, lang
         )
-        reg_match = _resolve_task_registry(task_name_lower, population)
+        reg_match = _resolve_task_registry(task_name_lower, population, cohort)
 
         resolved = None
         if reg_match is not None:
