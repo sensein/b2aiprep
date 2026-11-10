@@ -41,7 +41,7 @@ from b2aiprep.prepare.quality_control import quality_control_wrapper
 
 from b2aiprep.prepare.data_validation import validate_phenotype, validate_no_extra_audio_tasks_present
 from b2aiprep.prepare.utils import TaskMatcher, copy_package_resource, normalize_task_label, generate_seed, generate_pseudonym, load_lookup_table, build_lookup_table
-from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
+from b2aiprep.prepare.update import TemplateUpdateError, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -863,6 +863,16 @@ def validate_bundled_dataset(dataset_path, config_dir, cohort):
     phenotype_dir = dataset_path / "phenotype"
     if not phenotype_dir.exists():
         issues.append("Phenotype directory missing")
+    else:
+        # The bundle does not carry dataset_description.json's "Cohort", so a wrong --cohort shows as
+        # tables the cohort's field map does not have (each cohort has tables the other lacks).
+        known_tables = set(BIDSDataset._load_reorganization_file(exclude_dropped=True)["schema_name"].dropna())
+        unknown_tables = sorted({p.stem for p in phenotype_dir.rglob("*.tsv")} - known_tables)
+        if unknown_tables:
+            issues.append(
+                f"Phenotype tables not in the {cohort} field map (is --cohort {cohort} right?): "
+                + ", ".join(unknown_tables)
+            )
 
     # 2. Load config. Participants are checked against the allowlist (participants_to_include.json,
     # as deidentify uses it), or else against the older removal list.
@@ -1204,16 +1214,11 @@ def validate_phenotype_command(phenotype_path):
     help="Optional path to the protocol schema file to parse.",
 )
 @click.option(
-    "--reorganize",
-    is_flag=True,
-    help="Reorganize phenotype JSONs into manually curated file organization."
-)
-@click.option(
     "--dry-run",
     is_flag=True,
     help="Report which files would be generated without writing them.",
 )
-def update_bids_template_command(submodule_path, output_dir, schema_file, reorganize, dry_run):
+def update_bids_template_command(submodule_path, output_dir, schema_file, dry_run):
     """Regenerate phenotype template JSONs from the reproschema repository."""
 
     target_dir = (
@@ -1231,9 +1236,6 @@ def update_bids_template_command(submodule_path, output_dir, schema_file, reorga
         )
     except TemplateUpdateError as exc:
         raise click.ClickException(str(exc)) from exc
-
-    if reorganize:
-        generated_files = reorganize_bids_activities(target_dir, dry_run)
 
     verb = "Planned" if dry_run else "Wrote"
     click.echo(f"{verb} {len(generated_files)} template file(s) in {target_dir}")

@@ -1029,6 +1029,15 @@ def _validate(bundle, config):
     return CliRunner().invoke(validate_bundled_dataset, ["--cohort", "adult", str(bundle), str(config)])
 
 
+def test_validate_bundled_dataset_flags_tables_of_another_cohort(tmp_path):
+    """The bundle has no dataset_description.json, so a wrong --cohort shows as unknown tables."""
+    bundle = _bundle(tmp_path / "bundle", tables={
+        "pediatric/pediatric_demographics": (pd.DataFrame({"participant_id": ["005009"]}), None)})
+    result = _validate(bundle, _allowlist_config(tmp_path / "cfg"))
+    assert result.exit_code != 0
+    assert "not in the adult field map" in result.output and "pediatric_demographics" in result.output
+
+
 def test_validate_bundled_dataset_passes_a_release_bundle(tmp_path):
     bundle = _bundle(tmp_path / "bundle", ["005009", "005010"],
                      session_columns=["session_status", "session_index", "session_local_hour"])
