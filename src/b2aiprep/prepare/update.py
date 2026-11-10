@@ -1,15 +1,11 @@
 """Utilities for regenerating BIDS template metadata from reproschema sources."""
 from __future__ import annotations
 
-from copy import copy
 import json
 import logging
 import re
 from pathlib import Path
 from typing import Dict, List, Optional
-from importlib.resources import files
-
-import pandas as pd
 
 from b2aiprep.prepare.utils import get_commit_sha
 
@@ -234,85 +230,3 @@ def update_bids_template_files(
             handle.write("\n")
 
     return generated_files
-
-
-
-def reorganize_bids_activities(
-    template_dir: Path, dry_run: bool = False
-) -> List[Path]:
-    """Reorganizes a set of phenotype template JSON files.
-
-    Args:
-        template_dir: Source and destination directory for generated JSON files.
-
-    Returns:
-        A list containing the output file paths (real or planned when dry_run is True).
-    """
-    existing_files = sorted(list(template_dir.glob('*.json')))
-
-    # load in the existing structures
-    # since all the schema JSONs are nested under the schema id - e.g. {schema_name: {... }},
-    # we can load them all into the same dict.
-    schemas = {}
-    element_to_schema = {} # index for data_element -> schema
-    for json_file in existing_files:
-        with open(json_file, 'r') as fp:
-            json_data = json.load(fp)
-        schema_name = next(iter(json_data))
-        for element_name in json_data[schema_name]['data_elements'].keys():
-            element_to_schema[element_name] = schema_name
-        schemas.update(json_data)
-    
-    reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
-    df_reorg = pd.read_csv(reorganization_file, sep=',', header=0)
-
-    updated_schemas = {}
-    element_used = {} # keep track of whether we have used an element, for logging later.
-    for activity_id, group in df_reorg.groupby('schema_name'):
-        column_mapping = group.set_index('column_name').to_dict(orient='index')
-
-        payload = {
-            "description": "",
-            "data_elements": {}
-        }
-        for column, updated_data in column_mapping.items():
-            schema_to_use = element_to_schema[column]
-            data_element = copy(schemas[schema_to_use]["data_elements"][column])
-
-            if "description" in updated_data and (updated_data["description"] != ""):
-                description = updated_data["description"]
-            elif "description" in data_element and (data_element["description"] != ""):
-                description = data_element["description"]
-            else:
-                description = data_element.get("question", "").get("en", "")
-            data_element["description"] = description
-            new_element_name = updated_data["renamed_column"]
-            payload["data_elements"][new_element_name] = data_element
-            element_used[column] = True
-
-        updated_schemas[activity_id] = payload
-
-    # now we will write out & clean up the old template files
-    files_to_remove = [
-        json_file for json_file in existing_files
-        if json_file.stem not in updated_schemas
-    ]
-    files_saved = []
-    for activity_id, payload in updated_schemas.items():
-        output_file = template_dir.joinpath(f'{activity_id}.json')
-        files_saved.append(output_file)
-
-        if dry_run:
-            continue
-
-        with output_file.open("w", encoding="utf-8") as fp:
-            json.dump({activity_id: payload}, fp, indent=4)
-            fp.write("\n")
-        
-        for file in files_to_remove:
-            file.unlink()
-
-    _LOGGER.info(f"Reorganized BIDS phenotype templates into {len(updated_schemas)} files.")
-    elements_skipped = [elem for elem in element_to_schema if elem not in element_used]
-    _LOGGER.info(f"Reorganization ignored {len(elements_skipped)} columns: {elements_skipped}")
-    return files_saved

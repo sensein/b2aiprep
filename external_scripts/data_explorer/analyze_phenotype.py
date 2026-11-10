@@ -481,6 +481,8 @@ def main():
     root = os.path.abspath(a.root)
     if a.org and not a.cohort:
         ap.error('--org needs --cohort')
+    if a.cohort and not a.org:
+        ap.error('--cohort only selects the field-map rows of --org; give --org too')
     org = load_org(a.org, a.cohort) if a.org else None
 
     tables = []
