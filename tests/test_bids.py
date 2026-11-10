@@ -416,6 +416,30 @@ def test_construct_phenotype_demographics_has_one_row_per_participant():
     assert list(by_id["age"]) == ["41", "52"]
 
 
+def test_data_dictionary_names_each_columns_redcap_field():
+    """Each column from REDCap names its REDCap export column (`redcap_field`), also when the
+    output name differs; a column b2aiprep computes has none."""
+    nan = float("nan")
+    df = pd.DataFrame({
+        "record_id": ["r01", "r01"],
+        "redcap_repeat_instrument": [nan, "Q - Generic - Demographics"],
+        "age": ["41", nan],
+        "gender_identity": [nan, "Female gender identity"],
+        "specify_gender_identity": [nan, "Cis: same gender as the sex assigned at birth"],
+        "children": [nan, "No"],
+    })
+    with tempfile.TemporaryDirectory() as temp_dir:
+        BIDSDataset._construct_phenotype_from_reproschema(df, output_dir=temp_dir)
+        sidecar = next(Path(temp_dir).rglob("demographics.json"))
+        elements = next(iter(json.loads(sidecar.read_text()).values()))["data_elements"]
+    assert elements["children"]["redcap_field"] == "children"
+    assert elements["age"]["redcap_field"] == "age"
+    assert "redcap_field" not in elements["sex_at_birth"]  # computed by b2aiprep
+    fm = BIDSDataset._load_reorganization_file(exclude_dropped=True)
+    renamed = fm[(fm["source"] == "redcap") & (fm["column_name"] != fm["column_name_source"])]
+    assert len(renamed) > 0  # so a reader cannot recover the REDCap name from the output name alone
+
+
 def test_get_paths_subject_extraction_edge_cases():
     """Test edge cases in subject ID extraction from filenames."""
     with TemporaryDirectory() as temp_dir:

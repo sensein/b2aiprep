@@ -2829,6 +2829,13 @@ class BIDSDataset:
                     updated_schemas[updated_schema_name]['columns_calculated'].append(new_element_name)
                 updated_schemas[updated_schema_name]['schema_name_source'].append(updated_data["schema_name_source"])
 
+                # The REDCap export column the values come from: the output name can differ
+                # (278 columns are renamed), and a checkbox option keeps its `<field>___<code>`.
+                # Columns b2aiprep computes or takes from a supplement have none (derivedFrom
+                # names the inputs of a computed one).
+                if str(updated_data.get("source", "")).lower() in ("redcap", "redcap_generated"):
+                    data_element["redcap_field"] = column
+
                 # update the payload so we have a reproschema json for this df
                 updated_schemas[updated_schema_name]["data_elements"][new_element_name] = data_element
                 updated_schemas[updated_schema_name]["group"] = updated_data["group"]
