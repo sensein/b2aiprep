@@ -53,8 +53,8 @@ and small slice counts.
 | `check` | coverage and status counts | `check_run.py` (here) | | |
 
 Every pass gets `--profile` (b2aiprep's adult profile). The configs in `chain/configs/` are the released run's:
-`release_run_config.yaml` turns on the reviewer and second opinion settings and **`verdict.llm_redaction_withholds:
-true`**, which the profile itself leaves false. The released decisions were folded with it on.
+`release_run_config.yaml` turns on the reviewer and second opinion settings and `verdict.llm_redaction_withholds:
+true` (the released decisions were folded with it on; the profile has it on too since 2026-11-10).
 
 Not in the chain (run by hand when needed): the review pages (`triage_review_page`, `free_speech_review_page`,
 `triage_review_serve`), `fit_profile`, `check_identity`, `triage_replay_diff`, the repair passes
