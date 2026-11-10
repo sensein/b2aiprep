@@ -15,11 +15,12 @@ Note that there are implicit assumptions made regarding the structured data and 
 
 ```sh
 WORKING_DIR=${HOME}/data/bridge2ai/adult   # or .../pediatric: same commands
+COHORT=adult                               # or pediatric
 
-b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/audio --sanitize_audio_format --date-shift-anchor $DATE_SHIFT_ANCHOR
+b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/audio --sanitize_audio_format --date-shift-anchor $DATE_SHIFT_ANCHOR --cohort $COHORT
 b2aiprep-cli generate-audio-features $WORKING_DIR/bids $WORKING_DIR/bids -t large-v3-turbo --validate
 b2aiprep-cli run-quality-control-on-audios $WORKING_DIR/bids
-b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/de-identified-bids $WORKING_DIR/release_config
+b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/de-identified-bids $WORKING_DIR/release_config --cohort $COHORT
 b2aiprep-cli create-bundled-dataset $WORKING_DIR/de-identified-bids $WORKING_DIR/bundled --skip_audio
 ```
 
@@ -37,13 +38,18 @@ b2aiprep-cli redcap2bids <path/to/redcap_csv> \
     --sanitize_audio_format \
     --max-audio-workers=8 \
     --date-shift-anchor <YYYY-MM-DD> \
-    --date-shift-log <path/outside/the/bids/folder/date_shift.json>
+    --date-shift-log <path/outside/the/bids/folder/date_shift.json> \
+    --cohort <adult|pediatric>
 ```
 
 #### What reaches the BIDS tree: the field map
 
 `src/b2aiprep/prepare/resources/bids_field_organization.csv` decides what happens to every RedCap
-column through its `disposition` column. The older `legacy_delete` column (named `delete` until
+column through its `disposition` column. It has one row per cohort, table and column: a field
+both the adult and the pediatric export carry has an `adult` row and a `pediatric` row, which can
+differ in table, description, disposition or access tier. `redcap2bids`, `deidentify-bids-dataset`
+and `validate-bundled-dataset` read only the rows of the cohort given with the required `--cohort`.
+The older `legacy_delete` column (named `delete` until
 v4.0.0) is kept as a historical record only: it is not read and does not control anything, so a
 `YES` there does not mean the column is removed.
 
@@ -163,7 +169,8 @@ After creating these files, you can run the deidentify dataset command:
 ```
 b2aiprep-cli deidentify-bids-dataset <path/to/bids/folder> \
     <path/to/audio/output/folder> \
-    <path/to/config>
+    <path/to/config> \
+    --cohort <adult|pediatric>
 ```
 
 The output will be remain in BIDS format. The primary changes are:

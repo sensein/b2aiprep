@@ -30,6 +30,7 @@ from pandas import DataFrame
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import AUDIO_TASKS, Instrument, RepeatInstrument
+from b2aiprep.prepare.field_map import rows_for_cohort, selected_cohort
 from b2aiprep.prepare.utils import get_wav_duration
 
 def get_choice_name(url, value):
@@ -593,16 +594,23 @@ def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
 _LOGGER = logging.getLogger(__name__)
 
 
-@functools.lru_cache(maxsize=1)
 def _dropped_source_columns() -> t.FrozenSet[str]:
-    """Source columns whose every field-map row is ``disposition=drop``.
+    """Source columns whose every field-map row for the selected cohort is ``disposition=drop``.
 
-    ``BIDSDataset.from_redcap`` removes these at ingest, so an instrument column list naming
-    one must not re-create it.
+    ``BIDSDataset.from_redcap`` removes these at ingest and records which in the dataset's
+    ``dropped_at_ingest`` metadata, which ``get_df_of_repeat_instrument`` reads.
     """
-    field_map = pd.read_csv(
-        files("b2aiprep").joinpath("prepare", "resources", "bids_field_organization.csv"),
-        dtype=str,
+    return _dropped_source_columns_for(selected_cohort())
+
+
+@functools.lru_cache(maxsize=None)
+def _dropped_source_columns_for(cohort: str) -> t.FrozenSet[str]:
+    field_map = rows_for_cohort(
+        pd.read_csv(
+            files("b2aiprep").joinpath("prepare", "resources", "bids_field_organization.csv"),
+            dtype=str,
+        ),
+        cohort,
     )
     kept = set(field_map.loc[field_map["disposition"] != "drop", "column_name_source"])
     return frozenset(
@@ -1096,10 +1104,10 @@ class RedCapDataset:
         Returns:
             The filtered DataFrame
         """
-        columns = [
-            c for c in instrument.get_columns()
-            if c in self.df.columns or c not in _dropped_source_columns()
-        ]
+        # A column the field map removed at ingest (BIDSDataset.from_redcap records which) is not
+        # re-created as an empty one. A raw export has had nothing removed.
+        removed = set(self.metadata.get("dropped_at_ingest", ()))
+        columns = [c for c in instrument.get_columns() if c in self.df.columns or c not in removed]
         idx = self.df["redcap_repeat_instrument"] == instrument.text
         columns_present = [c for c in columns if c in self.df.columns]
         dff = self.df.loc[idx, columns_present].copy()

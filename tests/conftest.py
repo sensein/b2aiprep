@@ -3,6 +3,17 @@ import json
 
 import pytest
 
+from b2aiprep.prepare import field_map
+
+
+@pytest.fixture(autouse=True)
+def adult_field_map(monkeypatch):
+    """Tests read the adult rows of the field map unless they select another cohort. Commands and
+    BIDSDataset.from_redcap/deidentify select their own cohort; this covers the helpers tests call
+    directly."""
+    monkeypatch.setattr(field_map, "_selected", "adult")
+
+
 @pytest.fixture(scope="module")
 def reproschema_module_path():
     project_root = Path(__file__).parent.parent

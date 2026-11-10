@@ -23,12 +23,12 @@ VALID_YES_NO = {"YES", "NO"}
 
 # Shipped-field-map dispositions that deidentify, settings and CLI tests rely on.
 TEST_FIELD_DISPOSITIONS = {
-    ("confounders", "ph_walking"): ("release", ""),
-    ("confounders", "other_voice_activity"): ("review", ""),
-    ("confounders", "voice_activity_v2___attorney"): ("release", ""),
-    ("confounders", "ever_alcohol_rehab"): ("release", "controlled"),
-    ("pediatric_demographics", "peds_gender_identity"): ("release", ""),
-    ("demographics", "state_province"): ("release", ""),
+    ("adult", "confounders", "ph_walking"): ("release", ""),
+    ("adult", "confounders", "other_voice_activity"): ("review", ""),
+    ("adult", "confounders", "voice_activity_v2___attorney"): ("release", ""),
+    ("adult", "confounders", "ever_alcohol_rehab"): ("release", "controlled"),
+    ("pediatric", "pediatric_demographics", "peds_gender_identity"): ("release", ""),
+    ("adult", "demographics", "state_province"): ("release", ""),
 }
 
 
@@ -190,13 +190,77 @@ def test_checkbox_options_declare_a_base_row(reorg_rows):
     build the per-option data element, and skips the base row once the expansions
     are found in the export.
     """
-    sources = {row["column_name_source"].strip() for row in reorg_rows}
+    sources = {(row["cohort"], row["column_name_source"].strip()) for row in reorg_rows}
     orphans = sorted(
-        source
-        for source in sources
-        if "___" in source and source.rsplit("___", 1)[0] not in sources
+        (cohort, source)
+        for cohort, source in sources
+        if "___" in source and (cohort, source.rsplit("___", 1)[0]) not in sources
     )
-    assert not orphans, f"checkbox option rows with no base row: {orphans}"
+    assert not orphans, f"checkbox option rows with no base row in their cohort: {orphans}"
+
+
+def test_cohort_is_adult_or_pediatric(reorg_rows):
+    """Every row belongs to exactly one cohort; a field both exports carry has one row per cohort."""
+    bad = sorted({r["cohort"] for r in reorg_rows} - {"adult", "pediatric"})
+    assert not bad, f"cohort must be adult or pediatric: {bad}"
+
+
+def test_a_source_column_has_at_most_one_row_per_cohort_and_table(reorg_rows):
+    """A cohort reads a RedCap column into a table once; a second row would be a second copy."""
+    seen = {}
+    repeated = []
+    for row in reorg_rows:
+        key = (row["cohort"], row["schema_name_source"], row["column_name_source"], row["schema_name"])
+        if key in seen:
+            repeated.append(str(key))
+        seen[key] = True
+    assert not repeated, "repeated (cohort, source, table) rows: " + "; ".join(repeated)
+
+
+def test_drop_rows_name_no_table(reorg_rows):
+    """A dropped field is never written, so its row names no table, output column or group."""
+    placed = [(r["cohort"], r["column_name_source"]) for r in reorg_rows
+              if r["disposition"] == "drop" and (r["schema_name"] or r["column_name"] or r["group"])]
+    assert not placed, f"drop rows with a table, name or group: {placed}"
+
+
+def test_enrollment_form_repeats_of_eligible_studies_are_dropped(reorg_rows):
+    """The Enrollment Form asks the Eligible Studies condition checklist, study arms and control
+    flag again; the released copies come from Eligible Studies, and the raw answers stay in REDCap.
+
+    The checklist is the one REDCap form both cohorts share, so its names are taken from both
+    cohorts' Eligible Studies rows (adults have no autism/speech_delay row, children have no adult
+    conditions); `ef_ataxia` repeats Eligible Studies' `neuro_ataxia` under another name."""
+    import re
+    repeats = re.compile(r"^ef_(eligible_studies(___.+)?|is_control_participant|ataxia)$")
+    checklist = {r["column_name_source"] for r in reorg_rows
+                 if r["schema_name_source"] == "subjectparticipant_eligible_studies_schema"}
+    covered = {r["column_name_source"] for r in reorg_rows if r["schema_name_source"] == "enrollment_form_schema"
+               and (repeats.match(r["column_name_source"]) or r["column_name_source"].removeprefix("ef_") in checklist)}
+    assert {"ef_ataxia", "ef_autism", "ef_speech_delay", "ef_parkinsons", "ef_is_control_participant"} <= covered
+    kept = sorted(
+        (r["cohort"], r["column_name_source"]) for r in reorg_rows
+        if r["schema_name_source"] == "enrollment_form_schema" and r["disposition"] != "drop"
+        and (repeats.match(r["column_name_source"]) or r["column_name_source"].removeprefix("ef_") in checklist)
+    )
+    assert not kept, f"Enrollment Form repeats of Eligible Studies not dropped: {kept}"
+
+
+def test_pediatric_eligible_studies_fields_with_no_pediatric_meaning_are_dropped(reorg_rows):
+    """Pediatrics has no control arm, and autism/speech_delay are filled only for app-collected
+    children (always Unchecked); pediatric ASD is recorded in peds_mc_psych_disorders___asd."""
+    rows = {r["column_name_source"]: r for r in reorg_rows
+            if r["cohort"] == "pediatric" and r["schema_name_source"] == "subjectparticipant_eligible_studies_schema"}
+    assert {f: rows[f]["disposition"] for f in ("is_control_participant", "autism", "speech_delay")} == {
+        "is_control_participant": "drop", "autism": "drop", "speech_delay": "drop"}
+    assert {r["schema_name"] for r in rows.values() if r["disposition"] != "drop"} == {"pediatric_eligibility"}
+
+
+def test_pediatric_enrollment_form_table_is_prefixed(reorg_rows):
+    tables = {(r["cohort"], r["schema_name"]) for r in reorg_rows if r["schema_name"]}
+    assert ("pediatric", "enrollment_form") not in tables
+    assert ("pediatric", "pediatric_enrollment_form") in tables and ("adult", "enrollment_form") in tables
+    assert not any(t == "enrollment" for _, t in tables)
 
 
 def test_output_column_names_are_unique_per_schema(reorg_rows):
@@ -206,11 +270,11 @@ def test_output_column_names_are_unique_per_schema(reorg_rows):
     for row in reorg_rows:
         if row["disposition"] == "drop":
             continue
-        key = (row["schema_name"].strip(), row["column_name"].strip())
+        key = (row["cohort"], row["schema_name"].strip(), row["column_name"].strip())
         if key in seen:
             collisions.append(f"{key} from {seen[key]} and {row['column_name_source']}")
         seen[key] = row["column_name_source"]
-    assert not collisions, "duplicate (schema_name, column_name): " + "; ".join(collisions)
+    assert not collisions, "duplicate (cohort, schema_name, column_name): " + "; ".join(collisions)
 
 
 def test_group_is_consistent_within_a_schema(reorg_rows):
@@ -223,7 +287,7 @@ def test_group_is_consistent_within_a_schema(reorg_rows):
     for row in reorg_rows:
         if row["disposition"] == "drop" or not row["schema_name"].strip():
             continue
-        groups.setdefault(row["schema_name"].strip(), set()).add(row["group"].strip())
+        groups.setdefault((row["cohort"], row["schema_name"].strip()), set()).add(row["group"].strip())
     inconsistent = {name: sorted(v) for name, v in groups.items() if len(v) > 1}
     assert not inconsistent, f"schemas with more than one group: {inconsistent}"
 
@@ -350,23 +414,26 @@ def test_redcap_timestamps_are_dropped(reorg_rows):
 
 def test_sidecar_recording_keys_match_recording_table(reorg_rows):
     """A recording_* key has the same disposition in a sidecar as in recording.tsv."""
-    by_table = {}
-    for row in reorg_rows:
-        by_table.setdefault(row["schema_name"], {})[row["column_name"]] = row["disposition"]
-    sidecar, recording = by_table["audio_sidecar"], by_table["recording"]
-    shared = sorted(set(sidecar) & set(recording))
-    assert shared, "no recording_* keys shared between audio_sidecar and recording"
-    assert {k: sidecar[k] for k in shared} == {k: recording[k] for k in shared}
+    for cohort in ("adult", "pediatric"):
+        by_table = {}
+        for row in reorg_rows:
+            if row["cohort"] == cohort:
+                by_table.setdefault(row["schema_name"], {})[row["column_name"]] = row["disposition"]
+        sidecar, recording = by_table["audio_sidecar"], by_table["recording"]
+        shared = sorted(set(sidecar) & set(recording))
+        assert shared, f"{cohort}: no recording_* keys shared between audio_sidecar and recording"
+        assert {k: sidecar[k] for k in shared} == {k: recording[k] for k in shared}, cohort
 
 
 def test_sidecar_fields_copied_to_recording_table_keep_their_rules(reorg_rows):
     """Each sidecar field recording.tsv carries has a recording row with the sidecar row's
     disposition, access tier and source, so the two copies are released the same way."""
     rule = lambda r: (r["disposition"], r["access_tier"], r["source"])
-    rows = {(r["schema_name"], r["column_name"]): r for r in reorg_rows}
-    for field in BIDSDataset._RECORDING_SIDECAR_FIELDS:
-        assert ("recording", field) in rows, field
-        assert rule(rows[("recording", field)]) == rule(rows[("audio_sidecar", field)]), field
+    rows = {(r["cohort"], r["schema_name"], r["column_name"]): r for r in reorg_rows}
+    for cohort in ("adult", "pediatric"):
+        for field in BIDSDataset._RECORDING_SIDECAR_FIELDS:
+            assert (cohort, "recording", field) in rows, (cohort, field)
+            assert rule(rows[(cohort, "recording", field)]) == rule(rows[(cohort, "audio_sidecar", field)]), (cohort, field)
 
 
 def test_access_tier_values_are_valid(reorg_rows):
@@ -387,7 +454,7 @@ def test_loading_refuses_an_access_tier_typo(monkeypatch, tmp_path):
 
 def test_dispositions_other_tests_rely_on(reorg_rows):
     """If this fails, a field-map change also changes what those tests exercise; pick other fields there."""
-    rows = {(r["schema_name"], r["column_name"]): (r["disposition"], r["access_tier"]) for r in reorg_rows}
+    rows = {(r["cohort"], r["schema_name"], r["column_name"]): (r["disposition"], r["access_tier"]) for r in reorg_rows}
     assert {k: rows.get(k) for k in TEST_FIELD_DISPOSITIONS} == TEST_FIELD_DISPOSITIONS
 
 
@@ -424,7 +491,8 @@ def test_derived_choices_cover_what_the_pipeline_writes():
 
 
 def test_every_surgery_date_has_a_derived_field_map_row():
-    fm = BIDSDataset._load_reorganization_file(exclude_dropped=False)
+    fm = pd.concat([BIDSDataset._load_reorganization_file(exclude_dropped=False, cohort=c)
+                    for c in ("adult", "pediatric")]).drop_duplicates("column_name_source")
     shifted = set(fm.loc[fm.date_shift == "YES", "column_name_source"])
     assert set(BIDSDataset._SURGERY_DATE_COLUMNS) <= shifted
     rows = fm.set_index("column_name_source")

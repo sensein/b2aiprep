@@ -23,6 +23,7 @@ from tqdm import tqdm
 from b2aiprep.prepare.bids import AUDIO_EXTENSIONS, FLAC_EXTENSION, get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.constants import RepeatInstrument
 from b2aiprep.prepare.redcap import RedCapDataset
+from b2aiprep.prepare.field_map import COHORTS, select_cohort
 from b2aiprep.prepare.dataset import (
     AccessTier, BIDSDataset, DispositionLevel, SessionLabels, _AUDIO_ONLY_RECORDING_TABLES, _RECORDING_TABLES,
     _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE,
@@ -40,7 +41,7 @@ from b2aiprep.prepare.quality_control import quality_control_wrapper
 
 from b2aiprep.prepare.data_validation import validate_phenotype, validate_no_extra_audio_tasks_present
 from b2aiprep.prepare.utils import TaskMatcher, copy_package_resource, normalize_task_label, generate_seed, generate_pseudonym, load_lookup_table, build_lookup_table
-from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
+from b2aiprep.prepare.update import TemplateUpdateError, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -146,6 +147,13 @@ def dashboard(bids_dir: str):
     help="CSV shaped like a RedCap export (record_id, optional redcap_repeat_instrument) adding "
     "fields RedCap does not hold yet. May be given more than once.",
 )
+@click.option(
+    "--cohort",
+    type=click.Choice(COHORTS),
+    required=True,
+    help="Whose rows of the field map (bids_field_organization.csv) to use: adult or pediatric. "
+    "No default, so every build states its cohort.",
+)
 def redcap2bids(
     filename,
     outdir,
@@ -156,6 +164,7 @@ def redcap2bids(
     date_shift_log,
     skip_audio_copy,
     supplements,
+    cohort,
 ):
     """Parses a RedCap CSV and a folder of audio files into the Brain Imaging Data Structure (BIDS) format.
 
@@ -169,6 +178,7 @@ def redcap2bids(
         sanitize_audio_format (bool, optional): Standardize the audio to 16KHz, mono-channel. Default False.
         date_shift_anchor (datetime): Anchor date for per-participant date shifting.
         date_shift_log (str, optional): Also write the date-shift report here, outside ``outdir``.
+        cohort (str): ``adult`` or ``pediatric``: whose field-map rows to use.
 
     Raises:
         ValueError: If the specified output directory path exists but is not a directory.
@@ -182,6 +192,7 @@ def redcap2bids(
         raise ValueError(f"Output path {outdir} is not a directory.")
     if audiodir is not None:
         audiodir = Path(audiodir)
+    select_cohort(cohort)
     redcap_dataset = RedCapDataset.from_redcap(filename)
     for supplement in supplements:
         redcap_dataset.add_supplement(supplement)
@@ -195,6 +206,7 @@ def redcap2bids(
         date_shift_anchor=date_shift_anchor.date(),
         date_shift_log=date_shift_log,
         skip_audio_copy=skip_audio_copy,
+        cohort=cohort,
     )
 
 @click.command()
@@ -792,7 +804,14 @@ def _unreleasable_columns(tsv_file, columns, field_map, access_tier=AccessTier.R
 @click.command()
 @click.argument("dataset_path", type=click.Path(exists=True))
 @click.argument("config_dir", type=click.Path(exists=True))
-def validate_bundled_dataset(dataset_path, config_dir):
+@click.option(
+    "--cohort",
+    type=click.Choice(COHORTS),
+    required=True,
+    help="Whose rows of the field map (bids_field_organization.csv) to use: adult or pediatric. "
+    "No default, so every build states its cohort.",
+)
+def validate_bundled_dataset(dataset_path, config_dir, cohort):
     """Validates bundled dataset.
 
     This function checks the integrity and structure of a bundled dataset
@@ -801,10 +820,12 @@ def validate_bundled_dataset(dataset_path, config_dir):
     Args:
         dataset_path (str): Path to the bundled dataset directory to validate.
         config_dir (str): Path to the configuration directory containing de-identification JSONs.
+        cohort (str): ``adult`` or ``pediatric``: whose field-map rows to check against.
 
     Returns:
         None: Performs validation and prints a report.
     """
+    select_cohort(cohort)
     dataset_path = Path(dataset_path)
     config_dir = Path(config_dir)
     # The tier the config builds; without deidentify_settings.json, the registered (narrower) rules.
@@ -842,6 +863,16 @@ def validate_bundled_dataset(dataset_path, config_dir):
     phenotype_dir = dataset_path / "phenotype"
     if not phenotype_dir.exists():
         issues.append("Phenotype directory missing")
+    else:
+        # The bundle does not carry dataset_description.json's "Cohort", so a wrong --cohort shows as
+        # tables the cohort's field map does not have (each cohort has tables the other lacks).
+        known_tables = set(BIDSDataset._load_reorganization_file(exclude_dropped=True)["schema_name"].dropna())
+        unknown_tables = sorted({p.stem for p in phenotype_dir.rglob("*.tsv")} - known_tables)
+        if unknown_tables:
+            issues.append(
+                f"Phenotype tables not in the {cohort} field map (is --cohort {cohort} right?): "
+                + ", ".join(unknown_tables)
+            )
 
     # 2. Load config. Participants are checked against the allowlist (participants_to_include.json,
     # as deidentify uses it), or else against the older removal list.
@@ -1068,10 +1099,17 @@ def validate_bundled_dataset(dataset_path, config_dir):
     "(outside OUTDIR; it holds original IDs and is never released). Used to build label "
     "crosswalks between releases.",
 )
+@click.option(
+    "--cohort",
+    type=click.Choice(COHORTS),
+    required=True,
+    help="Whose rows of the field map (bids_field_organization.csv) to use: adult or pediatric. "
+    "No default, so every build states its cohort.",
+)
 def deidentify_bids_dataset(
     bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features, max_workers: int = 16,
     disposition_level=None, keep_shifted_dates=False, session_labels=SessionLabels.ORDINAL.value,
-    session_id_map=None,
+    session_id_map=None, cohort=None,
 ):
     """Creates a deidentified version of a given BIDS dataset.
 
@@ -1103,6 +1141,7 @@ def deidentify_bids_dataset(
         keep_shifted_dates=keep_shifted_dates,
         session_labels=SessionLabels(session_labels),
         session_id_map=session_id_map,
+        cohort=cohort,
     )
     
     _LOGGER.info("Deidentified dataset created successfully.")
@@ -1175,16 +1214,11 @@ def validate_phenotype_command(phenotype_path):
     help="Optional path to the protocol schema file to parse.",
 )
 @click.option(
-    "--reorganize",
-    is_flag=True,
-    help="Reorganize phenotype JSONs into manually curated file organization."
-)
-@click.option(
     "--dry-run",
     is_flag=True,
     help="Report which files would be generated without writing them.",
 )
-def update_bids_template_command(submodule_path, output_dir, schema_file, reorganize, dry_run):
+def update_bids_template_command(submodule_path, output_dir, schema_file, dry_run):
     """Regenerate phenotype template JSONs from the reproschema repository."""
 
     target_dir = (
@@ -1202,9 +1236,6 @@ def update_bids_template_command(submodule_path, output_dir, schema_file, reorga
         )
     except TemplateUpdateError as exc:
         raise click.ClickException(str(exc)) from exc
-
-    if reorganize:
-        generated_files = reorganize_bids_activities(target_dir, dry_run)
 
     verb = "Planned" if dry_run else "Wrote"
     click.echo(f"{verb} {len(generated_files)} template file(s) in {target_dir}")

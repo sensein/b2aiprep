@@ -74,6 +74,7 @@ from b2aiprep.prepare.prepare import (
 from b2aiprep.prepare.bids import AUDIO_EXTENSIONS, FLAC_EXTENSION, get_paths
 from pydantic import BaseModel
 from b2aiprep.prepare.redcap import RedCapDataset, _dropped_source_columns
+from b2aiprep.prepare.field_map import rows_for_cohort, select_cohort, selected_cohort
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -390,12 +391,16 @@ class BIDSDataset:
         date_shift_anchor: t.Optional[datetime.date] = None,
         date_shift_log: t.Optional[t.Union[str, Path]] = None,
         skip_audio_copy: bool = False,
+        *,
+        cohort: str,
     ) -> 'BIDSDataset':
         """
         Create a BIDSDataset by converting a RedCapDataset to BIDS format.
         
         Args:
             redcap_dataset: The RedCapDataset to convert
+            cohort: ``adult`` or ``pediatric``: whose field-map rows arrange and describe the
+                tables. Required; there is no default.
             outdir: Output directory for BIDS structure
             audiodir: Optional directory containing audio files
             max_audio_workers: Number of parallel threads for audio copying (default: 16)
@@ -415,10 +420,12 @@ class BIDSDataset:
         Returns:
             BIDSDataset instance pointing to the created BIDS directory
         """
+        select_cohort(cohort)
         if date_shift_log is not None:
             BIDSDataset._check_date_shift_log(date_shift_log, outdir)
         outdir = Path(outdir).as_posix()
         BIDSDataset._initialize_data_directory(outdir)
+        BIDSDataset._record_cohort(Path(outdir), cohort)
 
         if drop_audio_check:
             redcap_dataset = copy(redcap_dataset)
@@ -1762,18 +1769,20 @@ class BIDSDataset:
         return shifted
 
     @staticmethod
-    def _load_reorganization_file(exclude_dropped: bool = True) -> pd.DataFrame:
-        """Load the field map (bids_field_organization.csv).
+    def _load_reorganization_file(exclude_dropped: bool = True, cohort: t.Optional[str] = None) -> pd.DataFrame:
+        """Load one cohort's rows of the field map (bids_field_organization.csv).
 
         Args:
             exclude_dropped: Leave out ``disposition=drop`` rows. The CSV's ``legacy_delete`` column
                 is kept as a historical record only and is not read.
+            cohort: ``adult`` or ``pediatric``; the cohort chosen with
+                ``field_map.select_cohort`` when not given (raises if none was).
 
         Returns:
             DataFrame containing the reorganization data.
         """
         reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
-        df = pd.read_csv(reorganization_file, sep=',', header=0)
+        df = rows_for_cohort(pd.read_csv(reorganization_file, sep=',', header=0), cohort)
         if "access_tier" in df.columns:
             # Anything but "controlled" means every tier, so a typo would publish a field to both.
             tier = df["access_tier"].fillna("").astype(str).str.strip().str.lower()
@@ -1983,9 +1992,22 @@ class BIDSDataset:
         return mapping
 
     _cached_field_map_df: t.ClassVar[t.Optional[pd.DataFrame]] = None
+    # The cohort whose rows _cached_field_map_df holds.
+    _cached_field_map_cohort: t.ClassVar[t.Optional[str]] = None
+
+    @staticmethod
+    def _field_map() -> pd.DataFrame:
+        """The selected cohort's field-map rows (drop rows included), loaded once per cohort."""
+        cohort = selected_cohort()
+        if BIDSDataset._cached_field_map_df is None or BIDSDataset._cached_field_map_cohort != cohort:
+            BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
+            BIDSDataset._cached_field_map_cohort = cohort
+        return BIDSDataset._cached_field_map_df
 
     # Identifier columns the pipeline adds to every table; not field-map rows of each table.
     _PIPELINE_ID_COLUMNS = frozenset({"participant_id", "record_id"})
+    # ID columns whose released values are not REDCap's (pseudonyms, ordinal session labels).
+    _RELABELLED_ID_COLUMNS = frozenset({"participant_id", "record_id", "session_id"})
     # Field-map table that describes the per-participant sessions.tsv columns.
     _SESSIONS_SCHEMA = "session"
     # Field-map table describing the keys of the per-recording audio sidecars; not a phenotype table.
@@ -1997,9 +2019,7 @@ class BIDSDataset:
     ) -> pd.DataFrame:
         """The field map (loaded if not given), narrowed to *schema_name*'s rows when given."""
         if field_map_df is None:
-            if BIDSDataset._cached_field_map_df is None:
-                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
-            field_map_df = BIDSDataset._cached_field_map_df
+            field_map_df = BIDSDataset._field_map()
         if "disposition" not in field_map_df.columns:
             raise ValueError("Field map is missing the 'disposition' column.")
         if schema_name is not None and "schema_name" in field_map_df.columns:
@@ -2022,9 +2042,12 @@ class BIDSDataset:
         *access_tier* is not controlled. The default tier is the narrower one, so a caller that
         leaves it out withholds controlled-only columns.
 
-        ``drop`` columns are removed at ingest, so a tree built now has none; one that reaches
-        deidentify comes from an older tree or a later field-map edit, and is removed at every
-        level, *keep_date_shifted* included.
+        ``drop`` columns are removed at ingest, and the shipped field map's drop rows name no
+        output column, so they add nothing here. A column that is now ``drop`` but still sits in
+        an older tree is not in its table's field-map rows, and ``_drop_columns_by_disposition``
+        removes it, with a warning, as a column not in the field map, at every level. A field
+        map whose drop rows do name a column (an older one, or a test's) still has them removed
+        at every level, *keep_date_shifted* included.
         """
         drop_rows = field_map_df["disposition"].eq("drop")
         if level != DispositionLevel.INTERNAL:
@@ -2051,8 +2074,8 @@ class BIDSDataset:
         outside the controlled tier; see ``_names_to_drop_at_level``).
 
         With *schema_name* (a phenotype table), only that table's field-map rows are consulted:
-        output names are unique within a table but not across tables (e.g. ``self_reported_*`` is
-        released in ``eligibility`` and internal in ``enrollment``).
+        output names are unique within a table but not across tables, so the same name can be
+        released in one table and internal in another.
 
         With *keep_date_shifted*, ``date_shift=YES`` columns are kept whatever the level: for
         builds that show the shifted dates alongside a release-like tree.
@@ -2114,9 +2137,7 @@ class BIDSDataset:
             return {}
 
         if field_map_df is None:
-            if BIDSDataset._cached_field_map_df is None:
-                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
-            field_map_df = BIDSDataset._cached_field_map_df
+            field_map_df = BIDSDataset._field_map()
 
         source_to_output: t.Dict[str, str] = {}
         if "column_name_source" in field_map_df.columns and "column_name" in field_map_df.columns:
@@ -2168,9 +2189,7 @@ class BIDSDataset:
     ) -> t.Set[str]:
         """Return the column names with disposition=review, within *schema_name* when given."""
         if field_map_df is None:
-            if BIDSDataset._cached_field_map_df is None:
-                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
-            field_map_df = BIDSDataset._cached_field_map_df
+            field_map_df = BIDSDataset._field_map()
         if "disposition" not in field_map_df.columns:
             return set()
         if schema_name is not None and "schema_name" in field_map_df.columns:
@@ -2501,9 +2520,7 @@ class BIDSDataset:
         """
         if "participant_id" not in df.columns or df.empty:
             return df
-        if BIDSDataset._cached_field_map_df is None:
-            BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
-        rows = BIDSDataset._cached_field_map_df
+        rows = BIDSDataset._field_map()
         rows = rows.loc[rows["schema_name"] == schema_name]
         # Only columns REDCap generates (form timestamps, status) are bookkeeping. A shifted date is
         # its REDCap field, transformed, and a pipeline-derived column (site, sex_at_birth,
@@ -2813,6 +2830,14 @@ class BIDSDataset:
                 if str(updated_data.get("is_redcap_calculation", "")).upper() == "YES":
                     updated_schemas[updated_schema_name]['columns_calculated'].append(new_element_name)
                 updated_schemas[updated_schema_name]['schema_name_source'].append(updated_data["schema_name_source"])
+
+                # The REDCap export column the values come from: the output name can differ, and a
+                # checkbox option keeps its `<field>___<code>`. Columns b2aiprep computes or takes
+                # from a supplement have none (derivedFrom names the inputs of a computed one), nor
+                # do the ID columns, whose values deidentify replaces (pseudonyms, session labels).
+                if (str(updated_data.get("source", "")).lower() in ("redcap", "redcap_generated")
+                        and new_element_name not in BIDSDataset._RELABELLED_ID_COLUMNS):
+                    data_element["redcapField"] = column
 
                 # update the payload so we have a reproschema json for this df
                 updated_schemas[updated_schema_name]["data_elements"][new_element_name] = data_element
@@ -4192,6 +4217,31 @@ class BIDSDataset:
             json.dump({"session_labels": session_labels.value, "sessions": rows}, fp, indent=2)
         _LOGGER.info("Session ID map (%d sessions) written to %s", len(rows), path)
 
+    # dataset_description.json key naming the cohort whose field-map rows built the tree.
+    _COHORT_KEY = "Cohort"
+
+    @staticmethod
+    def _record_cohort(bids_dir: Path, cohort: str) -> None:
+        """Record *cohort* in the tree's dataset_description.json, for deidentify to check."""
+        path = bids_dir / "dataset_description.json"
+        description = json.loads(path.read_text(encoding="utf-8"))
+        description[BIDSDataset._COHORT_KEY] = cohort
+        path.write_text(json.dumps(description, indent=4, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    @staticmethod
+    def _check_cohort_matches_tree(bids_dir: Path, cohort: str) -> None:
+        """Stop when the tree was built for another cohort than *cohort*.
+
+        A tree built before the cohort was recorded is let through with a warning; the phenotype
+        table check still stops a mismatch that leaves a table unknown to the field map.
+        """
+        path = bids_dir / "dataset_description.json"
+        built_for = json.loads(path.read_text(encoding="utf-8")).get(BIDSDataset._COHORT_KEY) if path.exists() else None
+        if built_for is None:
+            _LOGGER.warning("%s does not record the cohort it was built for; cannot check --cohort %s.", path, cohort)
+        elif built_for != cohort:
+            raise ValueError(f"The tree was built for cohort {built_for!r} ({path}); got cohort {cohort!r}.")
+
     @staticmethod
     def _check_phenotype_tables_in_field_map(phenotype_dir: Path) -> None:
         """Stop before writing if any phenotype table (or sessions.tsv's table) is unknown.
@@ -4199,9 +4249,7 @@ class BIDSDataset:
         redcap2bids names every table after a field-map ``schema_name``, so an unknown name means
         the tree was built with a different field map, and its dispositions cannot be trusted.
         """
-        if BIDSDataset._cached_field_map_df is None:
-            BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
-        known = set(BIDSDataset._cached_field_map_df["schema_name"].dropna())
+        known = set(BIDSDataset._field_map()["schema_name"].dropna())
         unknown = []
         if BIDSDataset._SESSIONS_SCHEMA not in known:
             unknown.append(f"{BIDSDataset._SESSIONS_SCHEMA} (sessions.tsv)")
@@ -4474,8 +4522,13 @@ class BIDSDataset:
         keep_shifted_dates: bool = False,
         session_labels: SessionLabels = SessionLabels.ORDINAL,
         session_id_map: t.Optional[t.Union[str, Path]] = None,
+        *,
+        cohort: str,
     ) -> 'BIDSDataset':
         """Create a deidentified version of the BIDS dataset.
+
+        *cohort* (``adult`` or ``pediatric``, required) chooses whose field-map rows set each
+        column's disposition and description; it must be the cohort the tree was built for.
 
         Uses per-participant parallelization: each participant directory is
         processed as an independent unit (audio, features, sidecars).  Phenotype
@@ -4487,6 +4540,10 @@ class BIDSDataset:
         *session_id_map*, a path outside *outdir*, receives the internal record of each released
         session's original ID and label, from which release-to-release label crosswalks are built.
         """
+        select_cohort(cohort)
+        BIDSDataset._check_cohort_matches_tree(self.data_path, cohort)
+        # Before creating the output, so a wrong field map leaves nothing behind.
+        BIDSDataset._check_phenotype_tables_in_field_map(self.data_path / "phenotype")
         outdir = Path(outdir)
         if session_id_map is not None:
             session_id_map = Path(session_id_map).resolve()
@@ -4536,7 +4593,6 @@ class BIDSDataset:
         phenotype_level = disposition_level or (
             DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE
         )
-        BIDSDataset._check_phenotype_tables_in_field_map(self.data_path / "phenotype")
         sessions_with_data = BIDSDataset._sessions_with_questionnaire_data(
             self.data_path / "phenotype", phenotype_level, keep_shifted_dates, access_tier,
         )

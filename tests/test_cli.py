@@ -24,6 +24,14 @@ from b2aiprep.commands import (
     validate_bundled_dataset,
 )
 from b2aiprep.prepare.dataset import AccessTier, BIDSDataset, DispositionLevel, SessionLabels
+from b2aiprep.prepare import field_map
+
+
+@pytest.fixture(autouse=True)
+def adult_field_map(monkeypatch):
+    """Overrides conftest's: CLI tests start with no cohort selected, so a command that reads the
+    field map without selecting its --cohort fails here."""
+    monkeypatch.setattr(field_map, "_selected", None)
 
 class TestDeidentifyCommand:
     """Test cases for the deidentify_bids_dataset command."""
@@ -74,25 +82,26 @@ class TestDeidentifyCommand:
             mock_deidentify.return_value = mock_deidentified
             
             # Run the command
-            result = runner.invoke(deidentify_bids_dataset, [temp_bids_dir, temp_output_dir, setup_publish_config])
+            result = runner.invoke(deidentify_bids_dataset, ["--cohort", "adult", temp_bids_dir, temp_output_dir, setup_publish_config])
             
             # Check that the command succeeded
             assert result.exit_code == 0
             
             # Check that deidentify was called with correct parameters
-            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, deidentify_config_dir=Path(setup_publish_config), skip_audio=False, skip_audio_features=False, max_workers=16, disposition_level=None, keep_shifted_dates=False, session_labels=SessionLabels.ORDINAL, session_id_map=None)
+            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, deidentify_config_dir=Path(setup_publish_config), skip_audio=False, skip_audio_features=False, max_workers=16, disposition_level=None, keep_shifted_dates=False, session_labels=SessionLabels.ORDINAL, session_id_map=None, cohort="adult")
 
     def test_deidentify_command_passes_qa_and_session_options(self, temp_bids_dir, temp_output_dir,
                                                               setup_publish_config, tmp_path):
         session_map = tmp_path / "map.json"
         with patch.object(BIDSDataset, "deidentify") as mock_deidentify:
-            result = CliRunner().invoke(deidentify_bids_dataset, [
+            result = CliRunner().invoke(deidentify_bids_dataset, ["--cohort", "adult",
                 temp_bids_dir, temp_output_dir, str(setup_publish_config), "--disposition-level", "internal",
                 "--keep-shifted-dates", "--session-labels", "index", "--session-id-map", str(session_map)])
         assert result.exit_code == 0, result.output
         kwargs = mock_deidentify.call_args.kwargs
         assert kwargs["disposition_level"] is DispositionLevel.INTERNAL and kwargs["keep_shifted_dates"] is True
         assert kwargs["session_labels"] is SessionLabels.INDEX and Path(kwargs["session_id_map"]) == session_map
+        assert kwargs["cohort"] == "adult"
 
     def test_deidentify_command_help_text(self):
         """Test that the help text is updated correctly."""
@@ -116,7 +125,7 @@ class TestDeidentifyCommand:
         setup_publish_config = setup_publish_config.as_posix()
         
         # Run the command without mocking (will use actual implementation)
-        result = runner.invoke(deidentify_bids_dataset, [temp_bids_dir, temp_output_dir, setup_publish_config])
+        result = runner.invoke(deidentify_bids_dataset, ["--cohort", "adult", temp_bids_dir, temp_output_dir, setup_publish_config])
         
         # Check that the command succeeded
         assert result.exit_code == 0
@@ -490,6 +499,8 @@ def test_redcap2bids_cli(setup_temp_files):
         command = [
             "b2aiprep-cli",
             "redcap2bids",
+            "--cohort",
+            "adult",
             redcap_csv_path,
             "--outdir",
             outdir,
@@ -510,8 +521,28 @@ def test_redcap2bids_cli(setup_temp_files):
 
 def test_redcap2bids_fails_without_a_date_shift_anchor(setup_temp_files, tmp_path):
     redcap_csv_path, _, _, _ = setup_temp_files
-    result = CliRunner().invoke(redcap2bids, [redcap_csv_path, "--outdir", str(tmp_path / "out")])
+    result = CliRunner().invoke(redcap2bids, ["--cohort", "adult", redcap_csv_path, "--outdir", str(tmp_path / "out")])
     assert result.exit_code == 2 and "--date-shift-anchor" in result.output
+
+
+def test_redcap_stats_needs_no_cohort(setup_temp_files):
+    """It summarizes a raw export: nothing was removed at ingest, so the field map is not read."""
+    from b2aiprep.commands import redcap_stats
+    redcap_csv_path, _, _, _ = setup_temp_files
+    result = CliRunner().invoke(redcap_stats, [redcap_csv_path])
+    assert result.exit_code == 0, result.output
+    assert "Total unique participant IDs" in result.output or "No session data" in result.output
+
+
+@pytest.mark.parametrize("command", ["redcap2bids", "deidentify_bids_dataset", "validate_bundled_dataset"])
+def test_commands_that_read_the_field_map_require_a_cohort(command, tmp_path):
+    """No default cohort: a build must say whose field-map rows it uses."""
+    import b2aiprep.commands as commands
+    args = {"redcap2bids": [str(tmp_path), "--date-shift-anchor", "2100-01-01"],
+            "deidentify_bids_dataset": [str(tmp_path), str(tmp_path / "out"), str(tmp_path)],
+            "validate_bundled_dataset": [str(tmp_path), str(tmp_path)]}[command]
+    result = CliRunner().invoke(getattr(commands, command), args)
+    assert result.exit_code == 2 and "--cohort" in result.output
 
 
 def test_create_bundled_dataset_cli(setup_bids_structure):
@@ -581,6 +612,8 @@ def test_deidentify_bids_dataset_cli_id_rename(
     command = [
         "b2aiprep-cli",
         "deidentify-bids-dataset",
+        "--cohort",
+        "adult",
         str(bids_dir),
         str(outdir),
         str(config_dir),
@@ -651,6 +684,8 @@ def test_deidentify_bids_dataset_cli_remove_audio(
     command = [
         "b2aiprep-cli",
         "deidentify-bids-dataset",
+        "--cohort",
+        "adult",
         str(bids_dir),
         str(outdir),
         str(config_dir),
@@ -991,7 +1026,16 @@ def _allowlist_config(root, verdicts=None):
 
 
 def _validate(bundle, config):
-    return CliRunner().invoke(validate_bundled_dataset, [str(bundle), str(config)])
+    return CliRunner().invoke(validate_bundled_dataset, ["--cohort", "adult", str(bundle), str(config)])
+
+
+def test_validate_bundled_dataset_flags_tables_of_another_cohort(tmp_path):
+    """The bundle has no dataset_description.json, so a wrong --cohort shows as unknown tables."""
+    bundle = _bundle(tmp_path / "bundle", tables={
+        "pediatric/pediatric_demographics": (pd.DataFrame({"participant_id": ["005009"]}), None)})
+    result = _validate(bundle, _allowlist_config(tmp_path / "cfg"))
+    assert result.exit_code != 0
+    assert "not in the adult field map" in result.output and "pediatric_demographics" in result.output
 
 
 def test_validate_bundled_dataset_passes_a_release_bundle(tmp_path):

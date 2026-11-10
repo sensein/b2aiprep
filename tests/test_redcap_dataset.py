@@ -219,15 +219,20 @@ class TestRedCapDataset:
 
 
 def test_instrument_columns_skip_dropped_columns():
-    """A column removed at ingest (disposition drop) is not requested from its instrument."""
+    """A column removed at ingest (recorded in dropped_at_ingest) is not re-created for its instrument;
+    on a raw export, where nothing was removed, a missing column is filled with blanks as before."""
     df = pd.DataFrame([
         {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "s1",
          "session_started_at": "2024-07-01T16:00:00Z"},
         {"record_id": "a", "redcap_repeat_instrument": "Participant"},
     ], dtype=object)
-    sessions = RedCapDataset(df=df, source_type="redcap").get_df_of_repeat_instrument(RepeatInstrument.SESSION.value)
+    ingested = RedCapDataset(df=df, source_type="redcap",
+                             metadata={"dropped_at_ingest": ["session_is_control_participant"]})
+    sessions = ingested.get_df_of_repeat_instrument(RepeatInstrument.SESSION.value)
     assert "session_is_control_participant" not in sessions.columns
     assert "session_started_at" in sessions.columns
+    raw = RedCapDataset(df=df, source_type="redcap").get_df_of_repeat_instrument(RepeatInstrument.SESSION.value)
+    assert raw["session_is_control_participant"].isna().all()
 
 
 def _dataset():
