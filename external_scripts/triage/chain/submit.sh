@@ -16,6 +16,8 @@ set +u
 source "$CHAIN_DIR/common.sh" >/dev/null
 set -u
 
+# The chain goes nowords -> review_opinion -> cohort_collect; review and opinion are the same two steps as separate
+# stages (review -> opinion -> cohort_collect), for submitting by hand.
 # stage | next stage | slices setting (empty: one job) | rows file the stage reads (empty: none) | CPU/GPU | cpus | mem | time
 STAGES="
 inputs|fresh|||cpu|1|4G|0:30:00
@@ -24,7 +26,8 @@ runs|session|||cpu|1|8G|1:00:00
 session|replay|SESSION_SLICES|$MANIFEST|cpu|2|12G|4:00:00
 replay|review_rows|REPLAY_SLICES|$MANIFEST|cpu|4|24G|12:00:00
 review_rows|nowords|||cpu|16|32G|2:00:00
-nowords|review|NOWORDS_SLICES|$REVIEW_ROWS/rows_nowords.jsonl|cpu|2|8G|4:00:00
+nowords|review_opinion|NOWORDS_SLICES|$REVIEW_ROWS/rows_nowords.jsonl|cpu|2|8G|4:00:00
+review_opinion|cohort_collect|REVIEW_OPINION_SLICES|$REVIEW_ROWS/rows_words.jsonl|gpu|8|96G|12:00:00
 review|opinion|REVIEW_SLICES|$REVIEW_ROWS/rows_words.jsonl|gpu|8|96G|8:00:00
 opinion|cohort_collect|OPINION_SLICES|$REVIEW_ROWS/rows_words.jsonl|gpu|8|96G|8:00:00
 cohort_collect|cohort_quantiles|COHORT_COLLECT_SLICES|$MANIFEST|cpu|1|8G|2:00:00
