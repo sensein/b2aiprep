@@ -3252,6 +3252,7 @@ class BIDSDataset:
                         questionnaire_lookup=questionnaire_lookup,
                         population=task_population,
                         language=participant_language,
+                        cohort=task.get("acoustic_task_cohort"),
                     )
                     sidecar_path = BIDSDataset._write_pydantic_model_to_bids_file(
                         audio_output_path,
