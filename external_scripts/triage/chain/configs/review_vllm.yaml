@@ -1,0 +1,10 @@
+# The reviewer (REVIEW) on one GPU through a pinned vLLM server, as the released run's review lane wrote it
+# (r37_slice.sh, lane review). The checkpoint is pinned by commit.
+redaction:
+  llm_check:
+    enabled: true
+    keep_worker_resident: true
+    ref: 52f3f65bc7a02d555763bc923bd1d9094898219d
+    engine: vllm
+    vllm:
+      gpu_memory_utilization: 0.90
