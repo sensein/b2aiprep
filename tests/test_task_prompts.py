@@ -6,6 +6,7 @@ questionnaire-join that surfaces per-participant stimulus (vocab/random/stroop).
 """
 
 import collections
+import logging
 import json
 from importlib.resources import files
 
@@ -56,20 +57,29 @@ def _registry_instructions(task_id, language="en"):
     return instructions.get(language) if isinstance(instructions, dict) else instructions
 
 
-def test_voice_cohort_free_speech_gets_its_own_instructions(descriptions):
-    """The voice cohort's unnumbered "Free Speech" is the Free Speech (Voice) task, not v1."""
-    voice = _resolve(descriptions, "Free Speech", population="adult", cohort="voice")
+def test_voice_cohort_free_speech_gets_its_own_instructions(descriptions, caplog):
+    """The voice cohort's unnumbered "Free Speech" is the Free Speech (Voice) task, not v1.
+
+    The registry supplies the text (the task is curated): the flat file's own "free-speech" entry
+    is removed here, so the result cannot come from it."""
+    without_flat = {k: v for k, v in descriptions.items() if k != "free-speech"}
+    voice = _resolve(without_flat, "Free Speech", population="adult", cohort="voice")
     assert voice["instructions"] == _registry_instructions("adult.free-speech-voice")
     assert voice["instructions"] != _registry_instructions("adult.free-speech.v1")
     # REDCap documents the retired Free Speech (Voice) task in English only, so a Spanish session
-    # gets the English text of its own task rather than the Spanish text of another task.
-    spanish = _resolve(descriptions, "Free Speech", population="adult", cohort="voice", language="es-419")
+    # gets the English text of its own task rather than the Spanish text of another task, and the
+    # run log names the recording's acoustic task.
+    with caplog.at_level(logging.INFO):
+        spanish = _resolve(without_flat, "Free Speech", population="adult", cohort="voice",
+                           language="es-419", acoustic_task_id="AT-ES")
     assert spanish["instructions"] == voice["instructions"]
+    assert any("adult.free-speech-voice" in r.getMessage() and "AT-ES" in r.getMessage() for r in caplog.records)
 
 
 @pytest.mark.parametrize("name, cohort, task_id", [
     ("Free Speech", "generic", "adult.free-speech.v1"),       # no variant for this cohort
     ("Free Speech", None, "adult.free-speech.v1"),            # cohort unknown
+    ("Free Speech", float("nan"), "adult.free-speech.v1"),    # blank cell read by pandas
     ("Free speech-1", "voice", "adult.free-speech.v1"),       # numbered: every adult's task
     ("Free speech (v2)-2", "voice", "adult.free-speech.v2"),
 ])

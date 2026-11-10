@@ -376,7 +376,7 @@ def _select_cohort_variant(reg, task, name: str, cohort):
     ``adult.free-speech-voice`` (alias ``free-speech-voice``, age_or_cohort ``["Voice"]``), a
     different task from the numbered "Free speech-1..3" every adult records. Only an exact
     alias is used, so numbered recordings ("free-speech-1") never route to the variant."""
-    if not cohort:
+    if not _is_present(cohort):  # blank, None, or NaN from a pandas cell
         return task
     wanted = _norm(f"{name}-{cohort}")
     for na, _, tid in _alias_items():
@@ -670,6 +670,13 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
     else:
         instructions = task.get("instructions", "") or ""
         instructions_authoritative = task.get("instructions_source") == "curated"
+    if language and language != "en" and not lang_instr and instructions_authoritative and instructions:
+        # Not an error (Free Speech (Voice), for one, is documented in English only), but the
+        # sidecar's instructions are not in the session's language: name the recording for QA.
+        _logger.info(
+            "No %s instructions for task %s; the sidecar of recording acoustic task %s gets the English text.",
+            language, task.get("task_id"), join_id,
+        )
     speech_type = task.get("speech_type") or "elicited"
     prompt_ref = task.get("prompt_ref") or {}
     ptype = prompt_ref.get("type")

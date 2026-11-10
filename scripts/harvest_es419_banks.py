@@ -163,7 +163,9 @@ def _instruction_from_desc(text: str) -> str:
     """
     prose = []
     for ln in text.splitlines():
-        s = ln.strip()
+        # A page may flag a sentence with a warning sign ("⚠️ Nos gustaría ..."); the sign is
+        # page markup, not part of the instruction the participant read.
+        s = ln.strip().lstrip("\u26a0\ufe0f").strip()
         if not s or s.startswith(("#", "!", "[", "<", ">", "|", "-")):
             continue
         if re.match(r"^\d+\.\s", s):  # numbered stimulus scene

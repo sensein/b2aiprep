@@ -136,6 +136,10 @@
     },
     "pediatric.reading-passage": {
       "instructions": "We're going to read a short story about a roller coaster ride called \"The Caterpillar\". A sentence or two will appear on the screen – read it aloud as if you were reading any regular story book. If you're not sure about a word, just skip it and keep going. When you are ready, press \"record\"."
+    },
+    "adult.free-speech-voice": {
+      "note": "The voice cohort's unnumbered Free Speech (Retired/Free Speech (Voice), English only), a different task from the numbered Free Speech v1/v2; curated so the registry, not the flat file's free-speech entry, supplies its instructions.",
+      "instructions": "Please answer the following question. You can read the question, then click on the recording button when you are ready to answer. You can keep talking until the timer is up."
     }
   }
 }

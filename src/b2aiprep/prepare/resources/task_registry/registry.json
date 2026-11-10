@@ -717,7 +717,7 @@
    ],
    "recording_count": 1,
    "instructions": "Please answer the following question. You can read the question, then click on the recording button when you are ready to answer. You can keep talking until the timer is up.",
-   "instructions_source": "harvested",
+   "instructions_source": "curated",
    "speech_type": "elicited",
    "prompt_ref": {
     "type": "static-inline"
