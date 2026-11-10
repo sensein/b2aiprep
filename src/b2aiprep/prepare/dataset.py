@@ -2040,9 +2040,12 @@ class BIDSDataset:
         *access_tier* is not controlled. The default tier is the narrower one, so a caller that
         leaves it out withholds controlled-only columns.
 
-        ``drop`` columns are removed at ingest, so a tree built now has none; one that reaches
-        deidentify comes from an older tree or a later field-map edit, and is removed at every
-        level, *keep_date_shifted* included.
+        ``drop`` columns are removed at ingest, and the shipped field map's drop rows name no
+        output column, so they add nothing here. A column that is now ``drop`` but still sits in
+        an older tree is not in its table's field-map rows, and ``_drop_columns_by_disposition``
+        removes it, with a warning, as a column not in the field map, at every level. A field
+        map whose drop rows do name a column (an older one, or a test's) still has them removed
+        at every level, *keep_date_shifted* included.
         """
         drop_rows = field_map_df["disposition"].eq("drop")
         if level != DispositionLevel.INTERNAL:

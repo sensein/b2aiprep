@@ -813,7 +813,7 @@ class TestDropColumnsByDisposition:
         assert drop(fm, DispositionLevel.INTERNAL, access_tier=AccessTier.REGISTERED) == set()  # QA keeps all
 
     def test_disposition_is_matched_within_the_table(self):
-        """self_reported_* is released in eligibility and internal in enrollment."""
+        """The same output name can be released in one table and internal in another."""
         fm = _field_map_df([
             {"schema_name": "eligibility", "column_name": "self_reported_asthma", "disposition": "release"},
             {"schema_name": "enrollment", "column_name": "self_reported_asthma", "disposition": "internal"}])

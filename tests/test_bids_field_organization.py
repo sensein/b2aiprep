@@ -225,12 +225,19 @@ def test_drop_rows_name_no_table(reorg_rows):
 
 
 def test_enrollment_form_repeats_of_eligible_studies_are_dropped(reorg_rows):
-    """The Enrollment Form asks the Eligible Studies checklist, study arms and control flag again;
-    the released copies come from Eligible Studies, and the raw answers stay in REDCap."""
+    """The Enrollment Form asks the Eligible Studies condition checklist, study arms and control
+    flag again; the released copies come from Eligible Studies, and the raw answers stay in REDCap.
+
+    The checklist is the one REDCap form both cohorts share, so its names are taken from both
+    cohorts' Eligible Studies rows (adults have no autism/speech_delay row, children have no adult
+    conditions); `ef_ataxia` repeats Eligible Studies' `neuro_ataxia` under another name."""
     import re
-    repeats = re.compile(r"^ef_(eligible_studies(___.+)?|is_control_participant)$")
+    repeats = re.compile(r"^ef_(eligible_studies(___.+)?|is_control_participant|ataxia)$")
     checklist = {r["column_name_source"] for r in reorg_rows
                  if r["schema_name_source"] == "subjectparticipant_eligible_studies_schema"}
+    covered = {r["column_name_source"] for r in reorg_rows if r["schema_name_source"] == "enrollment_form_schema"
+               and (repeats.match(r["column_name_source"]) or r["column_name_source"].removeprefix("ef_") in checklist)}
+    assert {"ef_ataxia", "ef_autism", "ef_speech_delay", "ef_parkinsons", "ef_is_control_participant"} <= covered
     kept = sorted(
         (r["cohort"], r["column_name_source"]) for r in reorg_rows
         if r["schema_name_source"] == "enrollment_form_schema" and r["disposition"] != "drop"
