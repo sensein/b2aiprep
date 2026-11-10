@@ -2006,6 +2006,8 @@ class BIDSDataset:
 
     # Identifier columns the pipeline adds to every table; not field-map rows of each table.
     _PIPELINE_ID_COLUMNS = frozenset({"participant_id", "record_id"})
+    # ID columns whose released values are not REDCap's (pseudonyms, ordinal session labels).
+    _RELABELLED_ID_COLUMNS = frozenset({"participant_id", "record_id", "session_id"})
     # Field-map table that describes the per-participant sessions.tsv columns.
     _SESSIONS_SCHEMA = "session"
     # Field-map table describing the keys of the per-recording audio sidecars; not a phenotype table.
@@ -2828,6 +2830,14 @@ class BIDSDataset:
                 if str(updated_data.get("is_redcap_calculation", "")).upper() == "YES":
                     updated_schemas[updated_schema_name]['columns_calculated'].append(new_element_name)
                 updated_schemas[updated_schema_name]['schema_name_source'].append(updated_data["schema_name_source"])
+
+                # The REDCap export column the values come from: the output name can differ, and a
+                # checkbox option keeps its `<field>___<code>`. Columns b2aiprep computes or takes
+                # from a supplement have none (derivedFrom names the inputs of a computed one), nor
+                # do the ID columns, whose values deidentify replaces (pseudonyms, session labels).
+                if (str(updated_data.get("source", "")).lower() in ("redcap", "redcap_generated")
+                        and new_element_name not in BIDSDataset._RELABELLED_ID_COLUMNS):
+                    data_element["redcapField"] = column
 
                 # update the payload so we have a reproschema json for this df
                 updated_schemas[updated_schema_name]["data_elements"][new_element_name] = data_element

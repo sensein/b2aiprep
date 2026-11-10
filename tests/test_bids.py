@@ -416,6 +416,34 @@ def test_construct_phenotype_demographics_has_one_row_per_participant():
     assert list(by_id["age"]) == ["41", "52"]
 
 
+def test_data_dictionary_names_each_columns_redcap_field():
+    """Each column from REDCap names its REDCap export column (`redcapField`), also when the
+    output name differs (state_province is written as state_province_as_entered) and for a
+    checkbox option; a column b2aiprep computes, and the ID columns, have none."""
+    nan = float("nan")
+    df = pd.DataFrame({
+        "record_id": ["r01", "r01"],
+        "redcap_repeat_instrument": [nan, "Q - Generic - Demographics"],
+        "age": ["41", nan],
+        "gender_identity": [nan, "Female gender identity"],
+        "specify_gender_identity": [nan, "Cis: same gender as the sex assigned at birth"],
+        "children": [nan, "No"],
+        "state_province": [nan, "Massachusetts"],
+        "asian_race___2029_7": [nan, "Checked"],
+        "selected_language": ["English", nan],  # a participant-table field, so participant.json is written
+    })
+    with tempfile.TemporaryDirectory() as temp_dir:
+        BIDSDataset._construct_phenotype_from_reproschema(df, output_dir=temp_dir)
+        demographics = next(iter(json.loads(next(Path(temp_dir).rglob("demographics.json")).read_text()).values()))
+        participant = next(iter(json.loads(next(Path(temp_dir).rglob("participant.json")).read_text()).values()))
+    elements = demographics["data_elements"]
+    assert elements["children"]["redcapField"] == "children"
+    assert elements["state_province_as_entered"]["redcapField"] == "state_province"
+    assert elements["asian_race___2029_7"]["redcapField"] == "asian_race___2029_7"
+    assert "redcapField" not in elements["sex_at_birth"]  # computed by b2aiprep
+    assert "redcapField" not in participant["data_elements"]["participant_id"]  # a pseudonym once released
+
+
 def test_get_paths_subject_extraction_edge_cases():
     """Test edge cases in subject ID extraction from filenames."""
     with TemporaryDirectory() as temp_dir:
