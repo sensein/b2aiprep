@@ -22,6 +22,9 @@ classifiers = [
 requires-python = ">=3.10, <3.14"
 dependencies = [
     "senselab[articulatory]~=1.3.0",
+    # espnet 202609 and later no longer ship the `espnet` module that ppgs 0.0.9 (via senselab)
+    # imports, so PPG extraction fails to import in a new environment.
+    "espnet<202609",
     "matplotlib>=3.8.3",
     "fhir.resources==7.1.0",
     "streamlit>=1.42.2",

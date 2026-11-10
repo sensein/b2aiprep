@@ -207,17 +207,24 @@ POLICY = {
                                      **_asset_keys(f"{_PEDS_ACOUSTIC}/Repeating Sentences/"
                                                    "pediatric_10plus_repeating_setences_{i}.jpg"),
                                      "note": "sentences presented as images"}),
-    "identifying-pictures": ("elicited", _image(
-        f"{_PEDS_ACOUSTIC}/Identifying Pictures/pediatric_identifying_pictures_{{i:02d}}.jpg")),
+    # Each flashcard prints its target word (several are sight words that cannot be named from
+    # the picture), so the task is read and its text comes from the transcribed bank.
+    "identifying-pictures": ("read", {**_image(
+        f"{_PEDS_ACOUSTIC}/Identifying Pictures/pediatric_identifying_pictures_{{i:02d}}.jpg"),
+        "text_bank": "identifying_pictures_bank"}),
     # picture-description spans adult (2 pictures + es variants) and peds (1); the
     # per-recording asset is ambiguous, so mark it image without a pinned path.
     "picture-description": ("elicited", {"type": "image"}),
-    "noisy-sounds": ("non-lexical", _image(
-        f"{_PEDS_ACOUSTIC}/Noisy Sounds/pediatric_noisy_sounds_{{i}}.jpg")),
-    "silly-sounds": ("non-lexical", _image(
-        f"{_PEDS_ACOUSTIC}/Silly Sounds/pediatric_10plus_silly_sounds_{{i}}.jpg")),
-    "long-sounds": ("non-lexical", _image(
-        f"{_PEDS_ACOUSTIC}/Long Sounds/pediatric_10plus_long-sounds_{{i}}.jpg")),
+    # The sound to make is printed on each card; its text comes from the transcribed bank.
+    "noisy-sounds": ("non-lexical", {**_image(
+        f"{_PEDS_ACOUSTIC}/Noisy Sounds/pediatric_noisy_sounds_{{i}}.jpg"),
+        "text_bank": "noisy_sounds_bank"}),
+    "silly-sounds": ("non-lexical", {**_image(
+        f"{_PEDS_ACOUSTIC}/Silly Sounds/pediatric_10plus_silly_sounds_{{i}}.jpg"),
+        "text_bank": "silly_sounds_bank"}),
+    "long-sounds": ("non-lexical", {**_image(
+        f"{_PEDS_ACOUSTIC}/Long Sounds/pediatric_10plus_long-sounds_{{i}}.jpg"),
+        "text_bank": "long_sounds_bank"}),
     "diadochokinesis": ("non-lexical", {"type": "static-inline"}),
     "prolonged-vowel": ("non-lexical", {"type": "static-inline"}),
     "glides": ("non-lexical", {"type": "static-inline"}),
@@ -247,6 +254,12 @@ _ADULT_ACOUSTIC = "docs/Adults/Acoustic Tasks/Current"
 # population-specific image asset. picture-description exists in both populations
 # with different images: peds one fixed image; adult one image per option.
 PROMPT_REF_OVERRIDE_BY_TASK_ID = {
+    # Story Recall v2 shows its story as a sequence of images (StoryRecall_1..10).
+    "adult.story-recall.v2": {
+        "type": "static-inline",
+        **_asset_keys(f"{_ADULT_ACOUSTIC}/Story Recall - v2/StoryRecall_{{n}}.jpg"),
+        "asset_count": 10,
+    },
     "pediatric.picture-description": {
         "type": "image",
         **_asset_keys(f"{_PEDS_ACOUSTIC}/Picture Description/"

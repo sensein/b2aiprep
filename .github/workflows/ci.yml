@@ -2,7 +2,8 @@ name: CI
 
 on:
   pull_request:
-    branches: [main]
+    # release/** too: release work (e.g. release/v4.1.0) is merged through PRs into those branches.
+    branches: [main, "release/**"]
   workflow_dispatch:  # Add workflow dispatch trigger
   
 jobs:
@@ -42,3 +43,37 @@ jobs:
       - name: Test with pytest
         run: |
           pytest tests
+
+  vendored-task-registry:
+    # registry.json and task_instructions_es_419.json are generated from bridge2ai-redcap and
+    # committed. This job regenerates both from the tag registry.json names and fails when the
+    # committed files differ, so an edit made to them by hand is caught.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Read the bridge2ai-redcap tag the registry is built from
+        id: redcap
+        run: |
+          echo "tag=$(python -c "import json; print(json.load(open('src/b2aiprep/prepare/resources/task_registry/registry.json'))['source']['git_tag'])")" >> "$GITHUB_OUTPUT"
+
+      - name: Check out bridge2ai-redcap at that tag
+        uses: actions/checkout@v3
+        with:
+          repository: eipm/bridge2ai-redcap
+          ref: ${{ steps.redcap.outputs.tag }}
+          path: bridge2ai-redcap
+          fetch-depth: 1
+
+      - name: Regenerated files match the committed ones
+        run: |
+          python scripts/build_task_registry.py --redcap-root bridge2ai-redcap --git-tag "${{ steps.redcap.outputs.tag }}" --check
+          python scripts/harvest_es419_banks.py --redcap-root bridge2ai-redcap --check
+
