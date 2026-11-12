@@ -53,6 +53,52 @@ _SENSITIVE_PARQUET_STEMS: t.FrozenSet[str] = {
         for feature_group in _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE for feature_name in _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE[feature_group]
         }
 
+# Rows per parquet row group: the slice size datasets 3.6's `to_parquet` wrote the v4 bundles with.
+_BUNDLE_ROWS_PER_ROW_GROUP = 1000
+
+
+def _datasets3_feature_metadata(node: t.Any) -> t.Any:
+    """The ``huggingface`` schema metadata as datasets 3.x writes it.
+
+    datasets 4 and later write a list feature as ``{"_type": "List", ...}``; datasets 3.x cannot read that
+    label and wrote ``{"_type": "Sequence", ...}`` for the same arrow type. datasets 4 and later still read
+    ``Sequence``, so writing it keeps the bundle loadable by both. ``length`` is kept only when the feature
+    has one, as 3.x omits it for variable-length lists. A ``List`` of a dict is refused: 3.x stores
+    ``Sequence({...})`` as a dict of lists, a different arrow type, so a relabel would describe it wrongly.
+    """
+    if isinstance(node, list):
+        return [_datasets3_feature_metadata(item) for item in node]
+    if not isinstance(node, dict):
+        return node
+    converted = {key: _datasets3_feature_metadata(value) for key, value in node.items()}
+    if converted.get("_type") == "List":
+        if isinstance(node.get("feature"), dict) and "_type" not in node["feature"]:
+            raise ValueError("A List of a dict has no datasets 3.x equivalent; the bundle features use none.")
+        converted["_type"] = "Sequence"
+    return converted
+
+
+def _write_bundle_parquet(ds: Dataset, path: Path, **writer_kwargs: t.Any) -> None:
+    """Write *ds* as one bundle parquet, laid out as the v4 bundles were.
+
+    The bundle sets its own parquet options (zstd, dictionary columns, page index, sort order), which
+    datasets 4 and later no longer accept through ``Dataset.to_parquet``: it passes its own ``compression``
+    and ``use_dictionary`` to the writer. So the file is written here, the way datasets 3.6's
+    ``to_parquet`` did: the features' arrow schema and row groups of ``_BUNDLE_ROWS_PER_ROW_GROUP`` rows,
+    with the ``huggingface`` metadata in its datasets 3.x form. Under datasets 3.6 the bytes equal
+    ``ds.to_parquet(path, **writer_kwargs)``.
+    """
+    schema = ds.features.arrow_schema
+    metadata = dict(schema.metadata or {})
+    if b"huggingface" in metadata:
+        metadata[b"huggingface"] = json.dumps(_datasets3_feature_metadata(json.loads(metadata[b"huggingface"]))).encode()
+    schema = schema.with_metadata(metadata)
+    table = ds.with_format("arrow")
+    with pq.ParquetWriter(Path(path).as_posix(), schema=schema, **writer_kwargs) as writer:
+        for offset in range(0, len(ds), _BUNDLE_ROWS_PER_ROW_GROUP):
+            writer.write_table(table[offset : offset + _BUNDLE_ROWS_PER_ROW_GROUP])
+
+
 def _prime_generator(
     generator_callable: t.Callable[[], t.Iterator[t.Dict[str, t.Any]]],
 ) -> t.Tuple[bool, t.Optional[t.Callable[[], t.Iterator[t.Dict[str, t.Any]]]]]:
@@ -615,8 +661,9 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
                 "status": "skipped(no-data)",
             }
             continue
-        ds.to_parquet(
-            output_parquet.as_posix(),
+        _write_bundle_parquet(
+            ds,
+            output_parquet,
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
