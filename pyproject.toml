@@ -21,19 +21,21 @@ classifiers = [
 ]
 requires-python = ">=3.10, <3.14"
 dependencies = [
-    "senselab[articulatory]~=1.3.0",
-    # espnet 202609 and later no longer ship the `espnet` module that ppgs 0.0.9 (via senselab)
-    # imports, so PPG extraction fails to import in a new environment.
-    "espnet<202609",
+    # senselab 1.4 band-limits resample_audios (senselab#632), so the 16 kHz FLACs and every feature change.
+    # ppgs and SPARC run in senselab's own venvs in 1.4, installed from senselab's locks (the ppgs venv: Python 3.11,
+    # espnet 202301), so b2aiprep needs no espnet constraint.
+    "senselab>=1.4.0a14",
     "matplotlib>=3.8.3",
     "fhir.resources==7.1.0",
     "streamlit>=1.42.2",
     "av~=14.1.0",
     "soundfile==0.13.1",  # pinned: libsndfile ships in the wheel and fixes the released FLAC bytes
     "pydra",
-    "torchaudio~=2.8.0",
-    "torch~=2.8.0",
-    "torchvision~=0.23.0",
+    # Exact, as in senselab 1.4's lock: torchaudio's and torchvision's compiled extensions load only against the
+    # torch they were built for (torch 2.11.0 with torchaudio 2.11.1 fails with an undefined symbol).
+    "torchaudio==2.11.0",
+    "torch==2.11.0",
+    "torchvision==0.26.0",
     "tzdata"  # IANA time-zone database for zoneinfo (date shifting), on systems without one
 ]
 
@@ -57,12 +59,12 @@ dev = [
     "pre-commit",
     "ruff",
     "responses",
-    "senselab[audio]"
+    "senselab"
 ]
 dashboard = [
     "b2aiprep[doc]",
     "streamlit>=1.42.2",
-    "senselab[audio]"
+    "senselab"
 ]
 scripts = [
     # scripts/build_postal_code_timezones.py only: refreshes the committed postal-code tables
