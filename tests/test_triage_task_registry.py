@@ -45,10 +45,15 @@ def _adult_profile() -> Iterator[None]:
 
 
 def test_the_registry_files_are_this_packages_own() -> None:
-    """The reader reads this package's registry, which senselab no longer copies."""
+    """The reader reads this package's registry, which senselab no longer copies.
+
+    Compared with the imported package, not the source tree, so the test also holds for an installed b2aiprep.
+    """
+    import b2aiprep
+
     assert (
-        REGISTRY_DIR
-        == Path(__file__).resolve().parents[1] / "src/b2aiprep/prepare/resources/task_registry"
+        Path(REGISTRY_DIR).resolve()
+        == Path(b2aiprep.__file__).resolve().parent / "prepare/resources/task_registry"
     )
     for name in ("registry.json", "task_instructions_curated.json"):
         assert (REGISTRY_DIR / name).is_file()
