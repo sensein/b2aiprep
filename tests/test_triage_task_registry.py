@@ -1,0 +1,230 @@
+"""The task registry as triage reads it (``triage_task_registry``): which text a recording's task is given, and from where."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Iterator
+
+import pytest
+
+# No skip on an older senselab: these modules exist only with senselab's triage refactor, so a run against an
+# older senselab must fail here, not pass by skipping every test.
+import senselab.audio.workflows.triage.task_catalogue  # noqa: F401
+
+from b2aiprep.prepare.triage_hints import build_hint
+from b2aiprep.prepare.triage_task_registry import (
+    CURATED,
+    DESCRIPTIONS,
+    REGISTRY_DIR,
+    SIDECAR,
+    description_key,
+    registry_task,
+    task_text,
+)
+
+ADULT_PROFILE = (
+    Path(__file__).resolve().parents[1] / "src/b2aiprep/prepare/resources/triage_profile/adult"
+)
+"""The adult triage profile, whose task list the hint builder reads."""
+
+
+@pytest.fixture(autouse=True)
+def _adult_profile() -> Iterator[None]:
+    """Every test reads the adult triage profile, and leaves none active."""
+    from senselab.audio.workflows.triage.dataset_profile import (
+        activate_profile,
+        deactivate_profile,
+        load_profile,
+    )
+
+    deactivate_profile()
+    activate_profile(load_profile(ADULT_PROFILE))
+    yield
+    deactivate_profile()
+
+
+def test_the_registry_files_are_this_packages_own() -> None:
+    """The reader reads this package's registry, which senselab no longer copies.
+
+    Compared with the imported package, not the source tree, so the test also holds for an installed b2aiprep.
+    """
+    import b2aiprep
+
+    assert (
+        Path(REGISTRY_DIR).resolve()
+        == Path(b2aiprep.__file__).resolve().parent / "prepare/resources/task_registry"
+    )
+    for name in ("registry.json", "task_instructions_curated.json"):
+        assert (REGISTRY_DIR / name).is_file()
+    assert (REGISTRY_DIR.parent / "audio_task_descriptions.json").is_file()
+
+
+def test_a_description_key_ignores_case_and_parentheses() -> None:
+    """``free-speech-(v2)-1`` in the descriptions is ``free-speech-v2-1`` in BIDS."""
+    assert (
+        description_key("free-speech-(v2)-1")
+        == description_key("Free-Speech-v2-1")
+        == "free-speech-v2-1"
+    )
+
+
+def test_an_alias_two_versions_share_is_resolved_by_the_name() -> None:
+    """``story-recall`` is v1's alias and v2's; the registry's own index picks v2, the recording is v1."""
+    assert registry_task("story-recall") == ("adult.story-recall.v1", "")
+    assert registry_task("story-recall-v2") == ("adult.story-recall.v2", "")
+
+
+def test_the_task_is_the_one_the_release_descriptions_resolve() -> None:
+    """Triage and the release's task descriptions read a name as one task, curated aliases included."""
+    from b2aiprep.prepare.fhir_utils import _resolve_task_registry
+
+    for name in ("glides-high-to-low", "high-to-low", "story-recall-v2", "diadochokinesis-pa"):
+        resolved = _resolve_task_registry(name, "adult")
+        assert resolved is not None
+        assert registry_task(name)[0] == resolved[0]["task_id"]
+    assert registry_task("high-to-low") == ("adult.glides", "high-to-low")
+    assert registry_task("glides-high-to-low") == ("adult.glides", "high-to-low")
+    assert registry_task("not-a-task-anywhere") == (None, None)
+
+
+def test_a_per_recording_correction_is_found_by_its_recording_key() -> None:
+    """The curated file keys DDK v1's corrections by syllable."""
+    assert registry_task("diadochokinesis-pa") == ("adult.diadochokinesis.v1", "pa")
+    text = task_text("diadochokinesis-pa", {"instructions": "harvested text"})
+    assert text.instructions_source == CURATED and "/PA/" in (text.instructions or "")
+
+
+def test_a_recall_task_without_a_sidecar_stimulus_takes_the_descriptions_prompts() -> None:
+    """story-recall-v2's boy-and-frog story, where the sidecar leaves the stimulus empty."""
+    text = task_text("story-recall-v2", {"speech_type": "recall", "stimulus_text": ""})
+    assert text.stimulus_source == DESCRIPTIONS and "frog" in (text.stimulus or "")
+
+
+def test_a_stimulus_empty_by_design_stays_empty() -> None:
+    """A breath task's sidecar carries no stimulus, and none is borrowed for it."""
+    text = task_text(
+        "respiration-and-cough-v2-breath", {"speech_type": "non-lexical", "stimulus_text": ""}
+    )
+    assert text.stimulus is None and text.stimulus_source == ""
+
+
+def test_the_sidecar_stimulus_wins_where_it_carries_one() -> None:
+    """The recording's own stimulus is the one it was given."""
+    text = task_text(
+        "story-recall", {"speech_type": "recall", "stimulus_text": "he is ninety-three"}
+    )
+    assert (text.stimulus, text.stimulus_source) == ("he is ninety-three", SIDECAR)
+
+
+def test_the_hint_carries_the_instructions_and_names_their_source(tmp_path: Path) -> None:
+    """The hint the pipeline and the reviewer read, built from a recording's two sidecars."""
+    wav = tmp_path / "sub-a_ses-b_task-story-recall.wav"
+    (tmp_path / "sub-a_ses-b_task-story-recall_acoustictask-metadata.json").write_text(
+        json.dumps(
+            {
+                "acoustic_task_name": "story-recall",
+                "instructions": "You are given a text.",
+                "stimulus_text": "he is nearly ninety-three years old",
+                "speech_type": "recall",
+                "language": "en",
+            }
+        )
+    )
+    hint, record = build_hint(wav)
+    assert hint is not None
+    assert hint.speech_type == "recall"
+    assert hint.instructions and record["instructions_from"] == CURATED
+    assert [prompt.text for prompt in hint.expected_speech] == [
+        "he is nearly ninety-three years old"
+    ]
+    assert hint.metadata["stimulus_from"] == SIDECAR
+    assert hint.metadata["registry_task"] == "adult.story-recall.v1"
+
+
+def test_the_hint_declares_the_stems_own_identity(tmp_path: Path) -> None:
+    """Participant, session and task token are the stem's, not the sidecar's ``task_name``."""
+    wav = tmp_path / "sub-a_ses-b_task-high-to-low.wav"
+    (tmp_path / "sub-a_ses-b_task-high-to-low_recording-metadata.json").write_text(
+        json.dumps({"task_name": "glides-high-to-low", "speech_type": "non-lexical"})
+    )
+    hint, _ = build_hint(wav)
+    assert hint is not None
+    assert hint.metadata["task_name"] == "glides-high-to-low"
+    assert (hint.metadata["participant_id"], hint.metadata["session_id"]) == ("sub-a", "ses-b")
+    assert hint.metadata["task_token"] == "high-to-low"
+
+
+def test_a_recording_in_another_language_keeps_its_own_instructions() -> None:
+    """r6's Spanish sessions: the curated corrections are English and would replace Spanish text."""
+    spanish = "A continuación, se le presentará una historia."
+    text = task_text(
+        "story-recall", {"instructions": spanish, "language": "es", "speech_type": "recall"}
+    )
+    assert (text.instructions, text.instructions_source) == (spanish, SIDECAR)
+    assert text.stimulus is None, "no English prompt is borrowed for a Spanish recording"
+
+
+def _random_item_recording(root: Path, instructions: str) -> Path:
+    """A random-item-generation recording under a BIDS root whose phenotype table records its category."""
+    (root / "dataset_description.json").write_text("{}")
+    (root / "phenotype" / "task").mkdir(parents=True)
+    (root / "phenotype" / "task" / "random_item_generation.tsv").write_text(
+        "participant_id\trandom_item_generation_category\trandom_recording_acoustic_task_id\n"
+        "sub-a\tCountry names\tabc-123\n"
+    )
+    audio = root / "sub-a" / "ses-b" / "audio"
+    audio.mkdir(parents=True)
+    wav = audio / "sub-a_ses-b_task-random-item-generation-v2.wav"
+    (audio / "sub-a_ses-b_task-random-item-generation-v2_recording-metadata.json").write_text(
+        json.dumps(
+            {
+                "task_name": "random-item-generation-v2",
+                "instructions": instructions,
+                "acoustic_task_id": "ABC-123",
+                "language": "en",
+            }
+        )
+    )
+    return wav
+
+
+def test_a_category_the_questionnaire_records_reaches_the_hint(tmp_path: Path) -> None:
+    """The registry's questionnaire join supplies the category, and names the table and field it came from."""
+    hint, record = build_hint(_random_item_recording(tmp_path, "Speak a series of items."))
+    assert hint is not None
+    assert hint.metadata["item_category"] == "Country names"
+    assert hint.metadata["item_category_from"] == (
+        "questionnaire:phenotype/task/random_item_generation.tsv:random_item_generation_category"
+    )
+    assert record["item_category_from"] == hint.metadata["item_category_from"]
+    assert (hint.item_category, hint.item_category_from) == (
+        "Country names",
+        hint.metadata["item_category_from"],
+    )
+
+
+def test_a_category_the_instructions_speak_outranks_the_questionnaire(tmp_path: Path) -> None:
+    """B2AI's ``Category:`` line is the recording's own declaration; the builder reads it, not senselab."""
+    hint, _ = build_hint(
+        _random_item_recording(tmp_path, "Speak a series of items. Category: Letters.")
+    )
+    assert hint is not None
+    assert (hint.item_category, hint.item_category_from) == ("Letters", "instructions")
+    assert hint.metadata["item_category"] == "Country names"
+
+
+def test_no_phenotype_table_leaves_the_category_undeclared(tmp_path: Path) -> None:
+    """Outside a BIDS root, nothing is joined."""
+    wav = tmp_path / "sub-a_ses-b_task-random-item-generation-v2.wav"
+    (tmp_path / "sub-a_ses-b_task-random-item-generation-v2_recording-metadata.json").write_text(
+        json.dumps(
+            {
+                "task_name": "random-item-generation-v2",
+                "instructions": "x",
+                "acoustic_task_id": "abc-123",
+            }
+        )
+    )
+    hint, _ = build_hint(wav)
+    assert hint is not None and "item_category" not in hint.metadata and hint.item_category is None

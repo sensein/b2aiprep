@@ -1,0 +1,255 @@
+"""What a Bridge2AI-Voice task asks the participant to do and to say, from the study's own registry.
+
+The BIDS sidecars carry each recording's ``instructions`` and ``stimulus_text``; they were built from
+b2aiprep's flat ``audio_task_descriptions.json``, whose instructions its curated file corrects for a
+few tasks. :func:`task_text` returns the text to use for one recording and names where each part came
+from: the sidecar, or the curated correction where the registry says the harvested instructions were
+wrong, and the flat descriptions' prompts where the sidecar carries no stimulus. The files are this package's
+own: ``resources/audio_task_descriptions.json`` and ``resources/task_registry/``. Moved from senselab's triage
+(``task_registry.py``), which kept a frozen copy of them (senselab plan step 7).
+"""
+
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass
+from functools import lru_cache
+from pathlib import Path
+from typing import Any, Mapping
+
+RESOURCES = Path(__file__).parent / "resources"
+"""This package's resources: the flat task descriptions at its top, the registry under ``task_registry/``."""
+
+REGISTRY_DIR = RESOURCES / "task_registry"
+
+SIDECAR = "sidecar"
+"""A part read from the recording's own BIDS sidecar."""
+
+CURATED = "curated"
+"""Instructions from the registry's curated correction, which says the harvested text was wrong."""
+
+DESCRIPTIONS = "descriptions"
+"""A recall task's stimulus from the flat task descriptions' prompts, where the sidecar carries none."""
+
+CURATED_LANGUAGE = "en"
+"""The language the curated corrections are written in; a recording in another keeps its sidecar's text."""
+
+RECALL = "recall"
+"""The sidecar ``speech_type`` of a task that asks the participant to retell what they were given."""
+
+
+def description_key(name: str) -> str:
+    """A task name as the flat descriptions and the BIDS task entities are compared.
+
+    Args:
+        name: A task name, as a sidecar, a path or the descriptions file writes it.
+
+    Returns:
+        Lower-cased, parentheses dropped: ``free-speech-(v2)-1`` and ``free-speech-v2-1`` agree.
+    """
+    return str(name or "").strip().lower().replace("(", "").replace(")", "")
+
+
+@lru_cache(maxsize=None)
+def _descriptions() -> dict[str, dict[str, Any]]:
+    raw = json.loads((RESOURCES / "audio_task_descriptions.json").read_text())
+    return {description_key(name): dict(entry) for name, entry in raw.items()}
+
+
+@lru_cache(maxsize=None)
+def _registry() -> dict[str, Any]:
+    return dict(json.loads((REGISTRY_DIR / "registry.json").read_text()))
+
+
+@lru_cache(maxsize=None)
+def _curated() -> dict[str, dict[str, Any]]:
+    return dict(
+        json.loads((REGISTRY_DIR / "task_instructions_curated.json").read_text()).get("tasks") or {}
+    )
+
+
+def registry_task(name: str, population: str = "adult") -> tuple[str | None, str | None]:
+    """The registry task a recording's task name belongs to, and its recording key within it.
+
+    The task is the one the release's own task descriptions resolve the name to
+    (:func:`b2aiprep.prepare.fhir_utils._resolve_task_registry`: the curated recording-name aliases, the
+    registry's alias index, then the version and population the name indicates), so triage and the
+    release never disagree on a recording's task. The recording key is the part of the name after the
+    task's longest matching alias, read off the name as given, else off its canonical task entity
+    (:func:`b2aiprep.prepare.utils.canonical_task_entity`), which is how a curated alias such as a bare
+    ``high-to-low`` still finds its key.
+
+    Args:
+        name: The recording's task name.
+        population: ``adult`` or ``pediatric``.
+
+    Returns:
+        ``(task id, recording key)``; the key is empty where the whole name is the alias and None where
+        no alias of the task prefixes the name; ``(None, None)`` where the name resolves to no task of
+        ``population``.
+    """
+    from b2aiprep.prepare.fhir_utils import _resolve_task_registry
+    from b2aiprep.prepare.utils import canonical_task_entity
+
+    resolved = _resolve_task_registry(str(name or ""), population)
+    if resolved is None:
+        return None, None
+    task_id = str(resolved[0].get("task_id") or "")
+    if not task_id.startswith(f"{population}."):
+        return None, None
+    aliases = sorted(
+        {description_key(str(alias)) for alias in resolved[0].get("aliases") or ()},
+        key=len,
+        reverse=True,
+    )
+    for key in (description_key(name), description_key(canonical_task_entity(name))):
+        for alias_key in aliases:
+            if key == alias_key:
+                return task_id, ""
+            if key.startswith(alias_key + "-"):
+                return task_id, key[len(alias_key) + 1 :]
+    return task_id, None
+
+
+@dataclass(frozen=True)
+class TaskText:
+    """What one recording's task asked for, and where each part came from.
+
+    Attributes:
+        instructions: What the participant was told to do, or None.
+        stimulus: What the participant was given to say or recall, or None.
+        speech_type: The sidecar's ``speech_type`` (``read``, ``recall``, ``free`` ...), or None.
+        instructions_source: :data:`SIDECAR` or :data:`CURATED`; empty where there are none.
+        stimulus_source: :data:`SIDECAR` or :data:`DESCRIPTIONS`; empty where there is none.
+        registry_task: The registry task id the name resolved to, or None.
+    """
+
+    instructions: str | None
+    stimulus: str | None
+    speech_type: str | None
+    instructions_source: str
+    stimulus_source: str
+    registry_task: str | None
+
+
+def task_text(name: str, sidecar: Mapping[str, Any], population: str = "adult") -> TaskText:
+    """The instructions and stimulus to give the pipeline for one recording.
+
+    Args:
+        name: The recording's task name (the sidecar's ``task_name``, else the path's task entity).
+        sidecar: The recording's merged sidecar fields.
+        population: ``adult`` or ``pediatric``.
+
+    Returns:
+        The sidecar's instructions unless the registry's curated file corrects that task (per
+        recording where it keys its corrections so) and the recording is in the curated file's own
+        language, :data:`CURATED_LANGUAGE`; the sidecar's ``stimulus_text`` where it is not
+        empty, else, for a recall task only, the flat descriptions' prompts for the name. A sidecar
+        stimulus left empty by design -- a breath, a picture description -- stays empty.
+    """
+    task_id, recording = registry_task(name, population)
+    instructions = str(sidecar.get("instructions") or "").strip() or None
+    instructions_source = SIDECAR if instructions else ""
+    language = str(sidecar.get("language") or CURATED_LANGUAGE).strip().lower()
+    curated = _curated().get(task_id or "") if task_id and language == CURATED_LANGUAGE else None
+    if curated:
+        corrected = str(curated.get("instructions") or "").strip()
+        per_recording = curated.get("recordings") or {}
+        if recording and recording in per_recording:
+            corrected = str(per_recording[recording] or "").strip()
+        if corrected:
+            instructions, instructions_source = corrected, CURATED
+    stimulus = str(sidecar.get("stimulus_text") or "").strip() or None
+    stimulus_source = SIDECAR if stimulus else ""
+    speech_type = str(sidecar.get("speech_type") or "").strip() or None
+    if stimulus is None and speech_type == RECALL and language == CURATED_LANGUAGE:
+        prompts = [
+            str(prompt)
+            for prompt in (_descriptions().get(description_key(name)) or {}).get("prompts") or ()
+        ]
+        joined = " ".join(prompt.strip() for prompt in prompts if prompt.strip())
+        if joined:
+            stimulus, stimulus_source = joined, DESCRIPTIONS
+    return TaskText(
+        instructions, stimulus, speech_type, instructions_source, stimulus_source, task_id
+    )
+
+
+QUESTIONNAIRE_JOIN = "questionnaire-join"
+"""A registry ``prompt_ref`` whose per-recording prompt is a field of a phenotype table."""
+
+SELECT_FIELD = "field"
+"""A :data:`QUESTIONNAIRE_JOIN` that selects one named field of the joined row."""
+
+
+def prompt_ref(task_id: str | None) -> dict[str, Any] | None:
+    """Where the registry says a task's per-recording prompt is recorded.
+
+    Args:
+        task_id: A registry task id, or None.
+
+    Returns:
+        The task's ``prompt_ref`` mapping, or None where the registry gives it none.
+    """
+    if not task_id:
+        return None
+    task = (_registry().get("tasks") or {}).get(task_id) or {}
+    ref = task.get("prompt_ref")
+    return dict(ref) if isinstance(ref, dict) else None
+
+
+@lru_cache(maxsize=16)
+def _phenotype_join(root: str, join_key: str, field: str) -> tuple[str, dict[str, str]]:
+    for table in sorted(Path(root, "phenotype").glob("**/*.tsv")):
+        with table.open(newline="") as handle:
+            header = handle.readline().rstrip("\n").split("\t")
+            if join_key not in header or field not in header:
+                continue
+            key_at, field_at = header.index(join_key), header.index(field)
+            values: dict[str, str] = {}
+            for line in handle:
+                cells = line.rstrip("\n").split("\t")
+                if (
+                    len(cells) > max(key_at, field_at)
+                    and cells[key_at].strip()
+                    and cells[field_at].strip()
+                ):
+                    values[cells[key_at].strip().upper()] = cells[field_at].strip()
+        return str(table.relative_to(root)), values
+    return "", {}
+
+
+def questionnaire_field(
+    ref: Mapping[str, Any] | None, root: Path | None, acoustic_task_id: str | None
+) -> tuple[str, str] | None:
+    """One recording's value of a :data:`SELECT_FIELD` questionnaire join, read from the BIDS phenotype tables.
+
+    Args:
+        ref: The registry task's ``prompt_ref``.
+        root: The BIDS dataset root holding ``phenotype/``, or None.
+        acoustic_task_id: The recording's ``acoustic_task_id``, the join's key.
+
+    Returns:
+        ``(value, source)`` where ``source`` names the table and field, ``<table>:<field>``; None where
+        the ref is not a single-field questionnaire join, or no table or row carries the value.
+    """
+    if not ref or ref.get("type") != QUESTIONNAIRE_JOIN or ref.get("select") != SELECT_FIELD:
+        return None
+    join_key, field = str(ref.get("join_key") or ""), str(ref.get("field") or "")
+    if root is None or not join_key or not field or not acoustic_task_id:
+        return None
+    table, values = _phenotype_join(str(root), join_key, field)
+    value = values.get(str(acoustic_task_id).strip().upper())
+    return (value, f"{table}:{field}") if value else None
+
+
+def described(name: str) -> dict[str, Any] | None:
+    """The flat descriptions' entry for a task name, for cross-checking a sidecar against it.
+
+    Args:
+        name: The task name.
+
+    Returns:
+        ``{instructions, prompts}``, or None where the file has no such name.
+    """
+    return _descriptions().get(description_key(name))

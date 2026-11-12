@@ -1,0 +1,11 @@
+# Where a task's extent begins and ends, and whether it holds the whole task (task_extent.py).
+# Derivations: specs/20261012-r37-extents/design.md. A switch is on only after its listen stratum was labelled.
+version: 3
+count_in:                        # A3: a voice task's declared count-in is inside its extent
+  gap_max_s: 3.0                 # the count-in ends at most this before the phonation onset: r36 p99 2.9 s (n=1232); an overlap is taken in. Round 3: 9 of 9 ok
+                                 # deliberate difference from fit (plan.md, step 10)
+completeness:                    # A5: extent_complete
+  reviews: false                 # a recording whose extent is not complete goes to review
+atypical:                        # E2: an attempted task whose events fall outside its family's corpus range
+  cough_event_s_max: 1.877        # the median cough event longer than this: r36 corpus p97.5 (n=2643)
+  ddk_rate_hz: [2.235, 7.692]    # the syllable rate outside this range: r36 corpus p2.5-p97.5 (n=7815)
