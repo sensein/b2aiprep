@@ -1,0 +1,157 @@
+{
+    "id": "bridge2ai_econsent_mit_english_version_3_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "bridge2ai_econsent_mit_english_version_3"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/mit_icf_consent_video_en_v1",
+            "items/mit_icf_p1_en_v3",
+            "items/mit_icf_p2_en_v3",
+            "items/mit_icf_p3_en_v3",
+            "items/mit_icf_p4_en_v3",
+            "items/mit_icf_p5_en_v3",
+            "items/mit_icf_p6_en_v3",
+            "items/mit_icf_p7_en_v3",
+            "items/mit_icf_p8_en_v3",
+            "items/mit_icf_p9_en_v3",
+            "items/mit_icf_question_en_v3",
+            "items/mit_icf_signature_en_v3",
+            "items/mit_icf_date_en_v3",
+            "items/mit_icf_name_en_v3",
+            "items/consent_mit_p1_en_v3",
+            "items/consent_mit_p2_en_v3",
+            "items/consent_mit_p3_en_v3",
+            "items/consent_mit_signature_en_v3",
+            "items/consent_mit_date_en_v3",
+            "items/consent_mit_name_en_v3"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/mit_icf_consent_video_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mit_icf_consent_video_en_v1"
+            },
+            {
+                "isAbout": "items/mit_icf_p1_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mit_icf_p1_en_v3"
+            },
+            {
+                "isAbout": "items/mit_icf_p2_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mit_icf_p2_en_v3"
+            },
+            {
+                "isAbout": "items/mit_icf_p3_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mit_icf_p3_en_v3"
+            },
+            {
+                "isAbout": "items/mit_icf_p4_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mit_icf_p4_en_v3"
+            },
+            {
+                "isAbout": "items/mit_icf_p5_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mit_icf_p5_en_v3"
+            },
+            {
+                "isAbout": "items/mit_icf_p6_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mit_icf_p6_en_v3"
+            },
+            {
+                "isAbout": "items/mit_icf_p7_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mit_icf_p7_en_v3"
+            },
+            {
+                "isAbout": "items/mit_icf_p8_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mit_icf_p8_en_v3"
+            },
+            {
+                "isAbout": "items/mit_icf_p9_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mit_icf_p9_en_v3"
+            },
+            {
+                "isAbout": "items/mit_icf_question_en_v3",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "mit_icf_question_en_v3"
+            },
+            {
+                "isAbout": "items/mit_icf_signature_en_v3",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "mit_icf_signature_en_v3"
+            },
+            {
+                "isAbout": "items/mit_icf_date_en_v3",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "mit_icf_date_en_v3"
+            },
+            {
+                "isAbout": "items/mit_icf_name_en_v3",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "mit_icf_name_en_v3"
+            },
+            {
+                "isAbout": "items/consent_mit_p1_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "consent_mit_p1_en_v3"
+            },
+            {
+                "isAbout": "items/consent_mit_p2_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "consent_mit_p2_en_v3"
+            },
+            {
+                "isAbout": "items/consent_mit_p3_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "consent_mit_p3_en_v3"
+            },
+            {
+                "isAbout": "items/consent_mit_signature_en_v3",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "consent_mit_signature_en_v3"
+            },
+            {
+                "isAbout": "items/consent_mit_date_en_v3",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "consent_mit_date_en_v3"
+            },
+            {
+                "isAbout": "items/consent_mit_name_en_v3",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "consent_mit_name_en_v3"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.11.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

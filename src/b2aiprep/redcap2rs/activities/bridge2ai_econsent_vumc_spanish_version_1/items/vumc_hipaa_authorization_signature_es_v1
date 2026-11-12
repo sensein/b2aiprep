@@ -1,0 +1,37 @@
+{
+    "id": "vumc_hipaa_authorization_signature_es_v1",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "signature"
+        },
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        },
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY-FORM"
+        }
+    ],
+    "prefLabel": {
+        "en": "vumc_hipaa_authorization_signature_es_v1"
+    },
+    "question": {
+        "en": "Firma del paciente/voluntario, padre/madre o representante legalmente autorizado/persona que toma decisiones sobre la atenci\u00f3n m\u00e9dica"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "documentUpload",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

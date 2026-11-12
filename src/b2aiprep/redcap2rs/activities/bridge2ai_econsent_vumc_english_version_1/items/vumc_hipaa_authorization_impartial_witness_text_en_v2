@@ -1,0 +1,20 @@
+{
+    "id": "vumc_hipaa_authorization_impartial_witness_text_en_v2",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "vumc_hipaa_authorization_impartial_witness_text_en_v2"
+    },
+    "question": {
+        "en": "This section must be completed if an impartial witness is used during the authorization process because the subject does not speak English."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
