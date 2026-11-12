@@ -1,0 +1,220 @@
+{
+    "id": "bridge2ai_econsent_vumc_english_version_1_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "bridge2ai_econsent_vumc_english_version_1"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/vumc_icf_consent_video_en_v1",
+            "items/vumc_icf_p1_en_v1",
+            "items/vumc_icf_p2_en_v1",
+            "items/vumc_icf_p3_en_v1",
+            "items/vumc_icf_p4_en_v1",
+            "items/vumc_icf_p5_en_v1",
+            "items/vumc_icf_p6_en_v1",
+            "items/vumc_icf_p7_en_v1",
+            "items/vumc_icf_p8_en_v1",
+            "items/vumc_icf_p9_en_v1",
+            "items/vumc_icf_question_en_v1",
+            "items/vumc_icf_signature_en_v1",
+            "items/vumc_icf_date_en_v1",
+            "items/vumc_icf_name_en_v1",
+            "items/vumc_hipaa_authorization_p1_en_v1",
+            "items/vumc_hipaa_authorization_p2_en_v1",
+            "items/vumc_hipaa_authorization_date_en_v1",
+            "items/vumc_hipaa_authorization_signature_en_v1",
+            "items/vumc_hipaa_authorization_relationship_en_v1",
+            "items/vumc_hipaa_authorization_additional_parent_text_en_v1",
+            "items/vumc_hipaa_authorization_additional_parent_date_en_v1",
+            "items/vumc_hipaa_authorization_additional_parent_signature_en_v1",
+            "items/vumc_hipaa_authorization_impartial_witness_text_en_v2",
+            "items/vumc_hipaa_authorization_impartial_witness_date_en_v1",
+            "items/vumc_hipaa_authorization_impartial_witness_signature_en_v1",
+            "items/vumc_site_specific_info_and_auth_p1_en_v1",
+            "items/vumc_site_specific_info_and_auth_p2_en_v1",
+            "items/vumc_site_specific_info_and_auth_date_en_v1",
+            "items/vumc_site_specific_info_and_auth_signature_en_v1"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/vumc_icf_consent_video_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_icf_consent_video_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_p1_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_icf_p1_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_p2_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_icf_p2_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_p3_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_icf_p3_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_p4_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_icf_p4_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_p5_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_icf_p5_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_p6_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_icf_p6_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_p7_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_icf_p7_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_p8_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_icf_p8_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_p9_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_icf_p9_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_question_en_v1",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "vumc_icf_question_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_signature_en_v1",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "vumc_icf_signature_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_date_en_v1",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "vumc_icf_date_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_icf_name_en_v1",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "vumc_icf_name_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_hipaa_authorization_p1_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_hipaa_authorization_p1_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_hipaa_authorization_p2_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_hipaa_authorization_p2_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_hipaa_authorization_date_en_v1",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "vumc_hipaa_authorization_date_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_hipaa_authorization_signature_en_v1",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "vumc_hipaa_authorization_signature_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_hipaa_authorization_relationship_en_v1",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "vumc_hipaa_authorization_relationship_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_hipaa_authorization_additional_parent_text_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_hipaa_authorization_additional_parent_text_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_hipaa_authorization_additional_parent_date_en_v1",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "vumc_hipaa_authorization_additional_parent_date_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_hipaa_authorization_additional_parent_signature_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_hipaa_authorization_additional_parent_signature_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_hipaa_authorization_impartial_witness_text_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_hipaa_authorization_impartial_witness_text_en_v2"
+            },
+            {
+                "isAbout": "items/vumc_hipaa_authorization_impartial_witness_date_en_v1",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "vumc_hipaa_authorization_impartial_witness_date_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_hipaa_authorization_impartial_witness_signature_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_hipaa_authorization_impartial_witness_signature_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_site_specific_info_and_auth_p1_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_site_specific_info_and_auth_p1_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_site_specific_info_and_auth_p2_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vumc_site_specific_info_and_auth_p2_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_site_specific_info_and_auth_date_en_v1",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "vumc_site_specific_info_and_auth_date_en_v1"
+            },
+            {
+                "isAbout": "items/vumc_site_specific_info_and_auth_signature_en_v1",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "vumc_site_specific_info_and_auth_signature_en_v1"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.11.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,20 @@
+{
+    "id": "vumc_hipaa_authorization_impartial_witness_text_es_v2",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "vumc_hipaa_authorization_impartial_witness_text_es_v2"
+    },
+    "question": {
+        "en": "Esta secci\u00f3n debe completarse si se utiliza un testigo imparcial durante el proceso de autorizaci\u00f3n porque el sujeto no habla ingl\u00e9s."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

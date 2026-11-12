@@ -1,0 +1,185 @@
+{
+    "id": "bridge2ai_econsent_wcm_english_version_2_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "bridge2ai_econsent_wcm_english_version_2"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/wcm_icf_consent_video_en_v1",
+            "items/wcm_icf_p1_en_v2",
+            "items/wcm_icf_p2_en_v2",
+            "items/wcm_icf_p3_en_v2",
+            "items/wcm_icf_p4_en_v2",
+            "items/wcm_icf_p5_en_v2",
+            "items/wcm_icf_p6_en_v2",
+            "items/wcm_icf_p7_en_v2",
+            "items/wcm_icf_p8_en_v2",
+            "items/wcm_icf_p9_en_v2",
+            "items/wcm_icf_question_en_v2",
+            "items/wcm_icf_signature_en_v2",
+            "items/wcm_icf_date_en_v2",
+            "items/wcm_icf_name_en_v2",
+            "items/site_consent_wcm_p1_en_v2",
+            "items/site_consent_wcm_p2_en_v2",
+            "items/site_consent_wcm_p3_en_v2",
+            "items/site_consent_wcm_p4_en_v2",
+            "items/site_consent_wcm_p5_en_v2",
+            "items/site_consent_wcm_yes_en_v2",
+            "items/site_consent_wcm_signature_en_v2",
+            "items/site_consent_wcm_date_en_v2",
+            "items/site_consent_wcm_name_en_v2",
+            "items/site_consent_wcm_best_contact_method_en_v2"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/wcm_icf_consent_video_en_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_consent_video_en_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_p1_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p1_en_v2"
+            },
+            {
+                "isAbout": "items/wcm_icf_p2_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p2_en_v2"
+            },
+            {
+                "isAbout": "items/wcm_icf_p3_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p3_en_v2"
+            },
+            {
+                "isAbout": "items/wcm_icf_p4_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p4_en_v2"
+            },
+            {
+                "isAbout": "items/wcm_icf_p5_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p5_en_v2"
+            },
+            {
+                "isAbout": "items/wcm_icf_p6_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p6_en_v2"
+            },
+            {
+                "isAbout": "items/wcm_icf_p7_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p7_en_v2"
+            },
+            {
+                "isAbout": "items/wcm_icf_p8_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p8_en_v2"
+            },
+            {
+                "isAbout": "items/wcm_icf_p9_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p9_en_v2"
+            },
+            {
+                "isAbout": "items/wcm_icf_question_en_v2",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "wcm_icf_question_en_v2"
+            },
+            {
+                "isAbout": "items/wcm_icf_signature_en_v2",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "wcm_icf_signature_en_v2"
+            },
+            {
+                "isAbout": "items/wcm_icf_date_en_v2",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "wcm_icf_date_en_v2"
+            },
+            {
+                "isAbout": "items/wcm_icf_name_en_v2",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "wcm_icf_name_en_v2"
+            },
+            {
+                "isAbout": "items/site_consent_wcm_p1_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "site_consent_wcm_p1_en_v2"
+            },
+            {
+                "isAbout": "items/site_consent_wcm_p2_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "site_consent_wcm_p2_en_v2"
+            },
+            {
+                "isAbout": "items/site_consent_wcm_p3_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "site_consent_wcm_p3_en_v2"
+            },
+            {
+                "isAbout": "items/site_consent_wcm_p4_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "site_consent_wcm_p4_en_v2"
+            },
+            {
+                "isAbout": "items/site_consent_wcm_p5_en_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "site_consent_wcm_p5_en_v2"
+            },
+            {
+                "isAbout": "items/site_consent_wcm_yes_en_v2",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "site_consent_wcm_yes_en_v2"
+            },
+            {
+                "isAbout": "items/site_consent_wcm_signature_en_v2",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "site_consent_wcm_signature_en_v2"
+            },
+            {
+                "isAbout": "items/site_consent_wcm_date_en_v2",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "site_consent_wcm_date_en_v2"
+            },
+            {
+                "isAbout": "items/site_consent_wcm_name_en_v2",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "site_consent_wcm_name_en_v2"
+            },
+            {
+                "isAbout": "items/site_consent_wcm_best_contact_method_en_v2",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "site_consent_wcm_best_contact_method_en_v2"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.11.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

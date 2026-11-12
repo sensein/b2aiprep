@@ -1,0 +1,31 @@
+{
+    "id": "vumc_hipaa_authorization_additional_parent_signature_es_v1",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "signature"
+        },
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        }
+    ],
+    "prefLabel": {
+        "en": "vumc_hipaa_authorization_additional_parent_signature_es_v1"
+    },
+    "question": {
+        "en": "Firma del padre o madre n.\u00ba 2 (requerida si el estudio de DHHS 45 CFR 46.406 o 45 CFR 46.407/ FDA 21 CFR 50.53 o 50.54)"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "documentUpload"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

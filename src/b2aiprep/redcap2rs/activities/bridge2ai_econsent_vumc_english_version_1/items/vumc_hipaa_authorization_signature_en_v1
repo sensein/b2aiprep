@@ -1,0 +1,31 @@
+{
+    "id": "vumc_hipaa_authorization_signature_en_v1",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "signature"
+        },
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        }
+    ],
+    "prefLabel": {
+        "en": "vumc_hipaa_authorization_signature_en_v1"
+    },
+    "question": {
+        "en": "Signature of Patient/Volunteer, Parent, or Legally Authorized Representative/Health Care Decision-maker"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "documentUpload"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
