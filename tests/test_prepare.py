@@ -7,6 +7,8 @@ import struct
 import tempfile
 import wave
 from pathlib import Path
+from unittest.mock import patch
+
 import pytest
 import torch
 from senselab.utils.data_structures import Language
@@ -21,6 +23,8 @@ from b2aiprep.prepare.prepare import (
     get_value_from_metadata,
     update_metadata_record_and_session_id,
     transcription_language,
+    recording_speech_type,
+    validate_bids_audio_features,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -159,8 +163,40 @@ def test_extract_single(setup_temp_files):
 
     assert os.path.exists(save_to), ".pt file was not generated"
     import importlib.metadata
-    versions = torch.load(save_to, weights_only=False)["software_versions"]
-    assert versions == {name: importlib.metadata.version(name) for name in ("b2aiprep", "senselab")}
+    payload = torch.load(save_to, weights_only=False)
+    assert payload["software_versions"] == {name: importlib.metadata.version(name) for name in ("b2aiprep", "senselab")}
+    assert not {"is_speech_task", "audio_path", "speaker_embedding"} & payload.keys()
+
+
+def test_extract_single_with_sensitive_stores_only_the_transcription(setup_temp_files):
+    """No speaker embedding and no source path: nothing reads them, and the path names the original IDs."""
+    redcap_csv_path, audio_dir, bids_dir_path, tar_file_path = setup_temp_files
+    wav_path = os.path.join(audio_dir, "sample.wav")
+    with patch("b2aiprep.prepare.prepare.HFModel"), \
+            patch("b2aiprep.prepare.prepare.transcribe_audios", return_value=["a transcript"]):
+        save_to = extract_single(
+            wav_path=wav_path, transcription_model_size="tiny", with_sensitive=True, update=False, overwrite=True,
+        )
+    payload = torch.load(save_to, weights_only=False)
+    assert payload["transcription"] == "a transcript"
+    assert payload["sensitive_features"] == ["transcription"]
+    assert not {"is_speech_task", "audio_path", "speaker_embedding"} & payload.keys()
+
+
+def test_validate_bids_audio_features_reads_current_feature_files(tmp_path):
+    """The validator must accept .pt files without the removed speaker_embedding key."""
+    audio_dir = tmp_path / "bids" / "sub-x" / "ses-y" / "audio"
+    audio_dir.mkdir(parents=True)
+    create_dummy_wav_file(str(audio_dir / "sub-x_ses-y_task-a_rec-1.wav"))
+    features = {name: None for name in ("transcription", "diarization", "torchaudio_squim", "opensmile",
+                                        "torchaudio", "praat_parselmouth", "sparc", "ppgs")}
+    torch.save(features, audio_dir / "sub-x_ses-y_task-a_rec-1_features.pt")
+    report_path = tmp_path / "report.json"
+    validate_bids_audio_features(tmp_path / "bids", report_path=report_path)
+    report = json.loads(report_path.read_text())
+    assert "missing_speaker_embeddings" not in report
+    assert len(report["missing_transcriptions"]) == 1
+    assert report["missing_feature_files"] == []
 
 
 def test_wav_to_features(setup_temp_files):
@@ -257,6 +293,16 @@ def test_transcription_language_comes_from_the_recording_sidecar(tmp_path, sidec
         (tmp_path / "sub-p_ses-s_task-rainbow-passage_recording-metadata.json").write_text(json.dumps(sidecar))
     assert transcription_language(wav) == expected
     Language.model_validate({"language_code": expected})  # a code senselab accepts
+
+
+@pytest.mark.parametrize("sidecar, expected", [
+    ({"speech_type": "read"}, "read"), ({"speech_type": "non-lexical"}, "non-lexical"),
+    ({"speech_type": None}, None), ({}, None), (None, None)])
+def test_recording_speech_type_comes_from_the_recording_sidecar(tmp_path, sidecar, expected):
+    wav = tmp_path / "sub-p_ses-s_task-prolonged-vowel.wav"
+    if sidecar is not None:
+        (tmp_path / "sub-p_ses-s_task-prolonged-vowel_recording-metadata.json").write_text(json.dumps(sidecar))
+    assert recording_speech_type(wav) == expected
 
 
 

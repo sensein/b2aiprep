@@ -1,8 +1,12 @@
 from pathlib import Path
 from unittest.mock import patch
 
+import json
+
 import pandas as pd
 import pytest
+import torch
+from conftest import WAV_BYTES
 
 from b2aiprep.prepare import quality_control
 from b2aiprep.prepare.quality_control import quality_control_wrapper
@@ -48,3 +52,28 @@ def test_review_files_runs_when_snorkel_is_installed():
     from senselab.audio.tasks.quality_control import review
 
     assert review.SNORKEL_AVAILABLE
+
+
+def test_missing_speakers_are_flagged_only_for_lexical_tasks(tmp_path):
+    """The diarization check reads the registry's speech_type from the sidecar, so a pediatric
+    speech task is checked and a prolonged vowel is not."""
+    audio = tmp_path / "bids" / "sub-p" / "ses-s" / "audio"
+    audio.mkdir(parents=True)
+    paths = []
+    for task, speech_type in [("repeating-words", "read"), ("prolonged-vowel", "non-lexical"), ("no-sidecar", None)]:
+        stem = f"sub-p_ses-s_task-{task}"
+        (audio / f"{stem}.wav").write_bytes(WAV_BYTES)
+        torch.save({"diarization": []}, audio / f"{stem}_features.pt")
+        if speech_type:
+            (audio / f"{stem}_recording-metadata.json").write_text(json.dumps({"speech_type": speech_type}))
+        paths.append(audio / f"{stem}.wav")
+    outdir = tmp_path / "qc"
+    with patch.object(quality_control.importlib.util, "find_spec", return_value=object()), \
+            patch.object(quality_control, "check_quality", return_value=pd.DataFrame({"path": []})), \
+            patch.object(quality_control, "review_files"), \
+            patch.object(quality_control, "primary_speaker_ratio_metric", return_value=0.0):
+        quality_control_wrapper(audio_paths=paths, bids_path=tmp_path / "bids", outdir=outdir, deep_checks=True)
+    flags = pd.read_csv(outdir / "diarization_check.csv").set_index("task")["flag"]
+    assert flags["task-repeating-words"] == "no_speakers_found"
+    assert pd.isna(flags["task-prolonged-vowel"])
+    assert pd.isna(flags["task-no-sidecar"])
