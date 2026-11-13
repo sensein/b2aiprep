@@ -26,7 +26,7 @@
       "description": "Estimated fundamental frequency (F0) of the audio signal.",
       "extras": {
         "tensor": {
-          "dtype": "float32",
+          "dtype": "float16",
           "ndim": 1,
           "dims": ["time"],
           "shape": [null],

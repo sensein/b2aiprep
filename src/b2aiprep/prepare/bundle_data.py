@@ -12,11 +12,22 @@ from b2aiprep.prepare.dataset import BIDSDataset
 _LOGGER = logging.getLogger(__name__)
 
 
+def _note_software_versions(features: t.Dict[str, t.Any], software_versions: t.Optional[t.Set[str]]) -> None:
+    """Add the senselab version a feature file records (``"unknown"`` for files that predate the record)."""
+    if software_versions is not None:
+        software_versions.add(str((features.get("software_versions") or {}).get("senselab", "unknown")))
+
+
 def spectrogram_generator(
     audio_paths,
-    fp16: bool = True,
+    dtype: t.Any = np.float16,
+    software_versions: t.Optional[t.Set[str]] = None,
 ) -> t.Generator[t.Dict[str, t.Any], None, None]:
-    """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator."""
+    """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator.
+
+    *dtype* is the stored array type, which the caller takes from the feature's sidecar; the senselab version of
+    each file read is added to *software_versions*.
+    """
     audio_paths = sorted(
         audio_paths,
         # sort first by subject, then by task
@@ -28,6 +39,7 @@ def spectrogram_generator(
         pt_file = wav_path.parent / f"{wav_path.stem}_features.pt"
         device = 'cpu' # not checking for cuda because optimization would be minimal if any
         features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
+        _note_software_versions(features, software_versions)
 
         output["participant_id"] = BIDSDataset._extract_participant_id_from_path(wav_path)  # skip "sub-" prefix
         output["session_id"] = BIDSDataset._extract_session_id_from_path(wav_path)  # skip "ses-" prefix
@@ -40,7 +52,7 @@ def spectrogram_generator(
             if not torch.isnan(spectrogram).all().item():
                 spectrogram = 10.0 * torch.log10(torch.maximum(spectrogram, torch.tensor(1e-10)))
                 spectrogram = torch.maximum(spectrogram, spectrogram.max() - 80)
-                spectrogram = spectrogram.numpy().astype(np.float16 if fp16 else np.float32)
+                spectrogram = spectrogram.numpy().astype(dtype)
                 # skip every other column
                 spectrogram = spectrogram[:, ::2]
                 output["spectrogram"] = spectrogram
@@ -115,9 +127,14 @@ def feature_extraction_generator(
     audio_paths: t.List[Path],
     feature_name: str,
     feature_class: t.Optional[str] = None,
-    fp16: bool = True,
+    dtype: t.Any = np.float16,
+    software_versions: t.Optional[t.Set[str]] = None,
 ) -> t.Generator[t.Dict[str, t.Any], None, None]:
-    """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator."""
+    """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator.
+
+    *dtype* is the stored array type, which the caller takes from the feature's sidecar; the senselab version of
+    each file read is added to *software_versions*.
+    """
     audio_paths = sorted(
         audio_paths,
         # sort first by subject, then by task
@@ -131,6 +148,7 @@ def feature_extraction_generator(
         pt_file = wav_path.parent / f"{wav_path.stem}_features.pt"
         device = 'cpu' # not checking for cuda because optimization would be minimal if any
         features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
+        _note_software_versions(features, software_versions)
 
         output["participant_id"] = BIDSDataset._extract_participant_id_from_path(wav_path)  # skip "sub-" prefix
         output["session_id"] = BIDSDataset._extract_session_id_from_path(wav_path)  # skip "ses-" prefix
@@ -154,9 +172,9 @@ def feature_extraction_generator(
         if feature_name == "spectrogram":
             data = 10.0 * torch.log10(torch.maximum(data, torch.tensor(1e-10)))
             data = torch.maximum(data, data.max() - 80)
-            data = data.numpy().astype(np.float16 if fp16 else np.float32)
+            data = data.numpy().astype(dtype)
         else:
-            data = data.numpy().astype(np.float16 if fp16 else np.float32)
+            data = data.numpy().astype(dtype)
 
         if feature_name in ("spectrogram", "mfcc", "mel_spectrogram"):
             data = data[:, ::2]

@@ -26,7 +26,7 @@
       "description": "Detected pitch (fundamental frequency) over time.",
       "extras": {
         "tensor": {
-          "dtype": "float32",
+          "dtype": "float16",
           "ndim": 1,
           "dims": ["time"],
           "shape": [null],
@@ -48,7 +48,7 @@
 
           "provenance": {
             "software": "torchaudio",
-            "version": "2.8.0",
+            "version": "2.11.0",
             "command": "torchaudio.functional.detect_pitch_frequency",
             "extraction_date": null
           },

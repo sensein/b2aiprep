@@ -12,6 +12,7 @@ import pytest
 from conftest import WAV_BYTES
 import torch
 import pandas as pd
+import pyarrow.parquet as pq
 from unittest.mock import patch, MagicMock
 from click.testing import CliRunner
 
@@ -555,6 +556,142 @@ def test_create_bundled_dataset_cli(setup_bids_structure):
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert os.path.exists(outdir), "Output directory was not created"
+        parquets = list(Path(outdir).rglob("*.parquet"))
+        assert parquets, "no feature parquet was bundled"
+        for path in parquets:
+            assert '"List"' not in pq.read_schema(path).metadata[b"huggingface"].decode(), path.name
+            assert pq.ParquetFile(path).metadata.row_group(0).column(0).compression == "ZSTD", path.name
+        for path in Path(outdir).rglob("*.parquet"):
+            sidecar_path = path.with_suffix(".json")
+            if not sidecar_path.exists():
+                continue  # parquets that are not array features (e.g. transcripts) have no tensor sidecar
+            sidecar = json.loads(sidecar_path.read_text())
+            tensors = [f for f in sidecar["fields"] if "tensor" in f.get("extras", {})]
+            assert len(tensors) == 1, path.name
+            declared = tensors[0]["extras"]["tensor"]["dtype"]
+            assert _leaf_dtype(pq.read_schema(path).field(tensors[0]["name"]).type) == declared, path.name
+            assert "senselab_version" in tensors[0]["extras"]["tensor"]["provenance"], path.name
+        static = Path(outdir) / "features" / "static_features.tsv"
+        if static.exists():
+            assert "windows" not in pd.read_csv(static, sep="\t", nrows=1).columns
+
+
+def _leaf_dtype(arrow_type):
+    """numpy name of the innermost value type of a (nested) arrow list type."""
+    import pyarrow as pa
+    while pa.types.is_list(arrow_type) or pa.types.is_large_list(arrow_type) or pa.types.is_fixed_size_list(arrow_type):
+        arrow_type = arrow_type.value_type
+    return arrow_type.to_pandas_dtype().__name__
+
+
+def test_every_feature_sidecar_declares_the_dtype_the_bundle_stores():
+    """#363: the bundle writes the sidecar's dtype; posteriorgrams and the mel spectrogram stay float32."""
+    import numpy as np
+    from b2aiprep.commands import _feature_sidecar, _sidecar_array_dtype
+    schemas = Path(__file__).resolve().parents[1] / "src/b2aiprep/prepare/resources/feature_schemas"
+    declared = {p.stem: _sidecar_array_dtype(_feature_sidecar(p.stem), p.stem) for p in sorted(schemas.glob("*.json"))}
+    assert declared["ppgs"] is np.float32 and declared["torchaudio_mel_spectrogram"] is np.float32
+    assert all(v is np.float16 for k, v in declared.items() if k not in ("ppgs", "torchaudio_mel_spectrogram"))
+
+
+def test_sidecar_without_a_declared_dtype_is_refused():
+    from b2aiprep.commands import _sidecar_array_dtype
+    with pytest.raises(ValueError, match="must declare exactly one tensor"):
+        _sidecar_array_dtype({"fields": [{"name": "x", "extras": {"tensor": {"ndim": 2}}}]}, "x")
+    with pytest.raises(ValueError, match="must declare exactly one tensor"):
+        _sidecar_array_dtype(None, "missing")
+
+
+def test_sidecar_records_the_senselab_versions_of_its_feature_files():
+    from b2aiprep.commands import _sidecar_with_software_versions
+    sidecar = {"fields": [{"name": "ppgs", "extras": {"tensor": {"dtype": "float32", "provenance": {"software": "ppgs"}}}}]}
+    one = _sidecar_with_software_versions(sidecar, {"1.4.0a14"})
+    assert one["fields"][0]["extras"]["tensor"]["provenance"] == {"software": "ppgs", "senselab_version": "1.4.0a14"}
+    two = _sidecar_with_software_versions(sidecar, {"unknown", "1.4.0a14"})
+    assert two["fields"][0]["extras"]["tensor"]["provenance"]["senselab_version"] == ["1.4.0a14", "unknown"]
+    assert "senselab_version" not in sidecar["fields"][0]["extras"]["tensor"]["provenance"]  # input untouched
+
+
+def test_static_feature_values_keep_scalars_only():
+    """senselab 1.4's SQUIM `windows` list stays in the feature file, out of static_features.tsv."""
+    from b2aiprep.commands import _static_feature_values
+    squim = {"stoi": 0.9, "pesq": 2.1, "si_sdr": 14.0, "span_s": 12.5, "windows_n": 2,
+             "windows": [{"start_s": 0.0, "end_s": 10.0, "stoi": 0.9}]}
+    assert _static_feature_values(squim) == {"stoi": 0.9, "pesq": 2.1, "si_sdr": 14.0, "span_s": 12.5, "windows_n": 2}
+
+
+def _list_feature_dataset(n_rows):
+    from datasets import Dataset, Features, Sequence, Value
+    features = Features({
+        "participant_id": Value("string"), "session_id": Value("string"), "task_name": Value("string"),
+        "ppgs": Sequence(Sequence(Value("float32"))), "n_frames": Value("int64"),
+    })
+    rows = {
+        "participant_id": [f"p{i // 10:03d}" for i in range(n_rows)],
+        "session_id": ["s1"] * n_rows,
+        "task_name": [f"t{i % 10}" for i in range(n_rows)],
+        "ppgs": [[[float(i), 0.5], [1e-6, float(-i)]] for i in range(n_rows)],
+        "n_frames": [2] * n_rows,
+    }
+    return Dataset.from_dict(rows, features=features)
+
+
+_BUNDLE_SETTINGS = dict(
+    version="2.6", compression="zstd", compression_level=3,
+    use_dictionary=["participant_id", "session_id", "task_name"], write_statistics=True,
+    data_page_size=1_048_576, write_page_index=True, use_byte_stream_split=True,
+)
+
+
+def test_write_bundle_parquet_keeps_the_v4_layout_and_loads_in_datasets(tmp_path):
+    """Bundle settings reach the file under any datasets version, which a datasets-3-readable label describes."""
+    from datasets import Dataset
+    from b2aiprep.commands import _write_bundle_parquet
+    ds = _list_feature_dataset(2500)
+    path = tmp_path / "ppgs.parquet"
+    _write_bundle_parquet(ds, path, **_BUNDLE_SETTINGS,
+                          sorting_columns=(pq.SortingColumn(0), pq.SortingColumn(2)))
+
+    meta = pq.ParquetFile(path).metadata
+    assert [meta.row_group(i).num_rows for i in range(meta.num_row_groups)] == [1000, 1000, 500]
+    column = meta.row_group(0).column(3)
+    assert column.compression == "ZSTD" and "BYTE_STREAM_SPLIT" in column.encodings and column.has_offset_index
+    assert meta.row_group(0).sorting_columns
+    label = json.loads(pq.read_schema(path).metadata[b"huggingface"])["info"]["features"]["ppgs"]
+    assert label["_type"] == "Sequence" and label["feature"]["_type"] == "Sequence" and "length" not in label
+
+    loaded = Dataset.from_parquet(str(path), cache_dir=str(tmp_path / "cache"))
+    assert loaded.features == ds.features
+    assert loaded[2499]["ppgs"] == ds[2499]["ppgs"] and loaded[7]["participant_id"] == ds[7]["participant_id"]
+
+
+def test_write_bundle_parquet_matches_datasets_to_parquet_where_it_still_works(tmp_path):
+    """Under datasets 3.x, whose to_parquet accepts the settings, the two files are the same bytes."""
+    import datasets
+    from b2aiprep.commands import _write_bundle_parquet
+    if int(datasets.__version__.split(".")[0]) >= 4:
+        pytest.skip("datasets>=4 to_parquet rejects the bundle settings (its own compression collides)")
+    ds = _list_feature_dataset(2500)
+    _write_bundle_parquet(ds, tmp_path / "own.parquet", **_BUNDLE_SETTINGS)
+    ds.to_parquet(str(tmp_path / "hf.parquet"), **_BUNDLE_SETTINGS)
+    assert (tmp_path / "own.parquet").read_bytes() == (tmp_path / "hf.parquet").read_bytes()
+
+
+def test_datasets3_feature_metadata_relabels_lists_only():
+    from b2aiprep.commands import _datasets3_feature_metadata
+    value = {"dtype": "float32", "_type": "Value"}
+    meta = {"info": {"features": {
+        "x": {"feature": {"feature": value, "_type": "List"}, "_type": "List"},
+        "fixed": {"feature": value, "length": 3, "_type": "List"},
+        "arr": {"shape": [2, 3], "dtype": "float32", "_type": "Array2D"},
+        "id": {"dtype": "string", "_type": "Value"},
+    }}}
+    out = _datasets3_feature_metadata(meta)["info"]["features"]
+    assert out["x"] == {"feature": {"feature": value, "_type": "Sequence"}, "_type": "Sequence"}
+    assert out["fixed"] == {"feature": value, "length": 3, "_type": "Sequence"}
+    assert out["arr"] == meta["info"]["features"]["arr"] and out["id"] == meta["info"]["features"]["id"]
+    with pytest.raises(ValueError, match="List of a dict"):
+        _datasets3_feature_metadata({"_type": "List", "feature": {"a": value}})
 
 
 def test_create_bundled_dataset_cli_with_nans(setup_bids_structure_with_nan_feature):

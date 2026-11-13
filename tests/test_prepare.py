@@ -153,10 +153,14 @@ def test_extract_single(setup_temp_files):
 
     wav_path = os.path.join(audio_dir, "sample.wav")
     save_to = extract_single(
-        wav_path=wav_path, transcription_model_size="tiny", with_sensitive=False, update=False
+        wav_path=wav_path, transcription_model_size="tiny", with_sensitive=False, update=False,
+        overwrite=True,  # the session fixture may already hold a .pt from another test, which would be kept
     )
 
     assert os.path.exists(save_to), ".pt file was not generated"
+    import importlib.metadata
+    versions = torch.load(save_to, weights_only=False)["software_versions"]
+    assert versions == {name: importlib.metadata.version(name) for name in ("b2aiprep", "senselab")}
 
 
 def test_wav_to_features(setup_temp_files):

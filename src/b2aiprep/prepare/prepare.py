@@ -38,6 +38,7 @@ Functions:
 from collections import Counter
 import json
 import logging
+import importlib.metadata
 import os
 import traceback
 from pathlib import Path
@@ -305,6 +306,11 @@ def extract_single(
             preloaded_pt["praat_parselmouth"] = {
                 **preloaded_pt["praat_parselmouth"], **features["praat_parselmouth"]}
         features = preloaded_pt
+
+    # Which software computed this file, so a bundle's sidecars can say so (read at bundle time).
+    features["software_versions"] = {
+        name: importlib.metadata.version(name) for name in ("b2aiprep", "senselab")
+    }
 
     if not update:
         features["parselmouth_config"] = parsel_mouth_config

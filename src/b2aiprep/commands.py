@@ -11,6 +11,7 @@ from pathlib import Path
 import typing as t
 
 import click
+import numpy as np
 import pandas as pd
 import torch
 from datasets import Dataset
@@ -52,6 +53,100 @@ _SENSITIVE_PARQUET_STEMS: t.FrozenSet[str] = {
         f"{feature_group}_{feature_name}" if feature_group else feature_name
         for feature_group in _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE for feature_name in _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE[feature_group]
         }
+
+# Array dtypes a feature sidecar may declare for its stored tensor.
+_SIDECAR_ARRAY_DTYPES = {"float16": np.float16, "float32": np.float32}
+
+
+def _feature_sidecar(feature_alias: str) -> t.Optional[t.Dict[str, t.Any]]:
+    """The packaged sidecar (``feature_schemas/<alias>.json``) of one bundled feature, or None."""
+    resource = resources.files("b2aiprep").joinpath("prepare", "resources", "feature_schemas", f"{feature_alias}.json")
+    try:
+        return json.loads(resource.read_text())
+    except FileNotFoundError:
+        return None
+
+
+def _sidecar_array_dtype(sidecar: t.Optional[t.Dict[str, t.Any]], feature_alias: str) -> t.Any:
+    """The numpy dtype the sidecar declares for the feature's array, so the parquet stores what it says.
+
+    A feature without a sidecar, or a sidecar without a declared tensor dtype, is refused: the type a
+    reader is told is the type that is written, never a default the sidecar does not state.
+    """
+    tensors = [f["extras"]["tensor"] for f in (sidecar or {}).get("fields", []) if "tensor" in f.get("extras", {})]
+    if len(tensors) != 1 or tensors[0].get("dtype") not in _SIDECAR_ARRAY_DTYPES:
+        raise ValueError(
+            f"feature_schemas/{feature_alias}.json must declare exactly one tensor with dtype in "
+            f"{sorted(_SIDECAR_ARRAY_DTYPES)}"
+        )
+    return _SIDECAR_ARRAY_DTYPES[tensors[0]["dtype"]]
+
+
+def _sidecar_with_software_versions(sidecar: t.Dict[str, t.Any], software_versions: t.Set[str]) -> t.Dict[str, t.Any]:
+    """The sidecar with the senselab version(s) its feature files record, in each tensor's provenance."""
+    out = json.loads(json.dumps(sidecar))
+    versions = sorted(software_versions) or ["unknown"]
+    for field in out.get("fields", []):
+        tensor = field.get("extras", {}).get("tensor")
+        if tensor is not None:
+            tensor.setdefault("provenance", {})["senselab_version"] = versions[0] if len(versions) == 1 else versions
+    return out
+
+
+def _static_feature_values(group: t.Dict[str, t.Any]) -> t.Dict[str, t.Any]:
+    """The scalar entries of one static feature group, for one row of ``static_features.tsv``.
+
+    senselab 1.4's SQUIM result carries ``windows``, a list of per-window readings; a list has no TSV cell,
+    so list, tuple and dict entries stay in the feature file and out of the table.
+    """
+    return {key: value for key, value in group.items() if not isinstance(value, (list, tuple, dict))}
+
+
+# Rows per parquet row group: the slice size datasets 3.6's `to_parquet` wrote the v4 bundles with.
+_BUNDLE_ROWS_PER_ROW_GROUP = 1000
+
+
+def _datasets3_feature_metadata(node: t.Any) -> t.Any:
+    """The ``huggingface`` schema metadata as datasets 3.x writes it.
+
+    datasets 4 and later write a list feature as ``{"_type": "List", ...}``; datasets 3.x cannot read that
+    label and wrote ``{"_type": "Sequence", ...}`` for the same arrow type. datasets 4 and later still read
+    ``Sequence``, so writing it keeps the bundle loadable by both. ``length`` is kept only when the feature
+    has one, as 3.x omits it for variable-length lists. A ``List`` of a dict is refused: 3.x stores
+    ``Sequence({...})`` as a dict of lists, a different arrow type, so a relabel would describe it wrongly.
+    """
+    if isinstance(node, list):
+        return [_datasets3_feature_metadata(item) for item in node]
+    if not isinstance(node, dict):
+        return node
+    converted = {key: _datasets3_feature_metadata(value) for key, value in node.items()}
+    if converted.get("_type") == "List":
+        if isinstance(node.get("feature"), dict) and "_type" not in node["feature"]:
+            raise ValueError("A List of a dict has no datasets 3.x equivalent; the bundle features use none.")
+        converted["_type"] = "Sequence"
+    return converted
+
+
+def _write_bundle_parquet(ds: Dataset, path: Path, **writer_kwargs: t.Any) -> None:
+    """Write *ds* as one bundle parquet, laid out as the v4 bundles were.
+
+    The bundle sets its own parquet options (zstd, dictionary columns, page index, sort order), which
+    datasets 4 and later no longer accept through ``Dataset.to_parquet``: it passes its own ``compression``
+    and ``use_dictionary`` to the writer. So the file is written here, the way datasets 3.6's
+    ``to_parquet`` did: the features' arrow schema and row groups of ``_BUNDLE_ROWS_PER_ROW_GROUP`` rows,
+    with the ``huggingface`` metadata in its datasets 3.x form. Under datasets 3.6 the bytes equal
+    ``ds.to_parquet(path, **writer_kwargs)``.
+    """
+    schema = ds.features.arrow_schema
+    metadata = dict(schema.metadata or {})
+    if b"huggingface" in metadata:
+        metadata[b"huggingface"] = json.dumps(_datasets3_feature_metadata(json.loads(metadata[b"huggingface"]))).encode()
+    schema = schema.with_metadata(metadata)
+    table = ds.with_format("arrow")
+    with pq.ParquetWriter(Path(path).as_posix(), schema=schema, **writer_kwargs) as writer:
+        for offset in range(0, len(ds), _BUNDLE_ROWS_PER_ROW_GROUP):
+            writer.write_table(table[offset : offset + _BUNDLE_ROWS_PER_ROW_GROUP])
+
 
 def _prime_generator(
     generator_callable: t.Callable[[], t.Iterator[t.Dict[str, t.Any]]],
@@ -501,7 +596,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         subj_info["transcription"] = transcription
 
         for key in ["opensmile", "praat_parselmouth", "torchaudio_squim"]:
-            subj_info.update(features.get(key, {}))
+            subj_info.update(_static_feature_values(features.get(key) or {}))
 
         static_features.append(subj_info)
 
@@ -549,6 +644,9 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         feature_alias = f"{feature_class}_{feature_name}" if feature_class else feature_name
 
         output_parquet = features_dir.joinpath(f"{feature_alias}.parquet").resolve()
+        sidecar = _feature_sidecar(feature_alias)
+        array_dtype = _sidecar_array_dtype(sidecar, feature_alias)
+        software_versions: set[str] = set()
 
         if feature_name != "spectrogram":
             use_byte_stream_split = True
@@ -556,13 +654,17 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
                 feature_extraction_generator,
                 audio_paths=audio_paths,
                 feature_name=feature_name,
-                feature_class=feature_class
+                feature_class=feature_class,
+                dtype=array_dtype,
+                software_versions=software_versions,
             )
         else:
             use_byte_stream_split = False
             maybe_empty_generator = partial(
                 spectrogram_generator,
                 audio_paths=audio_paths,
+                dtype=array_dtype,
+                software_versions=software_versions,
             )
         has_data, feature_generator = _prime_generator(maybe_empty_generator)
         if not has_data or feature_generator is None:
@@ -615,8 +717,9 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
                 "status": "skipped(no-data)",
             }
             continue
-        ds.to_parquet(
-            output_parquet.as_posix(),
+        _write_bundle_parquet(
+            ds,
+            output_parquet,
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
@@ -635,18 +738,9 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
             ),
         )
 
-        schema_resource = resources.files("b2aiprep").joinpath(
-            "prepare", "resources", "feature_schemas", f"{feature_alias}.json"
-        )
-        try:
-            with schema_resource.open() as src, open(features_dir / f"{feature_alias}.json", "w") as dst:
-                dst.write(src.read())
-        except FileNotFoundError:
-            _LOGGER.warning(
-                "No schema JSON found for feature '%s' in feature_schemas/; "
-                "parquet was created without a companion JSON.",
-                feature_alias,
-            )
+        with open(features_dir / f"{feature_alias}.json", "w") as dst:
+            json.dump(_sidecar_with_software_versions(sidecar, software_versions), dst, indent=2)
+            dst.write("\n")
 
         bundle_output_stats[output_parquet.name] = {
             "path": output_parquet.as_posix(),

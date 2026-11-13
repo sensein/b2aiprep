@@ -26,7 +26,7 @@
       "description": "Estimated periodicity (confidence of pitch presence) derived from audio.",
       "extras": {
         "tensor": {
-          "dtype": "float32",
+          "dtype": "float16",
           "ndim": 1,
           "dims": ["time"],
           "shape": [null],
