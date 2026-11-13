@@ -428,7 +428,8 @@ def run_quality_control_on_audios(
         batch_size: Batch size to run when parallelizing
         num_cores: Number of cores to use when parallelizing
         skip_windowing: If True, only compute scalar metrics without windowing
-        deep_checks: If true, run deeper checks including snorkel recommendations and trimming and diarization checks
+        deep_checks: If true, run deeper checks including snorkel recommendations and trimming and diarization checks.
+            Needs output_metrics_path, where their results are written, and snorkel (``pip install 'b2aiprep[qc]'``).
     """
 
     bids_path = Path(bids_path)
