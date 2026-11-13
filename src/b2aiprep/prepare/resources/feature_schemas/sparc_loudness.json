@@ -26,7 +26,7 @@
       "description": "Estimated loudness based on the average absolute amplitude of the audio waveform.",
       "extras": {
         "tensor": {
-          "dtype": "float32",
+          "dtype": "float16",
           "ndim": 1,
           "dims": ["time"],
           "shape": [null],

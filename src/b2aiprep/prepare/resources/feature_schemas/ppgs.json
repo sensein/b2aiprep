@@ -77,7 +77,7 @@
           "provenance": {
             "software": "ppgs",
             "version": "0.0.9",
-            "command": "ppgs.from_audio(audio, sample_rate=16000)",
+            "command": "senselab extract_ppgs_from_audios: ppgs.preprocess.from_audio(audio, representation='mel', sample_rate=16000), then the ppgs model at checkpoint revision 'main' in batched 5 s chunks; float32 posteriors",
 
             "software_reference": {
               "title": "High-Fidelity Neural Phonetic Posteriorgrams",

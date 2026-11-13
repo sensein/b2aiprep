@@ -561,6 +561,63 @@ def test_create_bundled_dataset_cli(setup_bids_structure):
         for path in parquets:
             assert '"List"' not in pq.read_schema(path).metadata[b"huggingface"].decode(), path.name
             assert pq.ParquetFile(path).metadata.row_group(0).column(0).compression == "ZSTD", path.name
+        for path in Path(outdir).rglob("*.parquet"):
+            sidecar_path = path.with_suffix(".json")
+            if not sidecar_path.exists():
+                continue  # parquets that are not array features (e.g. transcripts) have no tensor sidecar
+            sidecar = json.loads(sidecar_path.read_text())
+            tensors = [f for f in sidecar["fields"] if "tensor" in f.get("extras", {})]
+            assert len(tensors) == 1, path.name
+            declared = tensors[0]["extras"]["tensor"]["dtype"]
+            assert _leaf_dtype(pq.read_schema(path).field(tensors[0]["name"]).type) == declared, path.name
+            assert "senselab_version" in tensors[0]["extras"]["tensor"]["provenance"], path.name
+        static = Path(outdir) / "features" / "static_features.tsv"
+        if static.exists():
+            assert "windows" not in pd.read_csv(static, sep="\t", nrows=1).columns
+
+
+def _leaf_dtype(arrow_type):
+    """numpy name of the innermost value type of a (nested) arrow list type."""
+    import pyarrow as pa
+    while pa.types.is_list(arrow_type) or pa.types.is_large_list(arrow_type) or pa.types.is_fixed_size_list(arrow_type):
+        arrow_type = arrow_type.value_type
+    return arrow_type.to_pandas_dtype().__name__
+
+
+def test_every_feature_sidecar_declares_the_dtype_the_bundle_stores():
+    """#363: the bundle writes the sidecar's dtype; posteriorgrams and the mel spectrogram stay float32."""
+    import numpy as np
+    from b2aiprep.commands import _feature_sidecar, _sidecar_array_dtype
+    schemas = Path(__file__).resolve().parents[1] / "src/b2aiprep/prepare/resources/feature_schemas"
+    declared = {p.stem: _sidecar_array_dtype(_feature_sidecar(p.stem), p.stem) for p in sorted(schemas.glob("*.json"))}
+    assert declared["ppgs"] is np.float32 and declared["torchaudio_mel_spectrogram"] is np.float32
+    assert all(v is np.float16 for k, v in declared.items() if k not in ("ppgs", "torchaudio_mel_spectrogram"))
+
+
+def test_sidecar_without_a_declared_dtype_is_refused():
+    from b2aiprep.commands import _sidecar_array_dtype
+    with pytest.raises(ValueError, match="must declare exactly one tensor"):
+        _sidecar_array_dtype({"fields": [{"name": "x", "extras": {"tensor": {"ndim": 2}}}]}, "x")
+    with pytest.raises(ValueError, match="must declare exactly one tensor"):
+        _sidecar_array_dtype(None, "missing")
+
+
+def test_sidecar_records_the_senselab_versions_of_its_feature_files():
+    from b2aiprep.commands import _sidecar_with_software_versions
+    sidecar = {"fields": [{"name": "ppgs", "extras": {"tensor": {"dtype": "float32", "provenance": {"software": "ppgs"}}}}]}
+    one = _sidecar_with_software_versions(sidecar, {"1.4.0a14"})
+    assert one["fields"][0]["extras"]["tensor"]["provenance"] == {"software": "ppgs", "senselab_version": "1.4.0a14"}
+    two = _sidecar_with_software_versions(sidecar, {"unknown", "1.4.0a14"})
+    assert two["fields"][0]["extras"]["tensor"]["provenance"]["senselab_version"] == ["1.4.0a14", "unknown"]
+    assert "senselab_version" not in sidecar["fields"][0]["extras"]["tensor"]["provenance"]  # input untouched
+
+
+def test_static_feature_values_keep_scalars_only():
+    """senselab 1.4's SQUIM `windows` list stays in the feature file, out of static_features.tsv."""
+    from b2aiprep.commands import _static_feature_values
+    squim = {"stoi": 0.9, "pesq": 2.1, "si_sdr": 14.0, "span_s": 12.5, "windows_n": 2,
+             "windows": [{"start_s": 0.0, "end_s": 10.0, "stoi": 0.9}]}
+    assert _static_feature_values(squim) == {"stoi": 0.9, "pesq": 2.1, "si_sdr": 14.0, "span_s": 12.5, "windows_n": 2}
 
 
 def _list_feature_dataset(n_rows):
