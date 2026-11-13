@@ -6,6 +6,7 @@ from senselab.audio.tasks.quality_control.metrics import primary_speaker_ratio_m
 from senselab.audio.data_structures.audio import Audio
 from senselab.audio.tasks.preprocessing import downmix_audios_to_mono, resample_audios
 
+import importlib.util
 import logging
 import numpy as np
 import torch
@@ -21,6 +22,25 @@ from b2aiprep.prepare.utils import copy_package_resource, normalize_task_label
 RESAMPLE_RATE=16000
 
 _logger = logging.getLogger(__name__)
+
+
+def _check_deep_checks_prerequisites(outdir):
+    """Refuse a deep run that cannot finish or keep its results, before any metric is computed.
+
+    The deep checks write their CSVs into *outdir*, so without one they would go to a temporary
+    directory deleted on return. senselab 1.4 made snorkel, which ``review_files`` needs, optional.
+    """
+    if not outdir:
+        raise ValueError(
+            "deep_checks writes its results into the output directory; pass one "
+            "(the second argument of run-quality-control-on-audios)."
+        )
+    if importlib.util.find_spec("snorkel") is None:
+        raise ImportError(
+            "deep_checks needs snorkel, which senselab no longer installs. "
+            "Install it with: pip install 'b2aiprep[qc]'"
+        )
+
 
 def quality_control_wrapper(
     audio_paths,
@@ -47,14 +67,16 @@ def quality_control_wrapper(
     """
 
     bids_path = Path(bids_path)
+    if deep_checks:
+        _check_deep_checks_prerequisites(outdir)
 
     temp_dir_obj = None
     try:
         if not outdir:
             temp_dir_obj = tempfile.TemporaryDirectory()
-            quality_check_dir = temp_dir_obj.name
+            quality_check_dir = Path(temp_dir_obj.name)
         else:
-            quality_check_dir = outdir
+            quality_check_dir = Path(outdir)
 
         evaluation_df = check_quality(
             audio_paths=audio_paths,
@@ -100,7 +122,7 @@ def quality_control_wrapper(
         evaluation_review_df = review_files(
             df_path=df_path,
             correlation_threshold= 0.99,
-            output_dir=outdir,
+            output_dir=quality_check_dir,
         )
 
         _logger.info(f"Result of review files {evaluation_review_df}")

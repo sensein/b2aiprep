@@ -52,8 +52,13 @@ doc = [
     "jupytext",
     "ipympl"
 ]
+qc = [
+    # run-quality-control-on-audios --deep_checks only: senselab's review_files needs snorkel,
+    # which senselab 1.4 no longer installs
+    "snorkel>=0.10,<0.11"
+]
 dev = [
-    "b2aiprep[doc]",
+    "b2aiprep[doc,qc]",
     "pytest",
     "pytest-benchmark",
     "pre-commit",
