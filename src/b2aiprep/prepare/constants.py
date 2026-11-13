@@ -106,21 +106,6 @@ AUDIO_TASKS = (
     "Word-color Stroop",
 )
 
-SPEECH_TASKS = (
-    "Animal fluency",
-    "Cape V sentences",
-    "Caterpillar Passage",
-    "Cinderella Story",
-    "Diadochokinesis",
-    "Free Speech",
-    "Picture description",
-    "Productive Vocabulary",
-    "Prolonged vowel",
-    "Rainbow Passage",
-    "Random Item Generation",
-    "Story recall",
-    "Word-color Stroop",
-)
 
 class Instrument(BaseModel):
     """Instruments are associated with fixed sets of columns and a string

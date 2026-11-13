@@ -17,6 +17,7 @@ from pathlib import Path
 import parselmouth
 
 from b2aiprep.prepare.dataset import BIDSDataset
+from b2aiprep.prepare.prepare import recording_speech_type
 from b2aiprep.prepare.utils import copy_package_resource, normalize_task_label
 
 RESAMPLE_RATE=16000
@@ -77,6 +78,7 @@ def quality_control_wrapper(
             quality_check_dir = Path(temp_dir_obj.name)
         else:
             quality_check_dir = Path(outdir)
+            quality_check_dir.mkdir(parents=True, exist_ok=True)
 
         evaluation_df = check_quality(
             audio_paths=audio_paths,
@@ -243,7 +245,10 @@ def quality_control_wrapper(
             diarization_qc['task'].append(task)
             diarization_qc['num_speakers'].append(num_speakers)
             diarization_qc['proportion_primary_speaker'].append(speaker_ratio)
-            if num_speakers == 0 and features['is_speech_task']:
+            speech_type = recording_speech_type(audio_path)
+            if speech_type is None:
+                _logger.warning(f"No speech_type in the sidecar of {audio_path}; not checking it for missing speakers.")
+            if num_speakers == 0 and speech_type not in (None, "non-lexical"):
                 diarization_qc['flag'].append('no_speakers_found')
             elif num_speakers > 1 and speaker_ratio < .8:
                 diarization_qc['flag'].append('no_primary_speaker_found')

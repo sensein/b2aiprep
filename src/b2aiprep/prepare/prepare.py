@@ -55,15 +55,11 @@ from senselab.audio.data_structures import Audio
 from senselab.audio.tasks.features_extraction.api import extract_features_from_audios
 from senselab.audio.tasks.preprocessing import downmix_audios_to_mono, resample_audios
 from senselab.audio.tasks.speaker_diarization import diarize_audios
-from senselab.audio.tasks.speaker_embeddings import (
-    extract_speaker_embeddings_from_audios,
-)
 from senselab.audio.tasks.speech_to_text import transcribe_audios
 from senselab.utils.data_structures import (
     DeviceType,
     HFModel,
     Language,
-    SpeechBrainModel,
 )
 from tqdm import tqdm
 
@@ -78,8 +74,7 @@ from b2aiprep.prepare.constants import (
 )
 
 from b2aiprep.prepare.bids import get_audio_paths
-from b2aiprep.prepare.constants import SPEECH_TASKS
-from b2aiprep.prepare.utils import normalize_task_label, retry
+from b2aiprep.prepare.utils import retry
 
 SUBJECT_ID = "sub"
 SESSION_ID = "ses"
@@ -106,6 +101,19 @@ def remap_id(
     else:
         _logger.warning(f"{id_type.capitalize()} ID '{original_id}' not found in remapping dictionary.")
         return original_id
+
+def recording_speech_type(wav_path: str | os.PathLike) -> str | None:
+    """The task registry's ``speech_type`` for a recording (``read``, ``elicited``, ``recall`` or
+    ``non-lexical``), from its ``<stem>_recording-metadata.json`` sidecar; None when the sidecar or
+    the field is missing."""
+    wav_path = Path(wav_path)
+    sidecar = wav_path.with_name(f"{wav_path.stem}_recording-metadata.json")
+    try:
+        speech_type = json.loads(sidecar.read_text()).get("speech_type")
+    except (OSError, ValueError):
+        return None
+    return str(speech_type) if speech_type else None
+
 
 #@python.define
 def transcription_language(wav_path: str | os.PathLike) -> str:
@@ -183,12 +191,6 @@ def extract_single(
     _logger.info(f"Execution time audio_loading: {execution_time} seconds")
     win_length = 25
     hop_length = 10
-
-    # Compare normalized forms on both sides. SPEECH_TASKS is Title Case with spaces
-    # ("Free Speech"), while the BIDS task entity is lowercase and hyphenated
-    # ("task-free-speech-1"), so a raw substring test matches nothing.
-    _normalized_stem = normalize_task_label(wav_path.stem)
-    is_speech_task = any(normalize_task_label(v) in _normalized_stem for v in SPEECH_TASKS)
 
     opensmile = True
     torchaudio_squim = True
@@ -315,7 +317,6 @@ def extract_single(
     if not update:
         features["parselmouth_config"] = parsel_mouth_config
         features["torch_config"] = torch_config
-        features["is_speech_task"] = is_speech_task
         features["sample_rate"] = audio_16k.sampling_rate
         features["duration"] = audio_16k.waveform.shape[-1] / audio_16k.sampling_rate
         features["sensitive_features"] = None
@@ -342,24 +343,6 @@ def extract_single(
 
     #logging.disable(logging.ERROR)
     if with_sensitive:
-        features["audio_path"] = wav_path
-        try:
-            start_time = time.perf_counter()
-            model = SpeechBrainModel(
-                path_or_uri="speechbrain/spkrec-ecapa-voxceleb", revision="main"
-            )
-            features["speaker_embedding"] = extract_speaker_embeddings_from_audios(
-                [audio_16k], model, device
-            )[0]
-            end_time = time.perf_counter()
-            execution_time = end_time - start_time
-            _logger.info(f"Execution time speaker_embedding: {execution_time} seconds")
-        except Exception as e:
-            features["speaker_embedding"] = None
-            _logger.error(
-                f"Speaker embeddings: An error occurred with extracting speaker embeddings of {wav_path}. {e}"
-            )
-            _logger.error(traceback.print_exc())
         features["transcription"] = None
         try:
             start_time = time.perf_counter()
@@ -380,7 +363,7 @@ def extract_single(
             _logger.error(f"Transcription: An error occurred with transcription of {wav_path}: {e}")
             _logger.error(traceback.print_exc())
 
-        features["sensitive_features"] = ["audio_path", "speaker_embedding", "transcription"]
+        features["sensitive_features"] = ["transcription"]
     _logger.setLevel(logging.INFO)
 
     torch.save(features, save_to)
@@ -622,7 +605,6 @@ def validate_bids_audio_features(bids_dir_path: Path, report_path: Path = None):
     missing_features = {}
     missing_features_files = []
     missing_transcriptions = []
-    missing_speaker_embeddings = []
     missing_diarizations = []
     unrecognized_features = Counter()
     multiple_feature_files = []
@@ -640,8 +622,6 @@ def validate_bids_audio_features(bids_dir_path: Path, report_path: Path = None):
                 missing_transcriptions.append(audio_path)
             if features["diarization"] is None:
                 missing_diarizations.append(audio_path)
-            if features["speaker_embedding"] is None:
-                missing_speaker_embeddings.append(audio_path)
 
             for feature_name in ["torchaudio_squim","opensmile","torchaudio","praat_parselmouth","sparc","ppgs"]:
                 feature = features[feature_name]
@@ -681,10 +661,6 @@ def validate_bids_audio_features(bids_dir_path: Path, report_path: Path = None):
         _logger.info(
             f"Missing transcriptions for {len(missing_transcriptions)} / {len(audio_paths)} audio files"
         )
-    if len(missing_speaker_embeddings) > 0:
-        _logger.info(
-            f"Missing speaker_embeddings for {len(missing_speaker_embeddings)} / {len(audio_paths)} audio files"
-        )
         
     for feature in missing_features:
         if len(missing_features[feature]) > 0:
@@ -713,7 +689,6 @@ def validate_bids_audio_features(bids_dir_path: Path, report_path: Path = None):
                     "missing_feature_extractions": missing_features,
                     "missing_diarizations": missing_diarizations,
                     "missing_transcriptions": missing_transcriptions,
-                    "missing_speaker_embeddings": missing_speaker_embeddings,
                     "missing_feature_files": missing_features_files,
                     "multiple_feature_files": multiple_feature_files,
                 }, f, indent=4
