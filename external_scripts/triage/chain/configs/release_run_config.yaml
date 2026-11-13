@@ -1,0 +1,18 @@
+# The run configuration the released adult triage (v4.0.0, rounds r31 to r37) passed to every step after the replay:
+# the no-words review, COHORT, the re-fold, task audio and SQUIM. Byte-for-byte the settings of Satra's
+# r18d_20261010/r34/run_config.yaml, merged over the profile.
+#
+# llm_redaction_withholds: true is also the profile's own value since 2026-11-10 (it was false, "unfitted", before);
+# it stays here so this file still says everything the release ran with.
+redaction:
+  llm_check:
+    enabled: true
+    keep_worker_resident: true
+    ref: 52f3f65bc7a02d555763bc923bd1d9094898219d
+    engine: vllm
+    vllm:
+      gpu_memory_utilization: 0.45
+verdict:
+  llm_redaction_withholds: true
+second_opinion:
+  enabled: true

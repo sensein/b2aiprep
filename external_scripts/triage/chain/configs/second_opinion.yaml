@@ -1,0 +1,8 @@
+# The second opinion (SECOND_OPINION) through the pinned Ollama server, as the released run's opinion lane wrote it
+# (r37_slice.sh, lane opinion). The reviewer's checkpoint pin is named because the opinion reads the reviewer's text.
+redaction:
+  llm_check:
+    enabled: true
+    ref: 52f3f65bc7a02d555763bc923bd1d9094898219d
+second_opinion:
+  enabled: true
