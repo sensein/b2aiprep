@@ -8,7 +8,7 @@ WORK=/path/to/scratch/triage_run_YYYY_MM_DD   # everything this run writes: runs
 STEMS_FILE=                              # optional: one file stem per line, to triage only those (a canary)
 ALLOW_MISSING=0                          # 1: the runs stage goes on past recordings with no finished run. They drop
                                          # out of every later stage and check_run.py still passes (it checks the
-                                         # manifest, which no longer lists them); the missing-recordings list names
+                                         # manifest, which no longer lists them); $WORK/runs.missing_recordings.txt names
                                          # them. Leave 0 for a release run.
 
 # ---- Code -------------------------------------------------------------------------------------------------------
