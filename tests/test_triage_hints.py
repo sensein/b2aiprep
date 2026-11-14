@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Iterator
 
@@ -15,7 +16,13 @@ from senselab.audio.workflows.triage.identity import FROM_STEM
 from senselab.audio.workflows.triage.routing_analysis.families import UNKNOWN_TASK, task_family
 from senselab.audio.workflows.triage.run import entity_subdir
 
-from b2aiprep.prepare.triage_hints import b2ai_task, identity_from_name, task_id_of
+from b2aiprep.prepare.triage_hints import (
+    MissingSidecarError,
+    b2ai_task,
+    build_hint,
+    identity_from_name,
+    task_id_of,
+)
 
 ADULT_PROFILE = (
     Path(__file__).resolve().parents[1] / "src/b2aiprep/prepare/resources/triage_profile/adult"
@@ -131,6 +138,59 @@ class TestTheTaskAHintDeclares:
     def test_an_unknown_task_declares_nothing(self) -> None:
         """The parsers' placeholder declares no task, variant or take."""
         assert b2ai_task(UNKNOWN_TASK) == (None, {}, None)
+
+
+class TestAHintNeedsASidecar:
+    """``build_hint`` raises where no sidecar declares the task: nothing runs with no identity."""
+
+    STEM = "sub-a_ses-b_task-rainbow-passage"
+
+    def _wav(self, folder: Path) -> Path:
+        return folder / f"{self.STEM}.wav"
+
+    def test_a_recording_with_no_sidecar_raises(self, tmp_path: Path) -> None:
+        """Neither sidecar exists: the error names the recording."""
+        wav = self._wav(tmp_path)
+        with pytest.raises(MissingSidecarError, match="no sidecar") as raised:
+            build_hint(wav)
+        assert raised.value.wav == wav and str(wav) in str(raised.value)
+
+    @pytest.mark.parametrize(
+        "text", ["{not json", "[1, 2]", json.dumps({"unrelated": "x"}), json.dumps({})]
+    )
+    def test_a_sidecar_that_declares_nothing_raises(self, tmp_path: Path, text: str) -> None:
+        """An unparsable sidecar, a non-object, or one carrying none of the read keys."""
+        (tmp_path / f"{self.STEM}_recording-metadata.json").write_text(text)
+        with pytest.raises(MissingSidecarError, match="found .*_recording-metadata.json"):
+            build_hint(self._wav(tmp_path))
+
+    def test_the_identity_check_refuses_a_recording_with_no_sidecar(self, tmp_path: Path) -> None:
+        """senselab's identity check records the builder's error as an unreadable identity."""
+        from senselab.audio.workflows.triage.drivers.check_identity import records_before_run
+        from senselab.audio.workflows.triage.identity_check import (
+            SESSION_SCOPE_PARTICIPANT,
+            UNREADABLE_IDENTITY,
+            check_identities,
+        )
+
+        assert issubclass(MissingSidecarError, ValueError)
+        records = records_before_run([self._wav(tmp_path)], build_hint)
+        report = check_identities(
+            records, session_scope=SESSION_SCOPE_PARTICIPANT, before_run=True
+        )
+        assert report.refused and report.counts[UNREADABLE_IDENTITY] == 1
+
+    def test_a_readable_sidecar_builds_the_hint_as_before(self, tmp_path: Path) -> None:
+        """An unparsable sidecar beside a readable one: the readable one declares the hint."""
+        (tmp_path / f"{self.STEM}_recording-metadata.json").write_text("{not json")
+        (tmp_path / f"{self.STEM}_acoustictask-metadata.json").write_text(
+            json.dumps({"acoustic_task_name": "rainbow-passage", "speech_type": "reading"})
+        )
+        hint, record = build_hint(self._wav(tmp_path))
+        assert record["sidecar"] is True
+        assert hint.metadata["task_name"] == "rainbow-passage"
+        assert (hint.metadata["participant_id"], hint.metadata["session_id"]) == ("sub-a", "ses-b")
+        assert hint.metadata["task_token"] == "rainbow-passage"
 
 
 def test_the_installed_package_carries_a_profile_that_passes_the_start_check() -> None:

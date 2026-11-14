@@ -49,6 +49,38 @@ CATEGORY_FIELD_SUFFIX = "_category"
 """A questionnaire field ending so declares the category an item-list task asked for."""
 
 
+class MissingSidecarError(ValueError):
+    """A recording has no readable sidecar carrying its task: no hint, and no identity, is built.
+
+    :func:`build_hint` raises it rather than return no hint: senselab's corpus driver then records
+    the recording as a failed row, and its identity check refuses it as unreadable, instead of
+    running it with no identity.
+    """
+
+    def __init__(self, wav: Path, reason: str) -> None:
+        """Name the recording and why its sidecars gave nothing.
+
+        Args:
+            wav: The recording.
+            reason: What was found instead.
+        """
+        self.wav = wav
+        super().__init__(f"{wav}: {reason}; its hint is read from {' and '.join(SIDECAR_SUFFIXES)}")
+
+
+def sidecar_paths(wav: Path) -> list[Path]:
+    """The recording's sidecar paths, existing or not, in the order they are read.
+
+    Args:
+        wav: The recording.
+
+    Returns:
+        One path per :data:`SIDECAR_SUFFIXES` entry.
+    """
+    base = str(wav.with_suffix(""))
+    return [Path(base + suffix) for suffix in SIDECAR_SUFFIXES]
+
+
 def bids_root_of(wav: Path) -> Path | None:
     """The BIDS dataset root a recording lies under.
 
@@ -111,12 +143,11 @@ def read_sidecars(wav: Path) -> dict[str, Any]:
         wav: The recording.
 
     Returns:
-        The carried fields present across both sidecars. Empty when neither exists.
+        The carried fields present across both sidecars. Empty when neither exists, neither is a
+        readable JSON object, or neither carries any of :data:`CARRIED`.
     """
     merged: dict[str, Any] = {}
-    base = str(wav.with_suffix(""))
-    for suffix in SIDECAR_SUFFIXES:
-        path = Path(base + suffix)
+    for path in sidecar_paths(wav):
         if not path.is_file():
             continue
         try:
@@ -206,19 +237,31 @@ def recording_category(
     return None, None
 
 
-def build_hint(wav: Path) -> tuple[AudioHints | None, dict[str, Any]]:
+def build_hint(wav: Path) -> tuple[AudioHints, dict[str, Any]]:
     """The hint for one recording, and a record of what was declared and where it came from.
 
     Args:
         wav: The recording.
 
     Returns:
-        The hint, or None when the recording has no sidecar at all, and a small dict for the run
-        record naming the instructions' and the stimulus's source.
+        The hint, and a small dict for the run record naming the instructions' and the
+        stimulus's source.
+
+    Raises:
+        MissingSidecarError: If no sidecar of the recording exists, none is a readable JSON
+            object, or none carries any of :data:`CARRIED`. The hint is what declares the
+            recording's identity, so a recording without one is a failed row, not a run with no
+            identity.
     """
     fields = read_sidecars(wav)
     if not fields:
-        return None, {"sidecar": False}
+        found = [path.name for path in sidecar_paths(wav) if path.is_file()]
+        reason = (
+            f"no sidecar carrying any of {', '.join(CARRIED)} (found {', '.join(found)})"
+            if found
+            else "no sidecar"
+        )
+        raise MissingSidecarError(wav, reason)
     name = str(fields.get("task_name") or fields.get("acoustic_task_name") or task_id_of(wav.stem))
     text = task_text(name, fields)
     prompts = [ExpectedSpeech(text=text.stimulus, prompt_id=name)] if text.stimulus else []
