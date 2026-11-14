@@ -37,7 +37,7 @@ and small slice counts.
 | `inputs` | lists the tree's `sub-*/ses-*/audio/*.{wav,flac}` (or `STEMS_FILE`) | `make_input_manifest.py` (here) | | |
 | `check_identity` | every recording's identity as the fresh run would declare it, from its hint; stops the chain on a refusal (report in `$WORK/identity_check.json`) | `check_identity --recordings` | profile | |
 | `fresh` | the whole graph per recording; reviewer off | `triage_corpus run` | profile | |
-| `runs` | the finished runs as the passes' manifest, with identity columns; stops if a recording has no finished run (`ALLOW_MISSING=1` to go on) | `triage_corpus manifest` | | |
+| `runs` | the finished runs as the passes' manifest, with identity columns; stops if a recording has no finished run (`ALLOW_MISSING=1` to go on, below) | `triage_corpus manifest` | | |
 | `session` | SESSION's floor, per BIDS session | `extend_session_floor` | profile | |
 | `replay` | re-decide from TAXONOMY with the session floors (exit 3 = some reviewer readings to redo, a result) | `extend_replay_decisions` | profile | |
 | `review_rows` | every row the replay did not read (`--all-unread`: the fresh runs were never reviewed), split into words / no words | `triage_review_rows rereads`, `split` | | |
@@ -55,12 +55,18 @@ and small slice counts.
 Every pass gets `--profile` (b2aiprep's adult profile). The configs in `chain/configs/` are the released run's:
 `release_run_config.yaml` turns on the reviewer and second opinion settings and `verdict.llm_redaction_withholds:
 true` (the released decisions were folded with it on; the profile has it on too since 2026-11-10).
+Its settings are identical to the r34 run config, the one file r31 and r34 to r37 ran with (sha256
+`eb2ad91d78af0c53bf38532d37501bafc16ed570b12fa9d636c186f7d08dddb9`); only the header comments differ.
 
 **`check_identity`** refuses duplicate identities, duplicate recording ids and identities that cannot be read; a
 recording whose hint cannot be built (no readable sidecar: `build_hint` raises) is one it cannot read. It only
 reports a task missing from the profile's task list. A refusal fails the stage, so the link to `fresh` is cancelled
 and nothing runs: read the report, fix the tree or the hints, and submit `check_identity` again. To run past it on
 purpose, submit `fresh` by hand.
+
+**`ALLOW_MISSING=1`** lets the `runs` stage go on when some recordings have no finished run. They then drop out of
+every later stage, and `check` still passes, because it checks the manifest, which no longer lists them. The stage
+log prints only the first few; see the missing-recordings list for all of them. Leave it at 0 for a release run.
 
 `review` and `opinion` are the same two steps as separate stages (`review` → `opinion` → `cohort_collect`), as the
 released run had them; submit `review` by hand to use them.
@@ -74,8 +80,8 @@ the repair passes (`extend_clip_amplitudes`, `extend_withdraw_clips`, `extend_qu
 ## How the released v4.0.0 result was made
 
 The released adult triage (62,550 recordings) was not one run of this chain. It is Satra's rounds in
-`/orcd/scratch/bcs/002/satra/r18d_20261010`, each building on stores of earlier ones, at senselab 93958bd (before
-dataset profiles existed), then the SQUIM recompute at 451af99c:
+`<lab scratch>/r18d_20261010`, each building on stores of earlier ones, at senselab 93958bd (before dataset
+profiles existed), then the SQUIM recompute at 451af99c:
 - stores from several fresh runs (r18 and earlier, 22,607 re-run in r18d, 13 patched in r34);
 - the session floor from r31 (r34 for 15 patch sessions); the no-words review markings from r33/r34;
 - r37: a full replay, review and second opinion of the 15,060 rows that needed it, COHORT applied with **r34's

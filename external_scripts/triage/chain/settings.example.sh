@@ -6,7 +6,10 @@
 BIDS_ROOT=/path/to/bids_tree             # the BIDS tree whose sub-*/ses-*/audio/ recordings are triaged (read only)
 WORK=/path/to/scratch/triage_run_YYYY_MM_DD   # everything this run writes: runs, logs, manifests, tables
 STEMS_FILE=                              # optional: one file stem per line, to triage only those (a canary)
-ALLOW_MISSING=0                          # 1: go on past recordings with no finished run (they are listed, then left out)
+ALLOW_MISSING=0                          # 1: the runs stage goes on past recordings with no finished run. They drop
+                                         # out of every later stage and check_run.py still passes (it checks the
+                                         # manifest, which no longer lists them); the missing-recordings list names
+                                         # them. Leave 0 for a release run.
 
 # ---- Code -------------------------------------------------------------------------------------------------------
 PY=/path/to/python                       # the Python that has senselab (and its triage extras) installed
