@@ -29,6 +29,9 @@ taxonomy:
     emptiness:
       active_s_max: 0.0                  # owner's rule (config-derivations.md §taxonomy): seconds of activity BACKGROUND may read over the floor in a recording that carried nothing
 pii:
+  gliner:                              # the PII detector the v4.1 triage scans with (Satra review 2026-11-14, decision 6)
+    model: nvidia/gliner-pii
+    revision: bd23e8ef4425fd04e34c5204ab49ffaa706eae79  # the commit the 2026-11-10 canary resolved; v4.0.0's own is unrecorded
   name_words_max: 1                      # owner, 2026-09-28: a name, place or organisation finding of two or more words keeps only its proper nouns
 branch:
   phoneme_place_classes:
