@@ -46,6 +46,9 @@ case "$STAGE" in
 inputs)
   "$PY" "$CHAIN_DIR/make_input_manifest.py" "$BIDS_ROOT" --out "$INPUT" ${STEMS_FILE:+--stems "$STEMS_FILE"}
   ;;
+check_identity)  # every recording's declared identity, before any run; a refusal (exit 1) stops the chain here
+  drive check_identity --recordings "$INPUT" --hints "$HINTS" "${profile[@]}" --out "$WORK/identity_check.json"
+  ;;
 fresh)   # the whole graph per recording, reviewer off, into $FRESH (resumable). A recording that fails is its row;
          # the runs stage is the gate, so a task exits 0 unless its arguments could not be resolved (2).
   drive triage_corpus run "$INPUT" --out-root "$FRESH" "${slice[@]}" --hints "$HINTS" "${profile[@]}" --commit "$COMMIT"

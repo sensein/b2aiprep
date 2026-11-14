@@ -35,6 +35,7 @@ and small slice counts.
 | Stage | What it does | senselab driver | Config | GPU |
 |---|---|---|---|---|
 | `inputs` | lists the tree's `sub-*/ses-*/audio/*.{wav,flac}` (or `STEMS_FILE`) | `make_input_manifest.py` (here) | | |
+| `check_identity` | every recording's identity as the fresh run would declare it, from its hint; stops the chain on a refusal (report in `$WORK/identity_check.json`) | `check_identity --recordings` | profile | |
 | `fresh` | the whole graph per recording; reviewer off | `triage_corpus run` | profile | |
 | `runs` | the finished runs as the passes' manifest, with identity columns; stops if a recording has no finished run (`ALLOW_MISSING=1` to go on) | `triage_corpus manifest` | | |
 | `session` | SESSION's floor, per BIDS session | `extend_session_floor` | profile | |
@@ -55,13 +56,19 @@ Every pass gets `--profile` (b2aiprep's adult profile). The configs in `chain/co
 `release_run_config.yaml` turns on the reviewer and second opinion settings and `verdict.llm_redaction_withholds:
 true` (the released decisions were folded with it on; the profile has it on too since 2026-11-10).
 
+**`check_identity`** refuses duplicate identities, duplicate recording ids and identities that cannot be read; a
+recording whose hint cannot be built (no readable sidecar: `build_hint` raises) is one it cannot read. It only
+reports a task missing from the profile's task list. A refusal fails the stage, so the link to `fresh` is cancelled
+and nothing runs: read the report, fix the tree or the hints, and submit `check_identity` again. To run past it on
+purpose, submit `fresh` by hand.
+
 `review` and `opinion` are the same two steps as separate stages (`review` → `opinion` → `cohort_collect`), as the
 released run had them; submit `review` by hand to use them.
 
 Not in the chain (run by hand when needed): the review pages (`triage_review_page`, `free_speech_review_page`,
-`triage_review_serve`), `fit_profile`, `check_identity`, `triage_replay_diff`, the repair passes
-(`extend_clip_amplitudes`, `extend_withdraw_clips`, `extend_quality`, `extend_diarization`, `extend_ppg_praat`,
-`extend_reprocessed_outputs`, `extend_background_floor`) and the evaluation drivers. The drivers' package docstring
+`triage_review_serve`), `fit_profile`, `check_identity --table` (over a finished corpus table), `triage_replay_diff`,
+the repair passes (`extend_clip_amplitudes`, `extend_withdraw_clips`, `extend_quality`, `extend_diarization`,
+`extend_ppg_praat`, `extend_reprocessed_outputs`, `extend_background_floor`) and the evaluation drivers. The drivers' package docstring
 (`senselab.audio.workflows.triage.drivers`) lists them.
 
 ## How the released v4.0.0 result was made

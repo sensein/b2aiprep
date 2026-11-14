@@ -20,7 +20,8 @@ set -u
 # stages (review -> opinion -> cohort_collect), for submitting by hand.
 # stage | next stage | slices setting (empty: one job) | rows file the stage reads (empty: none) | CPU/GPU | cpus | mem | time
 STAGES="
-inputs|fresh|||cpu|1|4G|0:30:00
+inputs|check_identity|||cpu|1|4G|0:30:00
+check_identity|fresh|||cpu|1|8G|4:00:00
 fresh|runs|FRESH_SLICES|$INPUT|cpu|8|40G|12:00:00
 runs|session|||cpu|1|8G|1:00:00
 session|replay|SESSION_SLICES|$MANIFEST|cpu|2|12G|4:00:00
