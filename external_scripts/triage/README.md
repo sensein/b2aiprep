@@ -58,6 +58,12 @@ true` (the released decisions were folded with it on; the profile has it on too 
 Its settings are identical to the r34 run config, the one file r31 and r34 to r37 ran with (sha256
 `eb2ad91d78af0c53bf38532d37501bafc16ed570b12fa9d636c186f7d08dddb9`); only the header comments differ.
 
+**Stores made under an earlier adult profile**, such as the 2026-11-10 canary's (before `pii.gliner` pinned the PII
+detector; the profile is version 2026-11-14.1 now): `refold` refuses them, because their decisions were taken under
+other values; pass `--allow-profile-change` to fold them anyway, or replay them first. `replay` accepts a profile of
+the same name with other values and records the change (`profile_change` on its marker). For a release run, start
+fresh.
+
 **`check_identity`** refuses duplicate identities, duplicate recording ids and identities that cannot be read; a
 recording whose hint cannot be built (no readable sidecar: `build_hint` raises) is one it cannot read. It only
 reports a task missing from the profile's task list. A refusal fails the stage, so the link to `fresh` is cancelled
