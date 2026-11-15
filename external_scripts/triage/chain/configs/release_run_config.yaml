@@ -1,0 +1,19 @@
+# The run configuration the released adult triage (v4.0.0, rounds r31 to r37) passed to every step after the replay:
+# the no-words review, COHORT, the re-fold, task audio and SQUIM, merged over the profile. The settings are identical
+# to the r34 run config (one file for r31 and r34 to r37, sha256
+# eb2ad91d78af0c53bf38532d37501bafc16ed570b12fa9d636c186f7d08dddb9); the header comments differ.
+#
+# llm_redaction_withholds: true is also the profile's own value since 2026-11-10 (it was false, "unfitted", before);
+# it stays here so this file still says everything the release ran with.
+redaction:
+  llm_check:
+    enabled: true
+    keep_worker_resident: true
+    ref: 52f3f65bc7a02d555763bc923bd1d9094898219d
+    engine: vllm
+    vllm:
+      gpu_memory_utilization: 0.45
+verdict:
+  llm_redaction_withholds: true
+second_opinion:
+  enabled: true
