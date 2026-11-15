@@ -165,8 +165,13 @@ class TestAHintNeedsASidecar:
             build_hint(self._wav(tmp_path))
 
     def test_the_identity_check_refuses_a_recording_with_no_sidecar(self, tmp_path: Path) -> None:
-        """senselab's identity check records the builder's error as an unreadable identity."""
-        from senselab.audio.workflows.triage.drivers.check_identity import records_before_run
+        """senselab's identity check records the builder's error as an unreadable identity.
+
+        The check's driver ships in senselab's package from the second alpha of the triage refactor (#642); against
+        the first, which this PR pins, the test is skipped rather than failed.
+        """
+        drivers = pytest.importorskip("senselab.audio.workflows.triage.drivers.check_identity")
+        records_before_run = drivers.records_before_run
         from senselab.audio.workflows.triage.identity_check import (
             SESSION_SCOPE_PARTICIPANT,
             UNREADABLE_IDENTITY,
