@@ -72,7 +72,7 @@ purpose, submit `fresh` by hand.
 
 **`ALLOW_MISSING=1`** lets the `runs` stage go on when some recordings have no finished run. They then drop out of
 every later stage, and `check` still passes, because it checks the manifest, which no longer lists them. The stage
-log prints only the first few; the full list is written to `$WORK/runs.missing_recordings.txt`. Leave it at 0 for a release run.
+log prints only the first few; the full list is written to `$WORK/runs.missing_recordings.txt` (one line per recording, `stem<TAB>reason`, sorted; `cut -f1` gives the stems; empty when nothing is missing). Leave it at 0 for a release run.
 
 `review` and `opinion` are the same two steps as separate stages (`review` → `opinion` → `cohort_collect`), as the
 released run had them; submit `review` by hand to use them.
