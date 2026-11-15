@@ -1,0 +1,6 @@
+# The session background read off the residual of the session's speech tasks (session_background.py),
+# and the foreground-over-background quality of every recording. Owner, 2026-10-10. The derivation of
+# every value is in specs/20261007-task-events-in-background/design.md ("Session background from
+# speech-task residuals"); values marked UNFITTED are to be fitted on the owner's labels.
+version: 1
+decides: false                    # OFF (owner, 2026-10-10): BACKGROUND keeps the session floor until the owner has seen the measurements

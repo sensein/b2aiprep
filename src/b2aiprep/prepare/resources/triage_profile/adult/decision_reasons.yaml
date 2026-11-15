@@ -1,0 +1,12 @@
+# The decision table's reason vocabulary: every ground key the fold can write maps to one short reason.
+# `reason` is the first of a recording's reasons in `precedence`; `reasons` is all of them, in that order.
+# Owner, 2026-10-07: verdict pass/review/discard, release as_is/redacted/withheld, one reason per recording.
+# Owner, 2026-10-10: consolidated to these codes; the release ground is its own column (release_reason).
+# Derivation: specs/20261007-task-events-in-background/design.md ("Decision table", "Reasons consolidated",
+# "The residual's other voice is attributed", "The reviewer reads the phrases").
+version: 14
+reviewed_releases:     # owner, 2026-10-10: masks not yet validated; every release but as_is is reviewed (release_reviewed)
+- redacted
+- withheld
+release_audible_share_min: 0.1   # UNFITTED: a release whose masks leave less of the task extent audible than this withholds (release_empty)
+second_opinion_not_free_withholds: true   # owner, 2026-10-10; r37 G2: a confident second-opinion "not free" holds the release only where the reviewer or a standing identifier mask corroborates it

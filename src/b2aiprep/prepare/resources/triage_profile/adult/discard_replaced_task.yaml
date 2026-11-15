@@ -1,0 +1,22 @@
+# Discard where the task is absent or weak and talk outside it takes its place (discard_replaced_task.py).
+# Derivations: specs/20261007-task-events-in-background/cross-dataset.md, "E1".
+version: 2
+enabled: false                     # owner, 2026-10-12: off until a sample of the candidates has been listened to
+
+background:                        # r37 round 2: the task's events against the recording's background (task_events.background_reading)
+  enabled: false                   # read beside the other rules; off until its own listen stratum is labelled
+non_lexical:                       # airway, voice, and the lexical families read as a voice task
+  free_speech_words_per_s: 2.03    # median consensus words per second over free-speech, picture-description and open-response recordings, r36
+                                   # deliberate difference from fit (plan.md, step 10)
+short_response:                    # free-response families: a response under fraction_max of the family median
+  family_median_s:                 # median gate response_min_s reading per family, r36 (n in brackets)
+                                   # deliberate difference from fit (plan.md, step 10)
+    cinderella-story: 91.92        # [258]
+    free-speech: 26.75             # [3073]
+    free-speech-v2: 25.89          # [2119]
+    open-response-questions: 27.97 # [199]
+    picture-description: 49.08     # [889]
+    picture-description-option1: 28.57  # [373]
+    picture-description-option2: 39.68  # [329]
+    story-recall: 40.45            # [888]
+    story-recall-v2: 73.38         # [660]
